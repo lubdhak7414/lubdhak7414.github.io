@@ -318,8 +318,6 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 		let scrollInterval: string | number | NodeJS.Timeout | undefined
 		let autoScrollActive = true
 		let restartTimeout: string | number | NodeJS.Timeout | undefined
-<<<<<<< Updated upstream
-=======
 		let scrollDirection = 1 // 1 for right, -1 for left
 
 		// Function to check if the device is a desktop (width > 1024px)
@@ -341,64 +339,31 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 			scrollRightButton.style.display =
 				totalWidth - container.scrollLeft - visibleWidth > 150 ? 'block' : 'none'
 		}
->>>>>>> Stashed changes
 
 		// Check if the container and buttons exist before initializing
 		if (container && scrollLeftButton && scrollRightButton) {
 			function startAutoScroll() {
-<<<<<<< Updated upstream
-				if (!autoScrollActive) return
-=======
 				if (!autoScrollActive || !container || !isDesktop()) return // Ensure it's only running on desktop
->>>>>>> Stashed changes
 
 				scrollInterval = setInterval(() => {
-					if (container) {
-						const totalWidth = container.scrollWidth - container.clientWidth
+					if (!container) return // Ensure container exists before every operation
+					const totalWidth = container.scrollWidth - container.clientWidth
 
-<<<<<<< Updated upstream
-						container.scrollLeft += 3
-=======
 					// Scroll in the current direction
 					container.scrollLeft += 4 * scrollDirection
->>>>>>> Stashed changes
 
-						if (container.scrollLeft >= totalWidth) {
-							setTimeout(() => {
-								container.scroll({ left: 0, behavior: 'smooth' })
-							}, 1000)
-						}
+					// Check if we reached the end or the beginning and reverse direction
+					if (scrollDirection === 1 && container.scrollLeft >= totalWidth) {
+						scrollDirection = -1 // Reverse the direction to left
+					} else if (scrollDirection === -1 && container.scrollLeft <= 0) {
+						scrollDirection = 1 // Reverse the direction to right
 					}
+					updateButtonVisibility() // Update button visibility
 				}, 30)
 			}
 
 			function stopAutoScroll() {
 				clearInterval(scrollInterval)
-			}
-
-			startAutoScroll()
-
-			container.addEventListener('mouseenter', stopAutoScroll)
-			container.addEventListener('mouseleave', startAutoScroll)
-
-			function scrollLeft() {
-				if (container) {
-					// Ensure container is not null
-					container.scrollLeft -= 300
-				}
-				stopAutoScroll()
-				autoScrollActive = false
-				restartAutoScroll()
-			}
-
-			function scrollRight() {
-				if (container) {
-					// Ensure container is not null
-					container.scrollLeft += 300
-				}
-				stopAutoScroll()
-				autoScrollActive = false
-				restartAutoScroll()
 			}
 
 			function restartAutoScroll() {
@@ -410,10 +375,29 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 				}, 1000)
 			}
 
+			function scrollLeft() {
+				if (!container) return // Ensure container exists
+				container.scrollLeft -= 300
+				stopAutoScroll()
+				autoScrollActive = false
+				restartAutoScroll()
+				updateButtonVisibility() // Update button visibility
+			}
+
+			function scrollRight() {
+				if (!container) return // Ensure container exists
+				container.scrollLeft += 300
+				stopAutoScroll()
+				autoScrollActive = false
+				restartAutoScroll()
+				updateButtonVisibility() // Update button visibility
+			}
+
+			// Event listeners for auto-scroll control
+			container.addEventListener('mouseenter', stopAutoScroll)
+			container.addEventListener('mouseleave', startAutoScroll)
 			scrollLeftButton.addEventListener('click', scrollLeft)
 			scrollRightButton.addEventListener('click', scrollRight)
-<<<<<<< Updated upstream
-=======
 
 			// Start auto-scrolling when the page loads, but only on desktop
 			if (isDesktop()) {
@@ -431,7 +415,6 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 					stopAutoScroll()
 				}
 			})
->>>>>>> Stashed changes
 		} else {
 			console.error('Required elements not found!')
 		}
