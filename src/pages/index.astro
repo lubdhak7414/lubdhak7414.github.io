@@ -142,7 +142,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 							<ProjectCard
 								href='/blog/recovered-hacked-wordpress-site/'
 								heading='Recovered WordPress Site'
-								subheading='A full recovery of a hacked WordPress site.'
+								subheading='A full recovery of a hacked WordPress site with security measures.'
 								imagePath='/src/assets/hacked-wordpress.jpg'
 								altText='recovered-wordpress-site'
 								class='w-full'
@@ -205,6 +205,24 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 			#container {
 				white-space: nowrap;
 				overflow: scroll;
+			}
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					opacity: 1;
+				}
+				50% {
+					transform: scale(1.1);
+					opacity: 0.7;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+
+			#scrollRight.pulsing {
+				animation: pulse 1s infinite;
 			}
 		</style>
 
@@ -302,6 +320,11 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 		let restartTimeout: string | number | NodeJS.Timeout | undefined
 		let scrollDirection = 1 // 1 for right, -1 for left
 
+		// Function to check if the device is a desktop (width > 1024px)
+		function isDesktop() {
+			return window.innerWidth > 1024 // Adjust the width based on your desired breakpoint
+		}
+
 		// Function to update visibility of the scroll buttons based on content width
 		function updateButtonVisibility() {
 			if (!container || !scrollLeftButton || !scrollRightButton) return
@@ -320,14 +343,14 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 		// Check if the container and buttons exist before initializing
 		if (container && scrollLeftButton && scrollRightButton) {
 			function startAutoScroll() {
-				if (!autoScrollActive || !container) return // Ensure container exists
+				if (!autoScrollActive || !container || !isDesktop()) return // Ensure it's only running on desktop
 
 				scrollInterval = setInterval(() => {
 					if (!container) return // Ensure container exists before every operation
 					const totalWidth = container.scrollWidth - container.clientWidth
 
 					// Scroll in the current direction
-					container.scrollLeft += 13 * scrollDirection
+					container.scrollLeft += 4 * scrollDirection
 
 					// Check if we reached the end or the beginning and reverse direction
 					if (scrollDirection === 1 && container.scrollLeft >= totalWidth) {
@@ -376,13 +399,44 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 			scrollLeftButton.addEventListener('click', scrollLeft)
 			scrollRightButton.addEventListener('click', scrollRight)
 
-			// Start auto-scrolling when the page loads
-			startAutoScroll()
+			// Start auto-scrolling when the page loads, but only on desktop
+			if (isDesktop()) {
+				startAutoScroll()
+			}
 
 			// Initial button visibility check
 			updateButtonVisibility()
+
+			// Add a listener for window resize to stop/start auto-scrolling based on the viewport size
+			window.addEventListener('resize', () => {
+				if (isDesktop()) {
+					startAutoScroll()
+				} else {
+					stopAutoScroll()
+				}
+			})
 		} else {
 			console.error('Required elements not found!')
+		}
+		function handleTouchScroll() {
+			// Stop the pulsing effect
+			if (scrollRightButton) {
+				scrollRightButton.classList.remove('pulsing')
+				// Hide the right arrow button
+				scrollRightButton.style.display = 'none'
+			}
+		}
+
+		// Event listener to detect touch start or touch move on the container
+		if (container) {
+			container.addEventListener('touchstart', handleTouchScroll)
+			container.addEventListener('touchmove', handleTouchScroll)
+		}
+		// Initial setup: add pulsing effect to the right arrow on mobile
+		if (scrollRightButton) {
+			if (window.innerWidth <= 1024) {
+				scrollRightButton.classList.add('pulsing')
+			}
 		}
 	</script>
 </PageLayout>
