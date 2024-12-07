@@ -419,12 +419,14 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 			console.error('Required elements not found!')
 		}
 		function handleTouchScroll() {
-			// Stop the pulsing effect
-			if (scrollRightButton) {
-				scrollRightButton.classList.remove('pulsing')
-				// Hide the right arrow button
-				scrollRightButton.style.display = 'none'
-			}
+			// Delay the removal of the pulsing effect for 3.5 seconds
+			setTimeout(() => {
+				if (scrollRightButton) {
+					scrollRightButton.classList.remove('pulsing')
+					// Hide the right arrow button after the delay
+					scrollRightButton.style.display = 'none'
+				}
+			}, 2700) // 3500ms (3.5 seconds) delay
 		}
 
 		// Event listener to detect touch start or touch move on the container
