@@ -302,6 +302,21 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 		let restartTimeout: string | number | NodeJS.Timeout | undefined
 		let scrollDirection = 1 // 1 for right, -1 for left
 
+		// Function to update visibility of the scroll buttons based on content width
+		function updateButtonVisibility() {
+			if (!container || !scrollLeftButton || !scrollRightButton) return
+
+			const totalWidth = container.scrollWidth
+			const visibleWidth = container.clientWidth
+
+			// Show the left button only if there is content to scroll to the left
+			scrollLeftButton.style.display = container.scrollLeft > 150 ? 'block' : 'none'
+
+			// Show the right button only if there is content to scroll to the right
+			scrollRightButton.style.display =
+				totalWidth - container.scrollLeft - visibleWidth > 150 ? 'block' : 'none'
+		}
+
 		// Check if the container and buttons exist before initializing
 		if (container && scrollLeftButton && scrollRightButton) {
 			function startAutoScroll() {
@@ -320,6 +335,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 					} else if (scrollDirection === -1 && container.scrollLeft <= 0) {
 						scrollDirection = 1 // Reverse the direction to right
 					}
+					updateButtonVisibility() // Update button visibility
 				}, 30)
 			}
 
@@ -342,6 +358,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 				stopAutoScroll()
 				autoScrollActive = false
 				restartAutoScroll()
+				updateButtonVisibility() // Update button visibility
 			}
 
 			function scrollRight() {
@@ -350,6 +367,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 				stopAutoScroll()
 				autoScrollActive = false
 				restartAutoScroll()
+				updateButtonVisibility() // Update button visibility
 			}
 
 			// Event listeners for auto-scroll control
@@ -360,6 +378,9 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 			// Start auto-scrolling when the page loads
 			startAutoScroll()
+
+			// Initial button visibility check
+			updateButtonVisibility()
 		} else {
 			console.error('Required elements not found!')
 		}
