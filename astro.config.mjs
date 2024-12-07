@@ -11,7 +11,7 @@ import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://lubdhak7414.github.io',
+  site: "https://saf1.me",
   integrations: [
     expressiveCode(expressiveCodeOptions),
     tailwind({
