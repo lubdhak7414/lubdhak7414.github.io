@@ -206,6 +206,24 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 				white-space: nowrap;
 				overflow: scroll;
 			}
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					opacity: 1;
+				}
+				50% {
+					transform: scale(1.1);
+					opacity: 0.7;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+
+			#scrollRight.pulsing {
+				animation: pulse 1s infinite;
+			}
 		</style>
 
 		<Section title='Experience'>
@@ -300,17 +318,50 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 		let scrollInterval: string | number | NodeJS.Timeout | undefined
 		let autoScrollActive = true
 		let restartTimeout: string | number | NodeJS.Timeout | undefined
+<<<<<<< Updated upstream
+=======
+		let scrollDirection = 1 // 1 for right, -1 for left
+
+		// Function to check if the device is a desktop (width > 1024px)
+		function isDesktop() {
+			return window.innerWidth > 1024 // Adjust the width based on your desired breakpoint
+		}
+
+		// Function to update visibility of the scroll buttons based on content width
+		function updateButtonVisibility() {
+			if (!container || !scrollLeftButton || !scrollRightButton) return
+
+			const totalWidth = container.scrollWidth
+			const visibleWidth = container.clientWidth
+
+			// Show the left button only if there is content to scroll to the left
+			scrollLeftButton.style.display = container.scrollLeft > 150 ? 'block' : 'none'
+
+			// Show the right button only if there is content to scroll to the right
+			scrollRightButton.style.display =
+				totalWidth - container.scrollLeft - visibleWidth > 150 ? 'block' : 'none'
+		}
+>>>>>>> Stashed changes
 
 		// Check if the container and buttons exist before initializing
 		if (container && scrollLeftButton && scrollRightButton) {
 			function startAutoScroll() {
+<<<<<<< Updated upstream
 				if (!autoScrollActive) return
+=======
+				if (!autoScrollActive || !container || !isDesktop()) return // Ensure it's only running on desktop
+>>>>>>> Stashed changes
 
 				scrollInterval = setInterval(() => {
 					if (container) {
 						const totalWidth = container.scrollWidth - container.clientWidth
 
+<<<<<<< Updated upstream
 						container.scrollLeft += 3
+=======
+					// Scroll in the current direction
+					container.scrollLeft += 4 * scrollDirection
+>>>>>>> Stashed changes
 
 						if (container.scrollLeft >= totalWidth) {
 							setTimeout(() => {
@@ -361,8 +412,48 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 			scrollLeftButton.addEventListener('click', scrollLeft)
 			scrollRightButton.addEventListener('click', scrollRight)
+<<<<<<< Updated upstream
+=======
+
+			// Start auto-scrolling when the page loads, but only on desktop
+			if (isDesktop()) {
+				startAutoScroll()
+			}
+
+			// Initial button visibility check
+			updateButtonVisibility()
+
+			// Add a listener for window resize to stop/start auto-scrolling based on the viewport size
+			window.addEventListener('resize', () => {
+				if (isDesktop()) {
+					startAutoScroll()
+				} else {
+					stopAutoScroll()
+				}
+			})
+>>>>>>> Stashed changes
 		} else {
 			console.error('Required elements not found!')
+		}
+		function handleTouchScroll() {
+			// Stop the pulsing effect
+			if (scrollRightButton) {
+				scrollRightButton.classList.remove('pulsing')
+				// Hide the right arrow button
+				scrollRightButton.style.display = 'none'
+			}
+		}
+
+		// Event listener to detect touch start or touch move on the container
+		if (container) {
+			container.addEventListener('touchstart', handleTouchScroll)
+			container.addEventListener('touchmove', handleTouchScroll)
+		}
+		// Initial setup: add pulsing effect to the right arrow on mobile
+		if (scrollRightButton) {
+			if (window.innerWidth <= 1024) {
+				scrollRightButton.classList.add('pulsing')
+			}
 		}
 	</script>
 </PageLayout>
