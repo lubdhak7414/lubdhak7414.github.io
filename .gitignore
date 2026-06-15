@@ -21,3 +21,7 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 .vercel
+
+#AI
+CLAUDE.md
+PLAN.md
