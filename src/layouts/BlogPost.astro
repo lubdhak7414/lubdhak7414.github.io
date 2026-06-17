@@ -7,6 +7,8 @@ import BlogHero from '@/components/blog/Hero.astro'
 import TOC from '@/components/blog/TOC.astro'
 import BackButton from '@/components/BackButton.astro'
 
+import { siteConfig } from '@/site-config'
+
 import PageLayout from './BaseLayout.astro'
 
 interface Props {
@@ -25,9 +27,31 @@ if (!socialImage && coverImage) {
 }
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString()
 const { headings } = await render(post)
+
+const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
+const ogAbsolute = socialImage ? new URL(socialImage, Astro.site).toString() : undefined
+const blogPostingSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: title,
+	description,
+	datePublished: publishDate.toISOString(),
+	dateModified: articleDate,
+	...(ogAbsolute && { image: ogAbsolute }),
+	author: {
+		'@type': 'Person',
+		name: siteConfig.author,
+		url: 'https://saf1.me'
+	},
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': postUrl
+	}
+}
 ---
 
 <PageLayout meta={{ articleDate, description, ogImage: socialImage, title }}>
+	<script type='application/ld+json' set:html={JSON.stringify(blogPostingSchema)} is:inline />
 	<div class='w-full'>
 		<BackButton href='/blog' />
 		<div class='mt-8 gap-x-10 lg:flex lg:items-start'>
@@ -35,7 +59,7 @@ const { headings } = await render(post)
 			<article class='flex-grow break-words' data-pagefind-body>
 				<div id='blog-hero'><BlogHero content={post} /></div>
 				<div
-					class='prose prose-base prose-zinc mt-12 text-muted-foreground dark:prose-invert prose-headings:font-medium prose-headings:text-foreground prose-headings:before:absolute prose-headings:before:-ms-4 prose-th:before:content-none'
+					class='prose prose-base prose-zinc text-muted-foreground dark:prose-invert prose-headings:font-medium prose-headings:text-foreground prose-headings:before:absolute prose-headings:before:-ms-4 prose-th:before:content-none mt-12'
 				>
 					<slot />
 				</div>
@@ -43,7 +67,7 @@ const { headings } = await render(post)
 		</div>
 		<button
 			aria-label='Back to Top'
-			class='z-90 fixed bottom-8 end-4 flex h-8 w-8 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-primary-foreground text-3xl opacity-0 transition-all duration-300 hover:border-border/75 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:end-8 sm:h-12 sm:w-12'
+			class='bg-primary-foreground hover:border-border/75 fixed end-4 bottom-8 z-90 flex h-8 w-8 translate-y-28 items-center justify-center rounded-full border-2 border-transparent text-3xl opacity-0 transition-all duration-300 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:end-8 sm:h-12 sm:w-12'
 			data-show='false'
 			id='to-top-btn'
 			><svg

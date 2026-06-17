@@ -20,7 +20,7 @@ const { as: Tag = 'a', class: className, title, href, style = 'button' } = Astro
 		style === 'pill' && 'rounded-xl'
 	)}
 	href={href}
-	data-astro-prefetch
+	data-astro-prefetch={href ? '' : undefined}
 >
 	<slot name='icon-before' />
 	<p>{title}</p>

@@ -20,7 +20,7 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 
 {
 	data.coverImage && (
-		<div class='aspect-video mb-6'>
+		<div class='mb-6 aspect-video'>
 			<Image
 				alt={data.coverImage.alt}
 				class='rounded-2xl object-cover'
@@ -80,7 +80,7 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 }
 
 {
-	data.updatedDate && (
+	data.updatedDate && data.updatedDate.valueOf() !== data.publishDate.valueOf() && (
 		<p class='mt-6 text-base'>
 			Last Updated:
 			<FormattedDate class='ms-1' date={data.updatedDate} dateTimeOptions={dateTimeOptions} />

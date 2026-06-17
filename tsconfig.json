@@ -10,7 +10,10 @@
 			"@/assets/*": ["src/assets/*"],
 			"@/components/*": ["src/components/*"],
 			"@/layouts/*": ["src/layouts/*"],
+			"@/styles/*": ["src/styles/*"],
+			"@/content/*": ["src/content/*"],
 			"@/utils": ["src/utils/index.ts"],
+			"@/utils/*": ["src/utils/*"],
 			"@/types": ["src/types.ts"],
 			"@/site-config": ["src/site.config.ts"]
 		}

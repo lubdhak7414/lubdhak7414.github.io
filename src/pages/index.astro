@@ -33,15 +33,30 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 const projectPosts = allPosts
 	.filter((p) => p.data.tags.includes('project'))
 	.sort((a, b) => (a.data.homePageIdx ?? Infinity) - (b.data.homePageIdx ?? Infinity))
+
+const personSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: 'Safwan Usaid Lubdhak',
+	url: 'https://saf1.me',
+	email: 'mailto:hello@saf1.me',
+	jobTitle: 'Software Developer',
+	address: {
+		'@type': 'PostalAddress',
+		addressCountry: 'Bangladesh'
+	},
+	sameAs: ['https://github.com/lubdhak7414', 'https://www.linkedin.com/in/lubdhak7414/']
+}
 ---
 
 <PageLayout meta={{ title: 'Home' }}>
+	<script type='application/ld+json' set:html={JSON.stringify(personSchema)} is:inline />
 	<div class='flex w-full flex-col gap-y-10'>
 		<section class='flex flex-col items-center gap-y-7'>
 			<Image
 				src={astro}
-				alt='profile'
-				class='duration-800 h-28 w-auto rounded-full bg-gradient-to-r from-[#A2DFF7] via-[#E6D6B9] to-[#FF6F61] p-2 transition-all ease-in-out'
+				alt='Safwan Usaid Lubdhak'
+				class='h-28 w-auto rounded-full bg-gradient-to-r from-[#A2DFF7] via-[#E6D6B9] to-[#FF6F61] p-2 transition-all duration-800 ease-in-out'
 				loading='eager'
 			/>
 
@@ -49,18 +64,53 @@ const projectPosts = allPosts
 				<h1 class='text-3xl font-bold'>Safwan Usaid Lubdhak</h1>
 				<div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
 					<Label title='Freelancer'>
-						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' class='h-5 w-5' slot='icon' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-							><rect width='20' height='14' x='2' y='7' rx='2' ry='2' /><path d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16' /></svg
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 24 24'
+							class='h-5 w-5'
+							slot='icon'
+							aria-hidden='true'
+							fill='none'
+							stroke='currentColor'
+							stroke-width='2'
+							stroke-linecap='round'
+							stroke-linejoin='round'
+							><rect width='20' height='14' x='2' y='7' rx='2' ry='2'></rect><path
+								d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'></path></svg
 						>
 					</Label>
 					<Label title='Bangladesh'>
-						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' class='h-5 w-5' slot='icon' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-							><path d='M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z' /><circle cx='12' cy='10' r='3' /></svg
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 24 24'
+							class='h-5 w-5'
+							slot='icon'
+							aria-hidden='true'
+							fill='none'
+							stroke='currentColor'
+							stroke-width='2'
+							stroke-linecap='round'
+							stroke-linejoin='round'
+							><path d='M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z'></path><circle
+								cx='12'
+								cy='10'
+								r='3'></circle></svg
 						>
 					</Label>
-					<Label title='Mail me' as='a' href='mailto:hello@saf1.me' target='_blank'>
-						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' class='h-5 w-5' slot='icon' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-							><rect width='20' height='16' x='2' y='4' rx='2' /><path d='m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7' /></svg
+					<Label title='Mail me' as='a' href='mailto:hello@saf1.me'>
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 24 24'
+							class='h-5 w-5'
+							slot='icon'
+							aria-hidden='true'
+							fill='none'
+							stroke='currentColor'
+							stroke-width='2'
+							stroke-linecap='round'
+							stroke-linejoin='round'
+							><rect width='20' height='16' x='2' y='4' rx='2'></rect><path
+								d='m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'></path></svg
 						>
 					</Label>
 				</div>
@@ -80,11 +130,8 @@ const projectPosts = allPosts
 				<Section title='Projects'>
 					<ProjectCarousel>
 						{projectPosts.map((post) => (
-							<a
-								href={`/blog/${post.id}/`}
-								class='w-[85%] flex-shrink-0 sm:w-[calc(50%-0.5rem)]'
-							>
-								<div class='flex h-full flex-col rounded-2xl border border-border bg-primary-foreground transition-all hover:border-foreground/25 hover:shadow-xs'>
+							<a href={`/blog/${post.id}/`} class='w-[85%] flex-shrink-0 sm:w-[calc(50%-0.5rem)]'>
+								<div class='border-border bg-primary-foreground hover:border-foreground/25 flex h-full flex-col rounded-2xl border transition-all hover:shadow-xs'>
 									{post.data.coverImage && (
 										<Image
 											src={post.data.coverImage.src}
@@ -95,7 +142,7 @@ const projectPosts = allPosts
 									)}
 									<div class='flex flex-grow flex-col gap-y-0.5 px-5 py-4'>
 										<h3 class='text-lg font-medium'>{post.data.title}</h3>
-										<p class='line-clamp-2 text-muted-foreground'>{post.data.description}</p>
+										<p class='text-muted-foreground line-clamp-2'>{post.data.description}</p>
 									</div>
 								</div>
 							</a>
@@ -114,7 +161,7 @@ const projectPosts = allPosts
 				altText='Web Development and Design'
 				imageClass='h-12 w-auto md:-left-16'
 			>
-				<ul class='ml-4 list-disc text-muted-foreground'>
+				<ul class='text-muted-foreground ml-4 list-disc'>
 					<li>
 						Designed and developed responsive WordPress sites (for rapid deployment) with a focus on
 						user experience and conversion optimization.
@@ -135,7 +182,7 @@ const projectPosts = allPosts
 				altText='Brac University'
 				imageClass='h-12 w-auto md:-left-16'
 			>
-				<ul class='ml-4 list-disc text-muted-foreground'>
+				<ul class='text-muted-foreground ml-4 list-disc'>
 					<li>
 						Completed core courses including Programming Language I and II, Data Structures,
 						Algorithms, Discrete Mathematics, Digital Logic Design, and Data Communications.
@@ -166,5 +213,4 @@ const projectPosts = allPosts
 			<SkillLayout title='Others' skills={others} />
 		</Section>
 	</div>
-
 </PageLayout>

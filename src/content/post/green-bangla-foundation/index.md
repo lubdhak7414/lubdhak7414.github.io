@@ -1,16 +1,16 @@
 ---
-title: "A seo optimized website for Green Bangla Foundation."
-description: "This blog post explores how I created and optimized a WordPress website for speed and mobile responsiveness, achieving top scores on Google Lighthouse."
-publishDate: "06 December 2024"
-updatedDate: "06 December 2024"
+title: 'A SEO Optimized Website for Green Bangla Foundation'
+description: 'This blog post explores how I created and optimized a WordPress website for speed and mobile responsiveness, achieving top scores on Google Lighthouse.'
+publishDate: '06 December 2024'
+updatedDate: '06 December 2024'
 coverImage:
-  src: "./cover.jpg"
-  alt: "Green Bangla Foundation Website"
-tags: ["Web Development", "WordPress", "Page Speed Optimization", "Project"]
+  src: './cover.jpg'
+  alt: 'Green Bangla Foundation Website'
+tags: ['Web Development', 'WordPress', 'Page Speed Optimization', 'Project']
 homePageIdx: 1
 ---
 
-# Optimizing Website Performance: A Case Study on Speed and Responsiveness
+## Optimizing Website Performance: A Case Study on Speed and Responsiveness
 
 As a **Web Developer**, I had the opportunity to develop a custom WordPress website for the **Green Bangla Foundation**, focusing on achieving high-performance standards and a responsive user experience. This post highlights the key steps I took to optimize the site for speed and performance, with a focus on how I utilized **Gutenberg Full Site Editing (FSE)** and minimal plugins to deliver excellent results.
 

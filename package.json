@@ -1,14 +1,27 @@
 {
-	"name": "spiffy-shell",
+	"name": "saf1.me",
+	"private": true,
 	"type": "module",
-	"version": "0.0.1",
+	"version": "1.0.0",
+	"description": "Personal portfolio, resume, and blog — saf1.me",
+	"author": "Safwan Usaid Lubdhak",
+	"license": "MIT",
+	"homepage": "https://saf1.me",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lubdhak7414/lubdhak7414.github.io"
+	},
+	"engines": {
+		"node": ">=22.12.0"
+	},
 	"scripts": {
 		"dev": "astro check --watch & astro dev",
 		"start": "astro dev",
+		"check": "astro check",
 		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"lint": "prettier --write  \"**/*.{js,jsx,ts,tsx,md,mdx,svelte,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,svelte,astro}\""
+		"lint": "prettier --write  \"**/*.{js,mjs,cjs,jsx,ts,tsx,md,mdx,svelte,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,svelte,astro}\""
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.9",
