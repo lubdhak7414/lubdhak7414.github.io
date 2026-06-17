@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content'
+import { getImage } from 'astro:assets'
 
 import BlogHero from '@/components/blog/Hero.astro'
 import TOC from '@/components/blog/TOC.astro'
@@ -13,11 +14,15 @@ interface Props {
 
 const { post } = Astro.props
 const {
-	data: { description, ogImage, publishDate, title, updatedDate },
+	data: { coverImage, description, ogImage, publishDate, title, updatedDate },
 	slug
 } = post
 
-const socialImage = ogImage ?? `/og-image/${slug}.png`
+let socialImage: string | undefined = ogImage
+if (!socialImage && coverImage) {
+	const processed = await getImage({ src: coverImage.src })
+	socialImage = processed.src
+}
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString()
 const { headings } = await post.render()
 ---
