@@ -102,7 +102,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 				>
 					<button
 						id='scrollLeft'
-						class='absolute left-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-blue-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:scale-110 hover:bg-blue-400 focus:outline-none'
+						class='absolute left-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-blue-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:scale-110 hover:bg-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
 						aria-label='Scroll Left'
 					>
 						&#8592;
@@ -178,7 +178,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 					<button
 						id='scrollRight'
-						class='absolute right-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-blue-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:scale-110 hover:bg-blue-400 focus:outline-none'
+						class='absolute right-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-blue-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:scale-110 hover:bg-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
 						aria-label='Scroll Right'
 					>
 						&#8594;
@@ -228,6 +228,12 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 			#scrollRight.pulsing {
 				animation: pulse 1s infinite;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				#scrollRight.pulsing {
+					animation: none;
+				}
 			}
 		</style>
 
@@ -404,8 +410,9 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 			scrollLeftButton.addEventListener('click', scrollLeft)
 			scrollRightButton.addEventListener('click', scrollRight)
 
-			// Start auto-scrolling when the page loads, but only on desktop
-			if (isDesktop()) {
+			// Start auto-scrolling when the page loads, but only on desktop and if motion is OK
+			const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+			if (isDesktop() && !prefersReducedMotion) {
 				startAutoScroll()
 			}
 
@@ -414,7 +421,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 			// Add a listener for window resize to stop/start auto-scrolling based on the viewport size
 			window.addEventListener('resize', () => {
-				if (isDesktop()) {
+				if (isDesktop() && !prefersReducedMotion) {
 					startAutoScroll()
 				} else {
 					stopAutoScroll()

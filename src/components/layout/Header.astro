@@ -134,6 +134,15 @@
 				transform: rotate(180deg);
 			}
 		}
+
+		@media (prefers-reduced-motion: reduce) {
+			a > .magic > .magic-star > svg {
+				animation: none;
+			}
+			a > .magic > .magic-star {
+				animation: none;
+			}
+		}
 	</style>
 
 	<script>
@@ -165,17 +174,20 @@
 			star.style.animation = ''
 		}
 
-		for (const star of document.getElementsByClassName('magic-star')) {
-			setTimeout(
-				() => {
-					if (star instanceof HTMLElement) {
-						animate(star)
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		if (!prefersReducedMotion) {
+			for (const star of document.getElementsByClassName('magic-star')) {
+				setTimeout(
+					() => {
+						if (star instanceof HTMLElement) {
+							animate(star)
 
-						setInterval(() => animate(star), 1000)
-					}
-				},
-				index++ * (interval / 3)
-			)
+							setInterval(() => animate(star), 1000)
+						}
+					},
+					index++ * (interval / 3)
+				)
+			}
 		}
 	</script>
 </header>

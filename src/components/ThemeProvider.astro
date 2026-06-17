@@ -15,6 +15,7 @@
 		localStorage.setItem('theme', newTheme)
 
 		const root = document.documentElement
+		root.dataset.theme = newTheme
 
 		// if current dark theme and new theme is dark, return
 		if (newTheme === 'dark' && root.classList.contains('dark')) {
