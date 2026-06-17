@@ -2,6 +2,18 @@
 import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import { cn } from '@/utils'
+import type { HTMLTag, Polymorphic } from 'astro/types'
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
+	class?: string
+	href?: string
+	heading: string
+	subheading: string
+	date?: string
+	imagePath?: string
+	altText?: string
+	imageClass?: string
+}
 
 const {
 	as: Tag = 'div',
