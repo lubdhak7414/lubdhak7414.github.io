@@ -7,6 +7,7 @@ coverImage:
   src: "./cover.jpg"
   alt: "Recovered WordPress Site"
 tags: ["WordPress", "Website Security", "Website Recovery", "Project"]
+homePageIdx: 4
 ---
 
 # Recovering a Hacked WordPress Site: A Success Story

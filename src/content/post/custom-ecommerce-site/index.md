@@ -7,6 +7,7 @@ coverImage:
   src: "./cover.jpg"
   alt: "Custom E-commerce Site"
 tags: ["Web Development", "E-commerce", "Custom Development", "Project"]
+homePageIdx: 5
 ---
 
 # Custom E-commerce Site Development

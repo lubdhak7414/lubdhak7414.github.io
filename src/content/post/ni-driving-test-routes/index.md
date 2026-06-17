@@ -7,6 +7,7 @@ coverImage:
   src: "./cover.jpg"
   alt: "Northern Ireland Driving Test Routes Website"
 tags: ["Wordpress", "SEO", "Project"]
+homePageIdx: 2
 ---
 
 # Optimizing Website Performance: A Case Study on Speed and Responsiveness

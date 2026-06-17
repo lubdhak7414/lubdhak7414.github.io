@@ -7,6 +7,7 @@ coverImage:
   src: "./cover.jpg"
   alt: "Green Bangla Foundation Website"
 tags: ["Web Development", "WordPress", "Page Speed Optimization", "Project"]
+homePageIdx: 1
 ---
 
 # Optimizing Website Performance: A Case Study on Speed and Responsiveness
