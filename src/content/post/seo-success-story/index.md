@@ -6,7 +6,7 @@ updatedDate: "13 September 2024"
 coverImage:
   src: "./cover.jpg"
   alt: "SEO Growth and Success"
-tags: ["SEO"]
+tags: ["SEO", "Project"]
 ---
 
 # How I Achieved Exceptional SEO Performance

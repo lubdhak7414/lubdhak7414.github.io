@@ -3,7 +3,10 @@ title: "How I Recovered a Hacked WordPress Site"
 description: "This blog post details how I successfully recovered a hacked WordPress site, restoring it to full functionality"
 publishDate: "02 December 2024"
 updatedDate: "02 December 2024"
-tags: ["WordPress", "Website Security", "Website Recovery"]
+coverImage:
+  src: "./cover.jpg"
+  alt: "Recovered WordPress Site"
+tags: ["WordPress", "Website Security", "Website Recovery", "Project"]
 ---
 
 # Recovering a Hacked WordPress Site: A Success Story

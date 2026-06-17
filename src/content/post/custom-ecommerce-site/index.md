@@ -3,7 +3,10 @@ title: "Custom E-commerce Site"
 description: "This blog post highlights the creation of a custom e-commerce platform designed to provide an excellent user experience and robust features."
 publishDate: "06 December 2024"
 updatedDate: "06 December 2024"
-tags: ["Web Development", "E-commerce", "Custom Development"]
+coverImage:
+  src: "./cover.jpg"
+  alt: "Custom E-commerce Site"
+tags: ["Web Development", "E-commerce", "Custom Development", "Project"]
 ---
 
 # Custom E-commerce Site Development

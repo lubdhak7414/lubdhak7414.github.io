@@ -1,0 +1,170 @@
+---
+interface Props {
+	class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<div class:list={['project-carousel group relative', className]}>
+	<div
+		class='carousel-track flex gap-4 overflow-x-auto pb-4'
+		role='region'
+		aria-label='Projects'
+		tabindex='0'
+	>
+		<slot />
+	</div>
+
+	<button
+		class='carousel-btn carousel-prev absolute left-2 top-[calc(50%-0.5rem)] z-20 -translate-y-1/2 rounded-full border border-border bg-background p-2.5 text-foreground shadow-lg transition-opacity hover:bg-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+		aria-label='Previous projects'
+	>
+		<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m15 18-6-6 6-6'/></svg>
+	</button>
+	<button
+		class='carousel-btn carousel-next absolute right-2 top-[calc(50%-0.5rem)] z-20 -translate-y-1/2 rounded-full border border-border bg-background p-2.5 text-foreground shadow-lg transition-opacity hover:bg-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+		aria-label='Next projects'
+	>
+		<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m9 18 6-6-6-6'/></svg>
+	</button>
+</div>
+
+<style>
+	.carousel-track {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.carousel-track::-webkit-scrollbar {
+		display: none;
+	}
+	.carousel-btn {
+		pointer-events: auto;
+	}
+	.carousel-btn[data-hidden='true'] {
+		opacity: 0;
+		pointer-events: none;
+	}
+</style>
+
+<script>
+	class ProjectCarousel {
+		track: HTMLElement
+		prev: HTMLButtonElement
+		next: HTMLButtonElement
+		direction = 1
+		speed = 0.8
+		currentSpeed = 0.8
+		rafId: number | undefined
+		stopping = false
+		reducedMotion: boolean
+
+		constructor(root: HTMLElement) {
+			this.track = root.querySelector('.carousel-track')!
+			this.prev = root.querySelector('.carousel-prev')!
+			this.next = root.querySelector('.carousel-next')!
+			this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+			this.prev.addEventListener('click', (e) => {
+				e.preventDefault()
+				e.stopPropagation()
+				this.manualScroll(-1)
+			})
+			this.next.addEventListener('click', (e) => {
+				e.preventDefault()
+				e.stopPropagation()
+				this.manualScroll(1)
+			})
+			this.track.addEventListener('scroll', () => this.updateButtons(), { passive: true })
+			this.track.addEventListener('mouseenter', () => this.decelerate())
+			this.track.addEventListener('mouseleave', () => this.accelerate())
+			this.track.addEventListener('touchstart', () => this.decelerate(), { passive: true })
+
+			this.updateButtons()
+			if (!this.reducedMotion && window.innerWidth > 1024) {
+				this.currentSpeed = this.speed
+				this.rafId = requestAnimationFrame(this.tick)
+			}
+		}
+
+		get cardWidth() {
+			const first = this.track.firstElementChild as HTMLElement | null
+			return first ? first.offsetWidth + 16 : 300
+		}
+
+		updateButtons() {
+			const { scrollLeft, scrollWidth, clientWidth } = this.track
+			this.prev.dataset.hidden = scrollLeft <= 10 ? 'true' : 'false'
+			this.next.dataset.hidden = scrollWidth - scrollLeft - clientWidth <= 10 ? 'true' : 'false'
+		}
+
+		manualScroll(dir: number) {
+			this.stopping = true
+			this.currentSpeed = 0
+
+			const distance = dir * this.cardWidth
+			const start = this.track.scrollLeft
+			const duration = 400
+			const startTime = performance.now()
+
+			const animate = (now: number) => {
+				const elapsed = now - startTime
+				const progress = Math.min(elapsed / duration, 1)
+				const ease = 1 - Math.pow(1 - progress, 3)
+				this.track.scrollLeft = start + distance * ease
+				if (progress < 1) {
+					requestAnimationFrame(animate)
+				} else {
+					this.updateButtons()
+					setTimeout(() => this.accelerate(), 2000)
+				}
+			}
+			requestAnimationFrame(animate)
+		}
+
+		tick = () => {
+			if (this.currentSpeed > 0.01) {
+				const { scrollLeft, scrollWidth, clientWidth } = this.track
+				const max = scrollWidth - clientWidth
+
+				if (this.direction === 1 && scrollLeft >= max - 1) this.direction = -1
+				else if (this.direction === -1 && scrollLeft <= 1) this.direction = 1
+
+				this.track.scrollLeft += this.direction * this.currentSpeed
+			}
+			this.rafId = requestAnimationFrame(this.tick)
+		}
+
+		decelerate() {
+			this.stopping = true
+			const decay = () => {
+				if (!this.stopping) return
+				this.currentSpeed *= 0.92
+				if (this.currentSpeed < 0.01) {
+					this.currentSpeed = 0
+					return
+				}
+				requestAnimationFrame(decay)
+			}
+			requestAnimationFrame(decay)
+		}
+
+		accelerate() {
+			this.stopping = false
+			const ramp = () => {
+				if (this.stopping) return
+				this.currentSpeed += (this.speed - this.currentSpeed) * 0.05
+				if (Math.abs(this.currentSpeed - this.speed) < 0.01) {
+					this.currentSpeed = this.speed
+					return
+				}
+				requestAnimationFrame(ramp)
+			}
+			requestAnimationFrame(ramp)
+		}
+	}
+
+	document.querySelectorAll<HTMLElement>('.project-carousel').forEach((el) => {
+		new ProjectCarousel(el)
+	})
+</script>

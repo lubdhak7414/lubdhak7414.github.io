@@ -2,7 +2,7 @@
 import PageLayout from '../layouts/BaseLayout.astro'
 import Section from '../components/Section.astro'
 import Card from '../components/Card.astro'
-import ProjectCard from '../components/ProjectCard.astro'
+import ProjectCarousel from '../components/ProjectCarousel.astro'
 import Label from '../components/Label.astro'
 import SkillLayout from '../components/SkillLayout.astro'
 import PostPreview from '@/components/blog/PostPreview.astro'
@@ -30,6 +30,7 @@ const technologies = ['WordPress', 'Astro', 'Next.js', 'Gatsby', 'GraphQL', 'Str
 const MAX_POSTS = 10
 const allPosts = await getAllPosts()
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+const projectPosts = sortMDByDate(allPosts).filter((p) => p.data.tags.includes('project'))
 ---
 
 <PageLayout meta={{ title: 'Home' }}>
@@ -93,145 +94,35 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 			</p>
 		</Section>
 
-		<Section title='Projects'>
-			<div class='relative overflow-hidden rounded-2xl'>
-				<div
-					id='autoScrollContainerWrapper'
-					class='relative flex overflow-hidden'
-					style='border-radius: inherit;'
-				>
-					<button
-						id='scrollLeft'
-						class='absolute left-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-blue-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:scale-110 hover:bg-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
-						aria-label='Scroll Left'
-					>
-						&#8592;
-					</button>
-
-					<div
-						id='autoScrollContainer'
-						class='scrollable-element flex space-x-3 overflow-x-auto'
-						style='scroll-behavior: smooth;'
-					>
-						<div class='w-full flex-shrink-0 sm:w-1/2'>
-							<ProjectCard
-								href='/blog/green-bangla-foundation/'
-								heading='Green Bangla Foundation'
-								subheading='A seo optimized website for Green Bangla Foundation.'
-								imagePath='/src/assets/green-bangla-mockup.jpg'
-								altText='green-bangla-foundation'
-								class='w-full'
-							/>
-						</div>
-						<div class='w-full flex-shrink-0 sm:w-1/2'>
-							<ProjectCard
-								href='/blog/ni-driving-test-routes/'
-								heading='NI Driving Test Routes'
-								subheading='A blazing fast and secure website for NI Driving Test Routes.'
-								imagePath='/src/assets/driving-ni.jpg'
-								altText='northern-ireland-driving-test-routes'
-								class='w-full'
-							/>
-						</div>
-						<div class='w-full flex-shrink-0 sm:w-1/2'>
-							<ProjectCard
-								href='/blog/seo-success-story'
-								heading='SEO Optimization of shopvian'
-								subheading='Enhanced visibility of a website through expert SEO strategies.'
-								imagePath='/src/assets/high-seo-performance.jpg'
-								altText='seo optimization of shopvian'
-								class='w-full'
-							/>
-						</div>
-						<div class='w-full flex-shrink-0 sm:w-1/2'>
-							<ProjectCard
-								href='/blog/recovered-hacked-wordpress-site/'
-								heading='Recovered WordPress Site'
-								subheading='A full recovery of a hacked WordPress site with security measures.'
-								imagePath='/src/assets/hacked-wordpress.jpg'
-								altText='recovered-wordpress-site'
-								class='w-full'
-							/>
-						</div>
-						<div class='w-full flex-shrink-0 sm:w-1/2'>
-							<ProjectCard
-								href='/blog/custom-ecommerce-site/'
-								heading='Custom E-commerce Site'
-								subheading='Designed and developed a custom e-commerce platform.'
-								imagePath='/src/assets/custom-ecommerce.jpg'
-								altText='custom-ecommerce-site'
-								class='w-full'
-							/>
-						</div>
-
-						<div class='w-full flex-shrink-0 sm:w-1/2'>
-							<ProjectCard
-								href='/blog/responsive-blog-redesign/'
-								heading='Responsive Blog Redesign'
-								subheading='Revamped for mobile responsiveness and modern aesthetics.'
-								imagePath='/src/assets/responsive-blog.jpg'
-								altText='responsive-blog-redesign'
-								class='w-full'
-							/>
-						</div>
-					</div>
-
-					<button
-						id='scrollRight'
-						class='absolute right-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-blue-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:scale-110 hover:bg-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
-						aria-label='Scroll Right'
-					>
-						&#8594;
-					</button>
-				</div>
-			</div>
-		</Section>
-
-		<style>
-			#autoScrollContainerWrapper {
-				position: relative;
-				overflow: hidden;
-			}
-
-			#autoScrollContainer {
-				display: flex;
-				flex-wrap: nowrap;
-				overflow-x: auto;
-				scroll-behavior: smooth;
-				-webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
-				-ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
-				scrollbar-width: none; /* Hide scrollbar in Firefox */
-			}
-
-			#autoScrollContainer::-webkit-scrollbar {
-				display: none; /* Hide the scrollbar in webkit browsers */
-			}
-
-			@keyframes pulse {
-				0% {
-					transform: scale(1);
-					opacity: 1;
-				}
-				50% {
-					transform: scale(1.1);
-					opacity: 0.7;
-				}
-				100% {
-					transform: scale(1);
-					opacity: 1;
-				}
-			}
-
-			#scrollRight.pulsing {
-				animation: pulse 1s infinite;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				#scrollRight.pulsing {
-					animation: none;
-				}
-			}
-		</style>
+		{
+			projectPosts.length > 0 && (
+				<Section title='Projects'>
+					<ProjectCarousel>
+						{projectPosts.map((post) => (
+							<a
+								href={`/blog/${post.slug}/`}
+								class='w-[85%] flex-shrink-0 sm:w-[calc(50%-0.5rem)]'
+							>
+								<div class='flex flex-col gap-y-3 rounded-2xl border border-border bg-primary-foreground transition-all hover:border-foreground/25 hover:shadow-sm'>
+									{post.data.coverImage && (
+										<Image
+											src={post.data.coverImage.src}
+											alt={post.data.coverImage.alt}
+											class='h-48 w-full rounded-t-2xl object-cover'
+											loading='lazy'
+										/>
+									)}
+									<div class='flex flex-col gap-y-0.5 px-5 py-4'>
+										<h3 class='text-lg font-medium'>{post.data.title}</h3>
+										<p class='text-muted-foreground'>{post.data.description}</p>
+									</div>
+								</div>
+							</a>
+						))}
+					</ProjectCarousel>
+				</Section>
+			)
+		}
 
 		<Section title='Experience'>
 			<Card
@@ -317,136 +208,5 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 			<SkillLayout title='Others' skills={others} />
 		</Section>
 	</div>
-	<script>
-		const container = document.getElementById('autoScrollContainer')
-		const scrollLeftButton = document.getElementById('scrollLeft')
-		const scrollRightButton = document.getElementById('scrollRight')
 
-		let scrollInterval: string | number | NodeJS.Timeout | undefined
-		let autoScrollActive = true
-		let restartTimeout: string | number | NodeJS.Timeout | undefined
-		let scrollDirection = 1 // 1 for right, -1 for left
-
-		// Function to check if the device is a desktop (width > 1024px)
-		function isDesktop() {
-			return window.innerWidth > 1024 // Adjust the width based on your desired breakpoint
-		}
-
-		// Function to update visibility of the scroll buttons based on content width
-		function updateButtonVisibility() {
-			if (!container || !scrollLeftButton || !scrollRightButton) return
-
-			const totalWidth = container.scrollWidth
-			const visibleWidth = container.clientWidth
-
-			// Show the left button only if there is content to scroll to the left
-			scrollLeftButton.style.display = container.scrollLeft > 150 ? 'block' : 'none'
-
-			// Show the right button only if there is content to scroll to the right
-			scrollRightButton.style.display =
-				totalWidth - container.scrollLeft - visibleWidth > 150 ? 'block' : 'none'
-		}
-
-		// Check if the container and buttons exist before initializing
-		if (container && scrollLeftButton && scrollRightButton) {
-			function startAutoScroll() {
-				if (!autoScrollActive || !container || !isDesktop()) return // Ensure it's only running on desktop
-
-				scrollInterval = setInterval(() => {
-					if (!container) return // Ensure container exists before every operation
-					const totalWidth = container.scrollWidth - container.clientWidth
-
-					// Scroll in the current direction
-					container.scrollLeft += 4 * scrollDirection
-
-					// Check if we reached the end or the beginning and reverse direction
-					if (scrollDirection === 1 && container.scrollLeft >= totalWidth) {
-						scrollDirection = -1 // Reverse the direction to left
-					} else if (scrollDirection === -1 && container.scrollLeft <= 0) {
-						scrollDirection = 1 // Reverse the direction to right
-					}
-					updateButtonVisibility() // Update button visibility
-				}, 30)
-			}
-
-			function stopAutoScroll() {
-				clearInterval(scrollInterval)
-			}
-
-			function restartAutoScroll() {
-				clearTimeout(restartTimeout)
-
-				restartTimeout = setTimeout(() => {
-					autoScrollActive = true
-					startAutoScroll()
-				}, 1000)
-			}
-
-			function scrollLeft() {
-				if (!container) return // Ensure container exists
-				container.scrollLeft -= 300
-				stopAutoScroll()
-				autoScrollActive = false
-				restartAutoScroll()
-				updateButtonVisibility() // Update button visibility
-			}
-
-			function scrollRight() {
-				if (!container) return // Ensure container exists
-				container.scrollLeft += 300
-				stopAutoScroll()
-				autoScrollActive = false
-				restartAutoScroll()
-				updateButtonVisibility() // Update button visibility
-			}
-
-			// Event listeners for auto-scroll control
-			container.addEventListener('mouseenter', stopAutoScroll)
-			container.addEventListener('mouseleave', startAutoScroll)
-			scrollLeftButton.addEventListener('click', scrollLeft)
-			scrollRightButton.addEventListener('click', scrollRight)
-
-			// Start auto-scrolling when the page loads, but only on desktop and if motion is OK
-			const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-			if (isDesktop() && !prefersReducedMotion) {
-				startAutoScroll()
-			}
-
-			// Initial button visibility check
-			updateButtonVisibility()
-
-			// Add a listener for window resize to stop/start auto-scrolling based on the viewport size
-			window.addEventListener('resize', () => {
-				if (isDesktop() && !prefersReducedMotion) {
-					startAutoScroll()
-				} else {
-					stopAutoScroll()
-				}
-			})
-		} else {
-			console.error('Required elements not found!')
-		}
-		function handleTouchScroll() {
-			// Delay the removal of the pulsing effect for 3.5 seconds
-			setTimeout(() => {
-				if (scrollRightButton) {
-					scrollRightButton.classList.remove('pulsing')
-					// Hide the right arrow button after the delay
-					scrollRightButton.style.display = 'none'
-				}
-			}, 2700) // 3500ms (3.5 seconds) delay
-		}
-
-		// Event listener to detect touch start or touch move on the container
-		if (container) {
-			container.addEventListener('touchstart', handleTouchScroll)
-			container.addEventListener('touchmove', handleTouchScroll)
-		}
-		// Initial setup: add pulsing effect to the right arrow on mobile
-		if (scrollRightButton) {
-			if (window.innerWidth <= 1024) {
-				scrollRightButton.classList.add('pulsing')
-			}
-		}
-	</script>
 </PageLayout>

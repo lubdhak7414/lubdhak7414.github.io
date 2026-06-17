@@ -3,7 +3,10 @@ title: "Responsive Blog Redesign."
 description: "This blog post covers the redesign of a blog site, transforming it into a modern, responsive, and mobile-friendly platform."
 publishDate: "01 December 2024"
 updatedDate: "01 December 2024"
-tags: ["Web Design"]
+coverImage:
+  src: "./cover.jpg"
+  alt: "Responsive Blog Redesign"
+tags: ["Web Design", "Project"]
 ---
 
 # Responsive Blog Redesign

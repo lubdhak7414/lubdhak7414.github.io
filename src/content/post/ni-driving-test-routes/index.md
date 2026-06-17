@@ -6,7 +6,7 @@ updatedDate: "03 November 2024"
 coverImage:
   src: "./cover.jpg"
   alt: "Northern Ireland Driving Test Routes Website"
-tags: ["Wordpress", "SEO"]
+tags: ["Wordpress", "SEO", "Project"]
 ---
 
 # Optimizing Website Performance: A Case Study on Speed and Responsiveness
