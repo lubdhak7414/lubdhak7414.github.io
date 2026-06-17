@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content'
+import { render } from 'astro:content'
 import { getImage } from 'astro:assets'
 
 import BlogHero from '@/components/blog/Hero.astro'
@@ -23,7 +24,7 @@ if (!socialImage && coverImage) {
 	socialImage = processed.src
 }
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString()
-const { headings } = await post.render()
+const { headings } = await render(post)
 ---
 
 <PageLayout meta={{ articleDate, description, ogImage: socialImage, title }}>

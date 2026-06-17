@@ -158,8 +158,8 @@
 			document.dispatchEvent(toggleDarkModeEvent)
 		})
 
-		let index = 0,
-			interval = 1000
+		let index = 0
+		const interval = 1000
 
 		const rand = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -169,7 +169,7 @@
 
 			star.style.animation = 'none'
 			if (star instanceof HTMLElement) {
-				star.offsetHeight
+				void star.offsetHeight
 			}
 			star.style.animation = ''
 		}
