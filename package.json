@@ -1,26 +1,38 @@
 {
-	"name": "spiffy-shell",
+	"name": "saf1.me",
+	"private": true,
 	"type": "module",
-	"version": "0.0.1",
+	"version": "1.0.0",
+	"description": "Personal portfolio, resume, and blog — saf1.me",
+	"author": "Safwan Usaid Lubdhak",
+	"license": "MIT",
+	"homepage": "https://saf1.me",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lubdhak7414/lubdhak7414.github.io"
+	},
+	"engines": {
+		"node": ">=22.12.0"
+	},
 	"scripts": {
 		"dev": "astro check --watch & astro dev",
 		"start": "astro dev",
+		"check": "astro check",
 		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"lint": "prettier --write  \"**/*.{js,jsx,ts,tsx,md,mdx,svelte,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,svelte,astro}\""
+		"lint": "prettier --write  \"**/*.{js,mjs,cjs,jsx,ts,tsx,md,mdx,svelte,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,svelte,astro}\""
 	},
 	"dependencies": {
-		"@astrojs/check": "^0.5.6",
-		"@astrojs/mdx": "^2.1.1",
-		"@astrojs/rss": "^4.0.5",
-		"@astrojs/sitemap": "^3.1.1",
-		"@astrojs/tailwind": "^5.1.0",
-		"@astrojs/vercel": "^7.3.6",
-		"@vercel/analytics": "^1.2.2",
-		"astro": "^4.4.15",
-		"astro-expressive-code": "^0.33.5",
-		"astro-icon": "^1.1.4",
+		"@astrojs/check": "^0.9.9",
+		"@astrojs/mdx": "^5.0.6",
+		"@astrojs/rss": "^4.0.18",
+		"@astrojs/sitemap": "^3.7.3",
+		"@tailwindcss/typography": "^0.5.20",
+		"@tailwindcss/vite": "4.0.17",
+		"astro": "^6.4.8",
+		"astro-expressive-code": "^0.43.1",
+		"astro-icon": "^1.1.5",
 		"clsx": "^2.1.0",
 		"mdast-util-to-string": "^4.0.0",
 		"reading-time": "^1.5.0",
@@ -28,19 +40,17 @@
 		"remark-unwrap-images": "^4.0.0",
 		"sharp": "^0.33.2",
 		"tailwind-merge": "^2.2.1",
-		"tailwindcss": "^3.4.1",
-		"typescript": "^5.4.2"
+		"tailwindcss": "4.0.17",
+		"typescript": "^5.7.2"
 	},
 	"devDependencies": {
-		"@tailwindcss/aspect-ratio": "^0.4.2",
-		"@tailwindcss/typography": "^0.5.10",
-		"@typescript-eslint/parser": "^7.1.1",
-		"eslint": "^8.57.0",
-		"eslint-plugin-astro": "^0.31.4",
-		"eslint-plugin-jsx-a11y": "^6.8.0",
+		"@eslint/js": "^9.28.0",
+		"eslint": "^9.28.0",
+		"eslint-plugin-astro": "^1.7.0",
 		"prettier": "^3.2.5",
 		"prettier-config-standard": "^7.0.0",
-		"prettier-plugin-astro": "^0.13.0",
-		"prettier-plugin-tailwindcss": "^0.5.12"
+		"prettier-plugin-astro": "^0.14.1",
+		"prettier-plugin-tailwindcss": "^0.8.0",
+		"typescript-eslint": "^8.61.1"
 	}
 }

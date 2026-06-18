@@ -1,12 +1,16 @@
 ---
-title: "Responsive Blog Redesign."
-description: "This blog post covers the redesign of a blog site, transforming it into a modern, responsive, and mobile-friendly platform."
-publishDate: "01 December 2024"
-updatedDate: "01 December 2024"
-tags: ["Web Design"]
+title: 'Responsive Blog Redesign'
+description: 'This blog post covers the redesign of a blog site, transforming it into a modern, responsive, and mobile-friendly platform.'
+publishDate: '01 December 2024'
+updatedDate: '01 December 2024'
+coverImage:
+  src: './cover.jpg'
+  alt: 'Responsive Blog Redesign'
+tags: ['Web Design', 'Project']
+homePageIdx: 6
 ---
 
-# Responsive Blog Redesign
+## Responsive Blog Redesign
 
 In today's fast-paced digital world, a **responsive website** is no longer a luxury—it's a necessity. I was tasked with redesigning an existing blog site that needed to be optimized for all screen sizes, especially mobile devices. The goal was to create a modern and intuitive design while maintaining the blog's core functionality and readability.
 

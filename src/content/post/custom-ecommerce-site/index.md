@@ -1,12 +1,16 @@
 ---
-title: "Custom E-commerce Site"
-description: "This blog post highlights the creation of a custom e-commerce platform designed to provide an excellent user experience and robust features."
-publishDate: "06 December 2024"
-updatedDate: "06 December 2024"
-tags: ["Web Development", "E-commerce", "Custom Development"]
+title: 'Custom E-commerce Site'
+description: 'This blog post highlights the creation of a custom e-commerce platform designed to provide an excellent user experience and robust features.'
+publishDate: '06 December 2024'
+updatedDate: '06 December 2024'
+coverImage:
+  src: './cover.jpg'
+  alt: 'Custom E-commerce Site'
+tags: ['Web Development', 'E-commerce', 'Custom Development', 'Project']
+homePageIdx: 5
 ---
 
-# Custom E-commerce Site Development
+## Custom E-commerce Site Development
 
 In the world of **e-commerce**, a functional and user-friendly platform is essential for both customer satisfaction and business success. For this project, I developed a **custom e-commerce website** that provided all the features necessary for a modern online store. The site was built to support a wide variety of products, ensuring a smooth browsing experience for users.
 

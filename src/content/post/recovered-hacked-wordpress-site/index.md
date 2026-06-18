@@ -1,12 +1,16 @@
 ---
-title: "How I Recovered a Hacked WordPress Site"
-description: "This blog post details how I successfully recovered a hacked WordPress site, restoring it to full functionality"
-publishDate: "02 December 2024"
-updatedDate: "02 December 2024"
-tags: ["WordPress", "Website Security", "Website Recovery"]
+title: 'How I Recovered a Hacked WordPress Site'
+description: 'This blog post details how I successfully recovered a hacked WordPress site, restoring it to full functionality'
+publishDate: '02 December 2024'
+updatedDate: '02 December 2024'
+coverImage:
+  src: './cover.jpg'
+  alt: 'Recovered WordPress Site'
+tags: ['WordPress', 'Website Security', 'Website Recovery', 'Project']
+homePageIdx: 4
 ---
 
-# Recovering a Hacked WordPress Site: A Success Story
+## Recovering a Hacked WordPress Site: A Success Story
 
 In the world of **WordPress development**, one of the most challenging yet rewarding experiences is recovering a site that has been compromised. Recently, I had the opportunity to help a client whose **WordPress site** had been hacked, and I’m excited to share how I successfully navigated the recovery process.
 

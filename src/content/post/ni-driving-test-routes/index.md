@@ -1,15 +1,16 @@
 ---
-title: "NI Driving Test Routes "
-description: "A showcase of how I developed a website focused on NI driving test routes, with a strong emphasis on speed, responsiveness, and SEO."
-publishDate: "03 November 2024"
-updatedDate: "03 November 2024"
+title: 'NI Driving Test Routes'
+description: 'A showcase of how I developed a website focused on NI driving test routes, with a strong emphasis on speed, responsiveness, and SEO.'
+publishDate: '03 November 2024'
+updatedDate: '03 November 2024'
 coverImage:
-  src: "./cover.jpg"
-  alt: "Northern Ireland Driving Test Routes Website"
-tags: ["Wordpress", "SEO"]
+  src: './cover.jpg'
+  alt: 'Northern Ireland Driving Test Routes Website'
+tags: ['Wordpress', 'SEO', 'Project']
+homePageIdx: 2
 ---
 
-# Optimizing Website Performance: A Case Study on Speed and Responsiveness
+## Optimizing Website Performance: A Case Study on Speed and Responsiveness
 
 As a **Web Developer**, I had the opportunity to create a website focused on **Northern Ireland Driving Test Routes**. The goal was to design a website that not only provided valuable content but also ensured a fast, responsive experience for users. This post highlights the key steps I took to optimize the site for performance and how the site achieved top scores in **speed** and **mobile responsiveness**.
 

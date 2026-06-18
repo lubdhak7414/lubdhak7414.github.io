@@ -2,8 +2,8 @@ import type { SiteConfig } from '@/types'
 import type { AstroExpressiveCodeOptions } from 'astro-expressive-code'
 
 export const siteConfig: SiteConfig = {
-	author: 'Safwan Usaid Lubhdak',
-	title: 'Safwan Lubhdak',
+	author: 'Safwan Usaid Lubdhak',
+	title: 'Safwan Usaid Lubdhak',
 	description: 'Software engineer — resume, projects, and blog',
 	// HTML lang property, found in src/layouts/Base.astro L:18
 	lang: 'en-GB',

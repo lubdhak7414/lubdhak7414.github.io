@@ -1,15 +1,16 @@
 ---
-title: "Achieving Exceptional SEO Performance: A Case Study"
+title: 'Achieving Exceptional SEO Performance: A Case Study'
 description: "In this blog post, I'll share how I boosted my website's performance through effective SEO strategies and discuss the basics of SEO."
-publishDate: "13 September 2024"
-updatedDate: "13 September 2024"
+publishDate: '13 September 2024'
+updatedDate: '13 September 2024'
 coverImage:
-  src: "./cover.jpg"
-  alt: "SEO Growth and Success"
-tags: ["SEO"]
+  src: './cover.jpg'
+  alt: 'SEO Growth and Success'
+tags: ['SEO', 'Project']
+homePageIdx: 3
 ---
 
-# How I Achieved Exceptional SEO Performance
+## How I Achieved Exceptional SEO Performance
 
 As an **SEO Specialist & Website Developer**, one of my key goals was to boost organic traffic and improve website visibility. This post explores how I managed to significantly enhance my website's SEO performance, sharing key insights and strategies along the way. Below, I will provide a screenshot from Google Search Console showcasing the incredible growth in traffic that resulted from the optimizations I made.
 
