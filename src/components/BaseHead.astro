@@ -27,8 +27,11 @@ const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
 const usingDefaultImage = !ogImage
+// Force PNG for the OG image: WebP (Astro's default output) is rendered
+// unreliably by some link-preview crawlers (notably LinkedIn), which would
+// drop the share thumbnail. PNG/JPEG are universally supported.
 const socialImageURL = usingDefaultImage
-	? new URL((await getImage({ src: socialCard })).src, Astro.site).href
+	? new URL((await getImage({ src: socialCard, format: 'png' })).src, Astro.site).href
 	: new URL(ogImage, Astro.site).href
 const ogWidth = usingDefaultImage ? socialCard.width : ogImageWidth
 const ogHeight = usingDefaultImage ? socialCard.height : ogImageHeight

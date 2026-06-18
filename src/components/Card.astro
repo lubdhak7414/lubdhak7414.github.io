@@ -26,14 +26,16 @@ const {
 	altText,
 	imageClass
 } = Astro.props
+// Logos live in a dedicated folder so the glob can match by extension (robust)
+// rather than by a fragile filename substring.
 const images = import.meta.glob<{ default: ImageMetadata }>(
-	'/src/assets/*_logo*.{jpeg,jpg,png,gif}'
+	'/src/assets/logos/*.{jpeg,jpg,png,gif}'
 )
 
 if (imagePath) {
 	if (!images[imagePath])
 		throw new Error(
-			`"${imagePath}" does not exist in glob: "src/assets/*_logo*.{jpeg,jpg,png,gif}"`
+			`"${imagePath}" does not exist in glob: "src/assets/logos/*.{jpeg,jpg,png,gif}"`
 		)
 }
 ---

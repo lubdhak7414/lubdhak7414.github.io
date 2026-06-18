@@ -20,11 +20,15 @@ const {
 	data: { coverImage, description, ogImage, publishDate, title, updatedDate }
 } = post
 
+// `ogImage` (frontmatter) is an unprocessed string with unknown dimensions, so
+// width/height are only emitted for the coverImage fallback we process here.
 let socialImage: string | undefined = ogImage
 let socialImageWidth: number | undefined
 let socialImageHeight: number | undefined
 if (!socialImage && coverImage) {
-	const processed = await getImage({ src: coverImage.src })
+	// JPEG (not WebP): WebP OG images are unreliably rendered by some crawlers
+	// (LinkedIn); JPEG is universal and stays small for photographic covers.
+	const processed = await getImage({ src: coverImage.src, format: 'jpeg', quality: 80 })
 	socialImage = processed.src
 	socialImageWidth = coverImage.src.width
 	socialImageHeight = coverImage.src.height
