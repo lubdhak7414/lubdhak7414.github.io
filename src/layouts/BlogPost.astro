@@ -21,28 +21,38 @@ const {
 } = post
 
 let socialImage: string | undefined = ogImage
+let socialImageWidth: number | undefined
+let socialImageHeight: number | undefined
 if (!socialImage && coverImage) {
 	const processed = await getImage({ src: coverImage.src })
 	socialImage = processed.src
+	socialImageWidth = coverImage.src.width
+	socialImageHeight = coverImage.src.height
 }
-const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString()
+const publishIso = publishDate.toISOString()
+const modifiedIso =
+	updatedDate && updatedDate.valueOf() !== publishDate.valueOf()
+		? updatedDate.toISOString()
+		: undefined
 const { headings } = await render(post)
 
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
 const ogAbsolute = socialImage ? new URL(socialImage, Astro.site).toString() : undefined
+const authorPerson = {
+	'@type': 'Person',
+	name: siteConfig.author,
+	url: 'https://saf1.me'
+}
 const blogPostingSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'BlogPosting',
 	headline: title,
 	description,
-	datePublished: publishDate.toISOString(),
-	dateModified: articleDate,
+	datePublished: publishIso,
+	dateModified: modifiedIso ?? publishIso,
 	...(ogAbsolute && { image: ogAbsolute }),
-	author: {
-		'@type': 'Person',
-		name: siteConfig.author,
-		url: 'https://saf1.me'
-	},
+	author: authorPerson,
+	publisher: authorPerson,
 	mainEntityOfPage: {
 		'@type': 'WebPage',
 		'@id': postUrl
@@ -50,13 +60,23 @@ const blogPostingSchema = {
 }
 ---
 
-<PageLayout meta={{ articleDate, description, ogImage: socialImage, title }}>
+<PageLayout
+	meta={{
+		description,
+		ogImage: socialImage,
+		ogImageWidth: socialImageWidth,
+		ogImageHeight: socialImageHeight,
+		publishDate: publishIso,
+		modifiedDate: modifiedIso,
+		title
+	}}
+>
 	<script type='application/ld+json' set:html={JSON.stringify(blogPostingSchema)} is:inline />
 	<div class='w-full'>
 		<BackButton href='/blog' />
 		<div class='mt-8 gap-x-10 lg:flex lg:items-start'>
 			{!!headings.length && <TOC headings={headings} />}
-			<article class='flex-grow break-words' data-pagefind-body>
+			<article class='flex-grow break-words'>
 				<div id='blog-hero'><BlogHero content={post} /></div>
 				<div
 					class='prose prose-base prose-zinc text-muted-foreground dark:prose-invert prose-headings:font-medium prose-headings:text-foreground prose-headings:before:absolute prose-headings:before:-ms-4 prose-th:before:content-none mt-12'

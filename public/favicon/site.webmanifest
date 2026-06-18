@@ -1,6 +1,9 @@
 {
 	"name": "Safwan Usaid Lubdhak",
 	"short_name": "saf1",
+	"description": "Software engineer — resume, projects, and blog",
+	"start_url": "/",
+	"scope": "/",
 	"icons": [
 		{ "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
 		{ "src": "/favicon/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }

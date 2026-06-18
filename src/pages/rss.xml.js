@@ -12,6 +12,7 @@ export const GET = async () => {
 		title: siteConfig.title,
 		description: siteConfig.description,
 		site: import.meta.env.SITE,
+		customData: `<language>${siteConfig.lang}</language>`,
 		items: sortedPosts.map((post) => ({
 			title: post.data.title,
 			description: post.data.description,
