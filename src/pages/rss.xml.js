@@ -1,6 +1,10 @@
 import rss from '@astrojs/rss'
+import MarkdownIt from 'markdown-it'
+import sanitizeHtml from 'sanitize-html'
 import { siteConfig } from '@/site-config'
 import { getAllPosts } from '@/utils'
+
+const parser = new MarkdownIt()
 
 export const GET = async () => {
 	const posts = await getAllPosts()
@@ -17,7 +21,13 @@ export const GET = async () => {
 			title: post.data.title,
 			description: post.data.description,
 			pubDate: post.data.publishDate,
-			link: `/blog/${post.id}/`
+			link: `/blog/${post.id}/`,
+			// Full article body as HTML. Body images use relative (`./`) paths that
+			// only resolve through Astro's image pipeline on-site, so strip <img> from
+			// the feed rather than ship links that 404 in readers.
+			content: sanitizeHtml(parser.render(post.body ?? ''), {
+				allowedTags: sanitizeHtml.defaults.allowedTags.filter((tag) => tag !== 'img')
+			})
 		}))
 	})
 }
