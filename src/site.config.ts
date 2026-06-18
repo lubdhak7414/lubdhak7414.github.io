@@ -5,11 +5,11 @@ export const siteConfig: SiteConfig = {
 	author: 'Safwan Usaid Lubdhak',
 	title: 'Safwan Usaid Lubdhak',
 	description: 'Software engineer — resume, projects, and blog',
-	// HTML lang property, found in src/layouts/Base.astro L:18
+	// HTML lang attribute, applied in src/layouts/BaseLayout.astro
 	lang: 'en-GB',
-	// Meta property, found in src/components/BaseHead.astro L:42
+	// og:locale meta, emitted in src/components/BaseHead.astro
 	ogLocale: 'en_GB',
-	// Date.prototype.toLocaleDateString() parameters, found in src/utils/date.ts.
+	// Date.prototype.toLocaleDateString() parameters, used in src/utils/date.ts
 	date: {
 		locale: 'en-GB',
 		options: {
@@ -19,17 +19,6 @@ export const siteConfig: SiteConfig = {
 		}
 	}
 }
-
-export const menuLinks: Array<{ title: string; path: string }> = [
-	{
-		title: 'Home',
-		path: '/'
-	},
-	{
-		title: 'Blog',
-		path: '/blog/'
-	}
-]
 
 // https://expressive-code.com/reference/configuration/
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {

@@ -3,17 +3,35 @@
 // all pages through the use of the <BaseHead /> component.
 import '../styles/app.css'
 
+import { getImage } from 'astro:assets'
+
 import type { SiteMeta } from '@/types'
 import { siteConfig } from '@/site-config'
+import socialCard from '@/assets/social-card.png'
 
 type Props = SiteMeta
 
-const { articleDate, description, ogImage, title } = Astro.props
+const {
+	description,
+	ogImage,
+	ogImageWidth,
+	ogImageHeight,
+	publishDate,
+	modifiedDate,
+	noIndex,
+	title
+} = Astro.props
 
 const titleSeparator = '•'
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
-const socialImageURL = new URL(ogImage ? ogImage : '/images/social-card.png', Astro.site).href
+
+const usingDefaultImage = !ogImage
+const socialImageURL = usingDefaultImage
+	? new URL((await getImage({ src: socialCard })).src, Astro.site).href
+	: new URL(ogImage, Astro.site).href
+const ogWidth = usingDefaultImage ? socialCard.width : ogImageWidth
+const ogHeight = usingDefaultImage ? socialCard.height : ogImageHeight
 ---
 
 <meta charset='utf-8' />
@@ -25,8 +43,11 @@ const socialImageURL = new URL(ogImage ? ogImage : '/images/social-card.png', As
 <link rel='icon' type='image/png' sizes='16x16' href='/favicon/favicon-16x16.png' />
 <link rel='manifest' href='/favicon/site.webmanifest' />
 
+{/* Robots */}
+{noIndex && <meta content='noindex, nofollow' name='robots' />}
+
 {/* Canonical URL */}
-<link rel='canonical' href={canonicalURL} />
+{!noIndex && <link rel='canonical' href={canonicalURL} />}
 
 {/* Primary Meta Tags */}
 <meta content={siteTitle} name='title' />
@@ -38,30 +59,31 @@ const socialImageURL = new URL(ogImage ? ogImage : '/images/social-card.png', As
 <meta content='#0a0a0b' name='theme-color' media='(prefers-color-scheme: dark)' />
 
 {/* Open Graph / Facebook */}
-<meta content={articleDate ? 'article' : 'website'} property='og:type' />
+<meta content={publishDate ? 'article' : 'website'} property='og:type' />
 <meta content={title} property='og:title' />
 <meta content={description} property='og:description' />
 <meta content={canonicalURL} property='og:url' />
 <meta content={siteConfig.title} property='og:site_name' />
 <meta content={siteConfig.ogLocale} property='og:locale' />
 <meta content={socialImageURL} property='og:image' />
-<meta content='1200' property='og:image:width' />
-<meta content='630' property='og:image:height' />
+{ogWidth && <meta content={String(ogWidth)} property='og:image:width' />}
+{ogHeight && <meta content={String(ogHeight)} property='og:image:height' />}
 {
-	articleDate && (
+	publishDate && (
 		<>
 			<meta content={siteConfig.author} property='article:author' />
-			<meta content={articleDate} property='article:published_time' />
+			<meta content={publishDate} property='article:published_time' />
+			{modifiedDate && <meta content={modifiedDate} property='article:modified_time' />}
 		</>
 	)
 }
 
 {/* Twitter */}
-<meta content='summary_large_image' property='twitter:card' />
-<meta content={canonicalURL} property='twitter:url' />
-<meta content={title} property='twitter:title' />
-<meta content={description} property='twitter:description' />
-<meta content={socialImageURL} property='twitter:image' />
+<meta content='summary_large_image' name='twitter:card' />
+<meta content={canonicalURL} name='twitter:url' />
+<meta content={title} name='twitter:title' />
+<meta content={description} name='twitter:description' />
+<meta content={socialImageURL} name='twitter:image' />
 
 {/* Sitemap */}
 <link href='/sitemap-index.xml' rel='sitemap' />
@@ -69,6 +91,5 @@ const socialImageURL = new URL(ogImage ? ogImage : '/images/social-card.png', As
 {/* RSS auto-discovery */}
 <link href='/rss.xml' rel='alternate' title={siteConfig.title} type='application/rss+xml' />
 
-<meta content={Astro.generator} name='generator' />
 <meta content='4b4b588afe303c5582bde3939866b70a' name='ocs-site-verification' />
 {/* For opendesktop.org */}

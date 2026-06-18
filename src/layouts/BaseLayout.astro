@@ -13,13 +13,31 @@ interface Props {
 }
 
 const {
-	meta: { articleDate, description = siteConfig.description, ogImage, title }
+	meta: {
+		description = siteConfig.description,
+		ogImage,
+		ogImageWidth,
+		ogImageHeight,
+		publishDate,
+		modifiedDate,
+		noIndex,
+		title
+	}
 } = Astro.props
 ---
 
 <html lang={siteConfig.lang}>
 	<head>
-		<BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
+		<BaseHead
+			description={description}
+			ogImage={ogImage}
+			ogImageWidth={ogImageWidth}
+			ogImageHeight={ogImageHeight}
+			publishDate={publishDate}
+			modifiedDate={modifiedDate}
+			noIndex={noIndex}
+			title={title}
+		/>
 	</head>
 
 	<body class='bg-background flex justify-center'>
@@ -30,14 +48,14 @@ const {
 		>
 			Skip to content
 		</a>
-		<main
+		<div
 			class='font-satoshi flex min-h-screen w-screen max-w-[60rem] flex-col items-center px-6 pt-7 pb-10 text-[0.92rem] leading-relaxed sm:px-10 lg:px-10'
 		>
 			<Header />
-			<div id='main-content'>
+			<main id='main-content' class='w-full'>
 				<slot />
-			</div>
+			</main>
 			<Footer />
-		</main>
+		</div>
 	</body>
 </html>

@@ -25,9 +25,13 @@ export function generateToc(headings: ReadonlyArray<MarkdownHeading>) {
 		if (heading.depth === 2) {
 			toc.push(heading)
 		} else {
-			const lastItemInToc = toc[toc.length - 1]!
-			if (heading.depth < lastItemInToc.depth) {
-				throw new Error(`Orphan heading found: ${heading.text}.`)
+			const lastItemInToc = toc[toc.length - 1]
+			// No shallower parent to nest under — e.g. an h3+ before any h2, or a
+			// heading shallower-or-equal to the last top-level entry. Promote it to
+			// the top level instead of crashing the build or mis-nesting siblings.
+			if (!lastItemInToc || heading.depth <= lastItemInToc.depth) {
+				toc.push(heading)
+				return
 			}
 
 			// higher depth

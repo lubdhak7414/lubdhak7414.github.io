@@ -20,5 +20,9 @@ export type SiteMeta = {
 	title: string
 	description?: string
 	ogImage?: string | undefined
-	articleDate?: string | undefined
+	ogImageWidth?: number | undefined
+	ogImageHeight?: number | undefined
+	publishDate?: string | undefined
+	modifiedDate?: string | undefined
+	noIndex?: boolean | undefined
 }

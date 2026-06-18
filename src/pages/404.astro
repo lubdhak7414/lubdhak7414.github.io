@@ -4,7 +4,8 @@ import Button from '@/components/Button.astro'
 
 const meta = {
 	description: 'Not found',
-	title: '404'
+	title: '404',
+	noIndex: true
 }
 ---
 
@@ -12,7 +13,7 @@ const meta = {
 	<div class='px-4 py-10 text-center sm:px-6 lg:px-8'>
 		<h1 class='block text-7xl font-bold sm:text-9xl'>404</h1>
 		<p class='text-muted-foreground mt-3'>Oops, something went wrong.</p>
-		<p class=''>Sorry, we couldn't find your page.</p>
+		<p>Sorry, we couldn't find your page.</p>
 		<Button title='Back to home' href='/' style='button' class='mt-5'>
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
@@ -20,6 +21,7 @@ const meta = {
 				height='14'
 				viewBox='0 0 24 24'
 				slot='icon-after'
+				aria-hidden='true'
 				class='-scale-x-100'
 			>
 				<path
