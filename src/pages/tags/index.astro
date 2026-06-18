@@ -1,7 +1,7 @@
 ---
 import BackButton from '@/components/BackButton.astro'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import { getAllPosts, getUniqueTagsWithCount } from '@/utils'
+import { getAllPosts, getUniqueTagsWithCount, slugifyTag } from '@/utils'
 
 const allPosts = await getAllPosts()
 const allTags = getUniqueTagsWithCount(allPosts)
@@ -27,7 +27,7 @@ const meta = {
 							<a
 								class='hover:text-foreground/75 inline-block underline underline-offset-4'
 								data-astro-prefetch
-								href={`/tags/${tag}/`}
+								href={`/tags/${slugifyTag(tag)}/`}
 								title={`View posts with the tag: ${tag}`}
 							>
 								&#35;{tag}
