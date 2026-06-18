@@ -4,7 +4,7 @@ import { getAllPosts } from '@/utils'
 
 export const GET = async () => {
 	const posts = await getAllPosts()
-	const sortedPosts = posts.sort(
+	const sortedPosts = posts.toSorted(
 		(a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()
 	)
 

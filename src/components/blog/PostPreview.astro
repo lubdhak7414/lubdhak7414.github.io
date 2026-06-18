@@ -21,13 +21,13 @@ const postDate = post.data.updatedDate ?? post.data.publishDate
 		<a
 			data-astro-prefetch
 			href={`/blog/${post.id}/`}
-			class='transition-all hover:text-muted-foreground'
+			class='hover:text-muted-foreground transition-all'
 		>
 			{post.data.title}
 		</a>
 		{
 			withDesc && (
-				<p class='line-clamp-3 block text-sm italic text-muted-foreground'>
+				<p class='text-muted-foreground line-clamp-3 block text-sm italic'>
 					{post.data.description}
 				</p>
 			)

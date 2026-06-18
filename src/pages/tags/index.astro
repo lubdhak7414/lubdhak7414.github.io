@@ -16,16 +16,16 @@ const meta = {
 	<div class='w-full'>
 		<BackButton href='/blog' />
 
-		<h1 class='mb-6 mt-5 text-2xl font-bold'>Tags</h1>
+		<h1 class='mt-5 mb-6 text-2xl font-bold'>Tags</h1>
 		{allTags.length === 0 && <p>No posts yet.</p>}
 
 		{
 			allTags.length > 0 && (
 				<ul class='flex flex-col gap-y-3'>
 					{allTags.map(([tag, val]) => (
-						<li class='flex items-center gap-x-2 '>
+						<li class='flex items-center gap-x-2'>
 							<a
-								class='inline-block underline underline-offset-4 hover:text-foreground/75'
+								class='hover:text-foreground/75 inline-block underline underline-offset-4'
 								data-astro-prefetch
 								href={`/tags/${tag}/`}
 								title={`View posts with the tag: ${tag}`}
