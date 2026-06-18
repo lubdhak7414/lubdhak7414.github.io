@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
+import { unified } from '@astrojs/markdown-remark'
 import { remarkReadingTime } from './src/utils/remarkReadingTime.ts'
 import remarkUnwrapImages from 'remark-unwrap-images'
 import rehypeExternalLinks from 'rehype-external-links'
@@ -17,21 +18,26 @@ export default defineConfig({
 		plugins: [tailwindcss()]
 	},
 	markdown: {
-		remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
-		rehypePlugins: [
-			[
-				rehypeExternalLinks,
-				{
-					target: '_blank',
-					rel: ['nofollow', 'noopener', 'noreferrer']
+		// Astro 6 deprecated top-level `remarkPlugins`/`rehypePlugins`/`remarkRehype`;
+		// the plugins now live on a `unified()` processor. Integration-added plugins
+		// (e.g. expressive-code's highlighter) are still merged in automatically.
+		processor: unified({
+			remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
+			rehypePlugins: [
+				[
+					rehypeExternalLinks,
+					{
+						target: '_blank',
+						rel: ['nofollow', 'noopener', 'noreferrer']
+					}
+				]
+			],
+			remarkRehype: {
+				footnoteLabelProperties: {
+					className: ['']
 				}
-			]
-		],
-		remarkRehype: {
-			footnoteLabelProperties: {
-				className: ['']
 			}
-		}
+		})
 	},
 	prefetch: true
 })
