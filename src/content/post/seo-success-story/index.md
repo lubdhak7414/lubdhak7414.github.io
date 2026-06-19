@@ -7,7 +7,7 @@ coverImage:
   src: './cover.jpg'
   alt: 'SEO Growth and Success'
 tags: ['SEO', 'Project']
-homePageIdx: 3
+homePageIdx: 6
 ---
 
 ## How I Achieved Exceptional SEO Performance

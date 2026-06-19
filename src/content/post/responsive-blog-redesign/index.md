@@ -7,7 +7,7 @@ coverImage:
   src: './cover.jpg'
   alt: 'Responsive Blog Redesign'
 tags: ['Web Design', 'Project']
-homePageIdx: 6
+homePageIdx: 9
 ---
 
 ## Responsive Blog Redesign
