@@ -10,56 +10,60 @@ tags: ['Wordpress', 'SEO', 'Project']
 homePageIdx: 5
 ---
 
-## Optimizing Website Performance: A Case Study on Speed and Responsiveness
+## A fast, content-first site built on Astro
 
-As a **Web Developer**, I had the opportunity to create a website focused on **Northern Ireland Driving Test Routes**. The goal was to design a website that not only provided valuable content but also ensured a fast, responsive experience for users. This post highlights the key steps I took to optimize the site for performance and how the site achieved top scores in **speed** and **mobile responsiveness**.
+I built a site covering **Northern Ireland driving test routes**, content people search for when they're nervous about a test and want to know exactly where they'll be driving. The brief was simple: useful content, fast pages, and a clean mobile experience. I reached for **Astro**, a static site generator, and the Lighthouse scores reflected it.
 
-## Project Overview
-
-The website was developed using **Astro**, a modern static site generator. I focused on creating a fast and lightweight site that would perform well across both desktop and mobile devices. By optimizing the site’s speed, implementing best practices, and enhancing mobile responsiveness, I achieved excellent **Google Lighthouse** scores.
+> **Key Takeaways**
+>
+> - Astro's static output gave the site a perfect 100 desktop speed score with no client-side JavaScript to slow it down.
+> - The content is the product here, so the design stays out of its way: fast to load, easy to read on a phone.
+> - Mobile-first indexing means the mobile build is what Google ranks, so that's where the optimization effort went.
 
 ![Homepage](./homepage.png)
 
-## Achieving Top Performance Scores
+## Why Astro instead of WordPress?
 
-One of the main goals for the NI Driving Test Routes website was to achieve top performance scores in **Google Lighthouse**. The website scored high in both **site speed** and **mobile responsiveness**, crucial factors for SEO and user experience. A fast-loading website is essential for retaining visitors and improving search engine rankings.
+For a content site like this, a static generator is hard to beat. Astro ships zero JavaScript by default, so pages are essentially HTML and CSS that the browser can paint immediately. There's no database query on every request and no plugin stack to maintain. That translates directly into the speed scores below, and into a site that's cheap to host and hard to break.
 
-### Page Speed Insights for Desktop
+## How the site performed
 
-Using **Google PageSpeed Insights**, I tested both the desktop and mobile versions of the site. The **desktop version** of the site received a **perfect score of 100** for speed, indicating optimal performance and quick load times.
+Top Lighthouse scores were the goal from day one, because **site speed** and **mobile responsiveness** feed straight into both SEO and how the site feels to use. A page that loads fast keeps the visitor who landed on it.
+
+### Desktop PageSpeed Insights
+
+I tested both versions with **Google PageSpeed Insights**. The desktop build scored a perfect 100 for speed.
 
 ![Page Speed Insight for Desktop](./page-speed-desktop.png)
 
-This score reflects the website’s ability to load quickly, ensuring a seamless user experience for desktop users.
+That score means quick load times and no wasted work, exactly what you want for someone skimming route details before a test.
 
-### Mobile Optimization: A Key Focus
+### Mobile optimization
 
-With mobile usage rapidly increasing, optimizing for mobile performance is critical. For the **mobile version** of the website, I focused on ensuring quick load times and a smooth experience across different devices.
+Most people checking driving routes are doing it on a phone, often on the move. So mobile performance wasn't an afterthought, it was the priority. I kept the payload small and the layout simple.
 
 ![Page Speed Insight for Phone](./page-speed-phone.png)
 
-The mobile version of the site also performed excellently, scoring well on PageSpeed Insights. The mobile-first design approach ensures that users have an optimal experience regardless of the device they’re using.
+The mobile build scored well too. A mobile-first approach means the experience holds up no matter what device someone arrives on.
 
-## Why Speed and Responsiveness Matter
+## Why speed and responsiveness matter
 
-A fast-loading website is not only important for **user experience** but also for **SEO**. Search engines like Google prioritize fast websites in their rankings, meaning optimizing your site’s speed can directly impact its visibility. Moreover, **mobile responsiveness** is crucial since Google uses **mobile-first indexing**—prioritizing the mobile version of a site for ranking purposes.
+Fast pages do two things at once: they keep visitors around, and they rank better. Google leans on **mobile-first indexing**, so it judges your site by its mobile version. If that's slow or awkward, your rankings suffer regardless of how good the desktop site looks.
 
 ![Faq Page](./faq-ni-test.png)
 
-## The Final Result: NI Driving Test Routes Website
+## The final result
 
-The website I developed for the **Northern Ireland Driving Test Routes** successfully combines high performance, mobile responsiveness, and a user-friendly interface. This project highlights my ability to deliver a high-performing site that meets both the client's needs and exceeds expectations for speed and usability.
+The NI Driving Test Routes site does the job it was built for: it serves useful content quickly, reads well on any screen, and ranks. It's a good example of picking the right tool, Astro, and letting it do what it's best at.
 
-## Conclusion
+## Wrapping up
 
-Optimizing for **speed** and **mobile responsiveness** is essential for success in today’s digital world. Whether you’re building a new website or improving an existing one, focusing on these factors can significantly impact **SEO**, **user engagement**, and **overall performance**.
-
-Through the use of **Astro** and best web development practices, I was able to create a website for **NI Driving Test Routes** that delivers fast load times and seamless mobile performance, ensuring a positive experience for all users.
+Speed and mobile responsiveness aren't extras you add at the end. They shape the choices you make at the start, from the framework down. By building on Astro and keeping the site lean, I delivered fast load times and a smooth mobile experience for the people who actually use it.
 
 ---
 
 ### Skills & Deliverables:
 
-- **Astro Website Development**: Building fast, optimized websites using the **Astro** framework for performance and scalability.
-- **Page Speed Optimization**: Implementing techniques to improve website loading times for both desktop and mobile.
-- **SEO Best Practices**: Enhancing site visibility with mobile-first design and ensuring high performance for better search engine rankings.
+- **Astro Website Development**: Building fast, optimized websites with the **Astro** framework for performance and scalability.
+- **Page Speed Optimization**: Applying techniques that cut loading times on both desktop and mobile.
+- **SEO Best Practices**: Improving visibility with mobile-first design and strong performance for better rankings.
