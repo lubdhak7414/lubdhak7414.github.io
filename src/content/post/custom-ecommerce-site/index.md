@@ -12,7 +12,7 @@ homePageIdx: 7
 
 ## Building a custom online store
 
-A good online store lives or dies on the basics: can people find a product, trust the checkout, and buy without friction? For this project I built a **custom e-commerce site** that covered all of that, supporting a wide range of products with a browsing experience that stays quick and clear.
+A good online store lives or dies on the basics: can people find a product, trust the checkout, and buy without friction? For this project I built a custom e-commerce site that covered all of that, supporting a wide range of products with a browsing experience that stays quick and clear.
 
 > **Key Takeaways**
 >
@@ -22,7 +22,7 @@ A good online store lives or dies on the basics: can people find a product, trus
 
 ## Checkout and inventory
 
-The core flow had to be effortless: search a product, add it to the cart, check out securely. I integrated **payment gateways** including PayPal and card processing, and locked down the common vulnerabilities along the way. I also wired in **inventory management** so the client could track stock in real time and avoid selling something that wasn't there.
+The core flow had to be effortless: search a product, add it to the cart, check out securely. I integrated payment gateways including PayPal and card processing, and locked down the common vulnerabilities along the way. I also wired in inventory management so the client could track stock in real time and avoid selling something that wasn't there.
 
 ## Responsive by default
 

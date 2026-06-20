@@ -12,7 +12,7 @@ homePageIdx: 8
 
 ## When a client's site gets hacked
 
-Few things rattle a small business like waking up to a hacked website. A client came to me exactly there: their **WordPress site** was down, some pages were redirecting to shady destinations, and others showed garbled content or errors. Customers couldn't reach the services they needed, and every hour offline was costing the business. Here's how I got it back, and made sure it stayed up.
+Few things rattle a small business like waking up to a hacked website. A client came to me exactly there: their WordPress site was down, some pages were redirecting to shady destinations, and others showed garbled content or errors. Customers couldn't reach the services they needed, and every hour offline was costing the business. Here's how I got it back, and made sure it stayed up.
 
 > **Key Takeaways**
 >
@@ -22,7 +22,7 @@ Few things rattle a small business like waking up to a hacked website. A client 
 
 ## Step 1: Find the root cause
 
-You can't fix what you haven't diagnosed. I ran the site through several **security tools** to scan for malware, backdoors, and signs of unauthorized access. The culprit turned out to be **malicious code** injected into a handful of files, including the theme and some plugins. That gave the attackers a foothold to redirect visitors to harmful external sites.
+You can't fix what you haven't diagnosed. I ran the site through several security tools to scan for malware, backdoors, and signs of unauthorized access. The culprit turned out to be malicious code injected into a handful of files, including the theme and some plugins. That gave the attackers a foothold to redirect visitors to harmful external sites.
 
 ## Step 2: Clean up and restore
 
@@ -49,7 +49,7 @@ Before going live, I tested the lot: forms, logins, and any e-commerce functiona
 
 ## The outcome
 
-The site came back to full functionality and ended up safer than it started. The client could get on with running their business without watching over their shoulder. The biggest lesson, as ever, is that **website security** is mostly prevention: regular updates, strong passwords, and trustworthy plugins head off most of these incidents before they start.
+The site came back to full functionality and ended up safer than it started. The client could get on with running their business without watching over their shoulder. The biggest lesson, as ever, is that website security is mostly prevention: regular updates, strong passwords, and trustworthy plugins head off most of these incidents before they start.
 
 ## Wrapping up
 

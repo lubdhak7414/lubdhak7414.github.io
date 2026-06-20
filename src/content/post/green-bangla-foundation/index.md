@@ -12,7 +12,7 @@ homePageIdx: 4
 
 ## A speed-first WordPress build
 
-The Green Bangla Foundation needed a new site fast, on a tight budget, after their old one was hacked. I built it on **WordPress** using **Gutenberg Full Site Editing (FSE)** and almost no plugins, then tuned it by hand. The result scored **100 for speed, accessibility, and best practices** on Google Lighthouse, and 83 for SEO.
+The Green Bangla Foundation needed a new site fast, on a tight budget, after their old one was hacked. I built it on WordPress using Gutenberg Full Site Editing (FSE) and almost no plugins, then tuned it by hand. The result scored 100 for speed, accessibility, and best practices on Google Lighthouse, and 83 for SEO.
 
 > **Key Takeaways**
 >
@@ -32,7 +32,7 @@ Page speed is one of the few ranking factors Google has confirmed outright, so i
 
 ### Desktop PageSpeed Insights
 
-I measured both versions with **Google PageSpeed Insights**. Here's the desktop result:
+I measured both versions with Google PageSpeed Insights. Here's the desktop result:
 
 ![Page Speed Insight for Desktop](./page-speed-desktop.png)
 
@@ -48,7 +48,7 @@ The mobile build held up well too. I designed mobile-first and kept the same lea
 
 ## Why speed and responsiveness matter
 
-Fast sites rank better and keep more of the people who land on them. That's the short version. The longer version is that Google uses **mobile-first indexing**, which means it judges your site by its mobile version, not its desktop one. Get mobile wrong and you've hobbled your rankings before you've written a word of content.
+Fast sites rank better and keep more of the people who land on them. That's the short version. The longer version is that Google uses mobile-first indexing, which means it judges your site by its mobile version, not its desktop one. Get mobile wrong and you've hobbled your rankings before you've written a word of content.
 
 ![Projects Page](./projects-page.png)
 

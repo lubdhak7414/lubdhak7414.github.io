@@ -13,12 +13,12 @@ homePageIdx: 2
 ## The idea
 
 Alt+Tab is a horizontal strip on almost every desktop. But a strip wastes the one piece of
-information you always have: where the cursor *is*. **Circular Alt+Tab** lays your windows out
+information you always have: where the cursor *is*. Circular Alt+Tab lays your windows out
 as pie slices around the cursor instead, so the target is always a short flick away. Hover to
 select, click to activate, middle-click to close. It works with the keyboard, the mouse, and the
 scroll wheel.
 
-It's a KWin window-switcher plugin for KDE Plasma 6, written in **pure QML with no build step**.
+It's a KWin window-switcher plugin for KDE Plasma 6, written in pure QML with no build step.
 
 > **Key Takeaways**
 >

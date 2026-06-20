@@ -12,7 +12,7 @@ homePageIdx: 5
 
 ## A fast, content-first site built on Astro
 
-I built a site covering **Northern Ireland driving test routes**, content people search for when they're nervous about a test and want to know exactly where they'll be driving. The brief was simple: useful content, fast pages, and a clean mobile experience. I reached for **Astro**, a static site generator, and the Lighthouse scores reflected it.
+I built a site covering Northern Ireland driving test routes, content people search for when they're nervous about a test and want to know exactly where they'll be driving. The brief was simple: useful content, fast pages, and a clean mobile experience. I reached for Astro, a static site generator, and the Lighthouse scores reflected it.
 
 > **Key Takeaways**
 >
@@ -28,11 +28,11 @@ For a content site like this, a static generator is hard to beat. Astro ships ze
 
 ## How the site performed
 
-Top Lighthouse scores were the goal from day one, because **site speed** and **mobile responsiveness** feed straight into both SEO and how the site feels to use. A page that loads fast keeps the visitor who landed on it.
+Top Lighthouse scores were the goal from day one, because site speed and mobile responsiveness feed straight into both SEO and how the site feels to use. A page that loads fast keeps the visitor who landed on it.
 
 ### Desktop PageSpeed Insights
 
-I tested both versions with **Google PageSpeed Insights**. The desktop build scored a perfect 100 for speed.
+I tested both versions with Google PageSpeed Insights. The desktop build scored a perfect 100 for speed.
 
 ![Page Speed Insight for Desktop](./page-speed-desktop.png)
 
@@ -48,7 +48,7 @@ The mobile build scored well too. A mobile-first approach means the experience h
 
 ## Why speed and responsiveness matter
 
-Fast pages do two things at once: they keep visitors around, and they rank better. Google leans on **mobile-first indexing**, so it judges your site by its mobile version. If that's slow or awkward, your rankings suffer regardless of how good the desktop site looks.
+Fast pages do two things at once: they keep visitors around, and they rank better. Google leans on mobile-first indexing, so it judges your site by its mobile version. If that's slow or awkward, your rankings suffer regardless of how good the desktop site looks.
 
 ![Faq Page](./faq-ni-test.png)
 

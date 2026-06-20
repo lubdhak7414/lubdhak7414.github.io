@@ -13,12 +13,12 @@ homePageIdx: 1
 ## The premise
 
 Most "AI accountant" demos hand the language model a spreadsheet and let it report the
-totals. That is exactly the thing language models are worst at. **Pacioli** is built on the
+totals. That is exactly the thing language models are worst at. Pacioli is built on the
 opposite assumption. LLMs are excellent at *parsing intent* and *structuring* an instruction
 into well-formed accounting actions, and unreliable at *arithmetic* and *state mutation*, so
 the design draws that line explicitly in code.
 
-The model is confined to producing a structured, schema-validated **proposal**. Every figure in
+The model is confined to producing a structured, schema-validated proposal. Every figure in
 a report, every balance check, and every byte written to disk is computed and gated by
 deterministic Python. Nothing the model emits touches the ledger until a human approves it, and
 anything approved can be reverted in a single call. The AI is a convenience at the edge, not a
@@ -41,7 +41,7 @@ on three fronts: an empty or blocked candidate, a JSON parse error, and a shape 
 rejects any proposal that isn't a proper object. Each fails *closed* with an actionable message
 rather than leaking a half-parsed structure downstream.
 
-The most interesting part is **semantic self-correction**. The model's structured output is
+The most interesting part is semantic self-correction. The model's structured output is
 validated against a Pydantic schema, and when validation fails the exact validator error is fed
 back into the next prompt as explicit `SYSTEM FEEDBACK`:
 

@@ -22,7 +22,7 @@ As an SEO specialist and developer, my goal on this project was simple: more org
 
 ## What is SEO?
 
-**SEO**, or search engine optimization, is the work of making a site easier for search engines to find, understand, and rank. Do it well and you earn **organic traffic**, the visitors who arrive without you paying for an ad. At its core it's straightforward: help Google understand your content, and Google will show it to more people. A solid SEO strategy is often the difference between a site nobody finds and one that quietly pulls in visitors every day.
+SEO, or search engine optimization, is the work of making a site easier for search engines to find, understand, and rank. Do it well and you earn organic traffic, the visitors who arrive without you paying for an ad. At its core it's straightforward: help Google understand your content, and Google will show it to more people. A solid SEO strategy is often the difference between a site nobody finds and one that quietly pulls in visitors every day.
 
 ![SEO Growth](./seo-growth.jpg)
 by freepik
