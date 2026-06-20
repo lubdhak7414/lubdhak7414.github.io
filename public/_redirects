@@ -1,8 +1,15 @@
+# 301s for removed blog posts → the closest surviving topical tag hub (not the
+# generic /blog index, which Google can treat as a soft 404). Preserves whatever
+# link equity these previously-indexed URLs earned.
+/blog/seo-success-story/ /tags/seo/ 301
+/blog/recovered-hacked-wordpress-site/ /tags/wordpress/ 301
+/blog/responsive-blog-redesign/ /tags/web-development/ 301
+/blog/custom-ecommerce-site/ /tags/web-development/ 301
+
 # 301s for tag URLs that previously contained spaces (now slugified to hyphens).
-# Cloudflare Pages serves this file from the build output.
-/tags/custom%20development/* /tags/custom-development/:splat 301
+# Cloudflare Pages serves this file from the build output. Only the two tags still
+# used by a surviving post are kept; the others (custom-development, web-design,
+# website-recovery, website-security) pointed at tag pages that no longer build
+# after the post removals.
 /tags/page%20speed%20optimization/* /tags/page-speed-optimization/:splat 301
-/tags/web%20design/* /tags/web-design/:splat 301
 /tags/web%20development/* /tags/web-development/:splat 301
-/tags/website%20recovery/* /tags/website-recovery/:splat 301
-/tags/website%20security/* /tags/website-security/:splat 301

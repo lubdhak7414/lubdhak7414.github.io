@@ -10,7 +10,7 @@ import PostPreview from '@/components/blog/PostPreview.astro'
 import { Image } from 'astro:assets'
 import astro from '../assets/face.png'
 
-import { getAllPosts, sortMDByDate } from '@/utils'
+import { getAllPosts, sortMDByDate, personSchema, websiteSchema } from '@/utils'
 
 const languages = ['Python', 'Java', 'C++', 'Dart']
 const frontend = ['JavaScript', 'HTML', 'CSS', 'React', 'Tailwind CSS', 'Bootstrap', 'Vue.js']
@@ -34,29 +34,11 @@ const projectPosts = allPosts
 	.filter((p) => p.data.tags.includes('project'))
 	.sort((a, b) => (a.data.homePageIdx ?? Infinity) - (b.data.homePageIdx ?? Infinity))
 
-const personSchema = {
-	'@context': 'https://schema.org',
-	'@type': 'Person',
-	name: 'Safwan Usaid Lubdhak',
-	url: 'https://saf1.me',
-	email: 'mailto:hello@saf1.me',
-	jobTitle: 'Software Developer',
-	address: {
-		'@type': 'PostalAddress',
-		addressCountry: 'Bangladesh'
-	},
-	sameAs: ['https://github.com/lubdhak7414', 'https://www.linkedin.com/in/lubdhak7414/']
-}
-
-const websiteSchema = {
-	'@context': 'https://schema.org',
-	'@type': 'WebSite',
-	name: 'Safwan Usaid Lubdhak',
-	url: 'https://saf1.me'
-}
+const homeDescription =
+	'Safwan Usaid Lubdhak is a software developer and open-source contributor from Bangladesh, building KDE/Linux desktop tools, AI systems, and web applications.'
 ---
 
-<PageLayout meta={{ title: 'Home' }}>
+<PageLayout meta={{ title: 'Software Developer', description: homeDescription }}>
 	<script type='application/ld+json' set:html={JSON.stringify(personSchema)} is:inline />
 	<script type='application/ld+json' set:html={JSON.stringify(websiteSchema)} is:inline />
 	<div class='flex w-full flex-col gap-y-10'>

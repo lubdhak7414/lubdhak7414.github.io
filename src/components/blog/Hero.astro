@@ -5,6 +5,7 @@ import { Image } from 'astro:assets'
 import FormattedDate from '../FormattedDate.astro'
 import TagIcon from '../TagIcon.astro'
 import { slugifyTag } from '@/utils'
+import { siteConfig } from '@/site-config'
 
 interface Props {
 	content: CollectionEntry<'post'>
@@ -36,6 +37,7 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 {data.draft ? <span class='text-red-500'>(Draft)</span> : null}
 <div class='flex flex-wrap items-center gap-x-3 gap-y-2'>
 	<p class='text-xs'>
+		By <a href='/about/' class='font-medium hover:underline'>{siteConfig.author}</a> /{' '}
 		<FormattedDate date={data.publishDate} dateTimeOptions={dateTimeOptions} /> /{' '}
 		{remarkPluginFrontmatter.minutesRead}
 	</p>

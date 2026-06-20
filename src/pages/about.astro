@@ -1,0 +1,84 @@
+---
+import PageLayout from '../layouts/BaseLayout.astro'
+import { Image } from 'astro:assets'
+import face from '../assets/face.png'
+import { personSchema } from '@/utils'
+
+const aboutDescription =
+	'About Safwan Usaid Lubdhak — a software developer and open-source contributor from Bangladesh working on KDE/Linux desktop tools, AI systems, and web applications.'
+
+// AboutPage wrapper pointing at the canonical Person entity (shared `@id`).
+const aboutPageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'AboutPage',
+	url: 'https://saf1.me/about/',
+	mainEntity: { '@id': personSchema['@id'] }
+}
+---
+
+<PageLayout meta={{ title: 'About', description: aboutDescription }}>
+	<script type='application/ld+json' set:html={JSON.stringify(personSchema)} is:inline />
+	<script type='application/ld+json' set:html={JSON.stringify(aboutPageSchema)} is:inline />
+
+	<div class='flex w-full flex-col gap-y-10'>
+		<section class='flex flex-col items-center gap-y-6 text-center'>
+			<Image
+				src={face}
+				alt='Safwan Usaid Lubdhak'
+				class='h-28 w-auto rounded-full bg-gradient-to-r from-[#A2DFF7] via-[#E6D6B9] to-[#FF6F61] p-2'
+				loading='eager'
+			/>
+			<div class='flex flex-col items-center gap-y-3'>
+				<h1 class='text-3xl font-bold'>About Safwan Usaid Lubdhak</h1>
+				<p class='text-muted-foreground max-w-prose'>
+					Software developer and open-source contributor based in Bangladesh.
+				</p>
+			</div>
+		</section>
+
+		<section class='prose prose-base prose-zinc dark:prose-invert text-muted-foreground max-w-none'>
+			<h2>What I do</h2>
+			<p>
+				I'm Safwan Usaid Lubdhak, a software developer from Bangladesh. I build across the stack:
+				Linux desktop tooling for KDE Plasma, AI-backed systems that stay honest about what the
+				model is and isn't trusted to do, and web applications in everything from plain PHP and
+				MySQL to modern JavaScript frameworks. I care about systems that are correct by
+				construction rather than patched after the fact.
+			</p>
+
+			<h2>Open source</h2>
+			<p>
+				A lot of my work is public. I write KDE/Plasma 6 components (including a circular Alt+Tab
+				window switcher for KWin), publish small focused projects, and share what I learn through
+				the blog on this site. You can find my code on
+				<a href='https://github.com/lubdhak7414' target='_blank' rel='noopener noreferrer'
+					>GitHub</a
+				>.
+			</p>
+
+			<h2>Elsewhere &amp; contact</h2>
+			<ul>
+				<li>
+					GitHub:
+					<a href='https://github.com/lubdhak7414' target='_blank' rel='noopener noreferrer'
+						>github.com/lubdhak7414</a
+					>
+				</li>
+				<li>
+					LinkedIn:
+					<a
+						href='https://www.linkedin.com/in/lubdhak7414/'
+						target='_blank'
+						rel='noopener noreferrer'>linkedin.com/in/lubdhak7414</a
+					>
+				</li>
+				<li>Email: <a href='mailto:hello@saf1.me'>hello@saf1.me</a></li>
+			</ul>
+
+			<p>
+				Want to see what I've built? Read the <a href='/blog/'>blog</a> for project write-ups, or
+				head back to the <a href='/'>homepage</a> for the full résumé and project carousel.
+			</p>
+		</section>
+	</div>
+</PageLayout>

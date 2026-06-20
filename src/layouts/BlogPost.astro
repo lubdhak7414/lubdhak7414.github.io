@@ -6,7 +6,9 @@ import { getImage } from 'astro:assets'
 import BlogHero from '@/components/blog/Hero.astro'
 import TOC from '@/components/blog/TOC.astro'
 import BackButton from '@/components/BackButton.astro'
+import AuthorBox from '@/components/AuthorBox.astro'
 
+import { PERSON_ID } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 import PageLayout from './BaseLayout.astro'
@@ -42,11 +44,10 @@ const { headings } = await render(post)
 
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
 const ogAbsolute = socialImage ? new URL(socialImage, Astro.site).toString() : undefined
-const authorPerson = {
-	'@type': 'Person',
-	name: siteConfig.author,
-	url: 'https://saf1.me'
-}
+// Reference the canonical Person entity (defined in full on the homepage + /about)
+// by `@id` so Google consolidates the entity, but still inline `name`: the Person
+// node isn't on this page, and Google requires `name` once an author object exists.
+const authorRef = { '@id': PERSON_ID, name: siteConfig.author }
 const blogPostingSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'BlogPosting',
@@ -55,8 +56,8 @@ const blogPostingSchema = {
 	datePublished: publishIso,
 	dateModified: modifiedIso ?? publishIso,
 	...(ogAbsolute && { image: ogAbsolute }),
-	author: authorPerson,
-	publisher: authorPerson,
+	author: authorRef,
+	publisher: authorRef,
 	mainEntityOfPage: {
 		'@type': 'WebPage',
 		'@id': postUrl
@@ -87,6 +88,7 @@ const blogPostingSchema = {
 				>
 					<slot />
 				</div>
+				<AuthorBox />
 			</article>
 		</div>
 		<button
