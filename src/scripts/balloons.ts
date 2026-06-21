@@ -4,7 +4,7 @@
  * Vendored from balloons-js v0.0.3 by Artur Bień (https://github.com/arturbien/balloons-js),
  * MIT licensed. Only the `balloons()` swarm is kept; the original `textBalloons()` helper and
  * its ~36KB embedded base64 font are intentionally omitted. Rewritten as typed, readable
- * TypeScript — behaviour is unchanged.
+ * TypeScript - behaviour is unchanged.
  *
  * Renders inline SVG balloon elements appended to <html>, animated via the Web Animations API.
  * No dependencies, no network assets, no audio. The container is removed once every balloon
@@ -316,7 +316,7 @@ export function balloons(): Promise<void> {
 		const balloonWidth = (BALLOON_DEFAULT_SIZE.width / BALLOON_DEFAULT_SIZE.height) * balloonHeight
 		const amount = Math.max(7, Math.round(window.innerWidth / (balloonWidth / 2)))
 		// Make max distance depend on the number of balloons and their size for a realistic
-		// effect — we don't want them too separated or too squeezed together
+		// effect - we don't want them too separated or too squeezed together
 		const maxDist = Math.max((amount * balloonWidth) / 2, (balloonWidth / 2) * 10)
 
 		let balloonPositions: BalloonPosition[] = []

@@ -5,8 +5,8 @@ export const siteConfig: SiteConfig = {
 	author: 'Safwan Usaid Lubdhak',
 	url: 'https://saf1.me',
 	title: 'Safwan Usaid Lubdhak',
-	description: 'Software engineer — resume, projects, and blog',
-	bio: 'Software developer and open-source contributor from Bangladesh, building KDE/Linux desktop tools, AI systems, and web applications.',
+	description: 'Software engineer - resume, projects, and blog',
+	bio: 'Recent CS graduate from Bangladesh, trying my hand at software development. Currently focusing on web apps, DevOps, and AI systems, while occasionally tinkering with open-source Linux tools.',
 	socials: {
 		github: 'https://github.com/lubdhak7414',
 		linkedin: 'https://www.linkedin.com/in/lubdhak7414/',

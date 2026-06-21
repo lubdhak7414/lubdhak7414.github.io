@@ -10,7 +10,7 @@ interface Props {
 
 const { headings } = Astro.props
 
-// generateToc keeps only top-level (h2) sections — h3+ sub-items bloat the sidebar.
+// generateToc keeps only top-level (h2) sections - h3+ sub-items bloat the sidebar.
 // A post may have headings yet no h2 (e.g. only h3s); render nothing rather than
 // an empty "TABLE OF CONTENTS" shell.
 const toc = generateToc(headings)
@@ -80,7 +80,7 @@ const toc = generateToc(headings)
 		headings.forEach((h) => observer.observe(h))
 	}
 
-	// This project has no ClientRouter, so `astro:page-load` never fires — init
+	// This project has no ClientRouter, so `astro:page-load` never fires - init
 	// directly (Astro defers the script, so the DOM is usually ready). The guard
 	// above keeps it idempotent; the page-load listener future-proofs for view
 	// transitions if they're ever enabled.

@@ -1,5 +1,5 @@
 ---
-title: 'Pacioli — An AI Ledger That Never Trusts the AI With Math'
+title: 'Pacioli - An AI Ledger That Never Trusts the AI With Math'
 description: 'A deterministic double-entry bookkeeping engine where the LLM only proposes; every number and every write is computed and gated by Python.'
 publishDate: '13 June 2026'
 updatedDate: '13 June 2026'
@@ -46,7 +46,7 @@ validated against a Pydantic schema, and when validation fails the exact validat
 back into the next prompt as explicit `SYSTEM FEEDBACK`:
 
 ```text
-[SYSTEM FEEDBACK — fix these validation errors and retry:]
+[SYSTEM FEEDBACK - fix these validation errors and retry:]
 write_cell requires cell_ref and new_value
 Remember: debits must equal credits.
 ```

@@ -1,6 +1,6 @@
 import { siteConfig } from '@/site-config'
 
-// Canonical site origin — single source of truth lives in site.config.ts (and is
+// Canonical site origin - single source of truth lives in site.config.ts (and is
 // also used as `site` in astro.config.mjs), so a domain change updates the `@id`,
 // canonical URLs, and entity consolidation in one place.
 const ORIGIN = siteConfig.url

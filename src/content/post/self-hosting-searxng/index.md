@@ -33,10 +33,8 @@ reverse proxy is ever exposed to the host.
 
 The stack is three containers wired together by Docker Compose:
 
-- **Caddy** (`caddy:alpine`) is the reverse proxy. It is the _only_ service bound
-  to the host, on port 80.
-- **core** (`searxng/searxng`) is SearXNG itself, listening on 8080 on the
-  internal Docker network only. The host never talks to it directly.
+- **Caddy** (`caddy:alpine`) is the reverse proxy. The _only_ service bound to the host, on port 80.
+- **core** (`searxng/searxng`) is SearXNG itself, listening on 8080 on the internal Docker network only. The host never touches it directly.
 - **valkey** (`valkey:9-alpine`) is the Redis-compatible cache SearXNG uses. Also
   internal-only.
 
@@ -154,19 +152,14 @@ valkey:
 
 Why each of those:
 
-- **`limiter: false` and `public_instance: false`**: the bot limiter exists to
-  protect _public_ instances from abuse. On a single-user box it just gets in
-  your own way.
-- **`formats: [html]`**: the JSON API stays off (it returns 403). Add `- json`
-  only if you actually need programmatic access; an open API on a search proxy is
-  not something to leave on by default.
+- **`limiter: false` and `public_instance: false`**: the bot limiter protects public instances from abuse. On a single-user box it just gets in your way.
+- **`formats: [html]`**: the JSON API stays off (it returns 403). Only add `- json` if you need programmatic access. An open API on a search proxy is a liability by default.
 - **`favicon_resolver: duckduckgo`**: avoids leaking favicon lookups to Google.
 - **`method: GET`**: nicer UX (back button, drag-a-result-to-a-tab). Switch to
   `POST` if you would rather queries never appear in browser history.
-- **`query_in_title: false`**: same idea, keeps the query out of the tab title.
+- **`query_in_title: false`**: same logic, keeps queries out of the tab title.
 
-One more small file so the favicon cache survives reboots (the default path lives
-in `/tmp`, which gets wiped):
+One more config to keep the favicon cache across reboots (the default path lives in `/tmp` and gets wiped):
 
 ```toml
 # core-config/favicons.toml
@@ -183,7 +176,7 @@ max_age = 5184000               # 60 days client-side cache
 
 ## The reverse proxy
 
-The Caddyfile is almost insultingly short, because Caddy is good:
+The Caddyfile is short. Caddy does the heavy lifting:
 
 ```
 http://search.local {
@@ -275,8 +268,7 @@ A `200` through Caddy means the proxy, core, and cache are all talking.
 
 ## Log lines that look scary but are not
 
-The startup logs include a few warnings that had me reaching for a fix before I
-realized they are all expected:
+The startup logs include a few warnings that look scary but aren't:
 
 | Message                                                      | What it means                                              |
 | ------------------------------------------------------------ | ---------------------------------------------------------- |
@@ -335,5 +327,4 @@ docker compose down -v    # also drop the volumes (destructive)
 sudo sed -i '/127.0.0.1   search.local/d' /etc/hosts
 ```
 
-That is the whole thing: three containers, one proxy, one secret, and a search
-box that answers to nobody but me.
+That's it: three containers, one proxy, one secret, and a search box that answers only to me.

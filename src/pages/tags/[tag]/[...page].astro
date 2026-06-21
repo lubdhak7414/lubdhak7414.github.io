@@ -13,7 +13,7 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 	const allPostsByDate = sortMDByDate(allPosts)
 	const uniqueTags = getUniqueTags(allPostsByDate)
 
-	// Fail loudly if two distinct tags slugify to the same value — otherwise
+	// Fail loudly if two distinct tags slugify to the same value - otherwise
 	// `paginate` would emit duplicate static paths and the build crashes with an
 	// opaque error. A named tag pair is far easier to act on.
 	const slugOwner = new Map<string, string>()

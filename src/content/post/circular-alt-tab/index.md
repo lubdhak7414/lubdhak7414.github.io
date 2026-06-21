@@ -1,6 +1,6 @@
 ---
 title: 'A Circular Alt+Tab Switcher for KDE Plasma 6'
-description: 'A KWin window switcher that arranges windows as pie slices around the cursor — live thumbnails, multi-ring layout, and full theme integration in pure QML.'
+description: 'A KWin window switcher that arranges windows as pie slices around the cursor - live thumbnails, multi-ring layout, and full theme integration in pure QML.'
 publishDate: '17 June 2026'
 updatedDate: '17 June 2026'
 coverImage:

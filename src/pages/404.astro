@@ -11,18 +11,21 @@ const meta = {
 // Default excuse is rendered server-side so the page still makes sense with JS
 // disabled; the inline script randomizes it on load and on every roll.
 const excuses = [
-	"It's not a bug, it's an undocumented feature.",
+	'Works on my machine. ¯\\_(ツ)_/¯',
+	"We reached our cloud provider's free tier limit.",
+	'Waiting for node_modules to finish downloading.',
+	"Blame the cache. Or CORS. Let's just blame CORS.",
+	'We migrated to microservices and lost track of this one.',
+	'It was collateral damage in a brutal git rebase.',
+	'Accidentally added to .gitignore. It belongs to the void now.',
+	"Turns out you can't just npm install a functioning webpage.",
+	'This is a side project. You expected a finished page?',
+	"We migrated to a new framework and this didn't survive the trip.",
+	'This page was a casualty of a late-night refactor.',
 	'A rogue semicolon wandered off and took this page with it.',
 	'This page is still on a feature branch that never got merged.',
-	"My cat walked across the keyboard and `rm -rf`'d it.",
-	'404: page successfully deployed to a parallel universe.',
-	'Works on my machine. ¯\\_(ツ)_/¯',
-	'Someone force-pushed to main again.',
-	'This page got lost in a three-way merge conflict.',
 	'A `return` fired one line too early. Classic.',
-	"It's not down, it's just buffering since 2019.",
-	"Blame the cache. It's always the cache.",
-	'This route only exists in the design mockup.'
+	"Blame the cache. It's always the cache."
 ]
 ---
 
@@ -54,7 +57,7 @@ const excuses = [
 				<span class='h-3 w-3 rounded-full bg-[#ff5f57]'></span>
 				<span class='h-3 w-3 rounded-full bg-[#febc2e]'></span>
 				<span class='h-3 w-3 rounded-full bg-[#28c840]'></span>
-				<span class='text-muted-foreground ml-2 font-mono text-xs'>bash — why-this-happened</span>
+				<span class='text-muted-foreground ml-2 font-mono text-xs'>bash - why-this-happened</span>
 			</div>
 			<div class='px-4 py-4 font-mono text-sm leading-relaxed sm:text-base'>
 				<p class='text-muted-foreground'>

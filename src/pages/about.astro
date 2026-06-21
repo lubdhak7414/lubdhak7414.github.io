@@ -6,7 +6,7 @@ import { personSchema } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 const aboutDescription =
-	'About Safwan Usaid Lubdhak — a software developer and open-source contributor from Bangladesh working on KDE/Linux desktop tools, AI systems, and web applications.'
+	'About Safwan Usaid Lubdhak - CS graduate from Bangladesh working on web apps, DevOps, and AI systems.'
 
 // AboutPage wrapper pointing at the canonical Person entity (shared `@id`).
 const aboutPageSchema = {
@@ -32,7 +32,7 @@ const aboutPageSchema = {
 			<div class='flex flex-col items-center gap-y-3'>
 				<h1 class='text-3xl font-bold'>About Safwan Usaid Lubdhak</h1>
 				<p class='text-muted-foreground max-w-prose'>
-					Software developer and open-source contributor based in Bangladesh.
+					CS graduate from Bangladesh. Web apps, DevOps, AI, and the occasional Linux tool.
 				</p>
 			</div>
 		</section>
@@ -40,18 +40,15 @@ const aboutPageSchema = {
 		<section class='prose prose-base prose-zinc dark:prose-invert text-muted-foreground max-w-none'>
 			<h2>What I do</h2>
 			<p>
-				I'm Safwan Usaid Lubdhak, a software developer from Bangladesh. I build across the stack:
-				Linux desktop tooling for KDE Plasma, AI-backed systems that stay honest about what the
-				model is and isn't trusted to do, and web applications in everything from plain PHP and
-				MySQL to modern JavaScript frameworks. I care about systems that are correct by construction
-				rather than patched after the fact.
+				I'm Safwan - CS graduate from Bangladesh. I work on web applications, DevOps and cloud
+				infrastructure, and AI systems. I also build open-source Linux tools - things like a
+				circular Alt+Tab switcher for KDE Plasma and a self-hosted search setup.
 			</p>
 
 			<h2>Open source</h2>
 			<p>
-				A lot of my work is public. I write KDE/Plasma 6 components (including a circular Alt+Tab
-				window switcher for KWin), publish small focused projects, and share what I learn through
-				the blog on this site. You can find my code on
+				Most of my projects are public. I write about what I'm working on in the blog here, and the
+				source is on
 				<a href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'>GitHub</a>.
 			</p>
 
@@ -76,7 +73,7 @@ const aboutPageSchema = {
 
 			<p>
 				Want to see what I've built? Read the <a href='/blog/'>blog</a> for project write-ups, or head
-				back to the <a href='/'>homepage</a> for the full résumé and project carousel.
+				back to the <a href='/'>homepage</a> for the full résumé.
 			</p>
 		</section>
 	</div>

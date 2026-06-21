@@ -1,7 +1,7 @@
 export type SiteConfig = {
 	author: string
 	// Canonical site origin (no trailing slash). Single source of truth for the
-	// origin — also used as `site` in astro.config.mjs and as the base for schema.
+	// origin - also used as `site` in astro.config.mjs and as the base for schema.
 	url: string
 	title: string
 	description: string
