@@ -2,7 +2,10 @@
 
 ---
 
-<header class='mb-12 flex w-full flex-wrap pb-3 text-sm sm:flex-nowrap sm:justify-start'>
+<header
+	id='site-header'
+	class='sticky top-0 z-40 mb-12 flex w-full flex-wrap pt-3 pb-3 text-sm transition-all duration-300 motion-reduce:transition-none sm:flex-nowrap sm:justify-start'
+>
 	<nav
 		class='relative mx-auto flex w-full items-center justify-between sm:flex sm:items-center'
 		aria-label='global'
@@ -135,6 +138,15 @@
 				animation: none;
 			}
 		}
+
+		/* Transparent at the top of the page; gains a translucent blurred sheet
+		   only once scrolled, so it never masks page content (e.g. the 404 glow). */
+		#site-header.is-scrolled {
+			background-color: hsl(var(--background) / 0.85);
+			backdrop-filter: blur(8px);
+			-webkit-backdrop-filter: blur(8px);
+			border-bottom: 1px solid hsl(var(--border));
+		}
 	</style>
 
 	<script>
@@ -180,6 +192,52 @@
 					index++ * (interval / 3)
 				)
 			}
+		}
+
+		// Hide the sticky header when scrolling down, reveal it on the slightest
+		// scroll up, so the nav is reachable without scrolling back to the top.
+		const siteHeader = document.getElementById('site-header')
+		if (siteHeader) {
+			let lastScrollY = window.scrollY
+			let ticking = false
+			const DELTA = 6 // ignore sub-pixel / jitter scrolls
+			const TOP_THRESHOLD = 80 // always show near the top of the page
+
+			const updateHeader = () => {
+				const currentY = window.scrollY
+				// Opaque/blurred background only once scrolled past the top.
+				siteHeader.classList.toggle('is-scrolled', currentY > TOP_THRESHOLD)
+				if (Math.abs(currentY - lastScrollY) > DELTA) {
+					const scrollingDown = currentY > lastScrollY
+					if (scrollingDown && currentY > TOP_THRESHOLD) {
+						siteHeader.classList.add('-translate-y-full')
+					} else {
+						siteHeader.classList.remove('-translate-y-full')
+					}
+					lastScrollY = currentY
+				}
+				ticking = false
+			}
+
+			window.addEventListener(
+				'scroll',
+				() => {
+					if (!ticking) {
+						window.requestAnimationFrame(updateHeader)
+						ticking = true
+					}
+				},
+				{ passive: true }
+			)
+
+			// Keep the header reachable for keyboard users: reveal it if a nav
+			// element inside it gains focus while hidden.
+			siteHeader.addEventListener('focusin', () => {
+				siteHeader.classList.remove('-translate-y-full')
+			})
+
+			// Set the correct background state on load (e.g. reloaded mid-page).
+			updateHeader()
 		}
 	</script>
 </header>
