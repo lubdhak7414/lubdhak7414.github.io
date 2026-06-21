@@ -11,22 +11,22 @@
  * finishes its flight, and `balloons()` resolves at that point.
  */
 
-const BALLOON_COLOR_PROP = '--balloon-color';
-const LIGHT_COLOR_PROP = '--light-color';
-const WIDTH_PROP = '--balloon-width';
-const HEIGHT_PROP = '--balloon-height';
+const BALLOON_COLOR_PROP = '--balloon-color'
+const LIGHT_COLOR_PROP = '--light-color'
+const WIDTH_PROP = '--balloon-width'
+const HEIGHT_PROP = '--balloon-height'
 
-const DEFAULT_BALLOON_COLOR = '#84A332';
-const DEFAULT_LIGHT_COLOR = '#C0F381';
+const DEFAULT_BALLOON_COLOR = '#84A332'
+const DEFAULT_LIGHT_COLOR = '#C0F381'
 
-const BALLOON_DEFAULT_SIZE = { width: 233, height: 609 };
+const BALLOON_DEFAULT_SIZE = { width: 233, height: 609 }
 
 const EASINGS = [
 	// easeOutQuint
 	'cubic-bezier(0.22, 1, 0.36, 1)',
 	// easeOutCubic
 	'cubic-bezier(0.33, 1, 0.68, 1)'
-];
+]
 
 const COLOR_PAIRS: ReadonlyArray<readonly [light: string, balloon: string]> = [
 	// yellow
@@ -39,7 +39,7 @@ const COLOR_PAIRS: ReadonlyArray<readonly [light: string, balloon: string]> = [
 	['#b0cb47ee', '#3d954bff'],
 	// purple
 	['#cf85b8ee', '#a3509dff']
-];
+]
 
 const balloonSvgHTML = `
 <svg
@@ -122,7 +122,7 @@ xmlns="http://www.w3.org/2000/svg"
   </g>
 </g>
 </svg>
-`;
+`
 
 const svgFiltersHtml = `
 <svg>
@@ -207,19 +207,19 @@ const svgFiltersHtml = `
     </radialGradient>
   </defs>
 </svg>
-`;
+`
 
 function createBalloonElement({
 	balloonColor,
 	lightColor,
 	width
 }: {
-	balloonColor: string;
-	lightColor: string;
-	width: number;
+	balloonColor: string
+	lightColor: string
+	width: number
 }): HTMLElement {
-	const balloon = document.createElement('balloon');
-	balloon.innerHTML = balloonSvgHTML;
+	const balloon = document.createElement('balloon')
+	balloon.innerHTML = balloonSvgHTML
 	Object.assign(balloon.style, {
 		position: 'absolute',
 		overflow: 'hidden',
@@ -234,21 +234,21 @@ function createBalloonElement({
 		contain: 'style, layout, paint',
 		transformOrigin: `${width / 2}px ${width / 2}px`,
 		willChange: 'transform' // Improves rendering performance in Safari
-	});
-	balloon.style.setProperty(BALLOON_COLOR_PROP, balloonColor);
-	balloon.style.setProperty(LIGHT_COLOR_PROP, lightColor);
-	balloon.style.setProperty(WIDTH_PROP, `${width}px`);
-	balloon.style.setProperty(HEIGHT_PROP, `${(width * 609) / 223}px`);
-	return balloon;
+	})
+	balloon.style.setProperty(BALLOON_COLOR_PROP, balloonColor)
+	balloon.style.setProperty(LIGHT_COLOR_PROP, lightColor)
+	balloon.style.setProperty(WIDTH_PROP, `${width}px`)
+	balloon.style.setProperty(HEIGHT_PROP, `${(width * 609) / 223}px`)
+	return balloon
 }
 
 interface BalloonPosition {
-	x: number;
-	y: number;
-	z: number;
-	targetX: number;
-	targetY: number;
-	targetZ: number;
+	x: number
+	y: number
+	z: number
+	targetX: number
+	targetY: number
+	targetZ: number
 }
 
 function createBalloonAnimation({
@@ -261,12 +261,12 @@ function createBalloonAnimation({
 	targetZ,
 	zIndex
 }: BalloonPosition & { balloon: HTMLElement; zIndex: number }) {
-	balloon.style.zIndex = zIndex.toString();
+	balloon.style.zIndex = zIndex.toString()
 	// Add blur to the closest balloons for a bokeh effect
-	balloon.style.filter = `blur(${zIndex > 7 ? 8 : 0}px)`;
+	balloon.style.filter = `blur(${zIndex > 7 ? 8 : 0}px)`
 	const getAnimation = () => {
-		const tiltAngle = Math.random() * (15 - 8) + 8; // between 8 and 15 degrees
-		const tiltDirection = Math.random() < 0.5 ? 1 : -1;
+		const tiltAngle = Math.random() * (15 - 8) + 8 // between 8 and 15 degrees
+		const tiltDirection = Math.random() < 0.5 ? 1 : -1
 		return balloon.animate(
 			[
 				{
@@ -288,15 +288,15 @@ function createBalloonAnimation({
 				easing: EASINGS[Math.floor(Math.random() * EASINGS.length)],
 				delay: zIndex * 200
 			}
-		);
-	};
-	return { balloon, getAnimation };
+		)
+	}
+	return { balloon, getAnimation }
 }
 
 /** Release a swarm of balloons that float up and off the top of the screen. */
 export function balloons(): Promise<void> {
 	return new Promise((resolve) => {
-		const balloonsContainer = document.createElement('balloons');
+		const balloonsContainer = document.createElement('balloons')
 		Object.assign(balloonsContainer.style, {
 			overflow: 'hidden',
 			position: 'fixed',
@@ -307,69 +307,69 @@ export function balloons(): Promise<void> {
 			perspective: '1500px',
 			perspectiveOrigin: '50vw 100vh',
 			contain: 'style, layout, paint'
-		});
-		document.documentElement.appendChild(balloonsContainer);
+		})
+		document.documentElement.appendChild(balloonsContainer)
 
-		const sceneSize = { width: window.innerWidth, height: window.innerHeight };
+		const sceneSize = { width: window.innerWidth, height: window.innerHeight }
 		// Make balloon height relative to screen size for a nice bokeh/perspective effect
-		const balloonHeight = Math.floor(Math.min(sceneSize.width, sceneSize.height));
-		const balloonWidth = (BALLOON_DEFAULT_SIZE.width / BALLOON_DEFAULT_SIZE.height) * balloonHeight;
-		const amount = Math.max(7, Math.round(window.innerWidth / (balloonWidth / 2)));
+		const balloonHeight = Math.floor(Math.min(sceneSize.width, sceneSize.height))
+		const balloonWidth = (BALLOON_DEFAULT_SIZE.width / BALLOON_DEFAULT_SIZE.height) * balloonHeight
+		const amount = Math.max(7, Math.round(window.innerWidth / (balloonWidth / 2)))
 		// Make max distance depend on the number of balloons and their size for a realistic
 		// effect — we don't want them too separated or too squeezed together
-		const maxDist = Math.max((amount * balloonWidth) / 2, (balloonWidth / 2) * 10);
+		const maxDist = Math.max((amount * balloonWidth) / 2, (balloonWidth / 2) * 10)
 
-		let balloonPositions: BalloonPosition[] = [];
+		let balloonPositions: BalloonPosition[] = []
 		for (let i = 0; i < amount; i++) {
-			const x = Math.round(sceneSize.width * Math.random());
+			const x = Math.round(sceneSize.width * Math.random())
 			// Make sure balloons first render below the bottom of the screen
-			const y = window.innerHeight;
-			const z = Math.round(-1 * (Math.random() * maxDist));
+			const y = window.innerHeight
+			const z = Math.round(-1 * (Math.random() * maxDist))
 			const targetX = Math.round(
 				x + Math.random() * balloonWidth * 6 * (Math.random() > 0.5 ? 1 : -1)
-			);
-			const targetY = -window.innerHeight;
+			)
+			const targetY = -window.innerHeight
 			// Balloons don't move in the Z direction
-			const targetZ = z;
-			balloonPositions.push({ x, y, z, targetX, targetY, targetZ });
+			const targetZ = z
+			balloonPositions.push({ x, y, z, targetX, targetY, targetZ })
 		}
 
-		balloonPositions = balloonPositions.sort((a, b) => a.z - b.z);
-		const closestBalloonPosition = balloonPositions[balloonPositions.length - 1];
+		balloonPositions = balloonPositions.sort((a, b) => a.z - b.z)
+		const closestBalloonPosition = balloonPositions[balloonPositions.length - 1]
 		balloonPositions = balloonPositions.map((pos) => ({
 			...pos,
 			z: pos.z - closestBalloonPosition.z,
 			targetZ: pos.z - closestBalloonPosition.z
-		}));
+		}))
 
-		const filtersElement = document.createElement('div');
-		filtersElement.innerHTML = svgFiltersHtml;
-		balloonsContainer.appendChild(filtersElement);
+		const filtersElement = document.createElement('div')
+		filtersElement.innerHTML = svgFiltersHtml
+		balloonsContainer.appendChild(filtersElement)
 
-		let currentZIndex = 1;
+		let currentZIndex = 1
 		const animations = balloonPositions.map((pos, index) => {
-			const colorPair = COLOR_PAIRS[index % COLOR_PAIRS.length];
+			const colorPair = COLOR_PAIRS[index % COLOR_PAIRS.length]
 			const balloon = createBalloonElement({
 				balloonColor: colorPair[1],
 				lightColor: colorPair[0],
 				width: balloonWidth
-			});
-			balloonsContainer.appendChild(balloon);
-			return createBalloonAnimation({ balloon, ...pos, zIndex: currentZIndex++ });
-		});
+			})
+			balloonsContainer.appendChild(balloon)
+			return createBalloonAnimation({ balloon, ...pos, zIndex: currentZIndex++ })
+		})
 
 		// Wait a frame for the balloons to prerender
 		requestAnimationFrame(() => {
 			const animationPromises = animations.map(({ balloon, getAnimation }) => {
-				const animation = getAnimation();
+				const animation = getAnimation()
 				return animation.finished.then(() => {
-					balloon.remove();
-				});
-			});
+					balloon.remove()
+				})
+			})
 			Promise.all(animationPromises).then(() => {
-				balloonsContainer.remove();
-				resolve();
-			});
-		});
-	});
+				balloonsContainer.remove()
+				resolve()
+			})
+		})
+	})
 }
