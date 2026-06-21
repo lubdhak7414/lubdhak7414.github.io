@@ -6,7 +6,7 @@
 
 <button
 	aria-label='Release a swarm of balloons'
-	class='balloon-teaser group fixed start-4 bottom-8 z-90 hidden h-14 w-14 cursor-pointer items-center justify-center rounded-full opacity-0 transition-all duration-500 data-[show=true]:flex data-[show=true]:opacity-100 sm:start-8 sm:h-16 sm:w-16'
+	class='balloon-teaser group fixed z-90 hidden h-14 w-14 cursor-pointer items-center justify-center rounded-full opacity-0 transition-all duration-500 data-[show=true]:flex data-[show=true]:opacity-100 sm:h-16 sm:w-16'
 	data-show='false'
 	id='balloon-teaser'
 	type='button'
@@ -59,7 +59,7 @@
 	import { balloons } from '@/scripts/balloons'
 
 	// Chance the teaser appears on any given blog-post visit. Keep it rare so it stays a treat.
-	const SHOW_CHANCE = 0.45
+	const SHOW_CHANCE = 1
 	// Random delay before it drifts in (ms), so it doesn't pop the instant the page loads.
 	const MIN_DELAY = 3000
 	const MAX_DELAY = 9000
@@ -68,13 +68,32 @@
 	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 	if (teaser && !prefersReducedMotion && Math.random() < SHOW_CHANCE) {
+		// Place the teaser at a random spot in the middle 80% of the viewport (avoids corners).
+		const style = getComputedStyle(teaser)
+		const size = parseFloat(style.width) || 56
+		const margin = 0.1 // 10% inset from each edge
+		const x =
+			margin * window.innerWidth + Math.random() * (window.innerWidth * (1 - 2 * margin) - size)
+		const y =
+			margin * window.innerHeight + Math.random() * (window.innerHeight * (1 - 2 * margin) - size)
+		teaser.style.left = `${x}px`
+		teaser.style.top = `${y}px`
+
+		const AUTO_HIDE_MS = 8000
 		const delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY)
+		let hideTimer: number
+
 		const timer = window.setTimeout(() => {
 			teaser.dataset.show = 'true'
+			hideTimer = window.setTimeout(() => {
+				teaser.dataset.show = 'false'
+				teaser.disabled = true
+			}, AUTO_HIDE_MS)
 		}, delay)
 
 		teaser.addEventListener('click', () => {
 			window.clearTimeout(timer)
+			window.clearTimeout(hideTimer)
 			// Hide the teaser, then let the swarm loose.
 			teaser.dataset.show = 'false'
 			teaser.disabled = true
