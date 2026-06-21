@@ -120,7 +120,7 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 			projectPosts.length > 0 && (
 				<Section title='Projects'>
 					<ProjectCarousel>
-						{projectPosts.map((post) => (
+						{projectPosts.map((post, i) => (
 							<a href={`/blog/${post.id}/`} class='w-[85%] flex-shrink-0 sm:w-[calc(50%-0.5rem)]'>
 								<div class='border-border bg-primary-foreground hover:border-foreground/25 flex h-full flex-col rounded-2xl border transition-all hover:shadow-xs'>
 									{post.data.coverImage && (
@@ -128,9 +128,11 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 											src={post.data.coverImage.src}
 											alt={post.data.coverImage.alt}
 											class='h-48 w-full rounded-t-2xl object-cover'
-											width={640}
-											height={384}
-											loading='lazy'
+											width={384}
+											height={230}
+											densities={[1, 2]}
+											loading={i === 0 ? 'eager' : 'lazy'}
+											fetchpriority={i === 0 ? 'high' : undefined}
 										/>
 									)}
 									<div class='flex flex-grow flex-col gap-y-0.5 px-5 py-4'>
