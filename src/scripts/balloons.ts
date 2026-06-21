@@ -231,7 +231,7 @@ function createBalloonElement({
 		backfaceVisibility: 'hidden',
 		opacity: '0.001',
 		transform: 'translate(calc(-100% + 1px), calc(-100% + 1px))',
-		contain: 'style, layout, paint',
+		contain: 'style layout paint',
 		transformOrigin: `${width / 2}px ${width / 2}px`,
 		willChange: 'transform' // Improves rendering performance in Safari
 	})
@@ -306,7 +306,7 @@ export function balloons(): Promise<void> {
 			pointerEvents: 'none',
 			perspective: '1500px',
 			perspectiveOrigin: '50vw 100vh',
-			contain: 'style, layout, paint'
+			contain: 'style layout paint'
 		})
 		document.documentElement.appendChild(balloonsContainer)
 
