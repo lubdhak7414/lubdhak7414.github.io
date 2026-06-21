@@ -11,5 +11,10 @@
 # used by a surviving post are kept; the others (custom-development, web-design,
 # website-recovery, website-security) pointed at tag pages that no longer build
 # after the post removals.
+# The bare index URL (no trailing path) is the most-linked form, so it gets an
+# explicit exact rule — the splat below only reliably covers the paginated
+# children (/2/, /3/, …). Exact rules are listed first so they win.
+/tags/page%20speed%20optimization/ /tags/page-speed-optimization/ 301
+/tags/web%20development/ /tags/web-development/ 301
 /tags/page%20speed%20optimization/* /tags/page-speed-optimization/:splat 301
 /tags/web%20development/* /tags/web-development/:splat 301

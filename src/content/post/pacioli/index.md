@@ -4,7 +4,7 @@ description: 'A deterministic double-entry bookkeeping engine where the LLM only
 publishDate: '13 June 2026'
 updatedDate: '13 June 2026'
 coverImage:
-  src: './cover.png'
+  src: './cover.webp'
   alt: 'Pacioli proposal-review dashboard'
 tags: ['Python', 'FastAPI', 'LLM', 'System Design', 'Project']
 homePageIdx: 1
@@ -14,8 +14,8 @@ homePageIdx: 1
 
 Most "AI accountant" demos hand the language model a spreadsheet and let it report the
 totals. That is exactly the thing language models are worst at. Pacioli is built on the
-opposite assumption. LLMs are excellent at *parsing intent* and *structuring* an instruction
-into well-formed accounting actions, and unreliable at *arithmetic* and *state mutation*, so
+opposite assumption. LLMs are excellent at _parsing intent_ and _structuring_ an instruction
+into well-formed accounting actions, and unreliable at _arithmetic_ and _state mutation_, so
 the design draws that line explicitly in code.
 
 The model is confined to producing a structured, schema-validated proposal. Every figure in
@@ -38,7 +38,7 @@ Every Gemini call runs inside `asyncio.wait_for` with a hard timeout, off the ev
 `asyncio.to_thread`. A retry helper classifies failures. Timeouts and transient `429`/`5xx`
 errors back off and retry; auth and bad-request errors fail fast. The response is then guarded
 on three fronts: an empty or blocked candidate, a JSON parse error, and a shape check that
-rejects any proposal that isn't a proper object. Each fails *closed* with an actionable message
+rejects any proposal that isn't a proper object. Each fails _closed_ with an actionable message
 rather than leaking a half-parsed structure downstream.
 
 The most interesting part is semantic self-correction. The model's structured output is
@@ -52,7 +52,7 @@ Remember: debits must equal credits.
 ```
 
 The model repairs its own output, up to a retry cap. That turns the LLM's most common failure
-mode, *almost*-valid JSON, from a hard error into a recoverable round-trip.
+mode, _almost_-valid JSON, from a hard error into a recoverable round-trip.
 
 ### 2. Deterministic math
 
@@ -78,8 +78,8 @@ single token of intent: "show me the balance sheet." The numbers are Python's.
 
 ### 4. One-click undo
 
-Every execution captures a full, byte-exact snapshot of the ledger, taken *inside the same file
-lock* that guards the write, so the captured bytes are always a consistent pre-execution state.
+Every execution captures a full, byte-exact snapshot of the ledger, taken _inside the same file
+lock_ that guards the write, so the captured bytes are always a consistent pre-execution state.
 The snapshot is stored as a BLOB keyed to the proposal. Because it's the entire file rather than
 a computed diff, restoration is total and lossless: one `POST` rolls the ledger back to exactly
 where it was.

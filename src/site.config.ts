@@ -3,8 +3,15 @@ import type { AstroExpressiveCodeOptions } from 'astro-expressive-code'
 
 export const siteConfig: SiteConfig = {
 	author: 'Safwan Usaid Lubdhak',
+	url: 'https://saf1.me',
 	title: 'Safwan Usaid Lubdhak',
 	description: 'Software engineer — resume, projects, and blog',
+	bio: 'Software developer and open-source contributor from Bangladesh, building KDE/Linux desktop tools, AI systems, and web applications.',
+	socials: {
+		github: 'https://github.com/lubdhak7414',
+		linkedin: 'https://www.linkedin.com/in/lubdhak7414/',
+		email: 'hello@saf1.me'
+	},
 	// HTML lang attribute, applied in src/layouts/BaseLayout.astro
 	lang: 'en-GB',
 	// og:locale meta, emitted in src/components/BaseHead.astro

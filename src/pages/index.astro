@@ -11,6 +11,7 @@ import { Image } from 'astro:assets'
 import astro from '../assets/face.png'
 
 import { getAllPosts, sortMDByDate, personSchema, websiteSchema } from '@/utils'
+import { siteConfig } from '@/site-config'
 
 const languages = ['Python', 'Java', 'C++', 'Dart']
 const frontend = ['JavaScript', 'HTML', 'CSS', 'React', 'Tailwind CSS', 'Bootstrap', 'Vue.js']
@@ -34,8 +35,8 @@ const projectPosts = allPosts
 	.filter((p) => p.data.tags.includes('project'))
 	.sort((a, b) => (a.data.homePageIdx ?? Infinity) - (b.data.homePageIdx ?? Infinity))
 
-const homeDescription =
-	'Safwan Usaid Lubdhak is a software developer and open-source contributor from Bangladesh, building KDE/Linux desktop tools, AI systems, and web applications.'
+// Reuse the canonical bio (sentence fragment) as a first-person-free description.
+const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).toLowerCase()}${siteConfig.bio.slice(1)}`
 ---
 
 <PageLayout meta={{ title: 'Software Developer', description: homeDescription }}>
@@ -87,7 +88,7 @@ const homeDescription =
 								r='3'></circle></svg
 						>
 					</Label>
-					<Label title='Mail me' as='a' href='mailto:hello@saf1.me'>
+					<Label title='Mail me' as='a' href={`mailto:${siteConfig.socials.email}`}>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							viewBox='0 0 24 24'

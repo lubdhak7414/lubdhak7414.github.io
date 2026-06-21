@@ -12,19 +12,18 @@ import { siteConfig } from '@/site-config'
 			{siteConfig.author}
 		</a>
 		<p class='text-muted-foreground text-sm leading-relaxed'>
-			Software developer and open-source contributor from Bangladesh, working on KDE/Linux desktop
-			tools, AI systems, and web applications.
+			{siteConfig.bio}
 		</p>
 		<div class='mt-1 flex items-center gap-x-4 text-sm'>
 			<a href='/about/' class='hover:text-foreground/75 font-medium'>About</a>
 			<a
-				href='https://github.com/lubdhak7414'
+				href={siteConfig.socials.github}
 				target='_blank'
 				rel='noopener noreferrer'
 				class='hover:text-foreground/75 font-medium'>GitHub</a
 			>
 			<a
-				href='https://www.linkedin.com/in/lubdhak7414/'
+				href={siteConfig.socials.linkedin}
 				target='_blank'
 				rel='noopener noreferrer'
 				class='hover:text-foreground/75 font-medium'>LinkedIn</a

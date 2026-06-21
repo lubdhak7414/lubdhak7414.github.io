@@ -13,7 +13,7 @@ homePageIdx: 2
 ## The idea
 
 Alt+Tab is a horizontal strip on almost every desktop. But a strip wastes the one piece of
-information you always have: where the cursor *is*. Circular Alt+Tab lays your windows out
+information you always have: where the cursor _is_. Circular Alt+Tab lays your windows out
 as pie slices around the cursor instead, so the target is always a short flick away. Hover to
 select, click to activate, middle-click to close. It works with the keyboard, the mouse, and the
 scroll wheel.
@@ -44,7 +44,7 @@ The architecture is a small chain, `TabBoxSwitcher → Window → Pie → Repeat
 rotation-based positioning and an `OpacityMask` for clipping each annular sector.
 
 - **Hit-testing reads static ring geometry, not animated per-frame positions.** This is the
-  subtle one. If you hit-test against the *scaled-up* hovered piece, hovering becomes jittery as
+  subtle one. If you hit-test against the _scaled-up_ hovered piece, hovering becomes jittery as
   the geometry shifts under the cursor. Testing against the fixed ring layout eliminates that.
 - **Single-window mode caps the slice at 180°.** A full 360° circle for one window is
   degenerate and looks broken.

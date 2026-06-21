@@ -3,5 +3,5 @@ export { getAllPosts, sortMDByDate, getUniqueTags, getUniqueTagsWithCount } from
 export { getFormattedDate } from './date'
 export { slugifyTag } from './slugify'
 export { generateToc } from './generateToc'
-export type { TocItem } from './generateToc'
+export { getCrawlerSafeOgImage } from './ogImage'
 export { PERSON_ID, personSchema, websiteSchema } from './schema'

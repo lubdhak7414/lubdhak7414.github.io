@@ -1,30 +1,21 @@
 ---
-import type { TocItem } from '@/utils'
+import type { MarkdownHeading } from 'astro'
 
 interface Props {
-	heading: TocItem
+	heading: MarkdownHeading
 }
 
 const {
-	heading: { depth, slug, subheadings, text }
+	heading: { slug, text }
 } = Astro.props
 ---
 
-<li class={`${depth > 2 ? 'ms-2' : ''}`}>
+<li>
 	<a
 		aria-label={`Scroll to section: ${text}`}
 		data-toc-slug={slug}
 		title={text}
-		class={`line-clamp-2 ${depth <= 2 ? 'mt-2' : 'mt-1 text-sm'} text-foreground/75 transition-all hover:text-foreground aria-[current=true]:font-medium aria-[current=true]:text-foreground`}
+		class='text-foreground/75 hover:text-foreground aria-[current=true]:text-foreground mt-2 line-clamp-2 transition-all aria-[current=true]:font-medium'
 		href={`#${slug}`}>{text}</a
 	>
-	{
-		!!subheadings.length && (
-			<ul>
-				{subheadings.map((subheading) => (
-					<Astro.self heading={subheading} />
-				))}
-			</ul>
-		)
-	}
 </li>

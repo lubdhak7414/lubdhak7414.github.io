@@ -3,10 +3,9 @@
 // all pages through the use of the <BaseHead /> component.
 import '../styles/app.css'
 
-import { getImage } from 'astro:assets'
-
 import type { SiteMeta } from '@/types'
 import { siteConfig } from '@/site-config'
+import { getCrawlerSafeOgImage } from '@/utils'
 import socialCard from '@/assets/social-card.png'
 
 type Props = SiteMeta
@@ -26,15 +25,13 @@ const titleSeparator = '•'
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
-const usingDefaultImage = !ogImage
-// Force PNG for the OG image: WebP (Astro's default output) is rendered
-// unreliably by some link-preview crawlers (notably LinkedIn), which would
-// drop the share thumbnail. PNG/JPEG are universally supported.
-const socialImageURL = usingDefaultImage
-	? new URL((await getImage({ src: socialCard, format: 'png' })).src, Astro.site).href
-	: new URL(ogImage, Astro.site).href
-const ogWidth = usingDefaultImage ? socialCard.width : ogImageWidth
-const ogHeight = usingDefaultImage ? socialCard.height : ogImageHeight
+// The default card is emitted crawler-safe (PNG, not WebP); see getCrawlerSafeOgImage.
+const defaultCard = ogImage ? null : await getCrawlerSafeOgImage(socialCard, 'png')
+const socialImageURL = defaultCard
+	? new URL(defaultCard.src, Astro.site).href
+	: new URL(ogImage!, Astro.site).href
+const ogWidth = defaultCard ? defaultCard.width : ogImageWidth
+const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 ---
 
 <meta charset='utf-8' />

@@ -1,14 +1,13 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
-import { getImage } from 'astro:assets'
 
 import BlogHero from '@/components/blog/Hero.astro'
 import TOC from '@/components/blog/TOC.astro'
 import BackButton from '@/components/BackButton.astro'
 import AuthorBox from '@/components/AuthorBox.astro'
 
-import { PERSON_ID } from '@/utils'
+import { PERSON_ID, getCrawlerSafeOgImage } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 import PageLayout from './BaseLayout.astro'
@@ -28,12 +27,11 @@ let socialImage: string | undefined = ogImage
 let socialImageWidth: number | undefined
 let socialImageHeight: number | undefined
 if (!socialImage && coverImage) {
-	// JPEG (not WebP): WebP OG images are unreliably rendered by some crawlers
-	// (LinkedIn); JPEG is universal and stays small for photographic covers.
-	const processed = await getImage({ src: coverImage.src, format: 'jpeg', quality: 80 })
-	socialImage = processed.src
-	socialImageWidth = coverImage.src.width
-	socialImageHeight = coverImage.src.height
+	// Crawler-safe JPEG (not WebP); see getCrawlerSafeOgImage.
+	const card = await getCrawlerSafeOgImage(coverImage.src, 'jpeg')
+	socialImage = card.src
+	socialImageWidth = card.width
+	socialImageHeight = card.height
 }
 const publishIso = publishDate.toISOString()
 const modifiedIso =

@@ -4,7 +4,7 @@ description: 'A café, a library, and a gym — three management systems built i
 publishDate: '23 December 2024'
 updatedDate: '17 June 2026'
 coverImage:
-  src: './cover.png'
+  src: './cover.webp'
   alt: 'RepBase gym class schedule showing live seats-left badges'
 tags: ['PHP', 'MySQL', 'Backend', 'Databases', 'Project']
 homePageIdx: 3

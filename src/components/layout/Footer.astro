@@ -1,5 +1,5 @@
 ---
-
+import { siteConfig } from '@/site-config'
 ---
 
 <footer class='mx-auto mt-24 w-full'>
@@ -8,7 +8,7 @@
 			class='flex flex-col items-center gap-y-3 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-y-0'
 		>
 			<div class='flex gap-x-4 text-sm'>
-				<p>© {new Date().getFullYear()} Safwan Usaid Lubdhak. All rights reserved.</p>
+				<p>© {new Date().getFullYear()} {siteConfig.author}. All rights reserved.</p>
 			</div>
 
 			<div class='flex items-center justify-between'>
@@ -17,7 +17,7 @@
 					<!-- Linkedin -->
 					<a
 						class='text-muted-foreground hover:text-muted-foreground/75 -m-2 inline-block p-2 transition-all'
-						href='https://www.linkedin.com/in/lubdhak7414/'
+						href={siteConfig.socials.linkedin}
 						target='_blank'
 						rel='noopener noreferrer'
 						aria-label='Visit LinkedIn profile of Lubdhak'
@@ -42,7 +42,7 @@
 					<!-- Mail -->
 					<a
 						class='text-muted-foreground hover:text-muted-foreground/75 -m-2 inline-block p-2 transition-all'
-						href='mailto:hello@saf1.me'
+						href={`mailto:${siteConfig.socials.email}`}
 						aria-label='Mail to Safwan Usaid Lubdhak'
 					>
 						<svg
@@ -63,7 +63,7 @@
 					<!-- Github -->
 					<a
 						class='text-muted-foreground hover:text-muted-foreground/75 -m-2 inline-block p-2 transition-all'
-						href='https://github.com/lubdhak7414'
+						href={siteConfig.socials.github}
 						target='_blank'
 						rel='noopener noreferrer'
 						aria-label='Github profile of Safwan Usaid Lubdhak'
