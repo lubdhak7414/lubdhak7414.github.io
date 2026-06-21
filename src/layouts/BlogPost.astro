@@ -6,6 +6,7 @@ import BlogHero from '@/components/blog/Hero.astro'
 import TOC from '@/components/blog/TOC.astro'
 import BackButton from '@/components/BackButton.astro'
 import AuthorBox from '@/components/AuthorBox.astro'
+import BalloonSurprise from '@/components/blog/BalloonSurprise.astro'
 
 import { PERSON_ID, getCrawlerSafeOgImage } from '@/utils'
 import { siteConfig } from '@/site-config'
@@ -107,6 +108,7 @@ const blogPostingSchema = {
 				<path d='M4.5 15.75l7.5-7.5 7.5 7.5' stroke-linecap='round' stroke-linejoin='round'></path>
 			</svg>
 		</button>
+		<BalloonSurprise />
 	</div>
 </PageLayout>
 

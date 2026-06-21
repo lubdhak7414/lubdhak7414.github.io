@@ -1,0 +1,84 @@
+---
+// A small balloon that drifts into the corner on *some* blog-post visits.
+// Clicking (or keyboard-activating) it releases the full balloon swarm.
+// Honors `prefers-reduced-motion`: nothing appears for users who opt out of motion.
+---
+
+<button
+	aria-label='Release a swarm of balloons'
+	class='balloon-teaser group fixed start-4 bottom-8 z-90 hidden h-14 w-14 cursor-pointer items-center justify-center rounded-full opacity-0 transition-all duration-500 data-[show=true]:flex data-[show=true]:opacity-100 sm:start-8 sm:h-16 sm:w-16'
+	data-show='false'
+	id='balloon-teaser'
+	type='button'
+>
+	<svg
+		aria-hidden='true'
+		class='h-full w-full drop-shadow-md transition-transform duration-300 group-hover:scale-110'
+		fill='none'
+		viewBox='0 0 40 56'
+		xmlns='http://www.w3.org/2000/svg'
+	>
+		<path
+			d='M20 2C28.84 2 36 9.4 36 18.5c0 8.3-7.16 17-16 22.5C11.16 35.5 4 26.8 4 18.5 4 9.4 11.16 2 20 2Z'
+			fill='currentColor'></path>
+		<path d='M20 41 18.6 44h2.8L20 41Z' fill='currentColor'></path>
+		<path
+			d='M20 44c0 3 2.5 4 2.5 7s-2.5 3-2.5 6'
+			stroke='currentColor'
+			stroke-linecap='round'
+			stroke-width='1.5'
+			opacity='0.5'></path>
+		<ellipse cx='14.5' cy='14' rx='3' ry='4.5' fill='#fff' opacity='0.35'></ellipse>
+	</svg>
+</button>
+
+<style>
+	.balloon-teaser {
+		color: #c03940; /* matches the red in the swarm palette */
+		animation: balloon-bob 3.5s ease-in-out infinite;
+	}
+
+	@keyframes balloon-bob {
+		0%,
+		100% {
+			transform: translateY(0) rotate(-3deg);
+		}
+		50% {
+			transform: translateY(-8px) rotate(3deg);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.balloon-teaser {
+			animation: none;
+		}
+	}
+</style>
+
+<script>
+	import { balloons } from '@/scripts/balloons'
+
+	// Chance the teaser appears on any given blog-post visit. Keep it rare so it stays a treat.
+	const SHOW_CHANCE = 0.45
+	// Random delay before it drifts in (ms), so it doesn't pop the instant the page loads.
+	const MIN_DELAY = 3000
+	const MAX_DELAY = 9000
+
+	const teaser = document.getElementById('balloon-teaser') as HTMLButtonElement | null
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+	if (teaser && !prefersReducedMotion && Math.random() < SHOW_CHANCE) {
+		const delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY)
+		const timer = window.setTimeout(() => {
+			teaser.dataset.show = 'true'
+		}, delay)
+
+		teaser.addEventListener('click', () => {
+			window.clearTimeout(timer)
+			// Hide the teaser, then let the swarm loose.
+			teaser.dataset.show = 'false'
+			teaser.disabled = true
+			void balloons()
+		})
+	}
+</script>
