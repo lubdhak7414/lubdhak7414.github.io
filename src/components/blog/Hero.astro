@@ -30,6 +30,8 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 				fetchpriority='high'
 				loading='eager'
 				src={data.coverImage.src}
+				width={1656}
+				height={1104}
 			/>
 		</div>
 	)
@@ -48,19 +50,16 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 
 {
 	!!data.tags?.length && (
-		<div class='mt-3 flex flex-row items-center gap-x-1'>
+		<div class='mt-3 flex flex-row flex-wrap items-center gap-x-2 gap-y-1'>
 			<TagIcon class='me-1 inline-block' />
-			{data.tags.map((tag, i) => (
-				<div>
-					<a
-						aria-label={`View more blogs with the tag ${tag}`}
-						class="inline-block before:content-['#'] hover:underline hover:underline-offset-4"
-						href={`/tags/${slugifyTag(tag)}/`}
-					>
-						{tag}
-					</a>
-					{i < data.tags.length - 1 && ', '}
-				</div>
+			{data.tags.map((tag) => (
+				<a
+					aria-label={`View more blogs with the tag ${tag}`}
+					class="inline-block before:content-['#'] hover:underline hover:underline-offset-4"
+					href={`/tags/${slugifyTag(tag)}/`}
+				>
+					{tag}
+				</a>
 			))}
 		</div>
 	)

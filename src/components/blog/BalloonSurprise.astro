@@ -69,8 +69,7 @@
 
 	if (teaser && !prefersReducedMotion && Math.random() < SHOW_CHANCE) {
 		// Place the teaser at a random spot in the middle 80% of the viewport (avoids corners).
-		const style = getComputedStyle(teaser)
-		const size = parseFloat(style.width) || 56
+		const size = window.innerWidth >= 640 ? 64 : 56
 		const margin = 0.1 // 10% inset from each edge
 		const x =
 			margin * window.innerWidth + Math.random() * (window.innerWidth * (1 - 2 * margin) - size)
