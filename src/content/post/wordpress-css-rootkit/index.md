@@ -1,12 +1,12 @@
 ---
 title: 'Dissecting a WordPress Hack: Ghost Admins and CSS'
 description: 'We debugged a WordPress slot spam infection and found attackers hiding rogue admin accounts and backdoor plugins using a simple CSS override in functions.php.'
-publishDate: '25 June 2026'
+publishDate: '2 April 2026'
 coverImage:
   src: './cover.webp'
   alt: 'WordPress admin panel showing a hidden ghost administrator account alongside the CSS display:none payload in functions.php'
 tags: ['WordPress', 'Security', 'PHP', 'Incident Response', 'Project']
-homePageIdx: 4
+homePageIdx: 3
 ---
 
 ## The symptom: SEO spam on the frontend

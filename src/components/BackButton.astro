@@ -8,7 +8,7 @@ interface Props {
 const { href } = Astro.props
 ---
 
-<Button title='Back' href={href} style='button'>
+<Button title='Back' href={href} style='button' data-back-fallback={href}>
 	<svg
 		xmlns='http://www.w3.org/2000/svg'
 		width='14'
@@ -21,3 +21,13 @@ const { href } = Astro.props
 		</path>
 	</svg>
 </Button>
+
+<script>
+	document.querySelector<HTMLAnchorElement>('[data-back-fallback]')?.addEventListener('click', (e) => {
+		const ref = document.referrer
+		if (ref && new URL(ref).origin === location.origin) {
+			e.preventDefault()
+			history.back()
+		}
+	})
+</script>

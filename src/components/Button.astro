@@ -9,7 +9,7 @@ type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
 	style?: 'button' | 'pill'
 }
 
-const { as: Tag = 'a', class: className, title, href, style = 'button' } = Astro.props
+const { as: Tag = 'a', class: className, title, href, style = 'button', ...rest } = Astro.props
 ---
 
 <Tag
@@ -21,6 +21,7 @@ const { as: Tag = 'a', class: className, title, href, style = 'button' } = Astro
 	)}
 	href={href}
 	data-astro-prefetch={href ? '' : undefined}
+	{...rest}
 >
 	<slot name='icon-before' />
 	<p>{title}</p>

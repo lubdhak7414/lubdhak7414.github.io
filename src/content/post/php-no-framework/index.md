@@ -7,7 +7,7 @@ coverImage:
   src: './cover.webp'
   alt: 'RepBase gym class schedule showing live seats-left badges'
 tags: ['PHP', 'MySQL', 'Backend', 'Databases', 'Project']
-homePageIdx: 3
+homePageIdx: 4
 ---
 
 ## Why no framework?
