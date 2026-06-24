@@ -1,5 +1,11 @@
 export { cn } from './tailwind'
-export { getAllPosts, sortMDByDate, getUniqueTags, getUniqueTagsWithCount } from './post'
+export {
+	getAllPosts,
+	sortMDByDate,
+	getUniqueTags,
+	getUniqueTagsWithCount,
+	getRelatedPosts
+} from './post'
 export { getFormattedDate } from './date'
 export { slugifyTag } from './slugify'
 export { generateToc } from './generateToc'

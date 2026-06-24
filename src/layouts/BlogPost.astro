@@ -4,20 +4,23 @@ import { render } from 'astro:content'
 
 import BlogHero from '@/components/blog/Hero.astro'
 import TOC from '@/components/blog/TOC.astro'
+import TOCHeading from '@/components/blog/TOCHeading.astro'
 import BackButton from '@/components/BackButton.astro'
 import AuthorBox from '@/components/AuthorBox.astro'
+import RelatedPosts from '@/components/blog/RelatedPosts.astro'
 import BalloonSurprise from '@/components/blog/BalloonSurprise.astro'
 
-import { PERSON_ID, getCrawlerSafeOgImage, jsonLdScript } from '@/utils'
+import { PERSON_ID, generateToc, getCrawlerSafeOgImage, jsonLdScript } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 import PageLayout from './BaseLayout.astro'
 
 interface Props {
 	post: CollectionEntry<'post'>
+	relatedPosts?: CollectionEntry<'post'>[]
 }
 
-const { post } = Astro.props
+const { post, relatedPosts = [] } = Astro.props
 const {
 	data: { coverImage, description, ogImage, publishDate, title, updatedDate }
 } = post
@@ -41,6 +44,7 @@ const modifiedIso =
 		: undefined
 const { headings, remarkPluginFrontmatter } = await render(post)
 const minutesRead = parseInt(remarkPluginFrontmatter.minutesRead, 10) || 1
+const toc = generateToc(headings)
 
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
 const blogUrl = new URL('/blog/', Astro.site).toString()
@@ -95,12 +99,29 @@ const blogPostingSchema = {
 			{!!headings.length && <TOC headings={headings} />}
 			<article class='flex-grow break-words'>
 				<div id='blog-hero'><BlogHero content={post} /></div>
+				{
+					toc.length > 0 && (
+						<nav aria-label='Table of contents' class='lg:hidden'>
+							<details class='border-border bg-primary-foreground mt-8 rounded-xl border p-4'>
+								<summary class='cursor-pointer font-semibold select-none'>
+									Table of Contents
+								</summary>
+								<ul class='text-card-foreground mt-3'>
+									{toc.map((heading) => (
+										<TOCHeading heading={heading} />
+									))}
+								</ul>
+							</details>
+						</nav>
+					)
+				}
 				<div
 					class='prose prose-base prose-zinc text-muted-foreground dark:prose-invert prose-headings:font-medium prose-headings:text-foreground prose-headings:before:absolute prose-headings:before:-ms-4 prose-th:before:content-none mt-12'
 				>
 					<slot />
 				</div>
 				<AuthorBox />
+				<RelatedPosts posts={relatedPosts} />
 			</article>
 		</div>
 		<button

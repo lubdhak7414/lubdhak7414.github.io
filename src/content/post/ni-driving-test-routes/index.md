@@ -39,4 +39,3 @@ Fast pages do two things. They keep visitors around. And they rank better becaus
 ![Faq Page](./faq-ni-test.png)
 
 The site does what it was built to do. Useful content loads quickly. It reads well on any screen. And it ranks.
-

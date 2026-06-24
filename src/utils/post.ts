@@ -26,6 +26,29 @@ export function getUniqueTags(posts: Array<CollectionEntry<'post'>>) {
 	return [...new Set(getAllTags(posts))]
 }
 
+export function getRelatedPosts(
+	current: CollectionEntry<'post'>,
+	allPosts: CollectionEntry<'post'>[],
+	count = 3
+): CollectionEntry<'post'>[] {
+	const currentTags = new Set(current.data.tags)
+	return allPosts
+		.filter((p) => p.id !== current.id)
+		.map((p) => ({
+			post: p,
+			score: p.data.tags.filter((t) => currentTags.has(t)).length
+		}))
+		.filter(({ score }) => score > 0)
+		.sort(
+			(a, b) =>
+				b.score - a.score ||
+				new Date(b.post.data.updatedDate ?? b.post.data.publishDate).valueOf() -
+					new Date(a.post.data.updatedDate ?? a.post.data.publishDate).valueOf()
+		)
+		.slice(0, count)
+		.map(({ post }) => post)
+}
+
 /** Note: This function doesn't filter draft posts, pass it the result of getAllPosts above to do so. */
 export function getUniqueTagsWithCount(
 	posts: Array<CollectionEntry<'post'>>
