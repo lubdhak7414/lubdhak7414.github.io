@@ -35,3 +35,10 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  indexnow:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping IndexNow
+        run: curl -s "https://api.indexnow.org/indexnow?url=https://saf1.me/sitemap-index.xml&key=17862c70-d05e-49ef-812d-27707af4a54a" -o /dev/null -w "IndexNow: %{http_code}\n"
