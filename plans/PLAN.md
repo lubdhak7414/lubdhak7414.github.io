@@ -201,6 +201,9 @@ Multi-agent website audit (6 parallel Explore agents: SEO, Performance, Code Qua
   - **AuthorBox links**: `hover:text-foreground/75` (dimming) → `hover:underline underline-offset-2`
 - Pattern: text links use underline on hover; icon links use color intensification; buttons use bg change; cards use border+shadow. All now consistent.
 
+### O32. New post — Fixing Font Rendering on Linux After Windows ✅ done (2026-06-24)
+New technical post `src/content/post/linux-font-rendering/index.md` covering the font rendering journey from Windows to KDE CachyOS on a BenQ GW2480 1080p display. Covers both approaches (ClearType-style subpixel rendering vs macOS-style stem-darkening via lucidglyph), the KDE Plasma sub-pixel override gotcha, and the Chromium/Fontations caveat. Tags: `Linux`, `KDE Plasma`, `Fonts`, `CachyOS`. NOT tagged `project` (tutorial/experience post, not own-built software). Cover image: 3-card OS migration visual (Windows → Default Linux → lucidglyph). Inline comparison image: Windows vs macOS font rendering split-card with magnifying glass. Both rendered via `rsvg-convert → magick → WebP q82` pipeline. About page bio also refreshed in same commit. Build green, 37 pages.
+
 ### Still open (from audit — content/design, not code-automatable)
 | # | Item | Category | Notes |
 |---|------|----------|-------|
