@@ -6,7 +6,7 @@ import Pagination from '@/components/Paginator.astro'
 import PostPreview from '@/components/blog/PostPreview.astro'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import BackButton from '@/components/BackButton.astro'
-import { getAllPosts, getUniqueTags, slugifyTag, sortMDByDate } from '@/utils'
+import { getAllPosts, getUniqueTags, slugifyTag, sortMDByDate, jsonLdScript } from '@/utils'
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 	const allPosts = await getAllPosts()
@@ -51,6 +51,15 @@ const meta = {
 	title: `Tag: ${tag}`
 }
 
+const tagUrl = new URL(`/tags/${Astro.params.tag}/`, Astro.site).toString()
+const collectionPageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	name: `Posts tagged #${tag}`,
+	url: tagUrl,
+	description: `All posts tagged ${tag}`
+}
+
 const paginationProps = {
 	...(page.url.prev && {
 		prevUrl: {
@@ -68,6 +77,7 @@ const paginationProps = {
 ---
 
 <PageLayout meta={meta}>
+	<script type='application/ld+json' set:html={jsonLdScript(collectionPageSchema)} is:inline />
 	<div class='w-full'>
 		<BackButton href='/blog' />
 		<h1 class='mt-5 mb-6 flex items-end gap-x-2 text-2xl font-bold'>

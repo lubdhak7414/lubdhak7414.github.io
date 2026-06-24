@@ -43,7 +43,9 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 <link rel='icon' type='image/png' sizes='16x16' href='/favicon/favicon-16x16.png' />
 <link rel='manifest' href='/favicon/site.webmanifest' />
 
-{/* Preload the upright body font (woff2) to avoid FOUT; italic loads on demand */}
+{/* Preload the upright body font (woff2) to avoid FOUT; italic loads on demand
+	(it's absent from most pages, so preloading it everywhere just steals
+	bandwidth from the critical upright face during first paint). */}
 <link rel='preload' href='/fonts/Satoshi-Variable.woff2' as='font' type='font/woff2' crossorigin />
 
 {/* Robots */}

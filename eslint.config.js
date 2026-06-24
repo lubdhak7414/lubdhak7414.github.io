@@ -11,6 +11,10 @@ export default [
 		languageOptions: {
 			ecmaVersion: 'latest',
 			sourceType: 'module'
+		},
+		rules: {
+			'no-console': 'warn',
+			'@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }]
 		}
 	}
 ]

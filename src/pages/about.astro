@@ -2,7 +2,7 @@
 import PageLayout from '../layouts/BaseLayout.astro'
 import { Image } from 'astro:assets'
 import face from '../assets/face.png'
-import { personSchema } from '@/utils'
+import { personSchema, jsonLdScript } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 const aboutDescription =
@@ -18,8 +18,8 @@ const aboutPageSchema = {
 ---
 
 <PageLayout meta={{ title: 'About', description: aboutDescription }}>
-	<script type='application/ld+json' set:html={JSON.stringify(personSchema)} is:inline />
-	<script type='application/ld+json' set:html={JSON.stringify(aboutPageSchema)} is:inline />
+	<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
+	<script type='application/ld+json' set:html={jsonLdScript(aboutPageSchema)} is:inline />
 
 	<div class='flex w-full flex-col gap-y-10'>
 		<section class='flex flex-col items-center gap-y-6 text-center'>

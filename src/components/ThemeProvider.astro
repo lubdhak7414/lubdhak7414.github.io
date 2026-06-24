@@ -7,6 +7,7 @@
 		return storedTheme || (lightModePref.matches ? 'light' : 'dark')
 	}
 
+	/** @param {string | null} newTheme */
 	function setTheme(newTheme) {
 		if (newTheme !== 'light' && newTheme !== 'dark') {
 			return
@@ -35,7 +36,7 @@
 
 	// Listen for theme-change custom event
 	document.addEventListener('theme-change', (e) => {
-		setTheme(e.detail.theme)
+		setTheme(e.detail?.theme)
 	})
 
 	// Listen for prefers-color-scheme change

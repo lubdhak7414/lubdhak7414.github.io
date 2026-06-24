@@ -17,7 +17,7 @@ const { class: className } = Astro.props
 	</div>
 
 	<button
-		class='carousel-btn carousel-prev border-border bg-background text-foreground hover:bg-primary-foreground focus-visible:ring-ring absolute top-[calc(50%-0.5rem)] left-2 z-20 -translate-y-1/2 rounded-full border p-2.5 shadow-lg transition-opacity focus-visible:ring-2 focus-visible:outline-hidden'
+		class='carousel-btn carousel-prev border-border bg-background text-foreground hover:bg-primary-foreground focus-visible:ring-ring absolute top-[calc(50%-0.5rem)] left-2 z-20 -translate-y-1/2 rounded-full border p-2.5 shadow-lg transition-opacity motion-reduce:transition-none focus-visible:ring-2 focus-visible:outline-hidden'
 		aria-label='Previous projects'
 	>
 		<svg
@@ -34,7 +34,7 @@ const { class: className } = Astro.props
 		>
 	</button>
 	<button
-		class='carousel-btn carousel-next border-border bg-background text-foreground hover:bg-primary-foreground focus-visible:ring-ring absolute top-[calc(50%-0.5rem)] right-2 z-20 -translate-y-1/2 rounded-full border p-2.5 shadow-lg transition-opacity focus-visible:ring-2 focus-visible:outline-hidden'
+		class='carousel-btn carousel-next border-border bg-background text-foreground hover:bg-primary-foreground focus-visible:ring-ring absolute top-[calc(50%-0.5rem)] right-2 z-20 -translate-y-1/2 rounded-full border p-2.5 shadow-lg transition-opacity motion-reduce:transition-none focus-visible:ring-2 focus-visible:outline-hidden'
 		aria-label='Next projects'
 	>
 		<svg
@@ -71,21 +71,25 @@ const { class: className } = Astro.props
 
 <script>
 	class ProjectCarousel {
-		track: HTMLElement
-		prev: HTMLButtonElement
-		next: HTMLButtonElement
+		track!: HTMLElement
+		prev!: HTMLButtonElement
+		next!: HTMLButtonElement
 		direction = 1
 		speed = 0.8
 		currentSpeed = 0.8
 		rafId: number | undefined
 		stopping = false
 		hovering = false
-		reducedMotion: boolean
+		reducedMotion!: boolean
 
 		constructor(root: HTMLElement) {
-			this.track = root.querySelector('.carousel-track')!
-			this.prev = root.querySelector('.carousel-prev')!
-			this.next = root.querySelector('.carousel-next')!
+			const track = root.querySelector<HTMLElement>('.carousel-track')
+			const prev = root.querySelector<HTMLButtonElement>('.carousel-prev')
+			const next = root.querySelector<HTMLButtonElement>('.carousel-next')
+			if (!track || !prev || !next) return
+			this.track = track
+			this.prev = prev
+			this.next = next
 			this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 			this.prev.addEventListener('click', (e) => {

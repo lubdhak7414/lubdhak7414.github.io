@@ -10,7 +10,7 @@ import PostPreview from '@/components/blog/PostPreview.astro'
 import { Image } from 'astro:assets'
 import astro from '../assets/face.png'
 
-import { getAllPosts, sortMDByDate, personSchema, websiteSchema } from '@/utils'
+import { getAllPosts, sortMDByDate, personSchema, websiteSchema, jsonLdScript } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 const languages = ['Python', 'Java', 'C++', 'Dart']
@@ -40,8 +40,8 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 ---
 
 <PageLayout meta={{ title: 'Software Developer', description: homeDescription }}>
-	<script type='application/ld+json' set:html={JSON.stringify(personSchema)} is:inline />
-	<script type='application/ld+json' set:html={JSON.stringify(websiteSchema)} is:inline />
+	<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
+	<script type='application/ld+json' set:html={jsonLdScript(websiteSchema)} is:inline />
 	<div class='flex w-full flex-col gap-y-10'>
 		<section class='flex flex-col items-center gap-y-7'>
 			<Image

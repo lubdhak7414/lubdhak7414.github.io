@@ -8,7 +8,7 @@ import BackButton from '@/components/BackButton.astro'
 import AuthorBox from '@/components/AuthorBox.astro'
 import BalloonSurprise from '@/components/blog/BalloonSurprise.astro'
 
-import { PERSON_ID, getCrawlerSafeOgImage } from '@/utils'
+import { PERSON_ID, getCrawlerSafeOgImage, jsonLdScript } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 import PageLayout from './BaseLayout.astro'
@@ -39,14 +39,25 @@ const modifiedIso =
 	updatedDate && updatedDate.valueOf() !== publishDate.valueOf()
 		? updatedDate.toISOString()
 		: undefined
-const { headings } = await render(post)
+const { headings, remarkPluginFrontmatter } = await render(post)
+const minutesRead = parseInt(remarkPluginFrontmatter.minutesRead, 10) || 1
 
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
+const blogUrl = new URL('/blog/', Astro.site).toString()
 const ogAbsolute = socialImage ? new URL(socialImage, Astro.site).toString() : undefined
 // Reference the canonical Person entity (defined in full on the homepage + /about)
 // by `@id` so Google consolidates the entity, but still inline `name`: the Person
 // node isn't on this page, and Google requires `name` once an author object exists.
 const authorRef = { '@id': PERSON_ID, name: siteConfig.author }
+const breadcrumbSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: 'Home', item: siteConfig.url },
+		{ '@type': 'ListItem', position: 2, name: 'Blog', item: blogUrl },
+		{ '@type': 'ListItem', position: 3, name: title, item: postUrl }
+	]
+}
 const blogPostingSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'BlogPosting',
@@ -57,6 +68,7 @@ const blogPostingSchema = {
 	...(ogAbsolute && { image: ogAbsolute }),
 	author: authorRef,
 	publisher: authorRef,
+	timeRequired: `PT${minutesRead}M`,
 	mainEntityOfPage: {
 		'@type': 'WebPage',
 		'@id': postUrl
@@ -75,7 +87,8 @@ const blogPostingSchema = {
 		title
 	}}
 >
-	<script type='application/ld+json' set:html={JSON.stringify(blogPostingSchema)} is:inline />
+	<script type='application/ld+json' set:html={jsonLdScript(blogPostingSchema)} is:inline />
+	<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
 	<div class='w-full'>
 		<BackButton href='/blog' />
 		<div class='mt-8 gap-x-10 lg:flex lg:items-start'>
@@ -113,20 +126,22 @@ const blogPostingSchema = {
 </PageLayout>
 
 <script>
-	const scrollBtn = document.getElementById('to-top-btn') as HTMLButtonElement
-	const targetHeader = document.getElementById('blog-hero') as HTMLDivElement
+	;(() => {
+		const scrollBtn = document.getElementById('to-top-btn')
+		const targetHeader = document.getElementById('blog-hero')
+		if (!scrollBtn || !targetHeader) return
 
-	function callback(entries: IntersectionObserverEntry[]) {
-		entries.forEach((entry) => {
-			// only show the scroll to top button when the heading is out of view
-			scrollBtn.dataset.show = (!entry.isIntersecting).toString()
+		function callback(entries: IntersectionObserverEntry[]) {
+			entries.forEach((entry) => {
+				scrollBtn!.dataset.show = (!entry.isIntersecting).toString()
+			})
+		}
+
+		scrollBtn.addEventListener('click', () => {
+			document.documentElement.scrollTo({ behavior: 'smooth', top: 0 })
 		})
-	}
 
-	scrollBtn.addEventListener('click', () => {
-		document.documentElement.scrollTo({ behavior: 'smooth', top: 0 })
-	})
-
-	const observer = new IntersectionObserver(callback)
-	observer.observe(targetHeader)
+		const observer = new IntersectionObserver(callback)
+		observer.observe(targetHeader)
+	})()
 </script>

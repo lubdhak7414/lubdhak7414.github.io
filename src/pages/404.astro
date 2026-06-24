@@ -1,32 +1,14 @@
 ---
 import PageLayout from '@/layouts/BaseLayout.astro'
 import Button from '@/components/Button.astro'
+import { jsonLdScript } from '@/utils'
+import { excuses } from '../data/excuses'
 
 const meta = {
 	description: 'Page not found',
 	title: '404',
 	noIndex: true
 }
-
-// Default excuse is rendered server-side so the page still makes sense with JS
-// disabled; the inline script randomizes it on load and on every roll.
-const excuses = [
-	'Works on my machine. ¯\\_(ツ)_/¯',
-	"We reached our cloud provider's free tier limit.",
-	'Waiting for node_modules to finish downloading.',
-	"Blame the cache. Or CORS. Let's just blame CORS.",
-	'We migrated to microservices and lost track of this one.',
-	'It was collateral damage in a brutal git rebase.',
-	'Accidentally added to .gitignore. It belongs to the void now.',
-	"Turns out you can't just npm install a functioning webpage.",
-	'This is a side project. You expected a finished page?',
-	"We migrated to a new framework and this didn't survive the trip.",
-	'This page was a casualty of a late-night refactor.',
-	'A rogue semicolon wandered off and took this page with it.',
-	'This page is still on a feature branch that never got merged.',
-	'A `return` fired one line too early. Classic.',
-	"Blame the cache. It's always the cache."
-]
 ---
 
 <PageLayout meta={meta}>
@@ -195,21 +177,11 @@ const excuses = [
 		}
 	</style>
 
-	<script>
-		const excuses = [
-			"It's not a bug, it's an undocumented feature.",
-			'A rogue semicolon wandered off and took this page with it.',
-			'This page is still on a feature branch that never got merged.',
-			"My cat walked across the keyboard and `rm -rf`'d it.",
-			'404: page successfully deployed to a parallel universe.',
-			'Works on my machine. ¯\\_(ツ)_/¯',
-			'Someone force-pushed to main again.',
-			'This page got lost in a three-way merge conflict.',
-			'A `return` fired one line too early. Classic.',
-			"It's not down, it's just buffering since 2019.",
-			"Blame the cache. It's always the cache.",
-			'This route only exists in the design mockup.'
-		]
+	<script is:inline type="application/json" id="excuses-data" set:html={jsonLdScript(excuses)} />
+
+	<script is:inline>
+		const dataEl = document.getElementById('excuses-data')
+		const excuses = dataEl ? JSON.parse(dataEl.textContent) : []
 
 		const excuseEl = document.getElementById('excuse')
 		const rollBtn = document.getElementById('roll-excuse')
@@ -226,7 +198,6 @@ const excuses = [
 		}
 
 		rollBtn?.addEventListener('click', roll)
-		// Randomize on load so every visit gets a different excuse.
 		roll()
 	</script>
 </PageLayout>

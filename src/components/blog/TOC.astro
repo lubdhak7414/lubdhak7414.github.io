@@ -38,8 +38,11 @@ const toc = generateToc(headings)
 		if (!list || list.dataset.spyInit === 'true') return
 		list.dataset.spyInit = 'true'
 
-		// Tear down an observer from a previous page (e.g. after a view-transition swap).
+		// Tear down an observer from a previous page (e.g. after a view-transition
+		// swap) only once we've committed to re-initializing on the current DOM —
+		// doing it before the guard above would kill a live observer on a repeat call.
 		activeObserver?.disconnect()
+		activeObserver = null
 
 		const links = list.querySelectorAll<HTMLAnchorElement>('[data-toc-slug]')
 		if (!links.length) return

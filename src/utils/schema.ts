@@ -11,11 +11,16 @@ const ORIGIN = siteConfig.url
 // only, avoiding duplicate structured data across the site.
 export const PERSON_ID = `${ORIGIN}/#person`
 
+const [givenName, ...rest] = siteConfig.author.split(' ')
+const familyName = rest.at(-1) ?? ''
+
 export const personSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Person',
 	'@id': PERSON_ID,
 	name: siteConfig.author,
+	givenName,
+	familyName,
 	alternateName: ['Safwan Lubdhak', 'Safwan U. Lubdhak'],
 	url: ORIGIN,
 	mainEntityOfPage: `${ORIGIN}/about/`,
