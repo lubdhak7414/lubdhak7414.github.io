@@ -6,8 +6,7 @@ updatedDate: '06 December 2024'
 coverImage:
   src: './cover.jpg'
   alt: 'Green Bangla Foundation Website'
-tags: ['Web Development', 'WordPress', 'Page Speed Optimization', 'Project']
-homePageIdx: 4
+tags: ['Web Development', 'WordPress', 'Page Speed Optimization']
 ---
 
 ## A speed-first WordPress build

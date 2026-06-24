@@ -53,6 +53,6 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 		borderRadius: '4px',
 		codePaddingInline: '1rem',
 		codeFontFamily:
-			'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;'
+			'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
 	}
 }

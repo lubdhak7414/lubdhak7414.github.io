@@ -6,8 +6,7 @@ updatedDate: '03 November 2024'
 coverImage:
   src: './cover.jpg'
   alt: 'Northern Ireland Driving Test Routes Website'
-tags: ['Wordpress', 'SEO', 'Project']
-homePageIdx: 5
+tags: ['Wordpress', 'SEO']
 ---
 
 ## A fast, content-first site built on Astro
