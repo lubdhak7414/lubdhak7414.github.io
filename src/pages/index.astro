@@ -28,7 +28,7 @@ const backend = [
 const others = ['Git', 'Linux', 'AWS', 'Nginx']
 const technologies = ['WordPress', 'Astro', 'Next.js', 'Gatsby', 'GraphQL', 'Stripe', 'Firebase']
 
-const MAX_POSTS = 10
+const MAX_POSTS = 5
 const allPosts = await getAllPosts()
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 const projectPosts = allPosts
@@ -110,9 +110,10 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 
 		<Section title='About'>
 			<p class='text-muted-foreground'>
-				Safwan Usaid Lubdhak is a software developer based in Bangladesh. He, which is to say, I,
-				have a few years of experience in web development and have worked with a wide range of
-				technologies. I love to talk about nerd stuff, too, so hit me up if you're into it.
+				Developer, tech enthusiast, and professional nerd. I spend my days writing code and my free
+				time talking about it. I have a few years of experience working across a wide mix of web
+				technologies. If you ever want to chat about code, tech, or anything remotely geeky, hit me
+				up.
 			</p>
 		</Section>
 
@@ -197,6 +198,12 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 							<PostPreview post={p} />
 						))}
 					</ul>
+					<a
+						href='/blog/'
+						class='text-foreground/75 hover:text-foreground mt-2 inline-flex w-fit items-center gap-x-1 font-medium transition-colors'
+					>
+						See all blog posts <span aria-hidden='true'>→</span>
+					</a>
 				</Section>
 			)
 		}

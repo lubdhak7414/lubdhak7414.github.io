@@ -83,14 +83,57 @@ const toc = generateToc(headings)
 		headings.forEach((h) => observer.observe(h))
 	}
 
-	// This project has no ClientRouter, so `astro:page-load` never fires - init
-	// directly (Astro defers the script, so the DOM is usually ready). The guard
-	// above keeps it idempotent; the page-load listener future-proofs for view
-	// transitions if they're ever enabled.
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', initTocScrollSpy)
-	} else {
-		initTocScrollSpy()
+	// Smooth-scroll TOC clicks (instead of the native abrupt jump) and flash the
+	// target heading so the eye catches where it landed. Delegated on document so
+	// it covers both the desktop sidebar and the mobile <details> list, and is
+	// added exactly once regardless of how many times init runs.
+	let smoothScrollBound = false
+
+	function initTocSmoothScroll() {
+		if (smoothScrollBound) return
+		smoothScrollBound = true
+
+		const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+		document.addEventListener('click', (event) => {
+			const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[data-toc-slug]')
+			if (!link?.dataset.tocSlug) return
+			const target = document.getElementById(link.dataset.tocSlug)
+			if (!target) return
+
+			event.preventDefault()
+			target.scrollIntoView({
+				behavior: prefersReduced.matches ? 'auto' : 'smooth',
+				block: 'start'
+			})
+			// Keep the URL in sync without re-triggering a jump.
+			history.replaceState(null, '', `#${link.dataset.tocSlug}`)
+			// Collapse the mobile TOC drawer after navigating.
+			link.closest('details')?.removeAttribute('open')
+
+			// Restart the highlight animation even on repeat clicks of the same link.
+			target.classList.remove('toc-target-active')
+			void target.offsetWidth
+			target.classList.add('toc-target-active')
+			target.addEventListener('animationend', () => target.classList.remove('toc-target-active'), {
+				once: true
+			})
+		})
 	}
-	document.addEventListener('astro:page-load', initTocScrollSpy)
+
+	// This project has no ClientRouter, so `astro:page-load` never fires - init
+	// directly (Astro defers the script, so the DOM is usually ready). The guards
+	// above keep it idempotent; the page-load listener future-proofs for view
+	// transitions if they're ever enabled.
+	function init() {
+		initTocScrollSpy()
+		initTocSmoothScroll()
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init)
+	} else {
+		init()
+	}
+	document.addEventListener('astro:page-load', init)
 </script>
