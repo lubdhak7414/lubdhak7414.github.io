@@ -15,7 +15,7 @@ We spent three hours last Tuesday pulling apart a compromised e-commerce site. T
 
 ![The storefront overrun with slot spam posts injected by the attacker](./spam-frontend.jpg)
 
-We assumed the usual entry point — a vulnerable plugin allowing unauthenticated post creation. We purged the database of the SEO spam easily enough. The real problem was finding out how the attacker was maintaining access.
+We assumed the usual entry point: a vulnerable plugin allowing unauthenticated post creation. We purged the database of the SEO spam easily enough. The real problem was finding out how the attacker was maintaining access.
 
 > **Key Takeaways**
 >
@@ -29,11 +29,11 @@ I checked the WordPress users list to audit administrator accounts. The UI showe
 
 ![WordPress admin users list showing Administrator count of 3 but only two visible rows](./ghost-admin-count.jpg)
 
-A standard visual inspection misses this entirely. One administrator account was completely invisible to the site owner.
+A standard visual inspection misses this entirely. One administrator account was invisible to the site owner.
 
 ### Bypassing visual audits
 
-Attackers usually build persistence by dropping obfuscated PHP shells in the `uploads` directory or burying base64-encoded strings deep in database transients. This attacker took a simpler, highly pragmatic approach. They altered the presentation layer to blind the site admins.
+Attackers usually build persistence by dropping obfuscated PHP shells in the `uploads` directory or burying base64-encoded strings deep in database transients. This attacker took a simpler, lazier route. They altered the presentation layer to blind the site admins.
 
 ## The persistence layer: a CSS injection in functions.php
 
@@ -68,12 +68,12 @@ The mechanism relies entirely on CSS `display: none` to hide UI elements. Line b
 
 It targets specific DOM nodes to suppress warning notifications, hide the iThemes Security dashboard menu item, and cloak two specific backdoor plugins: "Temporary Login Without Password" and "WP Hide Backend Notices".
 
-Crucially, the rule `.users-php .users tr[id="user-1087"]` removes a specific user row from the admin panel view. Once we bypassed the UI and queried the database directly for ID 1087, we found our ghost administrator — an account named "AmranVai".
+The last rule mattered most. `.users-php .users tr[id="user-1087"]` removes a specific user row from the admin panel view. Once we bypassed the UI and queried the database directly for ID 1087, we found our ghost administrator: an account named "AmranVai".
 
 ![The hidden AmranVai administrator account revealed after bypassing the CSS-hidden UI](./amranvai-revealed.jpg)
 
 ## Tradeoffs of the DOM-level rootkit
 
-Every technical choice has tradeoffs, even for attackers. This method is incredibly cheap to implement. It requires zero complex PHP logic and completely bypasses basic security audits performed by non-technical store owners who only look at dashboards. But it breaks easily. Because the payload lives strictly in the active theme's `functions.php` file, a simple theme update or a switch to a default theme instantly strips the persistence mechanism and exposes the rogue user. It also leaves an obvious footprint in version control.
+Every technical choice has tradeoffs, even for attackers. This method is cheap to implement. It requires no complex PHP logic and quietly bypasses basic security audits performed by non-technical store owners who only look at dashboards. But it breaks easily. Because the payload lives strictly in the active theme's `functions.php` file, a simple theme update or a switch to a default theme instantly strips the persistence mechanism and exposes the rogue user. It also leaves an obvious footprint in version control.
 
 You cannot trust the application UI when auditing a compromised system. If the environment is breached, the DOM is just another vector for obfuscation. Audit the raw database tables.
