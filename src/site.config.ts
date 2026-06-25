@@ -29,17 +29,14 @@ export const siteConfig: SiteConfig = {
 
 // https://expressive-code.com/reference/configuration/
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
-	// One dark, one light theme => https://expressive-code.com/guides/themes/#available-themes
-	themes: ['dracula', 'github-light'],
+	// Dual themes: vitesse-dark + vitesse-light. Neutral backgrounds (#121212 / #ffffff)
+	// that sit flush against the site's zinc palette. 5+ hue tokens (purple keywords,
+	// blue functions, green strings, orange types) with a clean, premium feel.
+	themes: ['vitesse-dark', 'vitesse-light'],
 	themeCssSelector(theme, { styleVariants }) {
-		// If one dark and one light theme are available
-		// generate theme CSS selectors compatible with cactus-theme dark mode switch
-		if (styleVariants.length >= 2) {
-			const baseTheme = styleVariants[0]?.theme
-			const altTheme = styleVariants.find((v) => v.theme.type !== baseTheme?.type)?.theme
-			if (theme === baseTheme || theme === altTheme) return `[data-theme='${theme.type}']`
-		}
-		// return default selector
+		const baseTheme = styleVariants[0]?.theme
+		const altTheme = styleVariants.find((v) => v.theme.type !== baseTheme?.type)?.theme
+		if (theme === baseTheme || theme === altTheme) return `[data-theme='${theme.type}']`
 		return `[data-theme="${theme.name}"]`
 	},
 	useThemedScrollbars: false,
@@ -50,7 +47,7 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 		uiLineHeight: 'inherit',
 		codeFontSize: '0.875rem',
 		codeLineHeight: '1.7142857rem',
-		borderRadius: '4px',
+		borderRadius: '8px',
 		codePaddingInline: '1rem',
 		codeFontFamily:
 			'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
