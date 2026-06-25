@@ -7,6 +7,7 @@ import PostPreview from '@/components/blog/PostPreview.astro'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import BackButton from '@/components/BackButton.astro'
 import { getAllPosts, getUniqueTags, slugifyTag, sortMDByDate, jsonLdScript } from '@/utils'
+import { siteConfig } from '@/site-config'
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 	const allPosts = await getAllPosts()
@@ -47,7 +48,7 @@ interface Props {
 const { page, tag } = Astro.props
 
 const meta = {
-	description: `View all posts with the tag - ${tag}`,
+	description: `Articles and project write-ups tagged ${tag} by ${siteConfig.author}.`,
 	title: `Tag: ${tag}`
 }
 
