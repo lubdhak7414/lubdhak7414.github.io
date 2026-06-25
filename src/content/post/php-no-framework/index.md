@@ -2,7 +2,7 @@
 title: 'Three Apps in Raw PHP: A Lesson in SQL Transactions'
 description: 'A café, a library, and a gym - three management systems built in plain PHP and MySQL with no framework, where the real lessons were all about transactions.'
 publishDate: '23 December 2024'
-updatedDate: '17 June 2026'
+updatedDate: '4 March 2026'
 coverImage:
   src: './cover.webp'
   alt: 'RepBase gym class schedule showing live seats-left badges'

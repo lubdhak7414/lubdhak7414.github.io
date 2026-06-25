@@ -9,8 +9,6 @@ tags: ['WordPress', 'Security', 'PHP', 'Incident Response', 'Project']
 homePageIdx: 3
 ---
 
-## The symptom: SEO spam on the frontend
-
 We spent three hours last Tuesday pulling apart a compromised e-commerce site. The symptom was glaring. The frontend of the store was plastered with Indonesian gambling posts pushing "Demo Slot Tema Asia" and "Slot Deposit 5000".
 
 ![The storefront overrun with slot spam posts injected by the attacker](./spam-frontend.jpg)
