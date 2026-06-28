@@ -23,11 +23,13 @@ const { href } = Astro.props
 </Button>
 
 <script>
-	document.querySelector<HTMLAnchorElement>('[data-back-fallback]')?.addEventListener('click', (e) => {
-		const ref = document.referrer
-		if (ref && new URL(ref).origin === location.origin) {
-			e.preventDefault()
-			history.back()
-		}
-	})
+	document
+		.querySelector<HTMLAnchorElement>('[data-back-fallback]')
+		?.addEventListener('click', (e) => {
+			const ref = document.referrer
+			if (ref && new URL(ref).origin === location.origin) {
+				e.preventDefault()
+				history.back()
+			}
+		})
 </script>

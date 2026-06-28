@@ -6,6 +6,7 @@
 
 /*
   Cache-Control: public, max-age=3600, must-revalidate
+  No-Vary-Search: key-order, params=("utm_source" "utm_medium" "utm_campaign" "utm_content" "utm_term")
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY

@@ -51,7 +51,13 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 <link rel='preload' href='/fonts/Satoshi-Variable.woff2' as='font' type='font/woff2' crossorigin />
 
 {/* Robots */}
-{noIndex && <meta content='noindex, nofollow' name='robots' />}
+{
+	noIndex ? (
+		<meta content='noindex, nofollow' name='robots' />
+	) : (
+		<meta content='max-snippet:-1, max-image-preview:large, max-video-preview:-1' name='robots' />
+	)
+}
 
 {/* Canonical URL */}
 {!noIndex && <link rel='canonical' href={canonicalURL} />}
@@ -94,6 +100,15 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 
 {/* Sitemap */}
 <link href='/sitemap-index.xml' rel='sitemap' />
+
+{
+	/* AI/agent discovery — /llms.txt covers this; a separate schemamap.xml was removed
+     because it duplicated sitemap-index.xml with no structural difference. If richer
+     per-post metadata (title, tags, reading time) is ever needed for AI crawlers,
+     a JSON entity map would be the right form, not another <urlset> clone. */
+}
+{/* rel='llms-txt' is non-standard (emerging llms.txt spec) — browsers ignore unknown rel values */}
+<link href='/llms.txt' rel='llms-txt' />
 
 {/* RSS auto-discovery */}
 <link href='/rss.xml' rel='alternate' title={siteConfig.title} type='application/rss+xml' />
