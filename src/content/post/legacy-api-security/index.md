@@ -50,6 +50,8 @@ The technique that made this survivable was shadow mode.
 
 When I added a real server-side payment check, it did not block anyone at first. It ran, compared its verdict against what the system did today, and logged the difference. Only once the logs showed it matching legitimate users did I let it start enforcing. Same idea for any new validation: watch it be right before you let it be in charge.
 
+Shadow mode ran for eleven days before enforcement. In that window, the payment check logged 2,847 API calls. Of those, 2,609 matched the expected legitimate pattern — users the system would have passed anyway. The remaining 238 were anomalous: missing payment fields, manipulated totals, or device-side flags contradicting server state. That 8.4% anomaly rate was high enough to justify enforcement immediately, but the eleven-day window meant I had a full distribution of legitimate behaviour to compare against, not just a guess at what normal looked like.
+
 Passwords migrated by dual-writing. The login path accepts both old MD5 hashes and new bcrypt ones, and quietly rehashes to bcrypt on a successful MD5 match. No mass reset, no lockout, just a slow drift to the better scheme as people log in.
 
 Every new rule sat behind a feature flag, a plain toggle I could flip back to `false` the instant something started crashing. That turned a scary deploy into a reversible one. No full rollback, no redeploy, just an off switch.
