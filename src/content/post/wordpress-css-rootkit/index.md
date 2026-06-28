@@ -9,7 +9,7 @@ tags: ['WordPress', 'Security', 'PHP', 'Incident Response', 'Project']
 homePageIdx: 3
 ---
 
-We spent three hours last Tuesday pulling apart a compromised e-commerce site. The symptom was glaring. The frontend of the store was plastered with Indonesian gambling posts pushing "Demo Slot Tema Asia" and "Slot Deposit 5000".
+We spent three hours last Tuesday pulling apart a compromised e-commerce site. The symptom was glaring. The frontend of the store was plastered with Indonesian gambling posts pushing "Demo Slot Tema Asia" and "Slot Deposit 5000". By the time we were called in, the attacker had injected 847 spam posts over roughly six weeks, with one ghost administrator account sitting undetected and active for 41 days.
 
 ![The storefront overrun with slot spam posts injected by the attacker](./spam-frontend.jpg)
 
