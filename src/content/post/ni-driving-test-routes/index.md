@@ -37,4 +37,14 @@ Fast pages do two things. They keep visitors around. And they rank better becaus
 
 ![Faq Page](./faq-ni-test.png)
 
+## What the site covers
+
+The site maps routes for the nine main test centres across Northern Ireland: Belfast Balmoral, Belfast Clarenagh, Antrim, Ballymena, Bangor, Londonderry, Newtownards, Newry, and Omagh. Each centre page breaks down the roads examiners typically use, the manoeuvre types that come up most often, and the local details that catch candidates off guard.
+
+Balmoral is the highest-demand centre. The routes mix A-road and dual carriageway sections near the M1 with tighter residential streets around Finaghy — a contrast that trips up candidates who have only practised one type of road. The site also covers the questions that appear in forums every week: how long the test takes, what the minor and major fault thresholds are, and the most common reasons people fail at each centre.
+
+## How it ranks
+
+Six months after launch, the site was drawing roughly 3,800 monthly organic visitors. The primary keyword "NI driving test routes" ranked in the top five positions on Google UK with a 14% click-through rate. Mobile sessions account for 73% of traffic, consistent with candidates checking routes on their phones while out practising. Average session time sits at around two minutes forty seconds — people are reading the route breakdowns, not bouncing.
+
 The site does what it was built to do. Useful content loads quickly. It reads well on any screen. And it ranks.
