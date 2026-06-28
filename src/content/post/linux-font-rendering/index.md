@@ -15,7 +15,7 @@ period: learning new shortcuts, finding equivalent apps, tweaking the desktop. W
 I didn't expect was to spend hours staring at my screen wondering why the text
 looked so wrong.
 
-Not broken, just *off*. Fuzzy at small sizes. Thin in places that felt wrong. Weirdly
+Not broken, just _off_. Fuzzy at small sizes. Thin in places that felt wrong. Weirdly
 light on a dark background. On a 1080p IPS monitor like the BenQ GW2480, it was
 impossible to ignore. Windows fonts had always felt sharp and weighted just right.
 Linux felt like reading through frosted glass.
@@ -90,7 +90,7 @@ taken by the **lucidglyph** project.
 
 The project is maintained by **maximilionus** on GitHub:
 [github.com/maximilionus/lucidglyph](https://github.com/maximilionus/lucidglyph).
-Previously known as *freetype-envision*, it is a carefully curated collection of
+Previously known as _freetype-envision_, it is a carefully curated collection of
 FreeType and Fontconfig tweaks that together replicate the macOS-style stem-darkening
 approach on Linux.
 

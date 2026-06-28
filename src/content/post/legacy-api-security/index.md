@@ -16,7 +16,7 @@ That single constraint changes everything. You are not securing a system. You ar
 >
 > - When client apps cannot be updated, the API response shape becomes a frozen contract. Security fixes have to preserve every key, type, and status code the old clients expect.
 > - The cheapest, most dangerous flaws are usually trust ones: the server believing whatever the client says about payment, auth, or identity.
-> - Shadow mode and feature flags let you enforce new checks gradually. You log what a fix *would* have blocked before you let it block anything for real.
+> - Shadow mode and feature flags let you enforce new checks gradually. You log what a fix _would_ have blocked before you let it block anything for real.
 
 ## What I was handed
 
@@ -28,7 +28,7 @@ It worked. It also felt like an MVP that sprinted past the prototype stage and n
 
 I found nine issues. The pattern underneath most of them is the same: the server trusts the client.
 
-The payment check was the clearest example. The API let the app *tell it* whether the user had paid. Flip a boolean on the device and you unlock everything for free. The server never verified anything.
+The payment check was the clearest example. The API let the app _tell it_ whether the user had paid. Flip a boolean on the device and you unlock everything for free. The server never verified anything.
 
 Auth was no better. One endpoint accepted the literal string `1234` as a valid token and waved the request through. The admin login only checked the password in client-side JavaScript, so the actual server endpoints sat wide open behind a cosmetic gate. Several route-management endpoints checked for no token at all, which meant anyone could delete data.
 

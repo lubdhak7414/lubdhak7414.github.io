@@ -28,6 +28,7 @@ export const personSchema = {
 	jobTitle: 'Software Developer',
 	description: siteConfig.bio,
 	knowsAbout: ['Software Development', 'KDE', 'Linux', 'Web Development', 'Databases', 'DevOps'],
+	publishingPrinciples: `${ORIGIN}/about/`,
 	address: {
 		'@type': 'PostalAddress',
 		addressCountry: 'Bangladesh'
@@ -40,5 +41,7 @@ export const websiteSchema = {
 	'@type': 'WebSite',
 	name: siteConfig.author,
 	url: ORIGIN,
-	publisher: { '@id': PERSON_ID }
+	publisher: { '@id': PERSON_ID },
+	copyrightHolder: { '@id': PERSON_ID },
+	copyrightYear: new Date().getFullYear()
 }
