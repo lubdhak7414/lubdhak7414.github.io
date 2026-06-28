@@ -74,4 +74,6 @@ The last rule mattered most. `.users-php .users tr[id="user-1087"]` removes a sp
 
 Every technical choice has tradeoffs, even for attackers. This method is cheap to implement. It requires no complex PHP logic and quietly bypasses basic security audits performed by non-technical store owners who only look at dashboards. But it breaks easily. Because the payload lives strictly in the active theme's `functions.php` file, a simple theme update or a switch to a default theme instantly strips the persistence mechanism and exposes the rogue user. It also leaves an obvious footprint in version control.
 
+The full cleanup took four hours: roughly an hour to understand the scope and audit the database tables directly, forty minutes to identify and strip the persistence mechanism from `functions.php`, another hour to purge the 847 spam posts and reset compromised credentials, and forty minutes of post-remediation verification. No store downtime — we worked on a staging clone and pushed the cleaned files in a single deploy.
+
 You cannot trust the application UI when auditing a compromised system. If the environment is breached, the DOM is just another vector for obfuscation. Audit the raw database tables.
