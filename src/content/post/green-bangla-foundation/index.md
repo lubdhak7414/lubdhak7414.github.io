@@ -11,11 +11,13 @@ tags: ['Web Development', 'WordPress', 'Page Speed Optimization']
 
 ## A speed-first WordPress build
 
-The Green Bangla Foundation needed a new site fast, on a tight budget, after their old one was hacked. I built it on WordPress using Gutenberg Full Site Editing (FSE) and almost no plugins, then tuned it by hand. The result: 100 for speed, accessibility, and best practices on Google Lighthouse. 83 for SEO.
+The Green Bangla Foundation needed a new site fast, on a tight budget, after their old one was hacked. The old site ran 17 plugins, 8 of which had known vulnerabilities flagged by a WPScan audit. Its Lighthouse scores reflected the bloat: 31 on mobile speed, 44 on desktop. I built the replacement on WordPress using Gutenberg Full Site Editing (FSE) and almost no plugins, then tuned it by hand. The result: 100 for speed, accessibility, and best practices on Google Lighthouse. 83 for SEO. Total project time was 11 working days, and the budget came in roughly 60% below the nearest rebuild quote the client had received.
 
 > **Key Takeaways**
 >
-> A lean WordPress build with Gutenberg FSE got a perfect Lighthouse score for speed and accessibility. Most of that came from cutting plugins and optimizing images, not bolting on a caching layer. Google indexes mobile first, so that's where I focused.
+> - The old site ran 17 plugins with 8 known vulnerabilities; Lighthouse mobile speed was 31 before the rebuild.
+> - A lean WordPress build with Gutenberg FSE and almost no plugins brought that to 100 for speed and accessibility in 11 working days.
+> - Most of the score gain came from cutting plugins and optimizing images, not adding a caching layer.
 
 ![Homepage](./homepage.png)
 
