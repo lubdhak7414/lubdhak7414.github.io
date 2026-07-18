@@ -22,6 +22,10 @@ pnpm-debug.log*
 .DS_Store
 .vercel
 
+# tool-generated
+.mimocode/
+memory/
+
 #AI
 CLAUDE.md
 plans/
