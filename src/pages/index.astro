@@ -1,14 +1,9 @@
 ---
 import PageLayout from '../layouts/BaseLayout.astro'
-import Section from '../components/Section.astro'
-import Card from '../components/Card.astro'
-import ProjectCarousel from '../components/ProjectCarousel.astro'
-import Label from '../components/Label.astro'
-import SkillLayout from '../components/SkillLayout.astro'
+import ProfileSidebar from '@/components/portfolio/ProfileSidebar.astro'
+import SkillLayout from '@/components/SkillLayout.astro'
+import Card from '@/components/Card.astro'
 import PostPreview from '@/components/blog/PostPreview.astro'
-
-import { Image } from 'astro:assets'
-import astro from '../assets/face.png'
 
 import { getAllPosts, sortMDByDate, personSchema, websiteSchema, jsonLdScript } from '@/utils'
 import { siteConfig } from '@/site-config'
@@ -35,185 +30,136 @@ const projectPosts = allPosts
 	.filter((p) => p.data.tags.includes('project'))
 	.sort((a, b) => (a.data.homePageIdx ?? Infinity) - (b.data.homePageIdx ?? Infinity))
 
-// Reuse the canonical bio (sentence fragment) as a first-person-free description.
 const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).toLowerCase()}${siteConfig.bio.slice(1)}`
 ---
 
-<PageLayout meta={{ title: 'Software Developer', description: homeDescription }}>
+<PageLayout meta={{ title: 'Software Developer', description: homeDescription }} wide>
 	<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
 	<script type='application/ld+json' set:html={jsonLdScript(websiteSchema)} is:inline />
-	<div class='flex w-full flex-col gap-y-10'>
-		<section class='flex flex-col items-center gap-y-7'>
-			<Image
-				src={astro}
-				alt='Safwan Usaid Lubdhak'
-				class='h-28 w-auto rounded-full border-2 border-border transition-all duration-800 ease-in-out'
-				loading='eager'
-			/>
 
-			<div class='flex flex-col items-center gap-y-4'>
-				<h1 class='text-3xl font-bold'>Safwan Usaid Lubdhak</h1>
-				<div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-					<Label title='Freelancer'>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							viewBox='0 0 24 24'
-							class='h-5 w-5'
-							slot='icon'
-							aria-hidden='true'
-							fill='none'
-							stroke='currentColor'
-							stroke-width='2'
-							stroke-linecap='round'
-							stroke-linejoin='round'
-							><rect width='20' height='14' x='2' y='7' rx='2' ry='2'></rect><path
-								d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'></path></svg
-						>
-					</Label>
-					<Label title='Bangladesh'>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							viewBox='0 0 24 24'
-							class='h-5 w-5'
-							slot='icon'
-							aria-hidden='true'
-							fill='none'
-							stroke='currentColor'
-							stroke-width='2'
-							stroke-linecap='round'
-							stroke-linejoin='round'
-							><path d='M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z'></path><circle
-								cx='12'
-								cy='10'
-								r='3'></circle></svg
-						>
-					</Label>
-					<Label title='Mail me' as='a' href={`mailto:${siteConfig.socials.email}`}>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							viewBox='0 0 24 24'
-							class='h-5 w-5'
-							slot='icon'
-							aria-hidden='true'
-							fill='none'
-							stroke='currentColor'
-							stroke-width='2'
-							stroke-linecap='round'
-							stroke-linejoin='round'
-							><rect width='20' height='16' x='2' y='4' rx='2'></rect><path
-								d='m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'></path></svg
-						>
-					</Label>
+	<div class='homepage-grid'>
+		<!-- Left column: sticky profile sidebar -->
+		<aside class='homepage-sidebar'>
+			<ProfileSidebar />
+		</aside>
+
+		<!-- Right column: scrollable content -->
+		<div class='flex flex-col gap-y-10'>
+			<!-- Featured Projects -->
+			{
+				projectPosts.length > 0 && (
+					<section data-reveal>
+						<h2 class='text-foreground mb-4 text-base font-semibold'>Featured Projects</h2>
+						<div class='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+							{projectPosts.map((post, i) => (
+								<a
+									href={`/blog/${post.id}/`}
+									class:list={[
+										'project-card group border-surface-warm-border bg-surface-warm flex flex-col gap-y-2 rounded-xl border p-4 transition-all hover:border-accent-warm/50',
+										i === 0 && 'sm:col-span-2'
+									]}
+								>
+									<h3 class='text-foreground font-medium group-hover:text-accent-warm transition-colors'>
+										{post.data.title}
+									</h3>
+									<p class='text-muted-foreground text-sm'>
+										{post.data.description}
+										<span class='text-muted-foreground ml-1 inline'>→</span>
+									</p>
+								</a>
+							))}
+						</div>
+					</section>
+				)
+			}
+
+			<!-- Skills -->
+			<section data-reveal>
+				<h2 class='text-foreground mb-4 text-base font-semibold'>Skills</h2>
+				<div class='flex flex-col gap-y-4'>
+					<SkillLayout title='Languages' skills={languages} />
+					<SkillLayout title='Frontend' skills={frontend} />
+					<SkillLayout title='Backend' skills={backend} />
+					<SkillLayout title='Technologies' skills={technologies} />
+					<SkillLayout title='Others' skills={others} />
 				</div>
-			</div>
-		</section>
+			</section>
 
-		<Section title='About'>
-			<p class='text-muted-foreground'>
-				Developer, tech enthusiast, and professional nerd. I spend my days writing code and my free
-				time talking about it. I have a few years of experience working across a wide mix of web
-				technologies. If you ever want to chat about code, tech, or anything remotely geeky, hit me
-				up.
-			</p>
-		</Section>
-
-		{
-			projectPosts.length > 0 && (
-				<Section title='Projects'>
-					<ProjectCarousel>
-						{projectPosts.map((post, i) => (
-							<a href={`/blog/${post.id}/`} class='w-[85%] flex-shrink-0 sm:w-[calc(50%-0.5rem)]'>
-								<div class='border-border bg-primary-foreground hover:border-foreground/25 flex h-full flex-col rounded-2xl border transition-all hover:shadow-xs'>
-									{post.data.coverImage && (
-										<Image
-											src={post.data.coverImage.src}
-											alt={post.data.coverImage.alt}
-											class='h-48 w-full rounded-t-2xl object-cover'
-											width={384}
-											height={230}
-											densities={[1, 2]}
-											loading={i === 0 ? 'eager' : 'lazy'}
-											fetchpriority={i === 0 ? 'high' : undefined}
-										/>
-									)}
-									<div class='flex flex-grow flex-col gap-y-0.5 px-5 py-4'>
-										<h3 class='text-lg font-medium'>{post.data.title}</h3>
-										<p class='text-muted-foreground line-clamp-2'>{post.data.description}</p>
-									</div>
-								</div>
-							</a>
-						))}
-					</ProjectCarousel>
-				</Section>
-			)
-		}
-
-		<Section title='Experience'>
-			<Card
-				heading='Freelance Web Developer'
-				subheading='Remote clients'
-				date='2019 - Present'
-				imagePath='/src/assets/logos/web_logo.png'
-				altText='Web Development'
-				imageClass='h-12 w-auto md:-left-16'
-			>
-				<ul class='text-muted-foreground ml-4 list-disc'>
-					<li>
-						WordPress sites for small businesses - hosting, domains, email setup, and redesigns.
-					</li>
-					<li>
-						Security work: malware cleanup, patching vulnerabilities, hardening compromised sites.
-					</li>
-					<li>Infrastructure migrations - moving DNS, email routing, and CDN across providers.</li>
-				</ul>
-			</Card>
-		</Section>
-
-		<Section title='Education'>
-			<Card
-				heading='BRAC University'
-				subheading='BSc. in Computer Science and Engineering'
-				imagePath='/src/assets/logos/edu_logo.png'
-				altText='BRAC University'
-				imageClass='h-12 w-auto md:-left-16'
-			>
-				<ul class='text-muted-foreground ml-4 list-disc'>
-					<li>
-						Completed core courses including Data Structures, Algorithms, Discrete Mathematics,
-						Digital Logic Design, Data Communications, Operating Systems, and Database Systems.
-					</li>
-					<li>
-						Advanced coursework in Artificial Intelligence, Neural Networks, Compiler Design,
-						Computer Architecture, Computer Networks, and Software Engineering.
-					</li>
-				</ul>
-			</Card>
-		</Section>
-
-		{
-			allPostsByDate.length > 0 && (
-				<Section title='Posts'>
-					<ul class='flex flex-col gap-y-2'>
-						{allPostsByDate.map((p) => (
-							<PostPreview post={p} />
-						))}
-					</ul>
-					<a
-						href='/blog/'
-						class='text-foreground/75 hover:text-foreground mt-2 inline-flex w-fit items-center gap-x-1 font-medium transition-colors'
+			<!-- Experience + Education -->
+			<div class='grid grid-cols-1 gap-6 md:grid-cols-2' data-reveal>
+				<section class='flex flex-col'>
+					<h2 class='text-foreground mb-3 text-base font-semibold'>Experience</h2>
+					<Card
+						heading='Freelance Web Developer'
+						subheading='Remote clients'
+						date='2019 - Present'
 					>
-						See all blog posts <span aria-hidden='true'>→</span>
-					</a>
-				</Section>
-			)
-		}
+						<ul class='text-muted-foreground ml-4 list-disc'>
+							<li>
+								WordPress sites for small businesses - hosting, domains, email setup, and redesigns.
+							</li>
+							<li>
+								Security work: malware cleanup, patching vulnerabilities, hardening compromised sites.
+							</li>
+							<li>Infrastructure migrations - moving DNS, email routing, and CDN across providers.</li>
+						</ul>
+					</Card>
+				</section>
 
-		<Section title='Skills'>
-			<SkillLayout title='Languages' skills={languages} />
-			<SkillLayout title='Frontend' skills={frontend} />
-			<SkillLayout title='Backend' skills={backend} />
-			<SkillLayout title='Technologies' skills={technologies} />
-			<SkillLayout title='Others' skills={others} />
-		</Section>
+				<section class='flex flex-col'>
+					<h2 class='text-foreground mb-3 text-base font-semibold'>Education</h2>
+					<Card
+						heading='BRAC University'
+						subheading='BSc. in Computer Science and Engineering'
+					>
+						<ul class='text-muted-foreground ml-4 list-disc'>
+							<li>
+								Completed core courses including Data Structures, Algorithms, Discrete Mathematics,
+								Digital Logic Design, Data Communications, Operating Systems, and Database Systems.
+							</li>
+							<li>
+								Advanced coursework in Artificial Intelligence, Neural Networks, Compiler Design,
+								Computer Architecture, Computer Networks, and Software Engineering.
+							</li>
+						</ul>
+					</Card>
+				</section>
+			</div>
+
+			<!-- Recent Posts -->
+			{
+				allPostsByDate.length > 0 && (
+					<section data-reveal>
+						<h2 class='text-foreground mb-4 text-base font-semibold'>Recent Posts</h2>
+						<ul class='flex flex-col gap-y-2'>
+							{allPostsByDate.map((p) => (
+								<PostPreview post={p} />
+							))}
+						</ul>
+						<a
+							href='/blog/'
+							class='text-foreground/75 hover:text-foreground mt-2 inline-flex w-fit items-center gap-x-1 font-medium transition-colors'
+						>
+							See all blog posts <span aria-hidden='true'>→</span>
+						</a>
+					</section>
+				)
+			}
+		</div>
 	</div>
+
+	<script>
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) {
+						e.target.classList.add('section-reveal')
+						observer.unobserve(e.target)
+					}
+				})
+			},
+			{ threshold: 0.1 }
+		)
+		document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el))
+	</script>
 </PageLayout>

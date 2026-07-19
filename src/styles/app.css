@@ -24,6 +24,12 @@
 	--color-popover-foreground: hsl(var(--popover-foreground));
 	--color-card: hsl(var(--card));
 	--color-card-foreground: hsl(var(--card-foreground));
+	--color-accent-warm: hsl(var(--accent-warm));
+	--color-accent-warm-foreground: hsl(var(--accent-warm-foreground));
+	--color-surface-warm: hsl(var(--accent-warm) / 0.04);
+	--color-surface-warm-border: hsl(var(--border));
+	--color-surface-warm-text: hsl(var(--muted-foreground));
+	--color-surface-warm-heading: hsl(var(--foreground));
 
 	--radius-lg: var(--radius);
 	--radius-md: calc(var(--radius) - 2px);
@@ -157,6 +163,8 @@ html.dark .expressive-code .frame {
 	--input: 240 5.9% 90%;
 	--ring: 240 5.9% 10%;
 	--radius: 0.5rem;
+	--accent-warm: 28 80% 50%;
+	--accent-warm-foreground: 0 0% 100%;
 }
 
 .dark {
@@ -179,6 +187,8 @@ html.dark .expressive-code .frame {
 	--border: 240 3.7% 15.9%;
 	--input: 240 3.7% 15.9%;
 	--ring: 240 4.9% 83.9%;
+	--accent-warm: 32 90% 60%;
+	--accent-warm-foreground: 240 10% 3.9%;
 }
 
 @layer base {
@@ -187,5 +197,79 @@ html.dark .expressive-code .frame {
 	}
 	body {
 		@apply bg-background text-foreground;
+	}
+}
+
+/* ============================================================
+   Homepage layout
+   ============================================================ */
+
+.homepage-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 0.33fr) minmax(0, 1fr);
+	gap: clamp(2rem, 5vw, 4rem);
+	align-items: start;
+}
+
+@media (max-width: 768px) {
+	.homepage-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.homepage-sidebar {
+	position: sticky;
+	top: clamp(4rem, 8vw, 6rem);
+}
+
+@media (max-width: 768px) {
+	.homepage-sidebar {
+		position: static;
+	}
+}
+
+/* Project row */
+.project-row {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	padding: 0.875rem 0;
+	border-bottom: 1px solid hsl(var(--border));
+	transition: border-color 0.2s ease;
+}
+
+.project-row:first-child {
+	border-top: 1px solid hsl(var(--border));
+}
+
+.project-row:hover {
+	border-color: hsl(var(--accent-warm));
+}
+
+.project-row:last-child {
+	border-bottom: none;
+}
+
+/* Section reveal animation */
+@keyframes fade-slide-up {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.section-reveal {
+	animation: fade-slide-up 0.5s ease-out forwards;
+	opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.section-reveal {
+		animation: none;
+		opacity: 1;
 	}
 }

@@ -10,6 +10,7 @@ import { siteConfig } from '@/site-config'
 
 interface Props {
 	meta: SiteMeta
+	wide?: boolean
 }
 
 const {
@@ -22,7 +23,8 @@ const {
 		modifiedDate,
 		noIndex,
 		title
-	}
+	},
+	wide = false
 } = Astro.props
 ---
 
@@ -42,6 +44,13 @@ const {
 
 	<body class='bg-background flex justify-center'>
 		<ThemeProvider />
+		<!-- Background dot grid -->
+		<div
+			aria-hidden='true'
+			class='pointer-events-none fixed inset-0 z-0 dark:invert'
+			style='background-image: radial-gradient(circle, hsl(240 5.9% 10% / 0.3) 1.5px, transparent 1.5px); background-size: 28px 28px; opacity: 0.2;'
+		>
+		</div>
 		<a
 			href='#main-content'
 			class='focus:bg-primary-foreground focus:text-foreground sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:px-4 focus:py-2 focus:shadow-md'
@@ -49,7 +58,10 @@ const {
 			Skip to content
 		</a>
 		<div
-			class='font-satoshi flex min-h-screen w-full max-w-[60rem] flex-col items-center px-6 pt-7 pb-10 text-[0.92rem] leading-relaxed sm:px-10 lg:px-10'
+			class:list={[
+				'font-satoshi flex min-h-screen w-full flex-col items-center px-6 pt-7 pb-10 text-[0.92rem] leading-relaxed sm:px-10 lg:px-10',
+				wide ? 'max-w-[75rem]' : 'max-w-[60rem]'
+			]}
 		>
 			<Header />
 			<main id='main-content' class='w-full'>
