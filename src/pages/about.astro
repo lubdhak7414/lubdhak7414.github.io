@@ -20,7 +20,7 @@ const aboutPageSchema = {
 	<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
 	<script type='application/ld+json' set:html={jsonLdScript(aboutPageSchema)} is:inline />
 
-	<div class='container page'>
+	<div class='page container'>
 		<div class='split'>
 			<IdentityRail />
 			<div class='stack'>
@@ -40,8 +40,11 @@ const aboutPageSchema = {
 					<p class='muted max-w-[65ch]'>
 						Most of my projects are public. I write about what I'm working on in the blog here, and
 						the source is on
-						<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
-							>GitHub</a
+						<a
+							class='link'
+							href={siteConfig.socials.github}
+							target='_blank'
+							rel='noopener noreferrer'>GitHub</a
 						>.
 					</p>
 				</section>

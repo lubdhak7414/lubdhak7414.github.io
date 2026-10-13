@@ -3,13 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 
 import CoverFigure from '@/components/CoverFigure.astro'
 import FormattedDate from '@/components/FormattedDate.astro'
-import {
-	PERSON_ID,
-	displayTags,
-	getEntrySocialImage,
-	jsonLdScript,
-	slugifyTag
-} from '@/utils'
+import { PERSON_ID, displayTags, getEntrySocialImage, jsonLdScript, slugifyTag } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 import PageLayout from './BaseLayout.astro'
@@ -73,7 +67,7 @@ const breadcrumbSchema = {
 >
 	<script type='application/ld+json' set:html={jsonLdScript(articleSchema)} is:inline />
 	<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
-	<div class='container page'>
+	<div class='page container'>
 		<a class='back' href='/#work'>← All work</a>
 		<header class='p-header'>
 			<p class='meta'>
