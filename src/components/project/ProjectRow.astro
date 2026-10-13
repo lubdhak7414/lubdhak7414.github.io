@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { displayTags } from '@/utils'
+
+interface Props {
+	project: CollectionEntry<'project'>
+}
+
+const { project } = Astro.props
+const { title, description, links } = project.data
+const tags = displayTags(project)
+---
+
+{/* The title link stretches over the whole row (.project-name a::after); the row's own
+    links sit above it (z-index) so they still work on their own. */}
+<article class='project'>
+	<div class='project-head'>
+		<div class='project-name'>
+			<h3 class='h3'>
+				<a href={`/projects/${project.id}/`}>{title}<span class='go' aria-hidden='true'>→</span></a>
+			</h3>
+		</div>
+		{
+			links.length > 0 && (
+				<div class='links'>
+					{links.map((link) => (
+						<a class='link' href={link.url} target='_blank' rel='noopener noreferrer'>
+							{link.label}
+						</a>
+					))}
+				</div>
+			)
+		}
+	</div>
+	<p>{description}</p>
+	{tags.length > 0 && <p class='meta'>{tags.join(' / ')}</p>}
+</article>

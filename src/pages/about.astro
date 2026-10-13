@@ -1,7 +1,6 @@
 ---
-import PageLayout from '../layouts/BaseLayout.astro'
-import { Image } from 'astro:assets'
-import face from '../assets/face.png'
+import PageLayout from '@/layouts/BaseLayout.astro'
+import IdentityRail from '@/components/portfolio/IdentityRail.astro'
 import { personSchema, jsonLdScript } from '@/utils'
 import { siteConfig } from '@/site-config'
 
@@ -21,58 +20,71 @@ const aboutPageSchema = {
 	<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
 	<script type='application/ld+json' set:html={jsonLdScript(aboutPageSchema)} is:inline />
 
-	<div class='flex w-full flex-col gap-y-10'>
-		<section class='flex flex-col items-center gap-y-6 text-center'>
-			<Image
-				src={face}
-				alt='Safwan Usaid Lubdhak'
-				class='h-28 w-auto rounded-full border-2 border-border'
-				loading='eager'
-			/>
-			<div class='flex flex-col items-center gap-y-3'>
-				<h1 class='text-3xl font-bold'>About Safwan Usaid Lubdhak</h1>
+	<div class='container page'>
+		<div class='split'>
+			<IdentityRail />
+			<div class='stack'>
+				<section aria-labelledby='do-h'>
+					<h2 class='h2 section-title' id='do-h'>What I do</h2>
+					<div class='prose'>
+						<p>
+							I'm Safwan, a CS graduate from Bangladesh. I build web apps, scale DevOps pipelines,
+							and integrate AI systems. I'm deeply passionate about the open-source ecosystem,
+							regularly writing scripts and tools to customize the Linux desktop experience and
+							optimize self-hosted environments.
+						</p>
+					</div>
+				</section>
+				<section aria-labelledby='os-h'>
+					<h2 class='h2 section-title' id='os-h'>Open source</h2>
+					<p class='muted max-w-[65ch]'>
+						Most of my projects are public. I write about what I'm working on in the blog here, and
+						the source is on
+						<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
+							>GitHub</a
+						>.
+					</p>
+				</section>
+				<section aria-labelledby='ct-h'>
+					<h2 class='h2 section-title' id='ct-h'>Elsewhere &amp; contact</h2>
+					<dl class='contact'>
+						<div>
+							<dt>GitHub</dt>
+							<dd>
+								<a
+									class='link'
+									href={siteConfig.socials.github}
+									target='_blank'
+									rel='noopener noreferrer'>github.com/lubdhak7414</a
+								>
+							</dd>
+						</div>
+						<div>
+							<dt>LinkedIn</dt>
+							<dd>
+								<a
+									class='link'
+									href={siteConfig.socials.linkedin}
+									target='_blank'
+									rel='noopener noreferrer'>linkedin.com/in/lubdhak7414</a
+								>
+							</dd>
+						</div>
+						<div>
+							<dt>Email</dt>
+							<dd>
+								<a class='link' href={`mailto:${siteConfig.socials.email}`}
+									>{siteConfig.socials.email}</a
+								>
+							</dd>
+						</div>
+					</dl>
+					<p class='muted mt-8'>
+						Want to see what I've built? Read the <a class='link' href='/blog/'>blog</a> for write-ups,
+						or head back to the <a class='link' href='/'>homepage</a> for the full résumé.
+					</p>
+				</section>
 			</div>
-		</section>
-
-		<section class='prose prose-base prose-zinc dark:prose-invert text-muted-foreground max-w-none'>
-			<h2>What I do</h2>
-			<p>
-				I'm Safwan, a CS graduate from Bangladesh. I build web apps, scale DevOps pipelines, and
-				integrate AI systems. I'm deeply passionate about the open-source ecosystem, regularly
-				writing scripts and tools to customize the Linux desktop experience and optimize self-hosted
-				environments.
-			</p>
-
-			<h2>Open source</h2>
-			<p>
-				Most of my projects are public. I write about what I'm working on in the blog here, and the
-				source is on
-				<a href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'>GitHub</a>.
-			</p>
-
-			<h2>Elsewhere &amp; contact</h2>
-			<ul>
-				<li>
-					GitHub:
-					<a href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
-						>github.com/lubdhak7414</a
-					>
-				</li>
-				<li>
-					LinkedIn:
-					<a href={siteConfig.socials.linkedin} target='_blank' rel='noopener noreferrer'
-						>linkedin.com/in/lubdhak7414</a
-					>
-				</li>
-				<li>
-					Email: <a href={`mailto:${siteConfig.socials.email}`}>{siteConfig.socials.email}</a>
-				</li>
-			</ul>
-
-			<p>
-				Want to see what I've built? Read the <a href='/blog/'>blog</a> for write-ups, or head back to
-				the <a href='/'>homepage</a> for the full résumé.
-			</p>
-		</section>
+		</div>
 	</div>
 </PageLayout>

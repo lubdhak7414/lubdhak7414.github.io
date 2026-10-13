@@ -189,11 +189,13 @@
 }
 
 /* Unlayered on purpose: Tailwind generates its own `container` utility (breakpoint
-   max-widths) in the utilities layer, which would otherwise win over this. */
+   max-widths) in the utilities layer, which would otherwise win over this. Only the
+   inline axis is set (the reference uses `padding: 0 var(--gutter)`): being unlayered,
+   a shorthand here would also beat `.page`'s and the footer's block padding. */
 .container {
 	max-width: 72rem;
-	margin: 0 auto;
-	padding: 0 var(--gutter);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
 }
 
 @layer components {

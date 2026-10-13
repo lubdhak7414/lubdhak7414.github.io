@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets'
+import avatar from '@/assets/face.png'
+import { siteConfig } from '@/site-config'
+
+// Initials sit under the photo as the avatar's fallback.
+const initials = siteConfig.author
+	.split(/\s+/)
+	.map((word) => word[0])
+	.join('')
+	.toUpperCase()
+---
+
+<aside class='rail'>
+	<div class='avatar' aria-hidden='true'>
+		{initials}<Image src={avatar} alt='' width={176} height={176} loading='eager' />
+	</div>
+	<h1 class='display'>{siteConfig.author}</h1>
+	<p class='role'>{siteConfig.role}</p>
+	<p class='bio'>{siteConfig.bio}</p>
+	<p class='avail'>{siteConfig.location}</p>
+	<div class='actions'>
+		<a class='btn' href={`mailto:${siteConfig.socials.email}`}>Email</a>
+		<div class='links'>
+			<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
+				>GitHub</a
+			>
+			<a class='link' href={siteConfig.socials.linkedin} target='_blank' rel='noopener noreferrer'
+				>LinkedIn</a
+			>
+		</div>
+	</div>
+</aside>
