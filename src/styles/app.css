@@ -1414,6 +1414,11 @@
 html .expressive-code .frame {
 	border: 1px solid var(--hair);
 }
+/* EC's reset reverts the copy button and its "Copied!" notice to the browser's default
+   font (Arial); keep them on the design's mono face. */
+html .expressive-code .copy :is(button, div) {
+	font-family: var(--mono);
+}
 
 @media (prefers-reduced-motion: reduce) {
 	*,
