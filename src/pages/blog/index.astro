@@ -1,0 +1,133 @@
+---
+import { render } from 'astro:content'
+
+import PageLayout from '@/layouts/BaseLayout.astro'
+import {
+	displayTags,
+	getAllPosts,
+	getFormattedDate,
+	getUniqueTagsWithCount,
+	slugifyTag,
+	sortByPublishDate
+} from '@/utils'
+
+const meta = {
+	description:
+		'Articles on web development, WordPress, SEO, and project case studies by Safwan Usaid Lubdhak.',
+	title: 'Blog'
+}
+
+const posts = sortByPublishDate(await getAllPosts())
+
+// Topic filters: tags shared by at least two posts (a one-post filter is just a link to
+// that post). Every post carries its tag slugs in data-tags for the filter script.
+const filterTags = getUniqueTagsWithCount(posts)
+	.filter(([tag, count]) => count >= 2 && tag !== 'project')
+	.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+	.map(([tag]) => tag)
+
+const rows = await Promise.all(
+	posts.map(async (post) => {
+		const { remarkPluginFrontmatter } = await render(post)
+		return { post, minutesRead: remarkPluginFrontmatter.minutesRead as string | undefined }
+	})
+)
+
+// Group by the year of the original publish date, newest year first.
+const years = [...new Set(rows.map(({ post }) => post.data.publishDate.getFullYear()))]
+const byYear = years.map((year) => ({
+	year,
+	rows: rows.filter(({ post }) => post.data.publishDate.getFullYear() === year)
+}))
+---
+
+<PageLayout meta={meta}>
+	<div class='container page'>
+		<header class='intro'>
+			<h1 class='display'>Blog</h1>
+		</header>
+		{
+			filterTags.length > 0 && (
+				<div class='filters' role='group' aria-label='Filter posts by topic'>
+					<button type='button' data-tag='all' aria-pressed='true'>
+						All
+					</button>
+					{filterTags.map((tag) => (
+						<button type='button' data-tag={slugifyTag(tag)} aria-pressed='false'>
+							{tag}
+						</button>
+					))}
+				</div>
+			)
+		}
+		<div id='posts'>
+			{posts.length === 0 && <p class='empty'>No posts yet.</p>}
+			{
+				byYear.map(({ year, rows }) => (
+					<section class='year' data-year aria-labelledby={`year-${year}`}>
+						<h2 id={`year-${year}`}>{year}</h2>
+						{rows.map(({ post, minutesRead }) => (
+							<a
+								class='post'
+								href={`/blog/${post.id}/`}
+								data-tags={post.data.tags.map(slugifyTag).join(' ')}
+							>
+								<time class='meta date' datetime={post.data.publishDate.toISOString()}>
+									{getFormattedDate(post.data.publishDate, { year: undefined })}
+								</time>
+								<div>
+									<h3 class='h3'>
+										{post.data.draft && '(Draft) '}
+										{post.data.title}
+									</h3>
+									<p>{post.data.description}</p>
+									<span class='meta'>
+										{[...displayTags(post), minutesRead].filter(Boolean).join(' / ')}
+									</span>
+								</div>
+							</a>
+						))}
+					</section>
+				))
+			}
+			<p class='empty' hidden>
+				No posts on this topic yet. <button class='link' type='button' data-reset
+					>Show all posts</button
+				>
+			</p>
+		</div>
+		<div class='links rss'>
+			<a class='link' href='/rss.xml'>RSS feed</a>
+			<a class='link' href='/tags/'>All tags</a>
+		</div>
+	</div>
+</PageLayout>
+
+<script>
+	// Topic filter (reference behaviour): show posts whose tags include the pressed
+	// topic, hide year groups left empty, and offer a reset if nothing matches.
+	;(() => {
+		const buttons = document.querySelectorAll<HTMLButtonElement>('.filters button')
+		const posts = document.querySelectorAll<HTMLElement>('.post')
+		const years = document.querySelectorAll<HTMLElement>('[data-year]')
+		const empty = document.querySelector<HTMLElement>('.empty[hidden]')
+		if (!buttons.length || !empty) return
+
+		function apply(tag: string) {
+			buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tag === tag)))
+			let total = 0
+			posts.forEach((p) => {
+				const show = tag === 'all' || (p.dataset.tags ?? '').split(' ').includes(tag)
+				p.hidden = !show
+				if (show) total++
+			})
+			years.forEach((y) => {
+				y.hidden = !y.querySelector('.post:not([hidden])')
+			})
+			empty!.hidden = total > 0
+		}
+
+		buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.tag ?? 'all')))
+		document.querySelector('[data-reset]')?.addEventListener('click', () => apply('all'))
+	})()
+</script>
