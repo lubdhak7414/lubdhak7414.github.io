@@ -1,11 +1,12 @@
 ---
 import type { HTMLTag, Polymorphic } from 'astro/types'
-import type { CollectionEntry } from 'astro:content'
+import type { Entry } from '@/utils'
+import { entryHref } from '@/utils'
 
 import FormattedDate from '../FormattedDate.astro'
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
-	post: CollectionEntry<'post'>
+	post: Entry
 	withDesc?: boolean
 }
 
@@ -20,7 +21,7 @@ const postDate = post.data.updatedDate ?? post.data.publishDate
 		{post.data.draft && <span class='text-red-500'>(Draft) </span>}
 		<a
 			data-astro-prefetch
-			href={`/blog/${post.id}/`}
+			href={entryHref(post)}
 			class='underline-offset-2 transition-colors hover:underline'
 		>
 			{post.data.title}

@@ -1,0 +1,28 @@
+---
+import type { ImageMetadata } from 'astro'
+import { Image } from 'astro:assets'
+
+interface Props {
+	src: ImageMetadata
+	alt: string
+	sizes: string
+	caption?: string | undefined
+}
+
+const { src, alt, sizes, caption } = Astro.props
+---
+
+{/* A real image keeps its own aspect ratio (`is-image`); the 16:9 frame is only for placeholders. */}
+<figure class='figure'>
+	<div class='frame is-image'>
+		<Image
+			src={src}
+			alt={alt}
+			widths={[640, 960, 1280, 1600]}
+			sizes={sizes}
+			loading='eager'
+			fetchpriority='high'
+		/>
+	</div>
+	{caption && <figcaption>{caption}</figcaption>}
+</figure>

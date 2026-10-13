@@ -1,16 +1,24 @@
 ---
 import type { GetStaticPaths, Page } from 'astro'
-import type { CollectionEntry } from 'astro:content'
 
 import Pagination from '@/components/Paginator.astro'
 import PostPreview from '@/components/blog/PostPreview.astro'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import BackButton from '@/components/BackButton.astro'
-import { getAllPosts, getUniqueTags, slugifyTag, sortMDByDate, jsonLdScript } from '@/utils'
+import {
+	getAllPosts,
+	getAllProjects,
+	getUniqueTags,
+	slugifyTag,
+	sortMDByDate,
+	jsonLdScript
+} from '@/utils'
+import type { Entry } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
-	const allPosts = await getAllPosts()
+	// Tags span both content types, so a tag page lists posts and projects together.
+	const allPosts: Entry[] = [...(await getAllPosts()), ...(await getAllProjects())]
 	const allPostsByDate = sortMDByDate(allPosts)
 	const uniqueTags = getUniqueTags(allPostsByDate)
 
@@ -41,7 +49,7 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 }
 
 interface Props {
-	page: Page<CollectionEntry<'post'>>
+	page: Page<Entry>
 	tag: string
 }
 

@@ -1,6 +1,8 @@
 import type { CollectionEntry } from 'astro:content'
 import { getCollection } from 'astro:content'
 
+export type Entry = CollectionEntry<'post'> | CollectionEntry<'project'>
+
 /** Note: this function filters out draft posts based on the environment */
 export async function getAllPosts() {
 	return await getCollection('post', ({ data }) => {
@@ -8,7 +10,33 @@ export async function getAllPosts() {
 	})
 }
 
-export function sortMDByDate(posts: Array<CollectionEntry<'post'>>) {
+/**
+ * Projects in homepage order: `homePageIdx` first, then newest, then title. Callers must
+ * not re-sort. Drafts are filtered in production only, like posts.
+ */
+export async function getAllProjects() {
+	const projects = await getCollection('project', ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true
+	})
+	return projects.sort(
+		(a, b) =>
+			(a.data.homePageIdx ?? Infinity) - (b.data.homePageIdx ?? Infinity) ||
+			b.data.publishDate.valueOf() - a.data.publishDate.valueOf() ||
+			a.data.title.localeCompare(b.data.title)
+	)
+}
+
+/** Canonical URL path for a post or a project. */
+export function entryHref(entry: Entry) {
+	return entry.collection === 'project' ? `/projects/${entry.id}/` : `/blog/${entry.id}/`
+}
+
+/** Tags worth showing next to an item: `project` is a bookkeeping tag, not a topic. */
+export function displayTags(entry: Entry) {
+	return entry.data.tags.filter((tag) => tag !== 'project')
+}
+
+export function sortMDByDate<T extends Entry>(posts: Array<T>) {
 	return [...posts].sort((a, b) => {
 		const aDate = new Date(a.data.updatedDate ?? a.data.publishDate).valueOf()
 		const bDate = new Date(b.data.updatedDate ?? b.data.publishDate).valueOf()
@@ -16,13 +44,18 @@ export function sortMDByDate(posts: Array<CollectionEntry<'post'>>) {
 	})
 }
 
+/** Newest first by original publish date (the date the blog index shows and groups by). */
+export function sortByPublishDate<T extends Entry>(posts: Array<T>) {
+	return [...posts].sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+}
+
 /** Note: This function doesn't filter draft posts, pass it the result of getAllPosts above to do so. */
-export function getAllTags(posts: Array<CollectionEntry<'post'>>) {
+export function getAllTags(posts: Array<Entry>) {
 	return posts.flatMap((post) => [...post.data.tags])
 }
 
 /** Note: This function doesn't filter draft posts, pass it the result of getAllPosts above to do so. */
-export function getUniqueTags(posts: Array<CollectionEntry<'post'>>) {
+export function getUniqueTags(posts: Array<Entry>) {
 	return [...new Set(getAllTags(posts))]
 }
 
@@ -50,9 +83,7 @@ export function getRelatedPosts(
 }
 
 /** Note: This function doesn't filter draft posts, pass it the result of getAllPosts above to do so. */
-export function getUniqueTagsWithCount(
-	posts: Array<CollectionEntry<'post'>>
-): Array<[string, number]> {
+export function getUniqueTagsWithCount(posts: Array<Entry>): Array<[string, number]> {
 	return [
 		...getAllTags(posts).reduce(
 			(acc, t) => acc.set(t, (acc.get(t) || 0) + 1),
