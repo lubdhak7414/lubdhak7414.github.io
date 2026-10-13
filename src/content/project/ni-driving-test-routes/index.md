@@ -7,6 +7,8 @@ coverImage:
   src: './cover.jpg'
   alt: 'Northern Ireland Driving Test Routes Website'
 tags: ['Wordpress', 'SEO']
+facts:
+  stack: ['Astro']
 ---
 
 ## A fast, content-first site built on Astro

@@ -18,3 +18,19 @@
 /tags/web%20development/ /tags/web-development/ 301
 /tags/page%20speed%20optimization/* /tags/page-speed-optimization/:splat 301
 /tags/web%20development/* /tags/web-development/:splat 301
+
+# Project write-ups moved out of the blog into the `project` collection: same slug,
+# new home under /projects/. Mirrored in astro.config.mjs `redirects` so the GitHub
+# Pages backup (which ignores this file) still forwards them via meta refresh.
+/blog/pacioli/ /projects/pacioli/ 301
+/blog/circular-alt-tab/ /projects/circular-alt-tab/ 301
+/blog/kdoit-kde-todo/ /projects/kdoit-kde-todo/ 301
+/blog/chiptune-sfx-maestro/ /projects/chiptune-sfx-maestro/ 301
+/blog/php-no-framework/ /projects/php-no-framework/ 301
+/blog/fun-ai-experiments/ /projects/fun-ai-experiments/ 301
+/blog/green-bangla-foundation/ /projects/green-bangla-foundation/ 301
+/blog/ni-driving-test-routes/ /projects/ni-driving-test-routes/ 301
+
+# With the project write-ups gone the blog index fits on one page, so the old second
+# page of the paginated index forwards to the index.
+/blog/2/ /blog/ 301

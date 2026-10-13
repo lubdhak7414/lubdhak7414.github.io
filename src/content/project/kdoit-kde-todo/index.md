@@ -7,6 +7,8 @@ coverImage:
   alt: 'KDoit to-do widget on a KDE Plasma 6 desktop with tasks organized by priority'
 tags: ['QML', 'KDE', 'Linux', 'Open Source', 'Productivity', 'Project']
 homePageIdx: 6
+facts:
+  stack: ['QML', 'Qt 6', 'KDE Plasma 6', 'Kirigami', 'Plasma Components 3.0']
 ---
 
 I wanted a to-do widget for my KDE Plasma 6 desktop that just worked. No build steps, no dependencies, no fuss. So I built KDoit, a pure-QML plasmoid that lives right on your desktop panel.

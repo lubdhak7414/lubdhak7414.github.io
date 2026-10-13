@@ -7,6 +7,10 @@ coverImage:
   src: './cover.jpg'
   alt: 'Green Bangla Foundation Website'
 tags: ['Web Development', 'WordPress', 'Page Speed Optimization']
+facts:
+  client: 'Green Bangla Foundation'
+  timeline: '11 working days'
+  stack: ['WordPress', 'Gutenberg FSE']
 ---
 
 ## A speed-first WordPress build

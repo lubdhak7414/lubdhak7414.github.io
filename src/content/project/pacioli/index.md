@@ -8,6 +8,8 @@ coverImage:
   alt: 'Pacioli proposal-review dashboard'
 tags: ['Python', 'FastAPI', 'LLM', 'System Design', 'Project']
 homePageIdx: 1
+facts:
+  stack: ['FastAPI', 'Uvicorn', 'SQLite (WAL)', 'aiosqlite', 'openpyxl', 'filelock', 'Pydantic v2', 'Google Gemini 2.5 Flash']
 ---
 
 ## The premise

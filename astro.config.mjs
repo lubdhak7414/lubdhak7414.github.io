@@ -44,9 +44,27 @@ function validateRedirectTargets() {
 	}
 }
 
+// Project write-ups that moved from /blog/ to /projects/. Cloudflare Pages serves real
+// 301s for these from public/_redirects; this list makes Astro also emit meta-refresh
+// pages at the old URLs for hosts that ignore _redirects (the GitHub Pages backup).
+const movedToProjects = [
+	'pacioli',
+	'circular-alt-tab',
+	'kdoit-kde-todo',
+	'chiptune-sfx-maestro',
+	'php-no-framework',
+	'fun-ai-experiments',
+	'green-bangla-foundation',
+	'ni-driving-test-routes'
+]
+
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.url,
+	redirects: {
+		...Object.fromEntries(movedToProjects.map((slug) => [`/blog/${slug}/`, `/projects/${slug}/`])),
+		'/blog/2/': '/blog/'
+	},
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
 		sitemap(),

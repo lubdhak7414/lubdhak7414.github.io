@@ -6,6 +6,8 @@ coverImage:
   src: './cover.webp'
   alt: 'Chiptune SFX Maestro retro arcade interface with neon colors and CRT scanline effect'
 tags: ['Python', 'PyTorch', 'Machine Learning', 'Game Dev', 'Audio', 'Project']
+facts:
+  stack: ['Python', 'PyTorch']
 ---
 
 I built a system that turns text like "retro coin pickup" into playable 8-bit sound effects. No pre-recorded samples, no external APIs. Just a small text-to-parameter tool.

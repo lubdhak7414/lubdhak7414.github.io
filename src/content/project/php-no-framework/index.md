@@ -8,6 +8,12 @@ coverImage:
   alt: 'RepBase gym class schedule showing live seats-left badges'
 tags: ['PHP', 'MySQL', 'Backend', 'Databases', 'Project']
 homePageIdx: 4
+links:
+  - { label: 'BrewQuery', url: 'https://github.com/lubdhak7414/BrewQuery', kind: 'code' }
+  - { label: 'ShelfAware', url: 'https://github.com/lubdhak7414/ShelfAware', kind: 'code' }
+  - { label: 'RepBase', url: 'https://github.com/lubdhak7414/RepBase', kind: 'code' }
+facts:
+  stack: ['PHP 8.2', 'MySQL']
 ---
 
 ## Why no framework?

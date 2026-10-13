@@ -6,6 +6,9 @@ coverImage:
   src: './cover.webp'
   alt: 'Three terminal windows showing ASCII art, cat dialogue, and assembly code'
 tags: ['Python', 'PyTorch', 'Machine Learning', 'NLP', 'Project']
+facts:
+  license: 'MIT'
+  stack: ['PyTorch']
 ---
 
 I built three small text generators last month. They share every line of architecture code, yet they do completely unrelated things. That was the point.
