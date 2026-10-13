@@ -104,9 +104,7 @@ const blogPostingSchema = {
 						{tags.map((tag, i) => (
 							<>
 								{i > 0 && ' / '}
-								<a class='link' href={`/tags/${slugifyTag(tag)}/`}>
-									{tag}
-								</a>
+								<a class='link' href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
 							</>
 						))}
 					</p>

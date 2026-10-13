@@ -30,42 +30,33 @@ export const siteConfig: SiteConfig = {
 	}
 }
 
-// Code-block theme for the "Atelier Monograph" design: ink on the raised paper tone,
-// pine keywords, pine-2 types, umber strings (the only place umber is used), faint
-// comments. Same values as the tokens in src/styles/app.css.
-const atelierCodeTheme = {
-	name: 'atelier-monograph',
+// Code-block theme for the "Breeze desk" design: Kate's Breeze Light syntax colours on
+// the --raised grey, adjusted so every token clears WCAG AA (>= 4.5:1) on #F7F8F9.
+// Background, text and line colours match the tokens in src/styles/app.css.
+const breezeDeskCodeTheme = {
+	name: 'breeze-desk',
 	type: 'light' as const,
 	colors: {
-		'editor.background': '#FAF8F5',
-		'editor.foreground': '#18181B',
-		'editor.selectionBackground': '#E4E2DC',
-		'editorLineNumber.foreground': '#6A6A73',
-		'terminal.background': '#FAF8F5',
-		focusBorder: '#1B4D3E'
+		'editor.background': '#F7F8F9',
+		'editor.foreground': '#232629',
+		'editor.selectionBackground': '#DADDE1',
+		'editorLineNumber.foreground': '#646A70',
+		'terminal.background': '#F7F8F9',
+		focusBorder: '#1A6AA6'
 	},
 	settings: [
-		{ settings: { foreground: '#18181B', background: '#FAF8F5' } },
+		{ settings: { foreground: '#232629', background: '#F7F8F9' } },
 		{
 			scope: ['comment', 'punctuation.definition.comment', 'string.comment'],
-			settings: { foreground: '#6A6A73' }
+			settings: { foreground: '#6B6A68' }
 		},
 		{
-			scope: [
-				'keyword',
-				'storage',
-				'storage.type',
-				'storage.modifier',
-				'constant.language',
-				'variable.language',
-				'entity.name.tag',
-				'support.function.builtin'
-			],
-			settings: { foreground: '#1B4D3E' }
+			scope: ['keyword', 'storage', 'storage.type', 'storage.modifier', 'variable.language'],
+			settings: { foreground: '#1F1C1B', fontStyle: 'bold' }
 		},
 		{
 			scope: ['string', 'punctuation.definition.string', 'string.template', 'markup.inline.raw'],
-			settings: { foreground: '#8A5A36' }
+			settings: { foreground: '#B30000' }
 		},
 		{
 			scope: [
@@ -74,23 +65,31 @@ const atelierCodeTheme = {
 				'entity.other.inherited-class',
 				'support.type',
 				'support.class',
-				'entity.other.attribute-name'
+				'entity.name.tag'
 			],
-			settings: { foreground: '#2D5A43' }
+			settings: { foreground: '#0057AE' }
+		},
+		{
+			scope: ['entity.name.function', 'support.function', 'entity.other.attribute-name'],
+			settings: { foreground: '#644A9B' }
+		},
+		{
+			scope: ['constant.numeric', 'constant.language'],
+			settings: { foreground: '#875F00' }
 		}
 	]
 }
 
 // https://expressive-code.com/reference/configuration/
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
-	themes: [atelierCodeTheme],
-	// The theme's comment/string colours (faint, umber) pass WCAG AA (>= 4.5:1) on the
-	// raised background; EC's default 5.5 floor would recolour them away from the tokens.
+	themes: [breezeDeskCodeTheme],
+	// Every token colour passes WCAG AA (>= 4.5:1) on the code background; EC's default
+	// 5.5 floor would recolour the comment and number colours away from the theme.
 	minSyntaxHighlightingColorContrast: 4.5,
 	useThemedScrollbars: false,
 	styleOverrides: {
 		borderRadius: '0',
-		borderColor: '#E4E2DC',
+		borderColor: '#DADDE1',
 		codeFontFamily: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
 		codeFontSize: '13px',
 		codeLineHeight: '1.65',
@@ -102,17 +101,17 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 		frames: {
 			frameBoxShadowCssValue: 'none',
 			shadowColor: 'transparent',
-			editorTabBarBackground: '#FAF8F5',
-			editorActiveTabBackground: '#FAF8F5',
-			editorActiveTabForeground: '#52525B',
+			editorTabBarBackground: '#F7F8F9',
+			editorActiveTabBackground: '#F7F8F9',
+			editorActiveTabForeground: '#4A4F55',
 			editorActiveTabIndicatorTopColor: 'transparent',
 			editorActiveTabIndicatorBottomColor: 'transparent',
-			editorTabBarBorderBottomColor: '#E4E2DC',
-			terminalBackground: '#FAF8F5',
-			terminalTitlebarBackground: '#FAF8F5',
-			terminalTitlebarForeground: '#52525B',
+			editorTabBarBorderBottomColor: '#DADDE1',
+			terminalBackground: '#F7F8F9',
+			terminalTitlebarBackground: '#F7F8F9',
+			terminalTitlebarForeground: '#4A4F55',
 			terminalTitlebarDotsOpacity: '0',
-			terminalTitlebarBorderBottomColor: '#E4E2DC'
+			terminalTitlebarBorderBottomColor: '#DADDE1'
 		}
 	}
 }

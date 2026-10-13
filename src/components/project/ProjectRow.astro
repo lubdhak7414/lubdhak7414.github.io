@@ -19,16 +19,20 @@ const tags = displayTags(project)
 	<div class='project-head'>
 		<div class='project-name'>
 			<h3 class='h3'>
-				<a href={`/projects/${project.id}/`}>{title}<span class='go' aria-hidden='true'>→</span></a>
+				<a href={`/projects/${project.id}/`}>{title}</a>
 			</h3>
 		</div>
 		{
 			links.length > 0 && (
 				<div class='links'>
 					{links.map((link) => (
-						<a class='link' href={link.url} target='_blank' rel='noopener noreferrer'>
-							{link.label}
-						</a>
+						<a
+							class='link'
+							href={link.url}
+							target='_blank'
+							rel='noopener noreferrer'
+							set:text={link.label}
+						/>
 					))}
 				</div>
 			)

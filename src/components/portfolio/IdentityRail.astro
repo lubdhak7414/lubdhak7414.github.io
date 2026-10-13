@@ -13,15 +13,15 @@ const initials = siteConfig.author
 
 <aside class='rail'>
 	<div class='avatar' aria-hidden='true'>
-		{initials}<Image src={avatar} alt='' width={176} height={176} loading='eager' />
+		{initials}<Image src={avatar} alt='' width={192} height={192} loading='eager' />
 	</div>
 	<h1 class='display'>{siteConfig.author}</h1>
 	<p class='role'>{siteConfig.role}</p>
 	<p class='bio'>{siteConfig.bio}</p>
 	<p class='avail'>{siteConfig.location}</p>
 	<div class='actions'>
-		<a class='btn' href={`mailto:${siteConfig.socials.email}`}>Email</a>
 		<div class='links'>
+			<a class='link' href={`mailto:${siteConfig.socials.email}`}>Email</a>
 			<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
 				>GitHub</a
 			>

@@ -44,13 +44,13 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 <link rel='manifest' href='/favicon/site.webmanifest' />
 
 {
-	/* Preload the upright Latin Geist face (woff2) to avoid FOUT. Italic, Latin
-	Extended and JetBrains Mono load on demand: preloading them everywhere steals
+	/* Preload the upright Latin IBM Plex Sans face (woff2) to avoid FOUT. Italic,
+	Latin Extended and JetBrains Mono load on demand: preloading them everywhere steals
 	bandwidth from the critical upright face during first paint. */
 }
 <link
 	rel='preload'
-	href='/fonts/geist-latin-wght-normal.woff2'
+	href='/fonts/ibm-plex-sans-latin-wght-normal.woff2'
 	as='font'
 	type='font/woff2'
 	crossorigin
@@ -74,7 +74,7 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 <meta content={siteConfig.author} name='author' />
 
 {/* Theme Colour */}
-<meta content='#F7F5F0' name='theme-color' />
+<meta content='#FFFFFF' name='theme-color' />
 <meta content='light' name='color-scheme' />
 
 {/* Open Graph / Facebook */}

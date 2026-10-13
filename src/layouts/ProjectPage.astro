@@ -128,9 +128,7 @@ const breadcrumbSchema = {
 					facts.timeline && (
 						<div class='fact'>
 							<dt>Timeline</dt>
-							<dd>
-								<span class='mono'>{facts.timeline}</span>
-							</dd>
+							<dd>{facts.timeline}</dd>
 						</div>
 					)
 				}
@@ -190,9 +188,7 @@ const breadcrumbSchema = {
 								{tags.map((tag, i) => (
 									<>
 										{i > 0 && ' / '}
-										<a class='link' href={`/tags/${slugifyTag(tag)}/`}>
-											{tag}
-										</a>
+										<a class='link' href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
 									</>
 								))}
 							</dd>
