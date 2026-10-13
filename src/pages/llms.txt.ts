@@ -1,4 +1,4 @@
-import { getAllPosts, sortMDByDate } from '@/utils'
+import { getAllPosts, getAllProjects, sortMDByDate } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 export const prerender = true
@@ -6,6 +6,17 @@ export const prerender = true
 export async function GET() {
 	const posts = await getAllPosts()
 	const latestPosts = sortMDByDate(posts).slice(0, 10)
+	const projects = await getAllProjects()
+
+	// Escape Markdown link-text metacharacters in a title.
+	const escapeTitle = (title: string) =>
+		title
+			.replace(/\[/g, '\\[')
+			.replace(/\]/g, '\\]')
+			.replace(/\(/g, '\\(')
+			.replace(/\)/g, '\\)')
+			.replace(/`/g, '\\`')
+			.replace(/\*/g, '\\*')
 
 	const lines = [
 		`# ${siteConfig.title}`,
@@ -13,20 +24,24 @@ export async function GET() {
 		`> ${siteConfig.description}`,
 		'',
 		`Website: ${siteConfig.url}`,
+		...(projects.length > 0
+			? [
+					'',
+					'## Projects',
+					...projects.map(
+						(project) =>
+							`- [${escapeTitle(project.data.title)}](${new URL(`/projects/${project.id}/`, siteConfig.url).href})`
+					)
+				]
+			: []),
 		...(latestPosts.length > 0
 			? [
 					'',
 					'## Recent posts',
-					...latestPosts.map((post) => {
-						const title = post.data.title
-							.replace(/\[/g, '\\[')
-							.replace(/\]/g, '\\]')
-							.replace(/\(/g, '\\(')
-							.replace(/\)/g, '\\)')
-							.replace(/`/g, '\\`')
-							.replace(/\*/g, '\\*')
-						return `- [${title}](${new URL(`/blog/${post.id}/`, siteConfig.url).href})`
-					})
+					...latestPosts.map(
+						(post) =>
+							`- [${escapeTitle(post.data.title)}](${new URL(`/blog/${post.id}/`, siteConfig.url).href})`
+					)
 				]
 			: []),
 		'',
