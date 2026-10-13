@@ -11,25 +11,14 @@ const { posts } = Astro.props
 
 {
 	posts.length > 0 && (
-		<nav class='border-border mt-12 border-t pt-8' aria-label='Related posts'>
-			<h2 class='mb-4 text-lg font-semibold'>Related Posts</h2>
-			<ul class='flex flex-col gap-3'>
-				{posts.map((post) => (
-					<li>
-						<a
-							href={`/blog/${post.id}/`}
-							class='group flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3'
-							data-astro-prefetch
-						>
-							<FormattedDate
-								class='text-muted-foreground shrink-0 text-sm'
-								date={post.data.updatedDate ?? post.data.publishDate}
-							/>
-							<span class='underline-offset-2 group-hover:underline'>{post.data.title}</span>
-						</a>
-					</li>
-				))}
-			</ul>
-		</nav>
+		<section class='related' aria-labelledby='rel-h'>
+			<h2 id='rel-h'>Related posts</h2>
+			{posts.map((post) => (
+				<a href={`/blog/${post.id}/`}>
+					<FormattedDate class='meta' date={post.data.publishDate} />
+					<span>{post.data.title}</span>
+				</a>
+			))}
+		</section>
 	)
 }

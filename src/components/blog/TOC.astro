@@ -2,138 +2,84 @@
 import type { MarkdownHeading } from 'astro'
 import { generateToc } from '@/utils'
 
-import TOCHeading from './TOCHeading.astro'
-
 interface Props {
 	headings: MarkdownHeading[]
+	/** `sidebar`: sticky desktop list. `drawer`: the collapsible "On this page" row below 1024px. */
+	variant: 'sidebar' | 'drawer'
 }
 
-const { headings } = Astro.props
+const { headings, variant } = Astro.props
 
-// generateToc keeps only top-level (h2) sections - h3+ sub-items bloat the sidebar.
-// A post may have headings yet no h2 (e.g. only h3s); render nothing rather than
-// an empty "TABLE OF CONTENTS" shell.
+// h2 sections only. A post may have headings yet no h2; render nothing then rather
+// than an empty "On this page" shell.
 const toc = generateToc(headings)
 ---
 
 {
-	toc.length > 0 && (
-		<aside class='sticky top-20 order-2 -me-28 hidden basis-60 lg:flex lg:flex-col'>
-			<h2 class='font-semibold'>TABLE OF CONTENTS</h2>
-			<ul class='text-card-foreground' id='toc-list'>
-				{toc.map((heading) => (
-					<TOCHeading heading={heading} />
-				))}
-			</ul>
-		</aside>
-	)
+	toc.length > 0 &&
+		(variant === 'sidebar' ? (
+			<nav class='toc' aria-label='On this page'>
+				<h2>On this page</h2>
+				<ol>
+					{toc.map(({ slug, text }) => (
+						<li>
+							<a href={`#${slug}`}>{text}</a>
+						</li>
+					))}
+				</ol>
+			</nav>
+		) : (
+			<details class='toc-mobile'>
+				<summary>On this page</summary>
+				<ol>
+					{toc.map(({ slug, text }) => (
+						<li>
+							<a href={`#${slug}`}>{text}</a>
+						</li>
+					))}
+				</ol>
+			</details>
+		))
 }
 
 <script>
-	// Scroll-spy: highlight the TOC entry for the section currently in view.
-	let activeObserver: IntersectionObserver | null = null
-
-	function initTocScrollSpy() {
-		const list = document.getElementById('toc-list')
-		if (!list || list.dataset.spyInit === 'true') return
-		list.dataset.spyInit = 'true'
-
-		// Tear down an observer from a previous page (e.g. after a view-transition
-		// swap) only once we've committed to re-initializing on the current DOM —
-		// doing it before the guard above would kill a live observer on a repeat call.
-		activeObserver?.disconnect()
-		activeObserver = null
-
-		const links = list.querySelectorAll<HTMLAnchorElement>('[data-toc-slug]')
+	// Scrollspy (reference logic): on scroll, throttled to one update per frame, mark the
+	// last section whose heading has passed 30% of the viewport, and force the last item
+	// once the page is scrolled to the bottom (on tall screens the final section can't
+	// reach the line). Position-based rather than IntersectionObserver-only, which skips
+	// sections when scrolling up.
+	;(() => {
+		const links = document.querySelectorAll<HTMLAnchorElement>('.toc a')
 		if (!links.length) return
-
-		const linkBySlug = new Map<string, HTMLAnchorElement>()
-		links.forEach((link) => {
-			if (link.dataset.tocSlug) linkBySlug.set(link.dataset.tocSlug, link)
-		})
-
-		const headings = [...document.querySelectorAll<HTMLElement>('article h2[id]')].filter((h) =>
-			linkBySlug.has(h.id)
+		const sections = Array.from(links, (a) =>
+			document.getElementById(decodeURIComponent(a.hash.slice(1)))
 		)
-		if (!headings.length) return
+		let ticking = false
 
-		const visible = new Set<string>()
-		let activeSlug: string | null = null
-
-		const setActive = (slug: string | null) => {
-			if (slug === activeSlug) return
-			if (activeSlug) linkBySlug.get(activeSlug)?.removeAttribute('aria-current')
-			activeSlug = slug
-			if (slug) linkBySlug.get(slug)?.setAttribute('aria-current', 'true')
+		function update() {
+			ticking = false
+			const line = window.innerHeight * 0.3
+			let current = 0
+			sections.forEach((s, i) => {
+				if (s && s.getBoundingClientRect().top <= line) current = i
+			})
+			if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+				current = sections.length - 1
+			}
+			links.forEach((a, i) => a.classList.toggle('active', i === current))
 		}
 
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) visible.add(entry.target.id)
-					else visible.delete(entry.target.id)
-				})
-				// First heading (in document order) inside the active band wins.
-				const current = headings.find((h) => visible.has(h.id))
-				if (current) setActive(current.id)
+		window.addEventListener(
+			'scroll',
+			() => {
+				if (!ticking) {
+					ticking = true
+					requestAnimationFrame(update)
+				}
 			},
-			{ rootMargin: '-80px 0px -66% 0px' }
+			{ passive: true }
 		)
-		activeObserver = observer
-		headings.forEach((h) => observer.observe(h))
-	}
-
-	// Smooth-scroll TOC clicks (instead of the native abrupt jump) and flash the
-	// target heading so the eye catches where it landed. Delegated on document so
-	// it covers both the desktop sidebar and the mobile <details> list, and is
-	// added exactly once regardless of how many times init runs.
-	let smoothScrollBound = false
-
-	function initTocSmoothScroll() {
-		if (smoothScrollBound) return
-		smoothScrollBound = true
-
-		const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-		document.addEventListener('click', (event) => {
-			const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[data-toc-slug]')
-			if (!link?.dataset.tocSlug) return
-			const target = document.getElementById(link.dataset.tocSlug)
-			if (!target) return
-
-			event.preventDefault()
-			target.scrollIntoView({
-				behavior: prefersReduced.matches ? 'auto' : 'smooth',
-				block: 'start'
-			})
-			// Keep the URL in sync without re-triggering a jump.
-			history.replaceState(null, '', `#${link.dataset.tocSlug}`)
-			// Collapse the mobile TOC drawer after navigating.
-			link.closest('details')?.removeAttribute('open')
-
-			// Restart the highlight animation even on repeat clicks of the same link.
-			target.classList.remove('toc-target-active')
-			void target.offsetWidth
-			target.classList.add('toc-target-active')
-			target.addEventListener('animationend', () => target.classList.remove('toc-target-active'), {
-				once: true
-			})
-		})
-	}
-
-	// This project has no ClientRouter, so `astro:page-load` never fires - init
-	// directly (Astro defers the script, so the DOM is usually ready). The guards
-	// above keep it idempotent; the page-load listener future-proofs for view
-	// transitions if they're ever enabled.
-	function init() {
-		initTocScrollSpy()
-		initTocSmoothScroll()
-	}
-
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', init)
-	} else {
-		init()
-	}
-	document.addEventListener('astro:page-load', init)
+		window.addEventListener('resize', update)
+		update()
+	})()
 </script>

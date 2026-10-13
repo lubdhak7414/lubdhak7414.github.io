@@ -2,15 +2,14 @@
 import type { CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
 
-import BlogHero from '@/components/blog/Hero.astro'
 import TOC from '@/components/blog/TOC.astro'
-import TOCHeading from '@/components/blog/TOCHeading.astro'
-import BackButton from '@/components/BackButton.astro'
 import AuthorBox from '@/components/AuthorBox.astro'
+import CoverFigure from '@/components/CoverFigure.astro'
+import FormattedDate from '@/components/FormattedDate.astro'
 import RelatedPosts from '@/components/blog/RelatedPosts.astro'
 import BalloonSurprise from '@/components/blog/BalloonSurprise.astro'
 
-import { PERSON_ID, generateToc, getCrawlerSafeOgImage, jsonLdScript } from '@/utils'
+import { PERSON_ID, displayTags, getEntrySocialImage, jsonLdScript, slugifyTag } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 import PageLayout from './BaseLayout.astro'
@@ -22,33 +21,22 @@ interface Props {
 
 const { post, relatedPosts = [] } = Astro.props
 const {
-	data: { coverImage, description, ogImage, publishDate, title, updatedDate }
+	data: { coverImage, description, draft, publishDate, title, updatedDate }
 } = post
 
 // `ogImage` (frontmatter) is an unprocessed string with unknown dimensions, so
-// width/height are only emitted for the coverImage fallback we process here.
-let socialImage: string | undefined = ogImage
-let socialImageWidth: number | undefined
-let socialImageHeight: number | undefined
-if (!socialImage && coverImage) {
-	// Crawler-safe JPEG (not WebP); see getCrawlerSafeOgImage.
-	const card = await getCrawlerSafeOgImage(coverImage.src, 'jpeg')
-	socialImage = card.src
-	socialImageWidth = card.width
-	socialImageHeight = card.height
-}
+// width/height are only emitted for the coverImage fallback.
+const social = await getEntrySocialImage(post.data)
 const publishIso = publishDate.toISOString()
-const modifiedIso =
-	updatedDate && updatedDate.valueOf() !== publishDate.valueOf()
-		? updatedDate.toISOString()
-		: undefined
+const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ? updatedDate : null
+const modifiedIso = updated?.toISOString()
 const { headings, remarkPluginFrontmatter } = await render(post)
 const minutesRead = parseInt(remarkPluginFrontmatter.minutesRead, 10) || 1
-const toc = generateToc(headings)
+const tags = displayTags(post)
 
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
 const blogUrl = new URL('/blog/', Astro.site).toString()
-const ogAbsolute = socialImage ? new URL(socialImage, Astro.site).toString() : undefined
+const ogAbsolute = social.src ? new URL(social.src, Astro.site).toString() : undefined
 // Reference the canonical Person entity (defined in full on the homepage + /about)
 // by `@id` so Google consolidates the entity, but still inline `name`: the Person
 // node isn't on this page, and Google requires `name` once an author object exists.
@@ -83,9 +71,9 @@ const blogPostingSchema = {
 <PageLayout
 	meta={{
 		description,
-		ogImage: socialImage,
-		ogImageWidth: socialImageWidth,
-		ogImageHeight: socialImageHeight,
+		ogImage: social.src,
+		ogImageWidth: social.width,
+		ogImageHeight: social.height,
 		publishDate: publishIso,
 		modifiedDate: modifiedIso,
 		title
@@ -93,76 +81,60 @@ const blogPostingSchema = {
 >
 	<script type='application/ld+json' set:html={jsonLdScript(blogPostingSchema)} is:inline />
 	<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
-	<div class='w-full'>
-		<BackButton href='/blog' />
-		<div class='mt-8 gap-x-10 lg:flex lg:items-start'>
-			{!!headings.length && <TOC headings={headings} />}
-			<article class='flex-grow break-words'>
-				<div id='blog-hero'><BlogHero content={post} /></div>
+	<div class='container page'>
+		<a class='back' href='/blog/'>← All posts</a>
+		<header class='post-head'>
+			<p class='meta'>
+				By <a class='link' href='/about/'>{siteConfig.author}</a> / <FormattedDate
+					date={publishDate}
+				/> / {remarkPluginFrontmatter.minutesRead}
 				{
-					toc.length > 0 && (
-						<nav aria-label='Table of contents' class='lg:hidden'>
-							<details class='border-border bg-primary-foreground mt-8 rounded-xl border p-4'>
-								<summary class='cursor-pointer font-semibold select-none'>
-									Table of Contents
-								</summary>
-								<ul class='text-card-foreground mt-3'>
-									{toc.map((heading) => (
-										<TOCHeading heading={heading} />
-									))}
-								</ul>
-							</details>
-						</nav>
+					updated && (
+						<>
+							{' / Updated '}
+							<FormattedDate date={updated} />
+						</>
 					)
 				}
-				<div
-					class='prose prose-base prose-zinc text-muted-foreground dark:prose-invert prose-headings:font-medium prose-headings:text-foreground prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:scroll-mt-20 lg:prose-headings:scroll-mt-28 prose-th:before:content-none mt-12'
-				>
+			</p>
+			<h1 class='display'>{draft && '(Draft) '}{title}</h1>
+			{
+				tags.length > 0 && (
+					<p class='meta'>
+						{tags.map((tag, i) => (
+							<>
+								{i > 0 && ' / '}
+								<a class='link' href={`/tags/${slugifyTag(tag)}/`}>
+									{tag}
+								</a>
+							</>
+						))}
+					</p>
+				)
+			}
+		</header>
+		<div class='article'>
+			<TOC headings={headings} variant='sidebar' />
+			<div class='post-body'>
+				{
+					coverImage && (
+						<div class='post-cover'>
+							<CoverFigure
+								src={coverImage.src}
+								alt={coverImage.alt}
+								sizes='(min-width: 1152px) 650px, (min-width: 1024px) 60vw, 100vw'
+							/>
+						</div>
+					)
+				}
+				<TOC headings={headings} variant='drawer' />
+				<div class='prose'>
 					<slot />
 				</div>
 				<AuthorBox />
 				<RelatedPosts posts={relatedPosts} />
-			</article>
+			</div>
 		</div>
-		<button
-			aria-label='Back to Top'
-			class='bg-primary-foreground hover:border-border/75 fixed end-4 bottom-8 z-90 flex h-8 w-8 translate-y-28 items-center justify-center rounded-full border-2 border-transparent text-3xl opacity-0 transition-all duration-300 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:end-8 sm:h-12 sm:w-12'
-			data-show='false'
-			id='to-top-btn'
-			><svg
-				aria-hidden='true'
-				class='h-4 w-4'
-				fill='none'
-				focusable='false'
-				stroke='currentColor'
-				stroke-width='2'
-				viewBox='0 0 24 24'
-				xmlns='http://www.w3.org/2000/svg'
-			>
-				<path d='M4.5 15.75l7.5-7.5 7.5 7.5' stroke-linecap='round' stroke-linejoin='round'></path>
-			</svg>
-		</button>
-		<BalloonSurprise />
 	</div>
+	<BalloonSurprise />
 </PageLayout>
-
-<script>
-	;(() => {
-		const scrollBtn = document.getElementById('to-top-btn')
-		const targetHeader = document.getElementById('blog-hero')
-		if (!scrollBtn || !targetHeader) return
-
-		function callback(entries: IntersectionObserverEntry[]) {
-			entries.forEach((entry) => {
-				scrollBtn!.dataset.show = (!entry.isIntersecting).toString()
-			})
-		}
-
-		scrollBtn.addEventListener('click', () => {
-			document.documentElement.scrollTo({ behavior: 'smooth', top: 0 })
-		})
-
-		const observer = new IntersectionObserver(callback)
-		observer.observe(targetHeader)
-	})()
-</script>
