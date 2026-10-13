@@ -1,7 +1,6 @@
 ---
 import PageLayout from '@/layouts/BaseLayout.astro'
 import ToolSection from '@/components/ToolSection.astro'
-import BackButton from '@/components/BackButton.astro'
 
 const PRODUCTIVITY = [
 	{
@@ -102,15 +101,12 @@ const DEVELOPMENT = [
 ---
 
 <PageLayout meta={{ title: 'Tools', description: 'Tools and software I use daily' }}>
-	<div class='w-full'>
-		<BackButton href='/' />
-
-		<div class='mt-5 flex w-full flex-col gap-y-10'>
-			<div>
-				<h1 class='mb-1 text-2xl font-bold'>Tools</h1>
-				<p>Tools and software I use daily</p>
-			</div>
-
+	<div class='container page'>
+		<header class='intro'>
+			<h1 class='display'>Tools</h1>
+			<p class='lede'>Tools and software I use daily</p>
+		</header>
+		<div class='stack'>
 			<ToolSection title='Productivity' tools={PRODUCTIVITY} />
 			<ToolSection title='Development' tools={DEVELOPMENT} />
 		</div>

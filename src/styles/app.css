@@ -1078,9 +1078,13 @@
 	.pager a:last-child {
 		text-align: right;
 	}
-	/* Not in the reference: a lone "next" link still sits on the right */
+	/* Not in the reference: a lone "next" link still sits on the right, a lone
+	   "previous" link on the left */
 	.pager a.next {
 		margin-left: auto;
+	}
+	.pager a.prev:last-child {
+		text-align: left;
 	}
 	.pager .meta {
 		font-size: 12px;
