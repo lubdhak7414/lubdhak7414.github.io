@@ -44,11 +44,17 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 <link rel='manifest' href='/favicon/site.webmanifest' />
 
 {
-	/* Preload the upright body font (woff2) to avoid FOUT; italic loads on demand
-	(it's absent from most pages, so preloading it everywhere just steals
-	bandwidth from the critical upright face during first paint). */
+	/* Preload the upright Latin Geist face (woff2) to avoid FOUT. Italic, Latin
+	Extended and JetBrains Mono load on demand: preloading them everywhere steals
+	bandwidth from the critical upright face during first paint. */
 }
-<link rel='preload' href='/fonts/Satoshi-Variable.woff2' as='font' type='font/woff2' crossorigin />
+<link
+	rel='preload'
+	href='/fonts/geist-latin-wght-normal.woff2'
+	as='font'
+	type='font/woff2'
+	crossorigin
+/>
 
 {/* Robots */}
 {
@@ -68,8 +74,8 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 <meta content={siteConfig.author} name='author' />
 
 {/* Theme Colour */}
-<meta content='#fcfdfe' name='theme-color' media='(prefers-color-scheme: light)' />
-<meta content='#0a0a0b' name='theme-color' media='(prefers-color-scheme: dark)' />
+<meta content='#F7F5F0' name='theme-color' />
+<meta content='light' name='color-scheme' />
 
 {/* Open Graph / Facebook */}
 <meta content={publishDate ? 'article' : 'website'} property='og:type' />

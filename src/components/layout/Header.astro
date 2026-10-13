@@ -1,247 +1,35 @@
 ---
+import { siteConfig } from '@/site-config'
 
+// Project pages count as Work; blog posts and tag archives count as Blog.
+const path = Astro.url.pathname
+const navItems = [
+	{ href: '/', label: 'Work', active: path === '/' || path.startsWith('/projects/') },
+	{ href: '/blog/', label: 'Blog', active: path.startsWith('/blog') || path.startsWith('/tags') },
+	{ href: '/about/', label: 'About', active: path.startsWith('/about') }
+]
+
+// Below 640px the logo collapses to initials ("SUL").
+const initials = siteConfig.author
+	.split(/\s+/)
+	.map((word) => word[0])
+	.join('')
+	.toUpperCase()
 ---
 
-<header
-	id='site-header'
-	class='sticky top-0 z-40 flex w-full flex-wrap pt-3 pb-3 text-sm transition-all duration-300 motion-reduce:transition-none sm:flex-nowrap sm:justify-start'
->
-	<nav
-		class='relative mx-auto flex w-full items-center justify-between sm:flex sm:items-center'
-		aria-label='global'
-	>
-		<a
-			class='animate-text flex-none bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-3xl font-semibold text-transparent'
-			href='/'
-			><span class='magic'>
-				<span class='magic-star'>
-					<svg viewBox='0 0 512 512' aria-hidden='true'>
-						<path
-							d='M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z'
-						></path>
-					</svg>
-				</span>
-				<span class='magic-star'>
-					<svg viewBox='0 0 512 512' aria-hidden='true'>
-						<path
-							d='M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z'
-						></path>
-					</svg>
-				</span>
-				<span class='magic-star'>
-					<svg viewBox='0 0 512 512' aria-hidden='true'>
-						<path
-							d='M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z'
-						></path>
-					</svg>
-				</span><span
-					class='animate-text flex-none bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-3xl font-semibold text-transparent'
-					>safwan</span
-				></span
-			></a
+<header class='site-header'>
+	<div class='container'>
+		<a class='logo' href='/'
+			><span class='full'>{siteConfig.author}</span><span class='short'>{initials}</span></a
 		>
-
-		<div class='flex flex-row items-center justify-center gap-x-5 sm:gap-x-7'>
-			<a
-				href='/blog/'
-				class='flex-none text-[1.05rem] font-medium underline-offset-4 transition-colors hover:underline'
-				>Blog
-			</a>
-			<a
-				href='/tools/'
-				class='flex-none text-[1.05rem] font-medium underline-offset-4 transition-colors hover:underline'
-				>Tools
-			</a>
-
-			<button
-				id='toggleDarkMode'
-				class='border-border hover:bg-border relative rounded-md border p-1.5 transition-all'
-			>
-				<span class='sr-only'>Dark Theme</span>
-				<svg
-					xmlns='http://www.w3.org/2000/svg'
-					width='32'
-					height='32'
-					viewBox='0 0 24 24'
-					aria-hidden='true'
-					class='h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:hidden dark:scale-0 dark:-rotate-90'
-					><path
-						fill='currentColor'
-						d='M12 15q1.25 0 2.125-.875T15 12q0-1.25-.875-2.125T12 9q-1.25 0-2.125.875T9 12q0 1.25.875 2.125T12 15m0 1q-1.671 0-2.836-1.164T8 12q0-1.671 1.164-2.836T12 8q1.671 0 2.836 1.164T16 12q0 1.671-1.164 2.836T12 16m-7-3.5H1.5v-1H5zm17.5 0H19v-1h3.5zM11.5 5V1.5h1V5zm0 17.5V19h1v3.5zM6.746 7.404l-2.16-2.098l.695-.744l2.111 2.134zM18.72 19.438l-2.117-2.14l.652-.702l2.16 2.098zM16.596 6.746l2.098-2.16l.744.695l-2.134 2.111zM4.562 18.72l2.14-2.117l.663.652l-2.078 2.179zM12 12'
-					></path></svg
-				>
-				<svg
-					xmlns='http://www.w3.org/2000/svg'
-					width='32'
-					height='32'
-					viewBox='0 0 24 24'
-					aria-hidden='true'
-					class='hidden h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:block dark:scale-100 dark:rotate-0'
-					><path
-						fill='currentColor'
-						d='M12.058 20q-3.334 0-5.667-2.333Q4.058 15.333 4.058 12q0-3.038 1.98-5.27Q8.02 4.5 10.942 4.097q.081 0 .159.006t.153.017q-.506.706-.801 1.57q-.295.865-.295 1.811q0 2.667 1.866 4.533q1.867 1.867 4.534 1.867q.952 0 1.813-.295q.862-.295 1.548-.801q.012.075.018.153q.005.078.005.158q-.384 2.923-2.615 4.904T12.057 20'
-					></path></svg
-				>
-			</button>
-		</div>
-	</nav>
-
-	<style>
-		a > .magic {
-			display: inline-block;
-			position: relative;
-		}
-		a > .magic > .magic-star {
-			--size: clamp(20px, 1.5vw, 30px);
-
-			animation: scale 700ms ease forwards;
-			display: block;
-			height: var(--size);
-			left: var(--star-left);
-			position: absolute;
-			top: var(--star-top);
-			width: var(--size);
-		}
-
-		a > .magic > .magic-star > svg {
-			animation: rotate 1000ms linear infinite;
-			display: block;
-			opacity: 0.7;
-		}
-
-		a > .magic > .magic-star > svg > path {
-			fill: violet;
-		}
-
-		@keyframes scale {
-			from,
-			to {
-				transform: scale(0);
+		<nav class='nav' aria-label='Main'>
+			{
+				navItems.map(({ href, label, active }) => (
+					<a href={href} aria-current={active ? 'page' : undefined}>
+						{label}
+					</a>
+				))
 			}
-
-			50% {
-				transform: scale(1);
-			}
-		}
-
-		@keyframes rotate {
-			from {
-				transform: rotate(0deg);
-			}
-
-			to {
-				transform: rotate(180deg);
-			}
-		}
-
-		@media (prefers-reduced-motion: reduce) {
-			a > .magic > .magic-star > svg {
-				animation: none;
-			}
-			a > .magic > .magic-star {
-				animation: none;
-			}
-		}
-
-		/* Transparent at the top of the page; gains a translucent blurred sheet
-		   only once scrolled, so it never masks page content (e.g. the 404 glow). */
-		#site-header.is-scrolled {
-			background-color: hsl(var(--background) / 0.85);
-			backdrop-filter: blur(8px);
-			-webkit-backdrop-filter: blur(8px);
-			border-bottom: 1px solid hsl(var(--border));
-		}
-	</style>
-
-	<script>
-		function getCurrentTheme() {
-			return localStorage.getItem('theme')
-		}
-		const toggleDarkModeButton = document.getElementById('toggleDarkMode')
-
-		toggleDarkModeButton?.addEventListener('click', () => {
-			const toggleDarkModeEvent = new CustomEvent('theme-change', {
-				detail: { theme: getCurrentTheme() === 'light' ? 'dark' : 'light' }
-			})
-			document.dispatchEvent(toggleDarkModeEvent)
-		})
-
-		let index = 0
-		const interval = 1000
-
-		const rand = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
-
-		const animate = (star: HTMLElement | SVGElement) => {
-			star.style.setProperty('--star-left', `${rand(-10, 100)}%`)
-			star.style.setProperty('--star-top', `${rand(-40, 80)}%`)
-
-			star.style.animation = 'none'
-			if (star instanceof HTMLElement) {
-				void star.offsetHeight
-			}
-			star.style.animation = ''
-		}
-
-		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-		if (!prefersReducedMotion) {
-			for (const star of document.getElementsByClassName('magic-star')) {
-				setTimeout(
-					() => {
-						if (star instanceof HTMLElement) {
-							animate(star)
-
-							setInterval(() => animate(star), 1000)
-						}
-					},
-					index++ * (interval / 3)
-				)
-			}
-		}
-
-		// Hide the sticky header when scrolling down, reveal it on the slightest
-		// scroll up, so the nav is reachable without scrolling back to the top.
-		const siteHeader = document.getElementById('site-header')
-		if (siteHeader) {
-			let lastScrollY = window.scrollY
-			let ticking = false
-			const DELTA = 6 // ignore sub-pixel / jitter scrolls
-			const TOP_THRESHOLD = 80 // always show near the top of the page
-
-			const updateHeader = () => {
-				const currentY = window.scrollY
-				// Opaque/blurred background only once scrolled past the top.
-				siteHeader.classList.toggle('is-scrolled', currentY > TOP_THRESHOLD)
-				if (Math.abs(currentY - lastScrollY) > DELTA) {
-					const scrollingDown = currentY > lastScrollY
-					if (scrollingDown && currentY > TOP_THRESHOLD) {
-						siteHeader.classList.add('-translate-y-full')
-					} else {
-						siteHeader.classList.remove('-translate-y-full')
-					}
-					lastScrollY = currentY
-				}
-				ticking = false
-			}
-
-			window.addEventListener(
-				'scroll',
-				() => {
-					if (!ticking) {
-						window.requestAnimationFrame(updateHeader)
-						ticking = true
-					}
-				},
-				{ passive: true }
-			)
-
-			// Keep the header reachable for keyboard users: reveal it if a nav
-			// element inside it gains focus while hidden.
-			siteHeader.addEventListener('focusin', () => {
-				siteHeader.classList.remove('-translate-y-full')
-			})
-
-			// Set the correct background state on load (e.g. reloaded mid-page).
-			updateHeader()
-		}
-	</script>
+		</nav>
+	</div>
 </header>

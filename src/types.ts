@@ -5,6 +5,8 @@ export type SiteConfig = {
 	url: string
 	title: string
 	description: string
+	role: string
+	location: string
 	// Third-person author bio (sentence fragment). Reused by JSON-LD, the author
 	// box, and the homepage description so the wording can't drift.
 	bio: string

@@ -31,7 +31,7 @@ const projectPosts = allPosts
 const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).toLowerCase()}${siteConfig.bio.slice(1)}`
 ---
 
-<PageLayout meta={{ title: 'Software Developer', description: homeDescription }} wide>
+<PageLayout meta={{ title: 'Software Developer', description: homeDescription }}>
 	<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
 	<script type='application/ld+json' set:html={jsonLdScript(websiteSchema)} is:inline />
 
