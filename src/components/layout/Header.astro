@@ -1,15 +1,19 @@
 ---
 import { siteConfig } from '@/site-config'
 
-// Project pages count as Work; blog posts and tag archives count as Blog.
+// Running head. Project pages count as Work; posts and tag archives count as Writing.
 const path = Astro.url.pathname
 const navItems = [
-	{ href: '/', label: 'Work', active: path === '/' || path.startsWith('/projects/') },
-	{ href: '/blog/', label: 'Blog', active: path.startsWith('/blog') || path.startsWith('/tags') },
+	{ href: '/#work', label: 'Work', active: path === '/' || path.startsWith('/projects/') },
+	{
+		href: '/blog/',
+		label: 'Writing',
+		active: path.startsWith('/blog') || path.startsWith('/tags')
+	},
 	{ href: '/about/', label: 'About', active: path.startsWith('/about') }
 ]
 
-// Below 640px the logo collapses to initials ("SUL").
+// Below 480px the name collapses to initials ("SUL").
 const initials = siteConfig.author
 	.split(/\s+/)
 	.map((word) => word[0])

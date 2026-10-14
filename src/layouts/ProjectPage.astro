@@ -1,8 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content'
+import { render } from 'astro:content'
 
 import CoverFigure from '@/components/CoverFigure.astro'
 import FormattedDate from '@/components/FormattedDate.astro'
+import TOC from '@/components/blog/TOC.astro'
+import ProjectStory from '@/components/project/ProjectStory.astro'
 import { PERSON_ID, displayTags, getEntrySocialImage, jsonLdScript, slugifyTag } from '@/utils'
 import { siteConfig } from '@/site-config'
 
@@ -16,19 +19,23 @@ interface Props {
 
 const { project, prev, next } = Astro.props
 const { data } = project
+const { headings } = await render(project)
 const { coverImage, description, facts, links, publishDate, title, updatedDate } = data
 
 const social = await getEntrySocialImage(data)
 const publishIso = publishDate.toISOString()
 const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ? updatedDate : null
 
-// Facts rail: one row per key the project actually has, in the reference's order.
+// Fact cells: one per key the project actually has.
 const linksOf = (kind: 'code' | 'live' | 'store') => links.filter((l) => l.kind === kind)
 const codeLinks = linksOf('code')
 const liveLinks = linksOf('live')
 const storeLinks = linksOf('store')
 const tags = displayTags(project)
 const bareUrl = (url: string) => url.replace(/^https?:\/\//, '').replace(/\/$/, '')
+const hasCells =
+	Object.values(facts).some((v) => (Array.isArray(v) ? v.length > 0 : Boolean(v))) ||
+	links.length > 0
 
 const projectUrl = new URL(`/projects/${project.id}/`, Astro.site).toString()
 const authorRef = { '@id': PERSON_ID, name: siteConfig.author }
@@ -69,152 +76,133 @@ const breadcrumbSchema = {
 	<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
 	<div class='page container'>
 		<a class='back' href='/#work'>← All work</a>
-		<header class='p-header'>
-			<p class='meta'>
-				{data.draft && '(Draft) / '}<FormattedDate date={publishDate} />
-				{
-					updated && (
-						<>
-							{' / Updated '}
-							<FormattedDate date={updated} />
-						</>
-					)
-				}
+		<header class='doc-head'>
+			<p class='kicker'>
+				{data.draft && 'Draft · '}Case study
+				<span class='meta'>
+					<FormattedDate date={publishDate} />
+					{
+						updated && (
+							<>
+								{' · Updated '}
+								<FormattedDate date={updated} />
+							</>
+						)
+					}
+				</span>
 			</p>
 			<h1 class='display'>{title}</h1>
 			<p class='lede'>{description}</p>
-			{
-				links.length > 0 && (
-					<div class='links'>
-						{links.map((link) => (
-							<a class='link' href={link.url} target='_blank' rel='noopener noreferrer'>
-								{link.label} →
-							</a>
-						))}
-					</div>
-				)
-			}
 		</header>
 		{
-			coverImage && (
-				<div class='p-hero'>
-					<CoverFigure
-						src={coverImage.src}
-						alt={coverImage.alt}
-						sizes='(min-width: 1152px) 1024px, 100vw'
-					/>
-				</div>
-			)
-		}
-		<div class='detail'>
-			<dl class='facts' aria-label='Project facts'>
-				{
-					facts.client && (
-						<div class='fact'>
+			hasCells && (
+				<dl class='cells' aria-label='Project facts'>
+					{facts.client && (
+						<div class='cell'>
 							<dt>Client</dt>
 							<dd>{facts.client}</dd>
 						</div>
-					)
-				}
-				{
-					facts.role && (
-						<div class='fact'>
+					)}
+					{facts.role && (
+						<div class='cell'>
 							<dt>Role</dt>
 							<dd>{facts.role}</dd>
 						</div>
-					)
-				}
-				{
-					facts.timeline && (
-						<div class='fact'>
+					)}
+					{facts.timeline && (
+						<div class='cell'>
 							<dt>Timeline</dt>
 							<dd>{facts.timeline}</dd>
 						</div>
-					)
-				}
-				{
-					facts.status && (
-						<div class='fact'>
+					)}
+					{facts.status && (
+						<div class='cell'>
 							<dt>Status</dt>
-							<dd>
-								<span class='status'>{facts.status}</span>
-							</dd>
+							<dd>{facts.status}</dd>
 						</div>
-					)
-				}
-				{
-					facts.license && (
-						<div class='fact'>
+					)}
+					{facts.stack && facts.stack.length > 0 && (
+						<div class={facts.stack.length > 4 ? 'cell wide' : 'cell'}>
+							<dt>Stack</dt>
+							<dd>{facts.stack.join(', ')}</dd>
+						</div>
+					)}
+					{facts.license && (
+						<div class='cell'>
 							<dt>License</dt>
 							<dd>{facts.license}</dd>
 						</div>
-					)
-				}
-				{
-					[
+					)}
+					{[
 						{ label: codeLinks.length > 1 ? 'Repositories' : 'Repository', items: codeLinks },
 						{ label: 'Live site', items: liveLinks },
 						{ label: 'Store page', items: storeLinks }
 					]
 						.filter(({ items }) => items.length > 0)
 						.map(({ label, items }) => (
-							<div class='fact'>
+							<div class='cell'>
 								<dt>{label}</dt>
-								<dd class='link-list'>
+								<dd class='links'>
 									{items.map((link) => (
-										<a class='link mono' href={link.url} target='_blank' rel='noopener noreferrer'>
-											{bareUrl(link.url)}
-										</a>
+										<a
+											class='link'
+											href={link.url}
+											target='_blank'
+											rel='noopener noreferrer'
+											title={bareUrl(link.url)}
+											set:text={`${link.label} ↗`}
+										/>
 									))}
 								</dd>
 							</div>
-						))
-				}
-				{
-					facts.stack && facts.stack.length > 0 && (
-						<div class='fact'>
-							<dt>Stack</dt>
-							<dd>
-								<span class='stack-list'>{facts.stack.join(' / ')}</span>
-							</dd>
-						</div>
-					)
-				}
-				{
-					tags.length > 0 && (
-						<div class='fact'>
-							<dt>Tags</dt>
-							<dd class='stack-list'>
-								{tags.map((tag, i) => (
-									<>
-										{i > 0 && ' / '}
-										<a class='link' href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
-									</>
-								))}
-							</dd>
-						</div>
-					)
-				}
-			</dl>
-			<article class='narrative'>
+						))}
+				</dl>
+			)
+		}
+		{
+			coverImage && (
+				<div class='doc-cover'>
+					<CoverFigure
+						src={coverImage.src}
+						alt={coverImage.alt}
+						sizes='(min-width: 1024px) 928px, 100vw'
+					/>
+				</div>
+			)
+		}
+		<div class='reader'>
+			<TOC headings={headings} variant='sidebar' label='In this case study' />
+			<article class='reader-body'>
+				<TOC headings={headings} variant='drawer' label='In this case study' />
 				<div class='prose'>
 					<slot />
 				</div>
 				{
-					prev && next && (
-						<nav class='pager' aria-label='More projects'>
-							<a href={`/projects/${prev.id}/`}>
-								<span class='meta'>Previous</span>
-								<span>← {prev.data.title}</span>
-							</a>
-							<a href={`/projects/${next.id}/`}>
-								<span class='meta'>Next</span>
-								<span>{next.data.title} →</span>
-							</a>
-						</nav>
+					tags.length > 0 && (
+						<p class='filed'>
+							Filed under{' '}
+							{tags.map((tag, i) => (
+								<>
+									{i > 0 && ', '}
+									<a class='link' href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
+								</>
+							))}
+						</p>
 					)
 				}
 			</article>
 		</div>
+		{
+			next && next.id !== project.id && (
+				<nav class='next-case' aria-label='More case studies'>
+					<ProjectStory project={next} variant='column' as='h2' kicker='Next case study' />
+					{prev && prev.id !== next.id && (
+						<p class='prev'>
+							Previous: <a href={`/projects/${prev.id}/`}>{prev.data.title}</a>
+						</p>
+					)}
+				</nav>
+			)
+		}
 	</div>
 </PageLayout>

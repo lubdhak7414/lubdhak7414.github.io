@@ -9,6 +9,8 @@ import { siteConfig } from '@/site-config'
 
 interface Props {
 	meta: SiteMeta
+	/** The running head. The front page and About carry the nameplate rail instead. */
+	header?: boolean
 }
 
 const {
@@ -21,7 +23,8 @@ const {
 		modifiedDate,
 		noIndex,
 		title
-	}
+	},
+	header = true
 } = Astro.props
 ---
 
@@ -41,7 +44,7 @@ const {
 
 	<body>
 		<a class='skip' href='#content'>Skip to content</a>
-		<Header />
+		{header && <Header />}
 		<main id='content'>
 			<slot />
 		</main>

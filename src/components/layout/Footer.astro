@@ -1,20 +1,34 @@
 ---
 import { siteConfig } from '@/site-config'
+import { buildCommit } from '@/utils'
 ---
 
 <footer class='site-footer'>
-	{/* data-nosnippet is only honoured on div/span/section, so it sits on the wrapper */}
-	<div class='container' data-nosnippet>
-		<span>© {new Date().getFullYear()} {siteConfig.author}. All rights reserved.</span>
-		<div class='links'>
-			<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
-				>GitHub</a
-			>
-			<a class='link' href={siteConfig.socials.linkedin} target='_blank' rel='noopener noreferrer'
-				>LinkedIn</a
-			>
-			<a class='link' href={`mailto:${siteConfig.socials.email}`}>Email</a>
-			<a class='link' href='/tools/'>Tools</a>
+	<div class='container'>
+		{/* data-nosnippet is only honoured on div/span/section, so it sits on the wrapper */}
+		<div data-nosnippet>
+			<div class='colophon'>
+				<p class='notice'>
+					<span>This site will not</span><span><i>×</i>load third-party scripts</span><span
+						><i>×</i>set cookies</span
+					><span><i>×</i>track you</span>
+				</p>
+				<p class='meta'>
+					© {new Date().getFullYear()}
+					{siteConfig.author}{buildCommit && ` · Built from ${buildCommit}`}
+				</p>
+			</div>
+			<nav class='links' aria-label='Elsewhere'>
+				<a class='link' href={`mailto:${siteConfig.socials.email}`}>Email</a>
+				<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
+					>GitHub</a
+				>
+				<a class='link' href={siteConfig.socials.linkedin} target='_blank' rel='noopener noreferrer'
+					>LinkedIn</a
+				>
+				<a class='link' href='/rss.xml'>RSS</a>
+				<a class='link' href='/tools/'>Tools</a>
+			</nav>
 		</div>
 	</div>
 </footer>

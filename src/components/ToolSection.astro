@@ -22,7 +22,7 @@ const headingId = `tools-${slugify(title)}`
 ---
 
 <section aria-labelledby={headingId}>
-	<h2 class='h2 section-title' id={headingId}>{title}</h2>
+	<header class='sec-head'><h2 id={headingId}>{title}</h2></header>
 	{
 		tools.map((tool) => (
 			<a

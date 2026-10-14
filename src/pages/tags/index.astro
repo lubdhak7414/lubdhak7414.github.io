@@ -24,9 +24,10 @@ const meta = {
 
 <PageLayout meta={meta}>
 	<div class='page container'>
-		<a class='back' href='/blog/'>← All posts</a>
-		<header class='intro'>
+		<a class='back' href='/blog/'>← All writing</a>
+		<header class='front-head'>
 			<h1 class='display'>Tags</h1>
+			<p class='meta'>{allTags.length} topics across posts and case studies</p>
 		</header>
 		{allTags.length === 0 && <p class='empty'>No posts yet.</p>}
 		{

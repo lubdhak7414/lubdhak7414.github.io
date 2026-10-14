@@ -89,8 +89,10 @@ const paginationProps = {
 	<script type='application/ld+json' set:html={jsonLdScript(collectionPageSchema)} is:inline />
 	<div class='page container'>
 		<a class='back' href='/tags/'>← All tags</a>
-		<header class='intro'>
-			<h1 class='display'>Tags: #{tag}</h1>
+		<header class='front-head'>
+			<p class='kicker'>Filed under</p>
+			<h1 class='display'>{tag}</h1>
+			<p class='meta'>{page.total} {page.total === 1 ? 'entry' : 'entries'}</p>
 		</header>
 		<section aria-label='Posts and projects with this tag'>
 			{

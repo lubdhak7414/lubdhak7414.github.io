@@ -14,7 +14,7 @@ import {
 const meta = {
 	description:
 		'Articles on web development, WordPress, SEO, and project case studies by Safwan Usaid Lubdhak.',
-	title: 'Blog'
+	title: 'Writing'
 }
 
 const posts = sortByPublishDate(await getAllPosts())
@@ -43,8 +43,14 @@ const byYear = years.map((year) => ({
 
 <PageLayout meta={meta}>
 	<div class='page container'>
-		<header class='intro'>
-			<h1 class='display'>Blog</h1>
+		<header class='front-head'>
+			<h1 class='display'>Writing</h1>
+			<p class='meta'>
+				{posts.length} posts · <a class='link' href='/rss.xml'>RSS feed</a> · <a
+					class='link'
+					href='/tags/'>All tags</a
+				> · Case studies are on the <a class='link' href='/#work'>front page</a>
+			</p>
 		</header>
 		{
 			filterTags.length > 0 && (
@@ -66,27 +72,29 @@ const byYear = years.map((year) => ({
 				byYear.map(({ year, rows }) => (
 					<section class='year' data-year aria-labelledby={`year-${year}`}>
 						<h2 id={`year-${year}`}>{year}</h2>
-						{rows.map(({ post, minutesRead }) => (
-							<a
-								class='post'
-								href={`/blog/${post.id}/`}
-								data-tags={post.data.tags.map(slugifyTag).join(' ')}
-							>
-								<time class='meta date' datetime={post.data.publishDate.toISOString()}>
-									{getFormattedDate(post.data.publishDate, { year: undefined })}
-								</time>
-								<div>
-									<h3 class='h3'>
-										{post.data.draft && '(Draft) '}
-										{post.data.title}
-									</h3>
-									<p>{post.data.description}</p>
-									<span class='meta'>
-										{[...displayTags(post), minutesRead].filter(Boolean).join(' / ')}
-									</span>
-								</div>
-							</a>
-						))}
+						<div>
+							{rows.map(({ post, minutesRead }) => (
+								<a
+									class='post'
+									href={`/blog/${post.id}/`}
+									data-tags={post.data.tags.map(slugifyTag).join(' ')}
+								>
+									<time class='meta date' datetime={post.data.publishDate.toISOString()}>
+										{getFormattedDate(post.data.publishDate, { year: undefined })}
+									</time>
+									<div>
+										<h3 class='h3'>
+											{post.data.draft && '(Draft) '}
+											{post.data.title}
+										</h3>
+										<p>{post.data.description}</p>
+										<span class='meta'>
+											{[...displayTags(post), minutesRead].filter(Boolean).join(' / ')}
+										</span>
+									</div>
+								</a>
+							))}
+						</div>
 					</section>
 				))
 			}
@@ -95,10 +103,6 @@ const byYear = years.map((year) => ({
 					>Show all posts</button
 				>
 			</p>
-		</div>
-		<div class='links rss'>
-			<a class='link' href='/rss.xml'>RSS feed</a>
-			<a class='link' href='/tags/'>All tags</a>
 		</div>
 	</div>
 </PageLayout>

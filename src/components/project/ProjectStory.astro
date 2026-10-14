@@ -1,0 +1,114 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { Image } from 'astro:assets'
+import { displayTags } from '@/utils'
+
+interface Props {
+	project: CollectionEntry<'project'>
+	/** `lead`: headline across the top, photo beside the copy. `column`: photo above, for
+	 * the three ruled columns. `brief`: text only. */
+	variant: 'lead' | 'column' | 'brief'
+	/** Heading level of the headline (h3 under a section head, h2 at the end of a case study). */
+	as?: 'h2' | 'h3'
+	kicker?: string
+}
+
+const { project, variant, as: Heading = 'h3', kicker } = Astro.props
+const { title, description, coverImage, facts, links, publishDate } = project.data
+const href = `/projects/${project.id}/`
+
+// What it's made with: the stack the write-up lists, else its topics. Four at most here;
+// the case study has the full list.
+const made = (facts.stack?.length ? facts.stack : displayTags(project)).slice(0, 4)
+const year = publishDate.getFullYear()
+
+const image =
+	variant !== 'brief' && coverImage
+		? {
+				...coverImage,
+				widths: variant === 'lead' ? [480, 720, 960, 1280] : [320, 480, 640, 960],
+				sizes:
+					variant === 'lead'
+						? '(min-width: 1100px) 520px, (min-width: 760px) 58vw, 100vw'
+						: '(min-width: 1100px) 290px, (min-width: 760px) 30vw, 100vw'
+			}
+		: null
+---
+
+{
+	variant === 'lead' ? (
+		<article class='story story--lead'>
+			{kicker && <p class='kicker'>{kicker}</p>}
+			<Heading class='story-title'>
+				<a href={href}>{title}</a>
+			</Heading>
+			<div class='story-body'>
+				{image && (
+					<Image
+						class='story-img'
+						src={image.src}
+						alt={image.alt}
+						widths={image.widths}
+						sizes={image.sizes}
+						loading='eager'
+					/>
+				)}
+				<div class='story-copy'>
+					<p class='story-dek'>{description}</p>
+					<p class='story-meta'>
+						<b>{year}</b> · {made.join(', ')}
+					</p>
+					{links.length > 0 && (
+						<p class='story-links links'>
+							{links.map((link) => (
+								<a
+									class='link'
+									href={link.url}
+									target='_blank'
+									rel='noopener noreferrer'
+									set:text={link.label}
+								/>
+							))}
+						</p>
+					)}
+					<p class='story-more' aria-hidden='true'>
+						Read the case study →
+					</p>
+				</div>
+			</div>
+		</article>
+	) : (
+		<article class={`story story--${variant}`}>
+			{kicker && <p class='kicker'>{kicker}</p>}
+			{image && (
+				<Image
+					class='story-img'
+					src={image.src}
+					alt={image.alt}
+					widths={image.widths}
+					sizes={image.sizes}
+				/>
+			)}
+			<Heading class='story-title'>
+				<a href={href}>{title}</a>
+			</Heading>
+			<p class='story-dek'>{description}</p>
+			<p class='story-meta'>
+				<b>{year}</b> · {made.join(', ')}
+			</p>
+			{links.length > 0 && (
+				<p class='story-links links'>
+					{links.map((link) => (
+						<a
+							class='link'
+							href={link.url}
+							target='_blank'
+							rel='noopener noreferrer'
+							set:text={link.label}
+						/>
+					))}
+				</p>
+			)}
+		</article>
+	)
+}

@@ -12,7 +12,7 @@ const { posts } = Astro.props
 {
 	posts.length > 0 && (
 		<section class='related' aria-labelledby='rel-h'>
-			<h2 id='rel-h'>Related posts</h2>
+			<h2 id='rel-h'>More writing</h2>
 			{posts.map((post) => (
 				<a href={`/blog/${post.id}/`}>
 					<FormattedDate class='meta' date={post.data.publishDate} />
