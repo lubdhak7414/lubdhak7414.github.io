@@ -44,20 +44,19 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 <link rel='manifest' href='/favicon/site.webmanifest' />
 
 {
-	/* Preload the two faces every page sets above the fold: Big Shoulders Display (name,
-	headlines) and upright Latin Atkinson Hyperlegible Next (text). Italic, Latin Extended
-	and JetBrains Mono load on demand. */
+	/* Preload the two faces every page sets above the fold, both Latin: IBM Plex Sans (text)
+	and JetBrains Mono (dates, labels, counts, code). Italic and Latin Extended load on demand. */
 }
 <link
 	rel='preload'
-	href='/fonts/big-shoulders-display-latin-wght-normal.woff2'
+	href='/fonts/ibm-plex-sans-latin-wght-normal.woff2'
 	as='font'
 	type='font/woff2'
 	crossorigin
 />
 <link
 	rel='preload'
-	href='/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2'
+	href='/fonts/jetbrains-mono-latin-wght-normal.woff2'
 	as='font'
 	type='font/woff2'
 	crossorigin

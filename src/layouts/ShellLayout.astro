@@ -1,0 +1,35 @@
+---
+import type { SiteMeta } from '@/types'
+
+import Footer from '@/components/layout/Footer.astro'
+import Sidebar from '@/components/layout/Sidebar.astro'
+import type { Section } from '@/components/layout/Sidebar.astro'
+
+import PageLayout from './BaseLayout.astro'
+
+interface Props {
+	meta: SiteMeta
+	page: Section
+}
+
+const { meta, page } = Astro.props
+---
+
+{
+	/* Every page: the sidebar (sticky on wide screens) and the page beside it. Slots: `side` adds
+to the sidebar under the navigation, `head` takes JSON-LD. */
+}
+<PageLayout meta={meta}>
+	<slot name='head' />
+	<div class='frame'>
+		<Sidebar page={page}>
+			<slot name='side' />
+		</Sidebar>
+		<div class='main'>
+			<slot />
+			{/* Below 960px the sidebar's footer note moves to the end of the page. */}
+			<Footer class='main-foot' />
+		</div>
+	</div>
+	<slot name='after' />
+</PageLayout>

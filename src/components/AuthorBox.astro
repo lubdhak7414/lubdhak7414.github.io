@@ -2,30 +2,13 @@
 import { Image } from 'astro:assets'
 import avatar from '@/assets/face.png'
 import { siteConfig } from '@/site-config'
-
-const initials = siteConfig.author
-	.split(/\s+/)
-	.map((word) => word[0])
-	.join('')
-	.toUpperCase()
 ---
 
 {/* data-nosnippet keeps the boilerplate bio out of Google's SERP snippets. */}
 <div class='author' data-nosnippet>
-	<div class='avatar sm' aria-hidden='true'>
-		{initials}<Image src={avatar} alt='' width={96} height={96} />
-	</div>
+	<Image src={avatar} alt='' width={96} height={96} />
 	<div>
-		<h2 class='h3'>{siteConfig.author}</h2>
-		<p>{siteConfig.bio}</p>
-		<div class='links'>
-			<a class='link' href='/about/'>About</a>
-			<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
-				>GitHub</a
-			>
-			<a class='link' href={siteConfig.socials.linkedin} target='_blank' rel='noopener noreferrer'
-				>LinkedIn</a
-			>
-		</div>
+		<p class='author-name'>Written by <a href='/about/' set:text={siteConfig.author} /></p>
+		<p class='author-bio'>{siteConfig.bio}</p>
 	</div>
 </div>

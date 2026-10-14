@@ -15,3 +15,10 @@ export function getFormattedDate(
 
 	return dateFormat.format(new Date(date))
 }
+
+// YYYY-MM-DD from the date's own calendar fields. Frontmatter dates ("4 March 2026") parse at
+// local midnight, so `toISOString()` would print the previous day on a machine east of UTC.
+export function isoDate(date: Date) {
+	const pad = (n: number) => String(n).padStart(2, '0')
+	return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+}

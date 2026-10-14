@@ -21,23 +21,25 @@ const slugify = (value: string) =>
 const headingId = `tools-${slugify(title)}`
 ---
 
-<section aria-labelledby={headingId}>
-	<header class='sec-head'><h2 id={headingId}>{title}</h2></header>
-	{
-		tools.map((tool) => (
-			<a
-				class='repo has-icon'
-				href={tool.href}
-				id={slugify(tool.name)}
-				target='_blank'
-				rel='noopener noreferrer'
-			>
-				<Icon name={tool.iconPath} class='icon' aria-hidden='true' />
-				<div>
-					<h3 class='h3'>{tool.name}</h3>
-					<p>{tool.description}</p>
-				</div>
-			</a>
-		))
-	}
+<section class='tool-group' aria-labelledby={headingId}>
+	<h2 id={headingId} class='label'>{title}</h2>
+	<ul class='rows'>
+		{
+			tools.map((tool) => (
+				<li class='row'>
+					<a
+						class='row-link row-link--plain'
+						href={tool.href}
+						id={slugify(tool.name)}
+						target='_blank'
+						rel='noopener noreferrer'
+					>
+						<Icon name={tool.iconPath} class='row-icon' aria-hidden='true' />
+						<span class='row-title'>{tool.name}</span>
+						<span class='row-aside'>{tool.description}</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
 </section>

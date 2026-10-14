@@ -1,14 +1,12 @@
 ---
-import { render } from 'astro:content'
-
-import PageLayout from '@/layouts/BaseLayout.astro'
-import IdentityRail from '@/components/portfolio/IdentityRail.astro'
-import ProjectStory from '@/components/project/ProjectStory.astro'
+import ShellLayout from '@/layouts/ShellLayout.astro'
+import PostRow from '@/components/blog/PostRow.astro'
+import ContactList from '@/components/layout/ContactList.astro'
+import WorkRow from '@/components/project/WorkRow.astro'
 
 import {
 	getAllPosts,
 	getAllProjects,
-	getFormattedDate,
 	jsonLdScript,
 	personSchema,
 	sortByPublishDate,
@@ -33,101 +31,67 @@ const skills = [
 	{ category: 'Others', items: ['Git', 'Linux', 'AWS', 'Nginx'] }
 ]
 
-// Already in homepage order (homePageIdx, then newest); don't re-sort. The front page
-// prints them by rank: the first as the lead story, the next three in ruled columns, the
-// rest as an index of text-only rows.
+// Already in homepage order (homePageIdx, then newest); don't re-sort.
 const projects = await getAllProjects()
-const [lead, ...others] = projects
-const columns = others.slice(0, 3)
-const briefs = others.slice(3)
-
-// Latest writing, with reading time from the remark plugin.
 const posts = sortByPublishDate(await getAllPosts())
-const latest = await Promise.all(
-	posts.slice(0, 4).map(async (post) => {
-		const { remarkPluginFrontmatter } = await render(post)
-		return { post, minutesRead: remarkPluginFrontmatter.minutesRead as string | undefined }
-	})
-)
+const latest = posts.slice(0, 4)
 
 const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).toLowerCase()}${siteConfig.bio.slice(1)}`
 ---
 
-<PageLayout meta={{ title: 'Software Developer', description: homeDescription }} header={false}>
-	<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
-	<script type='application/ld+json' set:html={jsonLdScript(websiteSchema)} is:inline />
+<ShellLayout meta={{ title: 'Software Developer', description: homeDescription }} page='home'>
+	<Fragment slot='head'>
+		<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
+		<script type='application/ld+json' set:html={jsonLdScript(websiteSchema)} is:inline />
+	</Fragment>
+	<ContactList slot='side' />
 
-	<div class='front container'>
-		<IdentityRail page='home' counts={{ work: projects.length, writing: posts.length }} />
-		<div class='paper'>
-			{
-				lead && (
-					<section id='work' aria-labelledby='work-h'>
-						<header class='sec-head'>
-							<h2 id='work-h'>Work</h2>
-							<span class='meta'>{projects.length} case studies</span>
-						</header>
-						<ProjectStory project={lead} variant='lead' />
-						{columns.length > 0 && (
-							<div class='columns'>
-								{columns.map((project) => (
-									<ProjectStory project={project} variant='column' />
-								))}
-							</div>
-						)}
-						{briefs.length > 0 && (
-							<div class='briefs'>
-								<p class='kicker'>Also on file</p>
-								<ol>
-									{briefs.map((project) => (
-										<li>
-											<ProjectStory project={project} variant='brief' />
-										</li>
-									))}
-								</ol>
-							</div>
-						)}
-					</section>
-				)
-			}
-			{
-				latest.length > 0 && (
-					<section id='writing' aria-labelledby='writing-h'>
-						<header class='sec-head'>
-							<h2 id='writing-h'>Writing</h2>
-							<a class='link' href='/blog/'>
-								All {posts.length} posts
-							</a>
-						</header>
-						<ol class='dispatches'>
-							{latest.map(({ post, minutesRead }) => (
-								<li>
-									<a class='dispatch' href={`/blog/${post.id}/`}>
-										<time class='meta' datetime={post.data.publishDate.toISOString()}>
-											{getFormattedDate(post.data.publishDate)}
-										</time>
-										<span>
-											<span class='dispatch-title'>{post.data.title}</span>
-											<span class='dispatch-dek'>{post.data.description}</span>
-										</span>
-										{minutesRead && <span class='meta'>{minutesRead}</span>}
-									</a>
-								</li>
-							))}
-						</ol>
-					</section>
-				)
-			}
-			<section id='background' aria-labelledby='background-h'>
-				<header class='sec-head'>
-					<h2 id='background-h'>Background</h2>
-				</header>
-				<div class='record'>
-					<div>
-						<h3>Experience</h3>
-						<h4>Freelance Web Developer</h4>
-						<p class='org'>Remote clients · 2019 - Present</p>
-						<ul>
+	<p class='lead'>{siteConfig.bio}</p>
+
+	{
+		projects.length > 0 && (
+			<section id='work' aria-labelledby='work-h'>
+				<div class='sec'>
+					<h2 id='work-h'>Work</h2>
+					<span class='sec-note'>{projects.length} case studies</span>
+				</div>
+				<ul class='rows'>
+					{projects.map((project) => (
+						<WorkRow project={project} />
+					))}
+				</ul>
+			</section>
+		)
+	}
+	{
+		latest.length > 0 && (
+			<section id='writing' aria-labelledby='writing-h'>
+				<div class='sec'>
+					<h2 id='writing-h'>Writing</h2>
+					<a class='sec-note' href='/blog/'>
+						All {posts.length} posts →
+					</a>
+				</div>
+				<ul class='rows'>
+					{latest.map((post) => (
+						<PostRow entry={post} />
+					))}
+				</ul>
+			</section>
+		)
+	}
+	<section id='background' aria-labelledby='background-h'>
+		<div class='sec'>
+			<h2 id='background-h'>Background</h2>
+		</div>
+		<ul class='rows'>
+			<li class='row'>
+				<div class='row-static'>
+					<span class='row-date'>2019 - now</span>
+					<div class='row-body'>
+						<h3 class='row-title'>Freelance Web Developer</h3>
+						<p class='row-text'>Remote clients</p>
+						<ul class='dots'>
 							<li>
 								WordPress sites for small businesses - hosting, domains, email setup, and redesigns.
 							</li>
@@ -140,11 +104,15 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 							</li>
 						</ul>
 					</div>
-					<div>
-						<h3>Education</h3>
-						<h4>BRAC University</h4>
-						<p class='org'>BSc. in Computer Science and Engineering</p>
-						<ul>
+				</div>
+			</li>
+			<li class='row'>
+				<div class='row-static'>
+					<span class='row-date'>BSc</span>
+					<div class='row-body'>
+						<h3 class='row-title'>BRAC University</h3>
+						<p class='row-text'>BSc. in Computer Science and Engineering</p>
+						<ul class='dots'>
 							<li>
 								Completed core courses including Data Structures, Algorithms, Discrete Mathematics,
 								Digital Logic Design, Data Communications, Operating Systems, and Database Systems.
@@ -155,21 +123,18 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 							</li>
 						</ul>
 					</div>
-					<div>
-						<h3>Skills</h3>
-						<dl class='skills'>
-							{
-								skills.map(({ category, items }) => (
-									<div>
-										<dt>{category}</dt>
-										<dd>{items.join(', ')}</dd>
-									</div>
-								))
-							}
-						</dl>
-					</div>
 				</div>
-			</section>
-		</div>
-	</div>
-</PageLayout>
+			</li>
+		</ul>
+		<dl class='skills'>
+			{
+				skills.map(({ category, items }) => (
+					<div>
+						<dt>{category}</dt>
+						<dd>{items.join(', ')}</dd>
+					</div>
+				))
+			}
+		</dl>
+	</section>
+</ShellLayout>

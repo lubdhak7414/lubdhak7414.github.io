@@ -12,11 +12,9 @@ interface Props {
 const { src, alt, sizes, caption } = Astro.props
 ---
 
-{
-	/* A real image keeps its own aspect ratio (`is-image`); the 16:9 frame is only for placeholders. */
-}
+{/* The image keeps its own aspect ratio, in a rounded hairline frame. */}
 <figure class='figure'>
-	<div class='frame is-image'>
+	<div class='cover-frame'>
 		<Image
 			src={src}
 			alt={alt}

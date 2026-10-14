@@ -1,5 +1,6 @@
 ---
 title: 'A SEO Optimized Website for Green Bangla Foundation'
+name: 'Green Bangla Foundation'
 description: 'This blog post explores how I created and optimized a WordPress website for speed and mobile responsiveness, achieving top scores on Google Lighthouse.'
 publishDate: '06 December 2024'
 updatedDate: '06 December 2024'

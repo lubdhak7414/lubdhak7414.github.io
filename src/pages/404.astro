@@ -1,5 +1,5 @@
 ---
-import PageLayout from '@/layouts/BaseLayout.astro'
+import ShellLayout from '@/layouts/ShellLayout.astro'
 import { jsonLdScript } from '@/utils'
 import { excuses } from '../data/excuses'
 
@@ -10,33 +10,24 @@ const meta = {
 }
 ---
 
-<PageLayout meta={meta}>
-	<div class='page container'>
-		<header class='doc-head'>
-			<p class='kicker'>404 · Page not found</p>
-			<h1 class='display'>This page pulled a disappearing act.</h1>
-		</header>
+<ShellLayout meta={meta} page='error'>
+	<header class='page-head'>
+		<p class='label'>404 · Page not found</p>
+		<h1>This page pulled a disappearing act.</h1>
+	</header>
 
-		{/* terminal-style excuse generator */}
-		<div class='code max-w-xl'>
-			<div class='code-head'><span>bash - why-this-happened</span></div>
-			<div class='px-4 py-4 font-mono text-[13px] leading-[1.65]'>
-				<p class='text-muted'><span class='text-accent'>$</span> git blame this-page</p>
-				<p id='excuse' aria-live='polite' class='mt-2 min-h-[3.3em]'>
-					{excuses[0]}
-				</p>
-			</div>
-		</div>
-
-		<div class='mt-6 flex flex-wrap items-center gap-x-6 gap-y-4'>
-			<a class='btn' href='/'>Take me home</a>
-			<button id='roll-excuse' type='button' class='link text-sm'>Roll another excuse</button>
-		</div>
-
-		<p class='muted mt-6 text-sm'>
-			…or go read the <a href='/blog/' class='link'>blog</a> instead.
-		</p>
+	{/* terminal-style excuse generator */}
+	<div class='terminal'>
+		<p class='terminal-head'>bash - why-this-happened</p>
+		<p class='terminal-cmd'><span>$</span> git blame this-page</p>
+		<p id='excuse' aria-live='polite'>{excuses[0]}</p>
 	</div>
+
+	<p class='actions'>
+		<a class='button' href='/'>Take me home</a>
+		<button id='roll-excuse' type='button' class='text-button'>Roll another excuse</button>
+	</p>
+	<p class='page-note'>…or go read the <a href='/blog/'>blog</a> instead.</p>
 
 	<script is:inline type='application/json' id='excuses-data' set:html={jsonLdScript(excuses)} />
 
@@ -61,4 +52,4 @@ const meta = {
 		rollBtn?.addEventListener('click', roll)
 		roll()
 	</script>
-</PageLayout>
+</ShellLayout>

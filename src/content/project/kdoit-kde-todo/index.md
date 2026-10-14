@@ -1,5 +1,6 @@
 ---
 title: 'KDoit: A To-Do Widget for KDE Plasma 6'
+name: 'KDoit'
 description: 'A pure-QML to-do list plasmoid with priorities, due dates, drag-and-drop, Markdown export, and live file sync. Zero build steps required.'
 publishDate: '08 July 2026'
 coverImage:

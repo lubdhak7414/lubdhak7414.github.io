@@ -11,7 +11,7 @@ export {
 	getRelatedPosts
 } from './post'
 export type { Entry } from './post'
-export { getFormattedDate } from './date'
+export { getFormattedDate, isoDate } from './date'
 export { slugifyTag } from './slugify'
 export { generateToc } from './generateToc'
 export { getCrawlerSafeOgImage, getEntrySocialImage } from './ogImage'

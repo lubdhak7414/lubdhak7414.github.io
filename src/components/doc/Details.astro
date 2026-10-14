@@ -1,0 +1,38 @@
+---
+export interface DetailRow {
+	key: string
+	text?: string | undefined
+	links?: { label: string; href: string; external?: boolean }[]
+}
+
+interface Props {
+	rows: DetailRow[]
+	class?: string
+}
+
+const { rows, class: className } = Astro.props
+const external = { target: '_blank', rel: 'noopener noreferrer' }
+---
+
+{/* A case study's or article's facts as key/value lines. Only rows that have a value. */}
+<dl class:list={['keys', className]}>
+	{
+		rows
+			.filter(({ text, links }) => text || (links && links.length > 0))
+			.map(({ key, text, links }) => (
+				<div>
+					<dt>{key}</dt>
+					<dd>
+						{text}
+						{links && (
+							<span class='key-links'>
+								{links.map(({ label, href, external: ext }) => (
+									<a href={href} {...(ext ? external : {})} set:text={ext ? `${label} ↗` : label} />
+								))}
+							</span>
+						)}
+					</dd>
+				</div>
+			))
+	}
+</dl>

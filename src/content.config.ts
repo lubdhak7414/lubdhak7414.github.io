@@ -43,13 +43,14 @@ const post = defineCollection({
 })
 
 // Things that were built, at /projects/<id>/ and in the homepage project list.
-// `links` render in the page header and the homepage row; `facts` render as the facts
-// rail. Every key is optional and only rendered when present: never fill a slot the
+// `name` is the short name the work list prints (the title is the page headline). `links`
+// and `facts` render in the case study's details column. Every key is optional and only rendered when present: never fill a slot the
 // write-up doesn't state.
 const project = defineCollection({
 	loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/project' }),
 	schema: (context) =>
 		entrySchema(context).extend({
+			name: z.string().max(32).optional(),
 			links: z
 				.array(
 					z.object({

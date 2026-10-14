@@ -1,5 +1,5 @@
 ---
-import PageLayout from '@/layouts/BaseLayout.astro'
+import ShellLayout from '@/layouts/ShellLayout.astro'
 import ToolSection from '@/components/ToolSection.astro'
 
 const PRODUCTIVITY = [
@@ -100,15 +100,11 @@ const DEVELOPMENT = [
 ]
 ---
 
-<PageLayout meta={{ title: 'Tools', description: 'Tools and software I use daily' }}>
-	<div class='page container'>
-		<header class='front-head'>
-			<h1 class='display'>Tools</h1>
-			<p class='meta'>Tools and software I use daily</p>
-		</header>
-		<div class='stack tools'>
-			<ToolSection title='Productivity' tools={PRODUCTIVITY} />
-			<ToolSection title='Development' tools={DEVELOPMENT} />
-		</div>
-	</div>
-</PageLayout>
+<ShellLayout meta={{ title: 'Tools', description: 'Tools and software I use daily' }} page='tools'>
+	<header class='page-head'>
+		<h1>Tools</h1>
+		<p class='page-note'>Tools and software I use daily</p>
+	</header>
+	<ToolSection title='Productivity' tools={PRODUCTIVITY} />
+	<ToolSection title='Development' tools={DEVELOPMENT} />
+</ShellLayout>

@@ -1,0 +1,29 @@
+---
+import type { Entry } from '@/utils'
+import { displayTags, entryHref, isoDate, slugifyTag } from '@/utils'
+
+interface Props {
+	entry: Entry
+	/** Adds the tag slugs the writing-index filter reads. */
+	filterable?: boolean
+}
+
+const { entry, filterable = false } = Astro.props
+const { data } = entry
+const isProject = entry.collection === 'project'
+// ISO date for writing; projects (on tag pages) print their year like the work list.
+const date = isProject ? String(data.publishDate.getFullYear()) : isoDate(data.publishDate)
+const meta = isProject ? 'Case study' : displayTags(entry).join(' · ')
+---
+
+{/* Date | title, summary, topics in mono. */}
+<li class='row' data-tags={filterable ? data.tags.map(slugifyTag).join(' ') : undefined}>
+	<a class='row-link' href={entryHref(entry)}>
+		<time class='row-date' datetime={data.publishDate.toISOString()}>{date}</time>
+		<span class='row-body'>
+			<span class='row-title'>{data.draft && '(Draft) '}{data.title}</span>
+			<span class='row-text'>{data.description}</span>
+			{meta && <span class='row-meta'>{meta}</span>}
+		</span>
+	</a>
+</li>

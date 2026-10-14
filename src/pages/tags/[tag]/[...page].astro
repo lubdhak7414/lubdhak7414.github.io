@@ -2,12 +2,11 @@
 import type { GetStaticPaths, Page } from 'astro'
 
 import Pagination from '@/components/Paginator.astro'
-import FormattedDate from '@/components/FormattedDate.astro'
-import PageLayout from '@/layouts/BaseLayout.astro'
+import PostRow from '@/components/blog/PostRow.astro'
+import ShellLayout from '@/layouts/ShellLayout.astro'
 import {
 	getAllPosts,
 	getAllProjects,
-	entryHref,
 	getUniqueTags,
 	slugifyTag,
 	sortByPublishDate,
@@ -85,32 +84,23 @@ const paginationProps = {
 }
 ---
 
-<PageLayout meta={meta}>
-	<script type='application/ld+json' set:html={jsonLdScript(collectionPageSchema)} is:inline />
-	<div class='page container'>
-		<a class='back' href='/tags/'>← All tags</a>
-		<header class='front-head'>
-			<p class='kicker'>Filed under</p>
-			<h1 class='display'>{tag}</h1>
-			<p class='meta'>{page.total} {page.total === 1 ? 'entry' : 'entries'}</p>
-		</header>
-		<section aria-label='Posts and projects with this tag'>
-			{
-				page.data.map((entry) => (
-					<a class='post' href={entryHref(entry)}>
-						<FormattedDate class='meta date' date={entry.data.publishDate} />
-						<div>
-							<h2 class='h3'>
-								{entry.data.draft && '(Draft) '}
-								{entry.data.title}
-							</h2>
-							<p>{entry.data.description}</p>
-							<span class='meta'>{entry.collection === 'project' ? 'Project' : 'Blog post'}</span>
-						</div>
-					</a>
-				))
-			}
-			<Pagination {...paginationProps} />
-		</section>
-	</div>
-</PageLayout>
+<ShellLayout meta={meta} page='writing'>
+	<script
+		slot='head'
+		type='application/ld+json'
+		set:html={jsonLdScript(collectionPageSchema)}
+		is:inline
+	/>
+	<header class='page-head'>
+		<p class='label'>Filed under</p>
+		<h1>{tag}</h1>
+		<p class='page-note'>
+			{page.total}
+			{page.total === 1 ? 'entry' : 'entries'} · <a href='/tags/'>All topics</a>
+		</p>
+	</header>
+	<ul class='rows'>
+		{page.data.map((entry) => <PostRow entry={entry} />)}
+	</ul>
+	<Pagination {...paginationProps} />
+</ShellLayout>

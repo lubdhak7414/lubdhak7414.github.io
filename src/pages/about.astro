@@ -1,13 +1,8 @@
 ---
-import PageLayout from '@/layouts/BaseLayout.astro'
-import IdentityRail from '@/components/portfolio/IdentityRail.astro'
-import { getAllPosts, getAllProjects, jsonLdScript, personSchema } from '@/utils'
+import ShellLayout from '@/layouts/ShellLayout.astro'
+import ContactList from '@/components/layout/ContactList.astro'
+import { jsonLdScript, personSchema } from '@/utils'
 import { siteConfig } from '@/site-config'
-
-const counts = {
-	work: (await getAllProjects()).length,
-	writing: (await getAllPosts()).length
-}
 
 const aboutDescription =
 	'About Safwan Usaid Lubdhak - builds web apps, scales DevOps pipelines, and integrates AI systems.'
@@ -21,73 +16,42 @@ const aboutPageSchema = {
 }
 ---
 
-<PageLayout meta={{ title: 'About', description: aboutDescription }} header={false}>
-	<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
-	<script type='application/ld+json' set:html={jsonLdScript(aboutPageSchema)} is:inline />
+<ShellLayout meta={{ title: 'About', description: aboutDescription }} page='about'>
+	<Fragment slot='head'>
+		<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
+		<script type='application/ld+json' set:html={jsonLdScript(aboutPageSchema)} is:inline />
+	</Fragment>
 
-	<div class='front container'>
-		<IdentityRail page='about' counts={counts} />
-		<div class='paper'>
-			<section aria-labelledby='do-h'>
-				<header class='sec-head'><h2 id='do-h'>What I do</h2></header>
-				<div class='about-copy'>
-					<p>
-						I'm Safwan, a CS graduate from Bangladesh. I build web apps, scale DevOps pipelines, and
-						integrate AI systems. I'm deeply passionate about the open-source ecosystem, regularly
-						writing scripts and tools to customize the Linux desktop experience and optimize
-						self-hosted environments.
-					</p>
-				</div>
-			</section>
-			<section aria-labelledby='os-h'>
-				<header class='sec-head'><h2 id='os-h'>Open source</h2></header>
-				<p class='about-copy'>
-					Most of my projects are public. I write about what I'm working on in the blog here, and
-					the source is on
-					<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
-						>GitHub</a
-					>.
-				</p>
-			</section>
-			<section aria-labelledby='ct-h'>
-				<header class='sec-head'><h2 id='ct-h'>Elsewhere &amp; contact</h2></header>
-				<dl class='contact'>
-					<div>
-						<dt>GitHub</dt>
-						<dd>
-							<a
-								class='link'
-								href={siteConfig.socials.github}
-								target='_blank'
-								rel='noopener noreferrer'>github.com/lubdhak7414</a
-							>
-						</dd>
-					</div>
-					<div>
-						<dt>LinkedIn</dt>
-						<dd>
-							<a
-								class='link'
-								href={siteConfig.socials.linkedin}
-								target='_blank'
-								rel='noopener noreferrer'>linkedin.com/in/lubdhak7414</a
-							>
-						</dd>
-					</div>
-					<div>
-						<dt>Email</dt>
-						<dd>
-							<a class='link' href={`mailto:${siteConfig.socials.email}`}
-								>{siteConfig.socials.email}</a
-							>
-						</dd>
-					</div>
-				</dl>
-				<p class='about-copy mt-8'>
-					Want to see what I've built? Read the <a class='link' href='/blog/'>blog</a> for write-ups,
-					or head back to the <a class='link' href='/'>homepage</a> for the full résumé.
-				</p>
-			</section>
+	<section aria-labelledby='do-h'>
+		<div class='sec'><h2 id='do-h'>What I do</h2></div>
+		<div class='text'>
+			<p>
+				I'm Safwan, a CS graduate from Bangladesh. I build web apps, scale DevOps pipelines, and
+				integrate AI systems. I'm deeply passionate about the open-source ecosystem, regularly
+				writing scripts and tools to customize the Linux desktop experience and optimize self-hosted
+				environments.
+			</p>
 		</div>
-	</div>
-</PageLayout>
+	</section>
+	<section aria-labelledby='os-h'>
+		<div class='sec'><h2 id='os-h'>Open source</h2></div>
+		<div class='text'>
+			<p>
+				Most of my projects are public. I write about what I'm working on in the blog here, and the
+				source is on <a href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
+					>GitHub</a
+				>.
+			</p>
+		</div>
+	</section>
+	<section aria-labelledby='ct-h'>
+		<div class='sec'><h2 id='ct-h'>Elsewhere &amp; contact</h2></div>
+		<ContactList />
+		<div class='text'>
+			<p>
+				Want to see what I've built? Read the <a href='/blog/'>blog</a> for write-ups, or head back to
+				the <a href='/'>homepage</a> for the full résumé.
+			</p>
+		</div>
+	</section>
+</ShellLayout>

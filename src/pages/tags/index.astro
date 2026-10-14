@@ -1,5 +1,5 @@
 ---
-import PageLayout from '@/layouts/BaseLayout.astro'
+import ShellLayout from '@/layouts/ShellLayout.astro'
 import { getAllPosts, getAllProjects, getUniqueTagsWithCount, slugifyTag } from '@/utils'
 
 const posts = await getAllPosts()
@@ -22,21 +22,24 @@ const meta = {
 }
 ---
 
-<PageLayout meta={meta}>
-	<div class='page container'>
-		<a class='back' href='/blog/'>← All writing</a>
-		<header class='front-head'>
-			<h1 class='display'>Tags</h1>
-			<p class='meta'>{allTags.length} topics across posts and case studies</p>
-		</header>
-		{allTags.length === 0 && <p class='empty'>No posts yet.</p>}
+<ShellLayout meta={meta} page='writing'>
+	<header class='page-head'>
+		<h1>Topics</h1>
+		<p class='page-note'>
+			{allTags.length} topics across posts and case studies · <a href='/blog/'>All writing</a>
+		</p>
+	</header>
+	{allTags.length === 0 && <p class='empty'>No posts yet.</p>}
+	<ul class='rows'>
 		{
 			allTags.map(([tag]) => (
-				<a class='repo' href={`/tags/${slugifyTag(tag)}/`}>
-					<h2 class='h3'>#{tag}</h2>
-					<p class='meta'>{countLabel(tag)}</p>
-				</a>
+				<li class='row'>
+					<a class='row-link row-link--plain' href={`/tags/${slugifyTag(tag)}/`}>
+						<span class='row-title'>{tag}</span>
+						<span class='row-aside'>{countLabel(tag)}</span>
+					</a>
+				</li>
 			))
 		}
-	</div>
-</PageLayout>
+	</ul>
+</ShellLayout>

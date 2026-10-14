@@ -3,22 +3,23 @@ import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
 import { render } from 'astro:content'
 
 import PostLayout from '@/layouts/BlogPost.astro'
-import { getAllPosts, getRelatedPosts } from '@/utils'
+import { getAllPosts, sortByPublishDate } from '@/utils'
 
 export const getStaticPaths = (async () => {
-	const allPosts = await getAllPosts()
-	return allPosts.map((entry) => ({
+	// "Read next" is the next older post, wrapping round to the newest.
+	const posts = sortByPublishDate(await getAllPosts())
+	return posts.map((entry, i) => ({
 		params: { slug: entry.id },
-		props: { entry, relatedPosts: getRelatedPosts(entry, allPosts) }
+		props: { entry, next: posts[(i + 1) % posts.length] }
 	}))
 }) satisfies GetStaticPaths
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
-const { entry, relatedPosts } = Astro.props
+const { entry, next } = Astro.props
 const { Content } = await render(entry)
 ---
 
-<PostLayout post={entry} relatedPosts={relatedPosts}>
+<PostLayout post={entry} next={next}>
 	<Content />
 </PostLayout>

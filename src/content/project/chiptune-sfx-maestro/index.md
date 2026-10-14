@@ -1,5 +1,6 @@
 ---
 title: 'Chiptune SFX Maestro: Text to 8-Bit Sound Effects'
+name: 'Chiptune SFX Maestro'
 description: 'An 11M-param text-to-parameter system that generates retro game sound effects from prompts, outputting sfxr parameter strings rendered to playable WAV audio.'
 publishDate: '08 July 2026'
 coverImage:

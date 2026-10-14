@@ -7,23 +7,19 @@ import { getAllProjects } from '@/utils'
 
 export const getStaticPaths = (async () => {
 	const projects = await getAllProjects()
-	// Prev/next follow the homepage order and wrap around, like the reference pager.
+	// "Next case study" follows the homepage order and wraps around.
 	return projects.map((project, i) => ({
 		params: { slug: project.id },
-		props: {
-			project,
-			prev: projects.length > 1 ? projects[(i - 1 + projects.length) % projects.length] : undefined,
-			next: projects.length > 1 ? projects[(i + 1) % projects.length] : undefined
-		}
+		props: { project, next: projects[(i + 1) % projects.length] }
 	}))
 }) satisfies GetStaticPaths
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
-const { project, prev, next } = Astro.props
+const { project, next } = Astro.props
 const { Content } = await render(project)
 ---
 
-<ProjectPage project={project} prev={prev} next={next}>
+<ProjectPage project={project} next={next}>
 	<Content />
 </ProjectPage>

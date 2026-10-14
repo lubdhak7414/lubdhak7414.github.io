@@ -1,0 +1,36 @@
+---
+import { siteConfig } from '@/site-config'
+
+// Key/value lines, the handle taken from each profile URL.
+const handle = (url: string) => url.replace(/\/$/, '').split('/').pop() ?? url
+const external = { target: '_blank', rel: 'noopener noreferrer' }
+const rows = [
+	{ key: 'email', text: siteConfig.socials.email, href: `mailto:${siteConfig.socials.email}` },
+	{
+		key: 'github',
+		text: handle(siteConfig.socials.github),
+		href: siteConfig.socials.github,
+		...external
+	},
+	{
+		key: 'linkedin',
+		text: handle(siteConfig.socials.linkedin),
+		href: siteConfig.socials.linkedin,
+		...external
+	},
+	{ key: 'rss', text: '/rss.xml', href: '/rss.xml' }
+]
+---
+
+<dl class='keys'>
+	{
+		rows.map(({ key, text, ...link }) => (
+			<div>
+				<dt>{key}</dt>
+				<dd>
+					<a {...link} set:text={text} />
+				</dd>
+			</div>
+		))
+	}
+</dl>

@@ -3,40 +3,57 @@ import type { CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
 
 import CoverFigure from '@/components/CoverFigure.astro'
-import FormattedDate from '@/components/FormattedDate.astro'
 import TOC from '@/components/blog/TOC.astro'
-import ProjectStory from '@/components/project/ProjectStory.astro'
-import { PERSON_ID, displayTags, getEntrySocialImage, jsonLdScript, slugifyTag } from '@/utils'
+import Details from '@/components/doc/Details.astro'
+import type { DetailRow } from '@/components/doc/Details.astro'
+import WorkRow from '@/components/project/WorkRow.astro'
+import {
+	PERSON_ID,
+	displayTags,
+	getEntrySocialImage,
+	isoDate,
+	jsonLdScript,
+	slugifyTag
+} from '@/utils'
 import { siteConfig } from '@/site-config'
 
-import PageLayout from './BaseLayout.astro'
+import ShellLayout from './ShellLayout.astro'
 
 interface Props {
 	project: CollectionEntry<'project'>
-	prev?: CollectionEntry<'project'> | undefined
 	next?: CollectionEntry<'project'> | undefined
 }
 
-const { project, prev, next } = Astro.props
+const { project, next } = Astro.props
 const { data } = project
-const { headings } = await render(project)
+const { headings, remarkPluginFrontmatter } = await render(project)
 const { coverImage, description, facts, links, publishDate, title, updatedDate } = data
 
 const social = await getEntrySocialImage(data)
 const publishIso = publishDate.toISOString()
 const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ? updatedDate : null
 
-// Facts column: one row per key the project actually has.
-const linksOf = (kind: 'code' | 'live' | 'store') => links.filter((l) => l.kind === kind)
-const codeLinks = linksOf('code')
-const liveLinks = linksOf('live')
-const storeLinks = linksOf('store')
+// The details list: one row per fact the project actually has (rows without a value drop out).
 const tags = displayTags(project)
-const bareUrl = (url: string) => url.replace(/^https?:\/\//, '').replace(/\/$/, '')
-const hasFacts =
-	Object.values(facts).some((v) => (Array.isArray(v) ? v.length > 0 : Boolean(v))) ||
-	links.length > 0 ||
-	tags.length > 0
+const linkRows = (['code', 'live', 'store'] as const).map((kind) => ({
+	key: kind,
+	links: links
+		.filter((link) => link.kind === kind)
+		.map((link) => ({ label: link.label, href: link.url, external: true }))
+}))
+const details: DetailRow[] = [
+	{ key: 'year', text: String(publishDate.getFullYear()) },
+	{ key: 'updated', text: updated ? isoDate(updated) : undefined },
+	{ key: 'client', text: facts.client },
+	{ key: 'role', text: facts.role },
+	{ key: 'timeline', text: facts.timeline },
+	{ key: 'status', text: facts.status },
+	{ key: 'license', text: facts.license },
+	{ key: 'stack', text: facts.stack?.join(', ') },
+	...linkRows,
+	{ key: 'reading', text: remarkPluginFrontmatter.minutesRead },
+	{ key: 'topics', links: tags.map((tag) => ({ label: tag, href: `/tags/${slugifyTag(tag)}/` })) }
+]
 
 const projectUrl = new URL(`/projects/${project.id}/`, Astro.site).toString()
 const authorRef = { '@id': PERSON_ID, name: siteConfig.author }
@@ -62,7 +79,7 @@ const breadcrumbSchema = {
 }
 ---
 
-<PageLayout
+<ShellLayout
 	meta={{
 		description,
 		ogImage: social.src,
@@ -72,141 +89,55 @@ const breadcrumbSchema = {
 		modifiedDate: updated?.toISOString(),
 		title
 	}}
+	page='work'
 >
-	<script type='application/ld+json' set:html={jsonLdScript(articleSchema)} is:inline />
-	<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
-	<div class='page container'>
-		<header class='doc-head'>
-			<p class='kicker'>
-				{data.draft && 'Draft · '}<a href='/#work'>Case study</a>
-				<span class='meta'>
-					<FormattedDate date={publishDate} />
-					{
-						updated && (
-							<>
-								{' · Updated '}
-								<FormattedDate date={updated} />
-							</>
-						)
-					}
-				</span>
-			</p>
-			<h1 class='display'>{title}</h1>
-			<p class='lede'>{description}</p>
-		</header>
-		<div class='reader'>
-			{
-				coverImage && (
-					<div class='doc-cover'>
-						<CoverFigure
-							src={coverImage.src}
-							alt={coverImage.alt}
-							sizes='(min-width: 768px) 720px, 100vw'
-						/>
-					</div>
-				)
-			}
-			<TOC headings={headings} variant='sidebar' label='In this case study' />
-			{
-				hasFacts && (
-					<aside class='facts' aria-label='Project facts'>
-						<p class='kicker'>At a glance</p>
-						<dl>
-							{facts.client && (
-								<div>
-									<dt>Client</dt>
-									<dd>{facts.client}</dd>
-								</div>
-							)}
-							{facts.role && (
-								<div>
-									<dt>Role</dt>
-									<dd>{facts.role}</dd>
-								</div>
-							)}
-							{facts.timeline && (
-								<div>
-									<dt>Timeline</dt>
-									<dd>{facts.timeline}</dd>
-								</div>
-							)}
-							{facts.status && (
-								<div>
-									<dt>Status</dt>
-									<dd>{facts.status}</dd>
-								</div>
-							)}
-							{facts.stack && facts.stack.length > 0 && (
-								<div>
-									<dt>Stack</dt>
-									<dd>{facts.stack.join(', ')}</dd>
-								</div>
-							)}
-							{facts.license && (
-								<div>
-									<dt>License</dt>
-									<dd>{facts.license}</dd>
-								</div>
-							)}
-							{[
-								{ label: codeLinks.length > 1 ? 'Repositories' : 'Repository', items: codeLinks },
-								{ label: 'Live site', items: liveLinks },
-								{ label: 'Store page', items: storeLinks }
-							]
-								.filter(({ items }) => items.length > 0)
-								.map(({ label, items }) => (
-									<div>
-										<dt>{label}</dt>
-										<dd class='links'>
-											{items.map((link) => (
-												<a
-													class='link'
-													href={link.url}
-													target='_blank'
-													rel='noopener noreferrer'
-													title={bareUrl(link.url)}
-													set:text={`${link.label} ↗`}
-												/>
-											))}
-										</dd>
-									</div>
-								))}
-							{tags.length > 0 && (
-								<div>
-									<dt>Filed under</dt>
-									<dd>
-										<ul class='inline-list'>
-											{tags.map((tag) => (
-												<li>
-													<a class='link' href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
-												</li>
-											))}
-										</ul>
-									</dd>
-								</div>
-							)}
-						</dl>
-					</aside>
-				)
-			}
-			<article class='reader-body'>
-				<TOC headings={headings} variant='drawer' label='In this case study' />
-				<div class='prose'>
-					<slot />
-				</div>
-			</article>
+	<Fragment slot='head'>
+		<script type='application/ld+json' set:html={jsonLdScript(articleSchema)} is:inline />
+		<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
+	</Fragment>
+	<Fragment slot='side'>
+		<div class='side-doc'>
+			<p class='label'>Details</p>
+			<Details rows={details} />
 		</div>
+		<TOC headings={headings} variant='sidebar' />
+	</Fragment>
+
+	<article class='doc'>
+		<header class='doc-head'>
+			<p class='label'>
+				{data.draft && 'Draft · '}<a href='/#work'>Case study</a>
+			</p>
+			<h1 class='doc-title'>{title}</h1>
+			<p class='doc-lede'>{description}</p>
+			<Details rows={details} class='doc-details' />
+		</header>
 		{
-			next && next.id !== project.id && (
-				<nav class='next-case' aria-label='More case studies'>
-					<ProjectStory project={next} variant='column' as='h2' kicker='Next case study' />
-					{prev && prev.id !== next.id && (
-						<p class='prev'>
-							Previous: <a href={`/projects/${prev.id}/`}>{prev.data.title}</a>
-						</p>
-					)}
-				</nav>
+			coverImage && (
+				<div class='doc-cover'>
+					<CoverFigure
+						src={coverImage.src}
+						alt={coverImage.alt}
+						sizes='(min-width: 960px) 704px, 100vw'
+					/>
+				</div>
 			)
 		}
-	</div>
-</PageLayout>
+		<TOC headings={headings} variant='drawer' />
+		<div class='prose'>
+			<slot />
+		</div>
+	</article>
+	{
+		next && next.id !== project.id && (
+			<nav class='next' aria-labelledby='next-h'>
+				<h2 id='next-h' class='label'>
+					Next case study
+				</h2>
+				<ul class='rows'>
+					<WorkRow project={next} />
+				</ul>
+			</nav>
+		)
+	}
+</ShellLayout>

@@ -4,14 +4,15 @@ import { generateToc } from '@/utils'
 
 interface Props {
 	headings: MarkdownHeading[]
-	/** `sidebar`: sticky list left of the text. `drawer`: the collapsible row below 1280px. */
+	/** `sidebar`: the contents list in the sidebar (wide screens). `drawer`: the collapsible
+	 * list above the text on narrow screens. */
 	variant: 'sidebar' | 'drawer'
 	label?: string
 }
 
-const { headings, variant, label = 'In this article' } = Astro.props
+const { headings, variant, label = 'Contents' } = Astro.props
 
-// h2 sections only, numbered by CSS. A post may have headings yet no h2; render nothing
+// h2 sections only. A post may have headings yet no h2; render nothing
 // then rather than an empty shell.
 const toc = generateToc(headings)
 ---
@@ -20,7 +21,7 @@ const toc = generateToc(headings)
 	toc.length > 0 &&
 		(variant === 'sidebar' ? (
 			<nav class='toc' aria-label={label}>
-				<p class='kicker'>{label}</p>
+				<p class='label'>{label}</p>
 				<ol>
 					{toc.map(({ slug, text }) => (
 						<li>

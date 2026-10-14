@@ -1,5 +1,6 @@
 ---
 title: 'Three Tiny Generators That Do One Thing Each'
+name: 'Three Tiny Generators'
 description: 'Three from-scratch text generators that create ASCII maps, cat monologues, and pseudo-assembly. Same architecture, wildly different outputs.'
 publishDate: '08 July 2026'
 coverImage:

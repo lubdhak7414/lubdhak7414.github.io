@@ -2,15 +2,11 @@
 import type { SiteMeta } from '@/types'
 
 import BaseHead from '@/components/BaseHead.astro'
-import Footer from '@/components/layout/Footer.astro'
-import Header from '@/components/layout/Header.astro'
 
 import { siteConfig } from '@/site-config'
 
 interface Props {
 	meta: SiteMeta
-	/** The running head. The front page and About carry the nameplate rail instead. */
-	header?: boolean
 }
 
 const {
@@ -23,9 +19,11 @@ const {
 		modifiedDate,
 		noIndex,
 		title
-	},
-	header = true
+	}
 } = Astro.props
+
+// No header and no global footer: ShellLayout's sidebar carries the navigation and the
+// site notice on every page.
 ---
 
 <html lang={siteConfig.lang}>
@@ -43,11 +41,9 @@ const {
 	</head>
 
 	<body>
-		<a class='skip' href='#content'>Skip to content</a>
-		{header && <Header />}
+		<a class='skip-link' href='#content'>Skip to content</a>
 		<main id='content'>
 			<slot />
 		</main>
-		<Footer />
 	</body>
 </html>

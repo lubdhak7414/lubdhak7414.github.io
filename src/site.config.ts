@@ -88,8 +88,8 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 	minSyntaxHighlightingColorContrast: 4.5,
 	useThemedScrollbars: false,
 	styleOverrides: {
-		borderRadius: '0',
-		borderColor: '#DADDE1',
+		borderRadius: '4px',
+		borderColor: '#E4E6E9',
 		codeFontFamily: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
 		codeFontSize: '14px',
 		codeLineHeight: '1.65',

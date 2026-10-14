@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+	project: CollectionEntry<'project'>
+}
+
+const { project } = Astro.props
+const { data } = project
+const stack = (data.facts.stack ?? []).slice(0, 4).join(' · ')
+---
+
+{/* Year | short name, one-line summary, the stack in mono. */}
+<li class='row'>
+	<a class='row-link' href={`/projects/${project.id}/`}>
+		<span class='row-date'>{data.publishDate.getFullYear()}</span>
+		<span class='row-body'>
+			<span class='row-title'>{data.draft && '(Draft) '}{data.name ?? data.title}</span>
+			<span class='row-text'>{data.description}</span>
+			{stack && <span class='row-meta'>{stack}</span>}
+		</span>
+	</a>
+</li>

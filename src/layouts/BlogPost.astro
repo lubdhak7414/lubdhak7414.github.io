@@ -5,21 +5,29 @@ import { render } from 'astro:content'
 import TOC from '@/components/blog/TOC.astro'
 import AuthorBox from '@/components/AuthorBox.astro'
 import CoverFigure from '@/components/CoverFigure.astro'
-import FormattedDate from '@/components/FormattedDate.astro'
-import RelatedPosts from '@/components/blog/RelatedPosts.astro'
 import BalloonSurprise from '@/components/blog/BalloonSurprise.astro'
+import PostRow from '@/components/blog/PostRow.astro'
+import Details from '@/components/doc/Details.astro'
+import type { DetailRow } from '@/components/doc/Details.astro'
 
-import { PERSON_ID, displayTags, getEntrySocialImage, jsonLdScript, slugifyTag } from '@/utils'
+import {
+	PERSON_ID,
+	displayTags,
+	getEntrySocialImage,
+	isoDate,
+	jsonLdScript,
+	slugifyTag
+} from '@/utils'
 import { siteConfig } from '@/site-config'
 
-import PageLayout from './BaseLayout.astro'
+import ShellLayout from './ShellLayout.astro'
 
 interface Props {
 	post: CollectionEntry<'post'>
-	relatedPosts?: CollectionEntry<'post'>[]
+	next?: CollectionEntry<'post'> | undefined
 }
 
-const { post, relatedPosts = [] } = Astro.props
+const { post, next } = Astro.props
 const {
 	data: { coverImage, description, draft, publishDate, title, updatedDate }
 } = post
@@ -33,6 +41,12 @@ const modifiedIso = updated?.toISOString()
 const { headings, remarkPluginFrontmatter } = await render(post)
 const minutesRead = parseInt(remarkPluginFrontmatter.minutesRead, 10) || 1
 const tags = displayTags(post)
+const details: DetailRow[] = [
+	{ key: 'published', text: isoDate(publishDate) },
+	{ key: 'updated', text: updated ? isoDate(updated) : undefined },
+	{ key: 'reading', text: remarkPluginFrontmatter.minutesRead },
+	{ key: 'topics', links: tags.map((tag) => ({ label: tag, href: `/tags/${slugifyTag(tag)}/` })) }
+]
 
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
 const blogUrl = new URL('/blog/', Astro.site).toString()
@@ -68,7 +82,7 @@ const blogPostingSchema = {
 }
 ---
 
-<PageLayout
+<ShellLayout
 	meta={{
 		description,
 		ogImage: social.src,
@@ -78,69 +92,55 @@ const blogPostingSchema = {
 		modifiedDate: modifiedIso,
 		title
 	}}
+	page='writing'
 >
-	<script type='application/ld+json' set:html={jsonLdScript(blogPostingSchema)} is:inline />
-	<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
-	<div class='page container'>
-		<header class='doc-head'>
-			<p class='kicker'>
-				{draft && 'Draft · '}<a href='/blog/'>Writing</a>
-				<span class='meta'>
-					<FormattedDate date={publishDate} />
-					{
-						updated && (
-							<>
-								{' · Updated '}
-								<FormattedDate date={updated} />
-							</>
-						)
-					}
-				</span>
-			</p>
-			<h1 class='display'>{title}</h1>
-			<p class='lede'>{description}</p>
-			<p class='byline'>
-				By <a href='/about/'>{siteConfig.author}</a> · {remarkPluginFrontmatter.minutesRead}
-			</p>
-		</header>
-		<div class='reader'>
-			{
-				coverImage && (
-					<div class='doc-cover'>
-						<CoverFigure
-							src={coverImage.src}
-							alt={coverImage.alt}
-							sizes='(min-width: 768px) 720px, 100vw'
-						/>
-					</div>
-				)
-			}
-			<TOC headings={headings} variant='sidebar' />
-			{
-				tags.length > 0 && (
-					<aside class='facts facts--end' aria-label='Topics'>
-						<p class='kicker'>Filed under</p>
-						<ul class='topics'>
-							{tags.map((tag) => (
-								<li>
-									<a href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
-								</li>
-							))}
-						</ul>
-					</aside>
-				)
-			}
-			<article class='reader-body'>
-				<TOC headings={headings} variant='drawer' />
-				<div class='prose'>
-					<slot />
-				</div>
-			</article>
-			<div class='reader-end'>
-				<AuthorBox />
-				<RelatedPosts posts={relatedPosts} />
-			</div>
+	<Fragment slot='head'>
+		<script type='application/ld+json' set:html={jsonLdScript(blogPostingSchema)} is:inline />
+		<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
+	</Fragment>
+	<Fragment slot='side'>
+		<div class='side-doc'>
+			<p class='label'>Details</p>
+			<Details rows={details} />
 		</div>
-	</div>
-	<BalloonSurprise />
-</PageLayout>
+		<TOC headings={headings} variant='sidebar' />
+	</Fragment>
+
+	<article class='doc'>
+		<header class='doc-head'>
+			<p class='label'>{draft && 'Draft · '}<a href='/blog/'>Writing</a></p>
+			<h1 class='doc-title'>{title}</h1>
+			<p class='doc-lede'>{description}</p>
+			<Details rows={details} class='doc-details' />
+		</header>
+		{
+			coverImage && (
+				<div class='doc-cover'>
+					<CoverFigure
+						src={coverImage.src}
+						alt={coverImage.alt}
+						sizes='(min-width: 960px) 704px, 100vw'
+					/>
+				</div>
+			)
+		}
+		<TOC headings={headings} variant='drawer' />
+		<div class='prose'>
+			<slot />
+		</div>
+		<AuthorBox />
+	</article>
+	{
+		next && next.id !== post.id && (
+			<nav class='next' aria-labelledby='next-h'>
+				<h2 id='next-h' class='label'>
+					Read next
+				</h2>
+				<ul class='rows'>
+					<PostRow entry={next} />
+				</ul>
+			</nav>
+		)
+	}
+	<BalloonSurprise slot='after' />
+</ShellLayout>

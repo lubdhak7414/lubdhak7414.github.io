@@ -1,5 +1,6 @@
 ---
 title: 'Pacioli - An AI Ledger That Never Trusts the AI With Math'
+name: 'Pacioli'
 description: 'A deterministic double-entry bookkeeping engine where the LLM only proposes; every number and every write is computed and gated by Python.'
 publishDate: '13 June 2026'
 updatedDate: '13 June 2026'

@@ -1,34 +1,24 @@
 ---
 import { siteConfig } from '@/site-config'
 import { buildCommit } from '@/utils'
+
+interface Props {
+	/** `side`: the note at the foot of the sidebar. `page`: the same note under the content. */
+	variant?: 'side' | 'page'
+	class?: string
+}
+
+const { variant = 'page', class: className } = Astro.props
+const year = new Date().getFullYear()
+// If analytics or any third-party embed is ever added, change this line in the same commit.
+const notice = 'No third-party scripts, no cookies, no tracking.'
 ---
 
-<footer class='site-footer'>
-	<div class='container'>
-		{/* data-nosnippet is only honoured on div/span/section, so it sits on the wrapper */}
-		<div data-nosnippet>
-			<div class='colophon'>
-				<p class='notice'>
-					<span>This site will not</span><span><i>×</i>load third-party scripts</span><span
-						><i>×</i>set cookies</span
-					><span><i>×</i>track you</span>
-				</p>
-				<p class='meta'>
-					© {new Date().getFullYear()}
-					{siteConfig.author}{buildCommit && ` · Built from ${buildCommit}`}
-				</p>
-			</div>
-			<nav class='links' aria-label='Elsewhere'>
-				<a class='link' href={`mailto:${siteConfig.socials.email}`}>Email</a>
-				<a class='link' href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
-					>GitHub</a
-				>
-				<a class='link' href={siteConfig.socials.linkedin} target='_blank' rel='noopener noreferrer'
-					>LinkedIn</a
-				>
-				<a class='link' href='/rss.xml'>RSS</a>
-				<a class='link' href='/tools/'>Tools</a>
-			</nav>
-		</div>
+{/* data-nosnippet is only honoured on div/span/section, so it sits on a div */}
+<footer class:list={['note', `note--${variant}`, className]}>
+	<div data-nosnippet>
+		<p>{`© ${year} ${siteConfig.author}`}</p>
+		<p>{notice}</p>
+		{buildCommit && <p>{`Built from ${buildCommit}`}</p>}
 	</div>
 </footer>
