@@ -8,6 +8,9 @@ coverImage:
   alt: 'KDoit to-do widget on a KDE Plasma 6 desktop with tasks organized by priority'
 tags: ['QML', 'KDE', 'Linux', 'Open Source', 'Productivity', 'Project']
 homePageIdx: 6
+links:
+  - { label: 'GitHub', url: 'https://github.com/lubdhak7414/KDoit', kind: 'code' }
+  - { label: 'KDE Store', url: 'https://www.opendesktop.org/p/2364121/', kind: 'store' }
 facts:
   stack: ['QML', 'Qt 6', 'KDE Plasma 6', 'Kirigami', 'Plasma Components 3.0']
 ---

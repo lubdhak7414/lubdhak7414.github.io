@@ -9,6 +9,9 @@ coverImage:
   alt: 'Circular Alt+Tab switcher showing windows as pie slices around the cursor'
 tags: ['QML', 'KDE', 'Linux', 'Open Source', 'Project']
 homePageIdx: 2
+links:
+  - { label: 'GitHub', url: 'https://github.com/lubdhak7414/CircularAltTab-KWin', kind: 'code' }
+  - { label: 'KDE Store', url: 'https://www.opendesktop.org/p/2362960/', kind: 'store' }
 facts:
   license: 'GPLv3'
   stack: ['QML', 'KWin', 'KDE Plasma 6']

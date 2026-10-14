@@ -7,6 +7,8 @@ coverImage:
   src: './cover.webp'
   alt: 'Chiptune SFX Maestro retro arcade interface with neon colors and CRT scanline effect'
 tags: ['Python', 'PyTorch', 'Machine Learning', 'Game Dev', 'Audio', 'Project']
+links:
+  - { label: 'GitHub', url: 'https://github.com/lubdhak7414/chiptune-sfx-maestro', kind: 'code' }
 facts:
   stack: ['Python', 'PyTorch']
 ---

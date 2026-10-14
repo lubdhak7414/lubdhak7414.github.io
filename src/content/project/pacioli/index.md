@@ -9,6 +9,8 @@ coverImage:
   alt: 'Pacioli proposal-review dashboard'
 tags: ['Python', 'FastAPI', 'LLM', 'System Design', 'Project']
 homePageIdx: 1
+links:
+  - { label: 'GitHub', url: 'https://github.com/lubdhak7414/pacioli', kind: 'code' }
 facts:
   stack:
     [
