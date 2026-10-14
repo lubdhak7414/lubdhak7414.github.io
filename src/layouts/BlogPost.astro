@@ -82,10 +82,9 @@ const blogPostingSchema = {
 	<script type='application/ld+json' set:html={jsonLdScript(blogPostingSchema)} is:inline />
 	<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
 	<div class='page container'>
-		<a class='back' href='/blog/'>← All writing</a>
 		<header class='doc-head'>
 			<p class='kicker'>
-				{draft && 'Draft · '}Writing
+				{draft && 'Draft · '}<a href='/blog/'>Writing</a>
 				<span class='meta'>
 					<FormattedDate date={publishDate} />
 					{
@@ -105,39 +104,42 @@ const blogPostingSchema = {
 			</p>
 		</header>
 		<div class='reader'>
+			{
+				coverImage && (
+					<div class='doc-cover'>
+						<CoverFigure
+							src={coverImage.src}
+							alt={coverImage.alt}
+							sizes='(min-width: 768px) 720px, 100vw'
+						/>
+					</div>
+				)
+			}
 			<TOC headings={headings} variant='sidebar' />
+			{
+				tags.length > 0 && (
+					<aside class='facts facts--end' aria-label='Topics'>
+						<p class='kicker'>Filed under</p>
+						<ul class='topics'>
+							{tags.map((tag) => (
+								<li>
+									<a href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
+								</li>
+							))}
+						</ul>
+					</aside>
+				)
+			}
 			<article class='reader-body'>
-				{
-					coverImage && (
-						<div class='doc-cover'>
-							<CoverFigure
-								src={coverImage.src}
-								alt={coverImage.alt}
-								sizes='(min-width: 1024px) 640px, 100vw'
-							/>
-						</div>
-					)
-				}
 				<TOC headings={headings} variant='drawer' />
 				<div class='prose'>
 					<slot />
 				</div>
-				{
-					tags.length > 0 && (
-						<p class='filed'>
-							Filed under{' '}
-							{tags.map((tag, i) => (
-								<>
-									{i > 0 && ', '}
-									<a class='link' href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
-								</>
-							))}
-						</p>
-					)
-				}
+			</article>
+			<div class='reader-end'>
 				<AuthorBox />
 				<RelatedPosts posts={relatedPosts} />
-			</article>
+			</div>
 		</div>
 	</div>
 	<BalloonSurprise />

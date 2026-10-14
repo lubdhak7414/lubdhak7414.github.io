@@ -5,8 +5,8 @@ import { displayTags } from '@/utils'
 
 interface Props {
 	project: CollectionEntry<'project'>
-	/** `lead`: headline across the top, photo beside the copy. `column`: photo above, for
-	 * the three ruled columns. `brief`: text only. */
+	/** `lead`: photo with the headline and copy beside it. `column`: photo above, for the
+	 * three ruled columns. `brief`: a text-only index row. */
 	variant: 'lead' | 'column' | 'brief'
 	/** Heading level of the headline (h3 under a section head, h2 at the end of a case study). */
 	as?: 'h2' | 'h3'
@@ -29,7 +29,7 @@ const image =
 				widths: variant === 'lead' ? [480, 720, 960, 1280] : [320, 480, 640, 960],
 				sizes:
 					variant === 'lead'
-						? '(min-width: 1100px) 520px, (min-width: 760px) 58vw, 100vw'
+						? '(min-width: 1100px) 560px, (min-width: 760px) 55vw, 100vw'
 						: '(min-width: 1100px) 290px, (min-width: 760px) 30vw, 100vw'
 			}
 		: null
@@ -38,47 +38,68 @@ const image =
 {
 	variant === 'lead' ? (
 		<article class='story story--lead'>
-			{kicker && <p class='kicker'>{kicker}</p>}
 			<Heading class='story-title'>
 				<a href={href}>{title}</a>
 			</Heading>
-			<div class='story-body'>
-				{image && (
-					<Image
-						class='story-img'
-						src={image.src}
-						alt={image.alt}
-						widths={image.widths}
-						sizes={image.sizes}
-						loading='eager'
-					/>
+			{image && (
+				<Image
+					class='story-img'
+					src={image.src}
+					alt={image.alt}
+					widths={image.widths}
+					sizes={image.sizes}
+					loading='eager'
+				/>
+			)}
+			<div class='story-copy'>
+				<p class='story-dek'>{description}</p>
+				<p class='story-meta'>
+					<b>{year}</b> · {made.join(', ')}
+				</p>
+				{links.length > 0 && (
+					<p class='story-links links'>
+						{links.map((link) => (
+							<a
+								class='link'
+								href={link.url}
+								target='_blank'
+								rel='noopener noreferrer'
+								set:text={link.label}
+							/>
+						))}
+					</p>
 				)}
-				<div class='story-copy'>
-					<p class='story-dek'>{description}</p>
-					<p class='story-meta'>
-						<b>{year}</b> · {made.join(', ')}
+				<p class='story-more' aria-hidden='true'>
+					Read the case study →
+				</p>
+			</div>
+		</article>
+	) : variant === 'brief' ? (
+		<article class='story story--brief'>
+			<p class='meta'>{year}</p>
+			<div>
+				<Heading class='story-title'>
+					<a href={href}>{title}</a>
+				</Heading>
+				<p class='story-dek'>{description}</p>
+				<p class='story-meta'>{made.join(', ')}</p>
+				{links.length > 0 && (
+					<p class='story-links links'>
+						{links.map((link) => (
+							<a
+								class='link'
+								href={link.url}
+								target='_blank'
+								rel='noopener noreferrer'
+								set:text={link.label}
+							/>
+						))}
 					</p>
-					{links.length > 0 && (
-						<p class='story-links links'>
-							{links.map((link) => (
-								<a
-									class='link'
-									href={link.url}
-									target='_blank'
-									rel='noopener noreferrer'
-									set:text={link.label}
-								/>
-							))}
-						</p>
-					)}
-					<p class='story-more' aria-hidden='true'>
-						Read the case study →
-					</p>
-				</div>
+				)}
 			</div>
 		</article>
 	) : (
-		<article class={`story story--${variant}`}>
+		<article class='story story--col'>
 			{kicker && <p class='kicker'>{kicker}</p>}
 			{image && (
 				<Image

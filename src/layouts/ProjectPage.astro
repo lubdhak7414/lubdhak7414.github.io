@@ -26,16 +26,17 @@ const social = await getEntrySocialImage(data)
 const publishIso = publishDate.toISOString()
 const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ? updatedDate : null
 
-// Fact cells: one per key the project actually has.
+// Facts column: one row per key the project actually has.
 const linksOf = (kind: 'code' | 'live' | 'store') => links.filter((l) => l.kind === kind)
 const codeLinks = linksOf('code')
 const liveLinks = linksOf('live')
 const storeLinks = linksOf('store')
 const tags = displayTags(project)
 const bareUrl = (url: string) => url.replace(/^https?:\/\//, '').replace(/\/$/, '')
-const hasCells =
+const hasFacts =
 	Object.values(facts).some((v) => (Array.isArray(v) ? v.length > 0 : Boolean(v))) ||
-	links.length > 0
+	links.length > 0 ||
+	tags.length > 0
 
 const projectUrl = new URL(`/projects/${project.id}/`, Astro.site).toString()
 const authorRef = { '@id': PERSON_ID, name: siteConfig.author }
@@ -75,10 +76,9 @@ const breadcrumbSchema = {
 	<script type='application/ld+json' set:html={jsonLdScript(articleSchema)} is:inline />
 	<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
 	<div class='page container'>
-		<a class='back' href='/#work'>← All work</a>
 		<header class='doc-head'>
 			<p class='kicker'>
-				{data.draft && 'Draft · '}Case study
+				{data.draft && 'Draft · '}<a href='/#work'>Case study</a>
 				<span class='meta'>
 					<FormattedDate date={publishDate} />
 					{
@@ -94,102 +94,106 @@ const breadcrumbSchema = {
 			<h1 class='display'>{title}</h1>
 			<p class='lede'>{description}</p>
 		</header>
-		{
-			hasCells && (
-				<dl class='cells' aria-label='Project facts'>
-					{facts.client && (
-						<div class='cell'>
-							<dt>Client</dt>
-							<dd>{facts.client}</dd>
-						</div>
-					)}
-					{facts.role && (
-						<div class='cell'>
-							<dt>Role</dt>
-							<dd>{facts.role}</dd>
-						</div>
-					)}
-					{facts.timeline && (
-						<div class='cell'>
-							<dt>Timeline</dt>
-							<dd>{facts.timeline}</dd>
-						</div>
-					)}
-					{facts.status && (
-						<div class='cell'>
-							<dt>Status</dt>
-							<dd>{facts.status}</dd>
-						</div>
-					)}
-					{facts.stack && facts.stack.length > 0 && (
-						<div class={facts.stack.length > 4 ? 'cell wide' : 'cell'}>
-							<dt>Stack</dt>
-							<dd>{facts.stack.join(', ')}</dd>
-						</div>
-					)}
-					{facts.license && (
-						<div class='cell'>
-							<dt>License</dt>
-							<dd>{facts.license}</dd>
-						</div>
-					)}
-					{[
-						{ label: codeLinks.length > 1 ? 'Repositories' : 'Repository', items: codeLinks },
-						{ label: 'Live site', items: liveLinks },
-						{ label: 'Store page', items: storeLinks }
-					]
-						.filter(({ items }) => items.length > 0)
-						.map(({ label, items }) => (
-							<div class='cell'>
-								<dt>{label}</dt>
-								<dd class='links'>
-									{items.map((link) => (
-										<a
-											class='link'
-											href={link.url}
-											target='_blank'
-											rel='noopener noreferrer'
-											title={bareUrl(link.url)}
-											set:text={`${link.label} ↗`}
-										/>
-									))}
-								</dd>
-							</div>
-						))}
-				</dl>
-			)
-		}
-		{
-			coverImage && (
-				<div class='doc-cover'>
-					<CoverFigure
-						src={coverImage.src}
-						alt={coverImage.alt}
-						sizes='(min-width: 1024px) 928px, 100vw'
-					/>
-				</div>
-			)
-		}
 		<div class='reader'>
+			{
+				coverImage && (
+					<div class='doc-cover'>
+						<CoverFigure
+							src={coverImage.src}
+							alt={coverImage.alt}
+							sizes='(min-width: 768px) 720px, 100vw'
+						/>
+					</div>
+				)
+			}
 			<TOC headings={headings} variant='sidebar' label='In this case study' />
+			{
+				hasFacts && (
+					<aside class='facts' aria-label='Project facts'>
+						<p class='kicker'>At a glance</p>
+						<dl>
+							{facts.client && (
+								<div>
+									<dt>Client</dt>
+									<dd>{facts.client}</dd>
+								</div>
+							)}
+							{facts.role && (
+								<div>
+									<dt>Role</dt>
+									<dd>{facts.role}</dd>
+								</div>
+							)}
+							{facts.timeline && (
+								<div>
+									<dt>Timeline</dt>
+									<dd>{facts.timeline}</dd>
+								</div>
+							)}
+							{facts.status && (
+								<div>
+									<dt>Status</dt>
+									<dd>{facts.status}</dd>
+								</div>
+							)}
+							{facts.stack && facts.stack.length > 0 && (
+								<div>
+									<dt>Stack</dt>
+									<dd>{facts.stack.join(', ')}</dd>
+								</div>
+							)}
+							{facts.license && (
+								<div>
+									<dt>License</dt>
+									<dd>{facts.license}</dd>
+								</div>
+							)}
+							{[
+								{ label: codeLinks.length > 1 ? 'Repositories' : 'Repository', items: codeLinks },
+								{ label: 'Live site', items: liveLinks },
+								{ label: 'Store page', items: storeLinks }
+							]
+								.filter(({ items }) => items.length > 0)
+								.map(({ label, items }) => (
+									<div>
+										<dt>{label}</dt>
+										<dd class='links'>
+											{items.map((link) => (
+												<a
+													class='link'
+													href={link.url}
+													target='_blank'
+													rel='noopener noreferrer'
+													title={bareUrl(link.url)}
+													set:text={`${link.label} ↗`}
+												/>
+											))}
+										</dd>
+									</div>
+								))}
+							{tags.length > 0 && (
+								<div>
+									<dt>Filed under</dt>
+									<dd>
+										<ul class='inline-list'>
+											{tags.map((tag) => (
+												<li>
+													<a class='link' href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
+												</li>
+											))}
+										</ul>
+									</dd>
+								</div>
+							)}
+						</dl>
+					</aside>
+				)
+			}
 			<article class='reader-body'>
 				<TOC headings={headings} variant='drawer' label='In this case study' />
 				<div class='prose'>
 					<slot />
 				</div>
-				{
-					tags.length > 0 && (
-						<p class='filed'>
-							Filed under{' '}
-							{tags.map((tag, i) => (
-								<>
-									{i > 0 && ', '}
-									<a class='link' href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
-								</>
-							))}
-						</p>
-					)
-				}
 			</article>
 		</div>
 		{

@@ -28,7 +28,7 @@
 
 	--gutter: 1rem;
 	--header-h: 3.5rem;
-	--measure: 40rem; /* reading column: ~70 characters of Atkinson at 17.5px */
+	--measure: 45rem; /* reading column: ~70 characters of Atkinson at 20px */
 
 	color-scheme: light;
 }
@@ -333,7 +333,7 @@
 		margin-bottom: 1.75rem;
 	}
 	.sec-head h2 {
-		font: 900 clamp(2.25rem, 1.8rem + 1.6vw, 3rem) / 0.95 var(--display);
+		font: 900 clamp(1.75rem, 1.5rem + 0.8vw, 2.25rem) / 0.95 var(--display);
 		text-transform: uppercase;
 		letter-spacing: 0.005em;
 	}
@@ -508,6 +508,7 @@
 		}
 	}
 	.paper {
+		container: paper / inline-size;
 		display: flex;
 		flex-direction: column;
 		gap: 4.5rem;
@@ -742,26 +743,15 @@
 		color: var(--accent);
 	}
 
-	/* Lead story: headline across the top, photo and copy side by side */
+	/* Lead story: the photo with the headline and copy beside it. Narrow paper stacks it,
+	   headline first, so the headline still makes a phone's first screen. */
 	.story--lead {
 		display: grid;
 		gap: 1rem;
 	}
 	.story--lead .story-title {
-		font-size: clamp(2.5rem, 1.75rem + 2.6vw, 4.25rem);
-		line-height: 0.9;
-		max-width: 20ch;
-	}
-	.story--lead .story-body {
-		display: grid;
-		gap: 1.25rem;
-		margin-top: 0.5rem;
-	}
-	@media (min-width: 760px) {
-		.story--lead .story-body {
-			grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-			align-items: start;
-		}
+		font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
+		line-height: 0.92;
 	}
 	.story--lead .story-copy {
 		display: grid;
@@ -769,8 +759,26 @@
 		align-content: start;
 	}
 	.story--lead .story-dek {
-		font-size: 1.1875rem;
+		font-size: 1.125rem;
 		color: var(--ink);
+	}
+	@container paper (min-width: 640px) {
+		.story--lead {
+			grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+			grid-template-rows: auto 1fr;
+			grid-template-areas: 'img title' 'img copy';
+			gap: 1rem 2rem;
+		}
+		.story--lead .story-img {
+			grid-area: img;
+		}
+		.story--lead .story-title {
+			grid-area: title;
+			font-size: clamp(2rem, 4.2cqi, 3.25rem);
+		}
+		.story--lead .story-copy {
+			grid-area: copy;
+		}
 	}
 
 	/* Three ruled columns */
@@ -811,33 +819,44 @@
 		font-size: 15.5px;
 	}
 
-	/* Briefs: the rest of the work, text only */
+	/* Also on file: the rest of the work as an index, in the same rows as the writing list */
 	.briefs {
-		display: grid;
-		gap: 1.5rem 2.5rem;
-		margin-top: 2rem;
-		padding-top: 1rem;
-		border-top: 1px solid var(--rule);
-	}
-	@media (min-width: 640px) {
-		.briefs {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
+		margin-top: 3rem;
 	}
 	.briefs > .kicker {
-		grid-column: 1 / -1;
-		margin-bottom: -0.5rem;
+		margin-bottom: 0.75rem;
+	}
+	.briefs > ol {
+		list-style: none;
+		border-top: 1px solid var(--rule);
 	}
 	.story--brief {
 		display: grid;
-		gap: 0.375rem;
-		align-content: start;
+		gap: 0.25rem 2rem;
+		padding: 1.125rem 0 1.25rem;
+		border-bottom: 1px solid var(--hair);
+	}
+	@media (min-width: 760px) {
+		.story--brief {
+			grid-template-columns: 7rem minmax(0, 1fr);
+			align-items: baseline;
+		}
 	}
 	.story--brief .story-title {
-		font-size: 1.5rem;
+		font: 700 1.25rem/1.3 var(--sans);
+		text-transform: none;
+		letter-spacing: 0;
+	}
+	.story--brief .story-title a {
+		text-decoration: none;
 	}
 	.story--brief .story-dek {
-		font-size: 15px;
+		font-size: 15.5px;
+		margin: 0.25rem 0 0.375rem;
+		max-width: 44rem;
+	}
+	.story--brief .story-links {
+		margin-top: 0.375rem;
 	}
 
 	/* ---------- Front page: writing ---------- */
@@ -933,31 +952,57 @@
 		color: var(--muted);
 	}
 
-	/* ---------- Documents: case studies and articles ---------- */
+	/* ---------- Documents: case studies and articles ----------
+	   Everything sits on one centre line: a centred head, then the cover and text in the
+	   middle column with the contents on its left and the facts on its right (from 1280px;
+	   below that the contents fold into a drawer and the facts sit above or below the
+	   text). */
 	.doc-head {
 		display: grid;
-		gap: 0.875rem;
-		max-width: 58rem;
-		margin-bottom: 2rem;
+		justify-items: center;
+		gap: 1rem;
+		max-width: 64rem;
+		margin: 0 auto 2.75rem;
+		text-align: center;
 	}
 	.doc-head .kicker {
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: center;
 		gap: 0 0.625rem;
 		align-items: baseline;
+	}
+	.doc-head .kicker a {
+		transition: color 0.15s;
+	}
+	.doc-head .kicker a:hover {
+		color: var(--accent-2);
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 	.doc-head .kicker .meta {
 		letter-spacing: 0;
 		text-transform: none;
 		font-size: 14px;
 	}
+	.doc-head .display {
+		font-size: clamp(2.75rem, 1.5rem + 4.4vw, 5.5rem);
+		line-height: 0.9;
+	}
 	.doc-head .lede {
-		max-width: 46rem;
+		max-width: 44rem;
+		font-size: clamp(1.1875rem, 1rem + 0.55vw, 1.5rem);
+		line-height: 1.5;
 		color: var(--ink);
 	}
-	.doc-head .links {
-		font-weight: 700;
-		gap: 0.25rem 1.5rem;
+	@media (max-width: 639px) {
+		.doc-head {
+			justify-items: start;
+			text-align: left;
+		}
+		.doc-head .kicker {
+			justify-content: start;
+		}
 	}
 	.byline {
 		font-size: 15px;
@@ -971,84 +1016,64 @@
 		color: var(--accent);
 	}
 
-	/* Fact cells: a ruled strip under the headline, one cell per fact the entry has */
-	.cells {
-		display: flex;
-		flex-wrap: wrap;
-		overflow: hidden;
-		max-width: 58rem;
-		border-top: 3px solid var(--rule);
-		margin-bottom: 2.5rem;
-	}
-	.cell {
-		flex: 1 1 10rem;
-		padding: 0.625rem 1rem 0.75rem;
-		margin-left: -1px;
-		border-left: 1px solid var(--rule);
-		border-bottom: 1px solid var(--rule);
-		min-width: 0;
-	}
-	.cell.wide {
-		flex: 2 1 20rem;
-	}
-	.cell dt {
-		font: 800 13px/1.3 var(--display);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--accent);
-		margin-bottom: 0.25rem;
-	}
-	.cell dd {
-		font-size: 15px;
-		line-height: 1.45;
-	}
-	.cell .link {
-		word-break: break-word;
-	}
-	/* The cover spans the reading layout (contents rail + text), not the whole page */
-	.doc-cover {
-		max-width: 58rem;
-		margin-bottom: 3rem;
-	}
-	.reader-body .doc-cover {
-		margin-bottom: 2.5rem;
-	}
-
-	/* Reading layout: contents rail on the left (where you are), text on the right */
 	.reader {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 2rem;
-	}
-	@media (min-width: 1024px) {
-		.reader {
-			grid-template-columns: 14rem minmax(0, var(--measure));
-			column-gap: 4rem;
-			align-items: start;
-		}
-		.reader > .toc {
-			position: sticky;
-			top: calc(var(--header-h) + 2rem);
-		}
-	}
-	@media (max-width: 1023px) {
-		.reader > .toc {
-			display: none;
-		}
+		gap: 3rem;
+		max-width: var(--measure);
+		margin-inline: auto;
 	}
 	.reader-body {
 		min-width: 0;
-		max-width: var(--measure);
 	}
-	.filed {
-		margin-top: 2.5rem;
-		padding-top: 0.75rem;
-		border-top: 1px solid var(--rule);
-		font-size: 15px;
-		color: var(--faint);
+	@media (min-width: 1280px) {
+		.reader {
+			max-width: none;
+			grid-template-columns: minmax(12rem, 1fr) minmax(0, var(--measure)) minmax(12rem, 1fr);
+			column-gap: clamp(2.5rem, 4vw, 4.5rem);
+			align-items: start;
+		}
+		.reader > .doc-cover {
+			grid-column: 2;
+			grid-row: 1;
+		}
+		.reader > .reader-body {
+			grid-column: 2;
+			grid-row: 2;
+		}
+		.reader:not(:has(> .doc-cover)) > .reader-body {
+			grid-row: 1 / span 2;
+		}
+		.reader > .toc {
+			grid-column: 1;
+			grid-row: 1 / span 2;
+			position: sticky;
+			top: calc(var(--header-h) + 2rem);
+		}
+		.reader > .facts {
+			grid-column: 3;
+			grid-row: 1 / span 2;
+		}
+		.reader > .reader-end {
+			grid-column: 2;
+			grid-row: 3;
+		}
+	}
+	@media (max-width: 1279px) {
+		.reader > .toc {
+			display: none;
+		}
+		/* An article's topics close it; a case study's facts come before the story */
+		.reader > .facts--end {
+			order: 1;
+		}
+		.reader > .reader-end {
+			order: 2;
+		}
 	}
 
-	.toc .kicker {
+	/* The two margin columns are built the same way: a red label, a ruled list */
+	:is(.toc, .facts) > .kicker {
 		display: block;
 		margin-bottom: 0.75rem;
 	}
@@ -1065,14 +1090,14 @@
 		grid-template-columns: 1.75rem minmax(0, 1fr);
 		padding: 0.5rem 0;
 		border-bottom: 1px solid var(--hair);
-		font-size: 14.5px;
+		font-size: 15px;
 		line-height: 1.4;
 		color: var(--muted);
 		transition: color 0.15s;
 	}
 	.toc a::before {
 		content: counter(toc, decimal-leading-zero);
-		font: 800 14px/1.4 var(--display);
+		font: 800 14px/1.45 var(--display);
 		letter-spacing: 0.04em;
 		color: var(--faint);
 	}
@@ -1086,6 +1111,84 @@
 	.toc a.active::before {
 		color: var(--accent);
 	}
+
+	.facts dl {
+		border-top: 1px solid var(--rule);
+	}
+	.facts dl > div {
+		display: grid;
+		gap: 0.125rem 1.5rem;
+		padding: 0.5rem 0 0.625rem;
+		border-bottom: 1px solid var(--hair);
+	}
+	@media (min-width: 640px) and (max-width: 1279px) {
+		.facts dl > div {
+			grid-template-columns: 9rem minmax(0, 1fr);
+			align-items: baseline;
+		}
+	}
+	.facts dt {
+		font: 800 13px/1.4 var(--display);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--faint);
+	}
+	.facts dd {
+		font-size: 15px;
+		line-height: 1.5;
+		overflow-wrap: break-word;
+	}
+	.facts dd .links {
+		font-weight: 700;
+		gap: 0.125rem 1rem;
+	}
+	/* An article's topics: rows like the contents opposite; inline once they close the text */
+	.topics {
+		list-style: none;
+		border-top: 1px solid var(--rule);
+	}
+	.topics a {
+		display: block;
+		padding: 0.5rem 0;
+		border-bottom: 1px solid var(--hair);
+		font-size: 15px;
+		line-height: 1.4;
+		color: var(--muted);
+		transition: color 0.15s;
+	}
+	.topics a:hover {
+		color: var(--accent);
+	}
+	@media (max-width: 1279px) {
+		.topics {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0 1.25rem;
+			padding-top: 0.375rem;
+		}
+		.topics a {
+			border: 0;
+			padding: 0.375rem 0;
+			color: var(--ink);
+			text-decoration: underline;
+			text-decoration-thickness: 1px;
+			text-underline-offset: 3px;
+		}
+	}
+	/* Comma-separated links without whitespace inside them (see CLAUDE.md) */
+	.inline-list {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		column-gap: 0.3em;
+	}
+	.inline-list li {
+		display: flex;
+	}
+	.inline-list li:not(:last-child)::after {
+		content: ',';
+	}
+
 	.toc-mobile {
 		border-top: 3px solid var(--rule);
 		border-bottom: 1px solid var(--rule);
@@ -1119,7 +1222,7 @@
 		font-size: 15px;
 		color: var(--muted);
 	}
-	@media (min-width: 1024px) {
+	@media (min-width: 1280px) {
 		.toc-mobile {
 			display: none;
 		}
@@ -1166,21 +1269,23 @@
 		color: var(--accent);
 	}
 
-	/* ---------- Prose (case studies + articles) ---------- */
+	/* ---------- Prose (case studies + articles) ----------
+	   17.5px on phones up to 20px from about 1030px; everything inside is sized in em so
+	   it scales with the text. */
 	.prose {
-		font-size: 17.5px;
-		line-height: 1.7;
+		font-size: clamp(1.09375rem, 1rem + 0.35vw, 1.25rem);
+		line-height: 1.65;
 		overflow-wrap: break-word; /* long paths and inline code wrap instead of overflowing */
 	}
 	.prose > h2 {
-		font: 800 2rem/0.98 var(--display);
+		font: 800 1.75em/0.98 var(--display);
 		text-transform: uppercase;
 		letter-spacing: 0.005em;
 		text-wrap: balance;
 		border-top: 1px solid var(--rule);
-		padding-top: 0.75rem;
-		margin-top: 3.5rem;
-		margin-bottom: 1.125rem;
+		padding-top: 0.4em;
+		margin-top: 1.6em;
+		margin-bottom: 0.6em;
 	}
 	.prose > h2:first-child {
 		margin-top: 0;
@@ -1190,13 +1295,13 @@
 		font-size: 0.7em;
 	}
 	.prose h3 {
-		font-size: 1.1875rem;
+		font-size: 1.2em;
 		font-weight: 700;
 		line-height: 1.35;
 		margin-bottom: 0.25rem;
 	}
 	.prose h4 {
-		font-size: 1rem;
+		font-size: 1em;
 		font-weight: 700;
 		margin-bottom: 0.25rem;
 	}
@@ -1205,10 +1310,10 @@
 		color: var(--ink);
 	}
 	.prose > * + :is(p, ul, ol) {
-		margin-top: 1.125rem;
+		margin-top: 1.1em;
 	}
 	.prose > * + :is(h3, h4) {
-		margin-top: 2.25rem;
+		margin-top: 1.6em;
 	}
 	.prose > :is(h3, h4) + * {
 		margin-top: 0.5rem;
@@ -1251,15 +1356,15 @@
 	.prose
 		> *
 		+ :is(.code, .figure, .pair, .metrics, .expressive-code, blockquote, img, table, hr, .diagram) {
-		margin-top: 1.75rem;
+		margin-top: 1.6em;
 	}
 	.prose
 		> :is(.code, .figure, .pair, .metrics, .expressive-code, blockquote, img, table, hr, .diagram)
 		+ * {
-		margin-top: 1.75rem;
+		margin-top: 1.6em;
 	}
 	.prose .lead {
-		font-size: 1.1875rem;
+		font-size: 1.1em;
 	}
 	.prose a {
 		color: var(--ink);
@@ -1290,7 +1395,7 @@
 		color: var(--accent);
 	}
 	.prose blockquote li {
-		font-size: 16.5px;
+		font-size: 0.95em;
 		line-height: 1.55;
 	}
 
@@ -1308,7 +1413,7 @@
 		max-width: 100%;
 		overflow-x: auto;
 		border-collapse: collapse;
-		font-size: 15px;
+		font-size: 0.85em;
 		line-height: 1.5;
 		border-top: 1px solid var(--rule);
 	}
@@ -1343,7 +1448,7 @@
 		padding: 1rem;
 		overflow-x: auto;
 		white-space: pre;
-		font: 400 13px/1.65 var(--mono);
+		font: 400 14px/1.65 var(--mono);
 		color: var(--ink);
 		tab-size: 2;
 	}
@@ -1379,7 +1484,7 @@
 	}
 	.figure figcaption {
 		margin-top: 0.625rem;
-		font-size: 13px;
+		font-size: 14px;
 		color: var(--faint);
 	}
 	.diagram {
@@ -1404,7 +1509,6 @@
 		align-items: start;
 		padding-top: 1rem;
 		border-top: 3px solid var(--rule);
-		margin-top: 3.5rem;
 	}
 	.author h2 {
 		font: 800 1.25rem/1 var(--display);
@@ -1609,8 +1713,8 @@
 
 	/* About: contact list */
 	.about-copy {
-		font-size: 17.5px;
-		line-height: 1.7;
+		font-size: clamp(1.09375rem, 1rem + 0.35vw, 1.25rem);
+		line-height: 1.65;
 		max-width: var(--measure);
 	}
 	.about-copy p + p {

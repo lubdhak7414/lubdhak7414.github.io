@@ -35,7 +35,7 @@ const skills = [
 
 // Already in homepage order (homePageIdx, then newest); don't re-sort. The front page
 // prints them by rank: the first as the lead story, the next three in ruled columns, the
-// rest as text-only briefs.
+// rest as an index of text-only rows.
 const projects = await getAllProjects()
 const [lead, ...others] = projects
 const columns = others.slice(0, 3)
@@ -78,9 +78,13 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 						{briefs.length > 0 && (
 							<div class='briefs'>
 								<p class='kicker'>Also on file</p>
-								{briefs.map((project) => (
-									<ProjectStory project={project} variant='brief' />
-								))}
+								<ol>
+									{briefs.map((project) => (
+										<li>
+											<ProjectStory project={project} variant='brief' />
+										</li>
+									))}
+								</ol>
 							</div>
 						)}
 					</section>
