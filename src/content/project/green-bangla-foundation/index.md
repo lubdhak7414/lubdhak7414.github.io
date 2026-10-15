@@ -10,7 +10,6 @@ coverImage:
 tags: ['Web Development', 'WordPress', 'Page Speed Optimization']
 facts:
   client: 'Green Bangla Foundation'
-  timeline: '11 working days'
   stack: ['WordPress', 'Gutenberg FSE']
 shot:
   src: './homepage.png'

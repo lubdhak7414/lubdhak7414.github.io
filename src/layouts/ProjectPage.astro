@@ -6,15 +6,9 @@ import CoverFigure from '@/components/CoverFigure.astro'
 import TOC from '@/components/blog/TOC.astro'
 import Details from '@/components/doc/Details.astro'
 import type { DetailRow } from '@/components/doc/Details.astro'
+import ProjectDirectory from '@/components/project/ProjectDirectory.astro'
 import Shot from '@/components/project/Shot.astro'
-import {
-	PERSON_ID,
-	displayTags,
-	getEntrySocialImage,
-	isoDate,
-	jsonLdScript,
-	slugifyTag
-} from '@/utils'
+import { PERSON_ID, getEntrySocialImage, jsonLdScript } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 import ShellLayout from './ShellLayout.astro'
@@ -27,15 +21,16 @@ interface Props {
 
 const { project, prev, next } = Astro.props
 const { data } = project
-const { headings, remarkPluginFrontmatter } = await render(project)
+const { headings } = await render(project)
 const { description, facts, links, publishDate, shot, title, updatedDate } = data
 
 const social = await getEntrySocialImage(data)
 const publishIso = publishDate.toISOString()
 const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ? updatedDate : null
 
-// The details list: one row per fact the project actually has (rows without a value drop out).
-const tags = displayTags(project)
+// The meta line under the title (who it was for) and the details beside the screenshot: only
+// facts the project actually has (rows without a value drop out). Links live in the details.
+const meta = [facts.role, facts.client && `Client: ${facts.client}`].filter(Boolean).join(' · ')
 const linkRows = (['code', 'live', 'store'] as const).map((kind) => ({
 	key: kind,
 	links: links
@@ -43,16 +38,11 @@ const linkRows = (['code', 'live', 'store'] as const).map((kind) => ({
 		.map((link) => ({ label: link.label, href: link.url, external: true }))
 }))
 const details: DetailRow[] = [
-	{ key: 'updated', text: updated ? isoDate(updated) : undefined },
-	{ key: 'client', text: facts.client },
-	{ key: 'role', text: facts.role },
-	{ key: 'timeline', text: facts.timeline },
-	{ key: 'status', text: facts.status },
-	{ key: 'license', text: facts.license },
 	{ key: 'stack', text: facts.stack?.join(', ') },
-	...linkRows,
-	{ key: 'reading', text: remarkPluginFrontmatter.minutesRead },
-	{ key: 'topics', links: tags.map((tag) => ({ label: tag, href: `/tags/${slugifyTag(tag)}/` })) }
+	{ key: 'status', text: facts.status },
+	{ key: 'timeline', text: facts.timeline },
+	{ key: 'license', text: facts.license },
+	...linkRows
 ]
 
 const projectUrl = new URL(`/projects/${project.id}/`, Astro.site).toString()
@@ -90,16 +80,14 @@ const breadcrumbSchema = {
 		title
 	}}
 	page='work'
+	sidebar='project'
 >
 	<Fragment slot='head'>
 		<script type='application/ld+json' set:html={jsonLdScript(articleSchema)} is:inline />
 		<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
 	</Fragment>
 	<Fragment slot='side'>
-		<div class='side-doc'>
-			<p class='label'>Details</p>
-			<Details rows={details} />
-		</div>
+		<ProjectDirectory current={project.id} variant='side' />
 		<TOC headings={headings} variant='sidebar' />
 	</Fragment>
 
@@ -110,15 +98,29 @@ const breadcrumbSchema = {
 			</p>
 			<h1 class='doc-title'>{title}</h1>
 			<p class='doc-lede'>{description}</p>
-			<Details rows={details} class='doc-details' />
+			{
+				meta && (
+					<p class='doc-meta'>
+						<span set:text={meta} />
+					</p>
+				)
+			}
 		</header>
-		{
-			shot && (
-				<div class='doc-cover'>
-					<CoverFigure src={shot.src} alt={shot.alt} sizes='(min-width: 960px) 704px, 100vw' />
-				</div>
-			)
-		}
+		<div class:list={['twoup', !shot && 'twoup--solo']}>
+			{
+				shot && (
+					<CoverFigure
+						src={shot.src}
+						alt={shot.alt}
+						sizes='(min-width: 960px) 420px, (min-width: 700px) 60vw, 100vw'
+					/>
+				)
+			}
+			<div class='twoup-details'>
+				<p class='label'>Details</p>
+				<Details rows={details} />
+			</div>
+		</div>
 		<TOC headings={headings} variant='drawer' />
 		<div class='prose'>
 			<slot />
@@ -147,4 +149,5 @@ const breadcrumbSchema = {
 			</nav>
 		)
 	}
+	<ProjectDirectory current={project.id} variant='page' />
 </ShellLayout>

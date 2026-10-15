@@ -3,11 +3,11 @@ import ShellLayout from '@/layouts/ShellLayout.astro'
 import PostRow from '@/components/blog/PostRow.astro'
 import ContactList from '@/components/layout/ContactList.astro'
 import WorkRow from '@/components/project/WorkRow.astro'
-import WorkTile from '@/components/project/WorkTile.astro'
 
 import {
 	getAllPosts,
 	getAllProjects,
+	groupProjects,
 	jsonLdScript,
 	personSchema,
 	sortByPublishDate,
@@ -15,25 +15,9 @@ import {
 } from '@/utils'
 import { siteConfig } from '@/site-config'
 
-const skills = [
-	{ category: 'Languages', items: ['Python', 'Java', 'C++', 'Dart'] },
-	{
-		category: 'Frontend',
-		items: ['JavaScript', 'HTML', 'CSS', 'React', 'Tailwind CSS', 'Bootstrap']
-	},
-	{
-		category: 'Backend',
-		items: ['PHP', 'MySQL', 'Node.js', 'Express.js', 'MongoDB', 'FastAPI']
-	},
-	{
-		category: 'Technologies',
-		items: ['WordPress', 'Astro', 'Gatsby', 'GraphQL', 'Stripe', 'Firebase']
-	},
-	{ category: 'Others', items: ['Git', 'Linux', 'AWS', 'Nginx'] }
-]
-
-// Already in homepage order (homePageIdx, then newest); don't re-sort.
+// Already in homepage order (homePageIdx, then newest); don't re-sort. Groups keep it.
 const projects = await getAllProjects()
+const groups = groupProjects(projects)
 const posts = sortByPublishDate(await getAllPosts())
 const latest = posts.slice(0, 4)
 
@@ -45,75 +29,31 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 		<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
 		<script type='application/ld+json' set:html={jsonLdScript(websiteSchema)} is:inline />
 	</Fragment>
-	<ContactList slot='side' />
-
-	<p class='lead'>{siteConfig.bio}</p>
+	<Fragment slot='intro'>
+		<p class='side-bio'>{siteConfig.bio}</p>
+		<ContactList />
+	</Fragment>
 
 	{
 		projects.length > 0 && (
 			<section id='work' aria-labelledby='work-h'>
-				<div class='sec sec--work'>
-					<div class='sec-head'>
-						<h2 id='work-h'>Work</h2>
-						{/* Revealed by the script below; without JS the page stays on pictures. */}
-						<div class='switch' role='group' aria-label='Show work as' hidden>
-							<button type='button' data-view='pictures' aria-pressed='true'>
-								pictures
-							</button>
-							<button type='button' data-view='list' aria-pressed='false'>
-								list
-							</button>
-						</div>
-					</div>
-					<span class='sec-note'>{projects.length} case studies</span>
+				<div class='sec'>
+					<h2 id='work-h'>Case studies</h2>
+					<span class='sec-note'>{`${projects.length} projects`}</span>
 				</div>
-				<ul class='tiles' data-panel='pictures'>
-					{projects.map((project, i) => (
-						<WorkTile project={project} eager={i < 2} />
-					))}
-				</ul>
-				<ul class='rows' data-panel='list' hidden>
-					{projects.map((project) => (
-						<WorkRow project={project} />
-					))}
-				</ul>
+				{groups.map(({ label, items }) => (
+					<div class='pgroup'>
+						<h3 class='pgroup-label' set:text={label} />
+						<ul class='prows'>
+							{items.map((project) => (
+								<WorkRow project={project} />
+							))}
+						</ul>
+					</div>
+				))}
 			</section>
 		)
 	}
-	{
-		/* The pictures | list switch. Runs as the page parses, so a saved "list" applies before
-the first paint. Storage can throw (private windows, blocked site data), so it's optional. */
-	}
-	<script is:inline>
-		;(() => {
-			const work = document.getElementById('work')
-			const control = work && work.querySelector('.switch')
-			if (!control) return
-			const KEY = 'work-view'
-			const panels = work.querySelectorAll('[data-panel]')
-			const buttons = control.querySelectorAll('button[data-view]')
-			const show = (view) => {
-				panels.forEach((panel) => (panel.hidden = panel.dataset.panel !== view))
-				buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)))
-			}
-			try {
-				if (localStorage.getItem(KEY) === 'list') show('list')
-			} catch {
-				/* no storage: stay on pictures */
-			}
-			control.hidden = false
-			control.addEventListener('click', (event) => {
-				const button = event.target.closest('button[data-view]')
-				if (!button) return
-				show(button.dataset.view)
-				try {
-					localStorage.setItem(KEY, button.dataset.view)
-				} catch {
-					/* the choice just won't be remembered */
-				}
-			})
-		})()
-	</script>
 	{
 		latest.length > 0 && (
 			<section id='writing' aria-labelledby='writing-h'>
@@ -131,61 +71,4 @@ the first paint. Storage can throw (private windows, blocked site data), so it's
 			</section>
 		)
 	}
-	<section id='background' aria-labelledby='background-h'>
-		<div class='sec'>
-			<h2 id='background-h'>Background</h2>
-		</div>
-		<ul class='rows'>
-			<li class='row'>
-				<div class='row-static'>
-					<span class='row-date'>2019 - now</span>
-					<div class='row-body'>
-						<h3 class='row-title'>Freelance Web Developer</h3>
-						<p class='row-text'>Remote clients</p>
-						<ul class='dots'>
-							<li>
-								WordPress sites for small businesses - hosting, domains, email setup, and redesigns.
-							</li>
-							<li>
-								Security work: malware cleanup, patching vulnerabilities, hardening compromised
-								sites.
-							</li>
-							<li>
-								Infrastructure migrations - moving DNS, email routing, and CDN across providers.
-							</li>
-						</ul>
-					</div>
-				</div>
-			</li>
-			<li class='row'>
-				<div class='row-static'>
-					<span class='row-date'>BSc</span>
-					<div class='row-body'>
-						<h3 class='row-title'>BRAC University</h3>
-						<p class='row-text'>BSc. in Computer Science and Engineering</p>
-						<ul class='dots'>
-							<li>
-								Completed core courses including Data Structures, Algorithms, Discrete Mathematics,
-								Digital Logic Design, Data Communications, Operating Systems, and Database Systems.
-							</li>
-							<li>
-								Advanced coursework in Artificial Intelligence, Neural Networks, Compiler Design,
-								Computer Architecture, Computer Networks, and Software Engineering.
-							</li>
-						</ul>
-					</div>
-				</div>
-			</li>
-		</ul>
-		<dl class='skills'>
-			{
-				skills.map(({ category, items }) => (
-					<div>
-						<dt>{category}</dt>
-						<dd>{items.join(', ')}</dd>
-					</div>
-				))
-			}
-		</dl>
-	</section>
 </ShellLayout>

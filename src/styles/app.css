@@ -222,8 +222,7 @@
 	.main {
 		min-width: 0;
 	}
-	.main > section ~ section {
-		/* `~`, not `+`: the work switch's script sits between two sections */
+	.main > section + section {
 		margin-top: 3.5rem;
 	}
 
@@ -301,8 +300,107 @@
 	}
 	.side > .keys,
 	.side-doc,
-	.side > .toc {
+	.side > .toc,
+	.side > .pdir {
 		margin-top: 2rem;
+	}
+	/* Home: the bio and the contact lines sit between the name and the navigation. */
+	.side-bio {
+		margin-top: 1.25rem;
+		font-size: 0.9375rem;
+		line-height: 1.6;
+		color: var(--text-body);
+		text-wrap: pretty;
+	}
+	.side-bio + .keys {
+		margin-top: 1.25rem;
+	}
+	.side > .keys + .nav {
+		margin-top: 1.75rem;
+	}
+
+	/* Case studies: a compact identity line, a one-line nav, then the project directory. */
+	.id--compact {
+		gap: 0.65rem;
+	}
+	.id--compact .id-photo {
+		width: 32px;
+		height: 32px;
+		border-radius: 4px;
+	}
+	.id--compact .id-name {
+		font-size: 0.9375rem;
+	}
+	.id--compact .id-role {
+		margin-top: 0;
+		font-size: 0.8125rem;
+	}
+	.navline {
+		margin-top: 1rem;
+		padding-block: 0.55rem;
+		border-block: 1px solid var(--line);
+	}
+	.navline ul {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 0.5rem;
+		font-size: 0.875rem;
+	}
+	.navline li + li::before {
+		content: '·';
+		margin-right: 0.5rem;
+		color: var(--faint);
+	}
+	.navline a {
+		font-weight: 500;
+		color: var(--text);
+		transition: color 0.15s ease;
+	}
+	.navline a:hover,
+	.navline a[aria-current] {
+		color: var(--accent);
+	}
+	.side-back {
+		display: none;
+		margin-top: 1rem;
+		font-size: 0.9375rem;
+		font-weight: 500;
+		color: var(--accent);
+	}
+	.pdir ul {
+		list-style: none;
+	}
+	.pdir-group + .pdir-group {
+		margin-top: 0.85rem;
+	}
+	.pdir-label {
+		margin-bottom: 0.2rem;
+		font: 400 0.6875rem/1.5 var(--mono);
+		color: var(--faint);
+	}
+	.pdir a {
+		display: block;
+		padding: 0.25rem 0 0.25rem 0.75rem;
+		border-left: 2px solid transparent;
+		font-size: 0.875rem;
+		line-height: 1.4;
+		color: var(--text);
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
+	}
+	.pdir a:hover {
+		color: var(--accent);
+	}
+	.pdir a[aria-current] {
+		border-left-color: var(--accent);
+		color: var(--accent);
+		font-weight: 600;
+	}
+	/* The end-of-page copy only shows where the sidebar has become a header. */
+	.pdir--page {
+		display: none;
 	}
 
 	/* Key/value lines: contact, case-study and article details */
@@ -350,17 +448,17 @@
 		color: var(--faint);
 	}
 	.note--side {
-		margin-top: 2.5rem;
+		margin-top: 2rem;
 	}
 	.main-foot {
 		display: none;
 	}
 	/* On case studies and articles the sidebar holds details and contents; the note moves
 	   under the text so a long contents list doesn't cut it off. */
-	.side:has(.side-doc) .note--side {
+	.side:has(.side-doc, .pdir) .note--side {
 		display: none;
 	}
-	.frame:has(.side-doc) .main-foot {
+	.frame:has(.side-doc, .pdir) .main-foot {
 		display: block;
 		margin-top: 4rem;
 		padding-top: 1.25rem;
@@ -368,14 +466,6 @@
 	}
 
 	/* ---------- Content ---------- */
-	.lead {
-		max-width: 34em;
-		margin-bottom: 3.5rem;
-		font-size: clamp(1.1875rem, 1rem + 0.6vw, 1.375rem);
-		line-height: 1.55;
-		color: var(--text);
-		text-wrap: pretty;
-	}
 	.sec {
 		display: flex;
 		align-items: baseline;
@@ -544,47 +634,6 @@
 		}
 	}
 
-	/* ---------- Work: pictures | list ---------- */
-	.sec--work {
-		align-items: center;
-	}
-	.sec-head {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-	/* The switch: two mono buttons in one hairline box; the pressed one takes the accent. */
-	.switch {
-		display: inline-flex;
-		border: 1px solid var(--line-strong);
-		border-radius: 4px;
-		font: 400 0.75rem/1 var(--mono);
-	}
-	.switch button {
-		padding: 0.35rem 0.6rem;
-		color: var(--muted);
-		transition: color 0.15s ease;
-	}
-	.switch button + button {
-		border-left: 1px solid var(--line-strong);
-	}
-	.switch button:hover {
-		color: var(--text);
-	}
-	.switch button[aria-pressed='true'] {
-		color: var(--accent);
-		font-weight: 500;
-		text-decoration: underline;
-		text-decoration-thickness: 1px;
-		text-underline-offset: 4px;
-	}
-	.switch button:first-child {
-		border-radius: 3px 0 0 3px;
-	}
-	.switch button:last-child {
-		border-radius: 0 3px 3px 0;
-	}
-
 	/* Screenshots: 16:10, hairline frame. Without one, the same box with the name in mono. */
 	.shot {
 		display: block;
@@ -612,83 +661,6 @@
 	}
 	.pn-shot.shot--none {
 		font-size: 0.625rem;
-	}
-
-	/* Pictures view */
-	.tiles {
-		list-style: none;
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 2.25rem 1.5rem;
-		padding-top: 1.25rem;
-		border-top: 1px solid var(--line-strong);
-	}
-	.tile {
-		position: relative;
-		min-width: 0;
-	}
-	.tile-name {
-		margin-top: 0.85rem;
-		font: 600 1.0625rem/1.35 var(--sans);
-		color: var(--text);
-	}
-	.tile-link {
-		text-decoration: underline;
-		text-decoration-color: transparent;
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition:
-			color 0.15s ease,
-			text-decoration-color 0.15s ease;
-	}
-	/* The name's link covers the whole tile. */
-	.tile-link::after,
-	.lrow-name::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-	}
-	.tile:hover .tile-link,
-	.lrow:hover .lrow-name {
-		color: var(--accent);
-		text-decoration-color: currentColor;
-	}
-	.tile:hover .shot {
-		border-color: var(--line-strong);
-	}
-	.tile-link:focus-visible,
-	.lrow-name:focus-visible,
-	.pn-link:focus-visible {
-		outline: none;
-	}
-	.tile:has(.tile-link:focus-visible),
-	.lrow:has(.lrow-name:focus-visible),
-	.pn-item:has(.pn-link:focus-visible) {
-		outline: 2px solid var(--accent);
-		outline-offset: 4px;
-		border-radius: 4px;
-	}
-	.tile-text {
-		display: -webkit-box;
-		margin-top: 0.3rem;
-		overflow: hidden;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		font-size: 0.9375rem;
-		line-height: 1.55;
-		color: var(--muted);
-	}
-	.tile-foot,
-	.lrow-foot {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 0.25rem 1rem;
-		margin-top: 0.55rem;
-		font: 400 0.75rem/1.5 var(--mono);
-		color: var(--faint);
 	}
 
 	/* Code / live / store links: above the stretched link, so each is clickable alone. */
@@ -722,54 +694,102 @@
 		text-decoration-color: currentColor;
 	}
 
-	/* List view: name and summary run in on one line, stack and links under them. */
-	.lrow {
+	/* ---------- Work: case studies in two groups ---------- */
+	.pgroup + .pgroup {
+		margin-top: 2rem;
+	}
+	.pgroup-label {
+		padding-bottom: 0.45rem;
+		border-bottom: 1px solid var(--line-strong);
+		font: 500 0.75rem/1.5 var(--mono);
+		color: var(--faint);
+	}
+	.prows {
+		list-style: none;
+	}
+	/* A row: the name's link covers it. The hover tint reaches a little past the text on both
+	   sides (a pseudo-element under the content), so the text keeps the column's edge. */
+	.prow {
 		position: relative;
-		padding: 0.95rem 0;
+		isolation: isolate;
+		padding: 1rem 0 1.05rem;
+		border-bottom: 1px solid var(--line);
 	}
-	.lrow-main {
-		font-size: 0.9375rem;
-		line-height: 1.55;
+	.prow::before {
+		content: '';
+		position: absolute;
+		inset: 0 -0.75rem;
+		z-index: -1;
+		border-radius: 4px;
+		background: transparent;
+		transition: background-color 0.15s ease;
 	}
-	.lrow-name {
-		margin-right: 0.6rem;
+	.prow:hover::before {
+		background: var(--soft);
+	}
+	.prow-head {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 0.1rem 1rem;
+	}
+	.prow-name {
 		font: 600 1.0625rem/1.4 var(--sans);
 		color: var(--text);
-		text-decoration: underline;
-		text-decoration-color: transparent;
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition:
-			color 0.15s ease,
-			text-decoration-color 0.15s ease;
+		transition: color 0.15s ease;
 	}
-	.lrow-text {
+	.prow-name::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+	}
+	.prow:hover .prow-name {
+		color: var(--accent);
+	}
+	.prow-ctx {
+		font-size: 0.875rem;
 		color: var(--muted);
 	}
-	.lrow-foot {
-		margin-top: 0.4rem;
+	.prow-text {
+		max-width: 40rem;
+		margin-top: 0.3rem;
+		font-size: 0.9375rem;
+		line-height: 1.55;
+		color: var(--text-body);
 	}
-	/* In a tile the stack and the links get a line each. */
-	.tile-foot {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 0.35rem;
+	.prow-foot {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.25rem 0.85rem;
+		margin-top: 0.6rem;
+		font: 400 0.75rem/1.5 var(--mono);
+		color: var(--faint);
 	}
-	.tile .plinks {
+	.prow-go {
+		margin-left: auto;
+		font-family: var(--sans);
+		font-size: 0.9375rem;
+		line-height: 1;
+		color: var(--faint);
+		transition: color 0.15s ease;
+	}
+	.prow .plinks + .prow-go {
 		margin-left: 0;
 	}
-	@media (max-width: 639px) {
-		.tiles {
-			grid-template-columns: minmax(0, 1fr);
-		}
-		.lrow-name {
-			display: block;
-			margin-right: 0;
-		}
-		.lrow-text {
-			display: block;
-			margin-top: 0.2rem;
-		}
+	.prow:hover .prow-go {
+		color: var(--accent);
+	}
+	.prow-name:focus-visible,
+	.pn-link:focus-visible {
+		outline: none;
+	}
+	.prow:has(.prow-name:focus-visible),
+	.pn-item:has(.pn-link:focus-visible) {
+		outline: 2px solid var(--accent);
+		outline-offset: 4px;
+		border-radius: 4px;
 	}
 
 	/* Writing index */
@@ -869,6 +889,40 @@
 	}
 	.doc-details {
 		display: none;
+	}
+	/* Case study: who it was for and the licence, the links on the right of the same line. */
+	.doc-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.35rem 1.25rem;
+		margin-top: 1.1rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--line);
+		font: 400 0.8125rem/1.5 var(--mono);
+		color: var(--muted);
+	}
+	/* The screenshot beside the details; stacked on narrow screens, details alone without one. */
+	.twoup {
+		display: grid;
+		grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+		gap: 1.5rem;
+		align-items: start;
+		margin-bottom: 2.5rem;
+	}
+	.twoup--solo {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.twoup-details .label {
+		margin-bottom: 0.5rem;
+	}
+	.twoup-details .keys > div {
+		grid-template-columns: 4rem minmax(0, 1fr);
+	}
+	@media (max-width: 699px) {
+		.twoup {
+			grid-template-columns: minmax(0, 1fr);
+		}
 	}
 	.doc-cover {
 		margin-bottom: 2.25rem;
@@ -1261,8 +1315,26 @@
 		}
 		.side-doc,
 		.side > .toc,
+		.side > .pdir,
+		.navline,
 		.note--side {
 			display: none;
+		}
+		.side-back {
+			display: inline-block;
+		}
+		.pdir--page {
+			display: block;
+			margin-top: 3rem;
+			padding-top: 1.25rem;
+			border-top: 1px solid var(--line-strong);
+		}
+		.pdir--page .pdir-group + .pdir-group {
+			margin-top: 1.25rem;
+		}
+		.pdir--page a {
+			padding-block: 0.4rem;
+			font-size: 0.9375rem;
 		}
 		.doc-details {
 			display: grid;

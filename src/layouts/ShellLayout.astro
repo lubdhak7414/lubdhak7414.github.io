@@ -10,19 +10,22 @@ import PageLayout from './BaseLayout.astro'
 interface Props {
 	meta: SiteMeta
 	page: Section
+	/** `project` gives the sidebar a compact identity line and a one-line nav (case studies). */
+	sidebar?: 'site' | 'project'
 }
 
-const { meta, page } = Astro.props
+const { meta, page, sidebar = 'site' } = Astro.props
 ---
 
 {
-	/* Every page: the sidebar (sticky on wide screens) and the page beside it. Slots: `side` adds
-to the sidebar under the navigation, `head` takes JSON-LD. */
+	/* Every page: the sidebar (sticky on wide screens) and the page beside it. Slots: `intro`
+goes under the name, before the navigation; `side` under the navigation; `head` takes JSON-LD. */
 }
 <PageLayout meta={meta}>
 	<slot name='head' />
 	<div class='frame'>
-		<Sidebar page={page}>
+		<Sidebar page={page} variant={sidebar}>
+			<slot name='intro' slot='intro' />
 			<slot name='side' />
 		</Sidebar>
 		<div class='main'>

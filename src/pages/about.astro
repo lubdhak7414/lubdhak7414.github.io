@@ -4,6 +4,23 @@ import ContactList from '@/components/layout/ContactList.astro'
 import { jsonLdScript, personSchema } from '@/utils'
 import { siteConfig } from '@/site-config'
 
+const skills = [
+	{ category: 'Languages', items: ['Python', 'Java', 'C++', 'Dart'] },
+	{
+		category: 'Frontend',
+		items: ['JavaScript', 'HTML', 'CSS', 'React', 'Tailwind CSS', 'Bootstrap']
+	},
+	{
+		category: 'Backend',
+		items: ['PHP', 'MySQL', 'Node.js', 'Express.js', 'MongoDB', 'FastAPI']
+	},
+	{
+		category: 'Technologies',
+		items: ['WordPress', 'Astro', 'Gatsby', 'GraphQL', 'Stripe', 'Firebase']
+	},
+	{ category: 'Others', items: ['Git', 'Linux', 'AWS', 'Nginx'] }
+]
+
 const aboutDescription =
 	'About Safwan Usaid Lubdhak - builds web apps, scales DevOps pipelines, and integrates AI systems.'
 
@@ -50,8 +67,65 @@ const aboutPageSchema = {
 		<div class='text'>
 			<p>
 				Want to see what I've built? Read the <a href='/blog/'>blog</a> for write-ups, or head back to
-				the <a href='/'>homepage</a> for the full résumé.
+				the <a href='/'>homepage</a> for the case studies.
 			</p>
 		</div>
+	</section>
+	<section id='background' aria-labelledby='background-h'>
+		<div class='sec'>
+			<h2 id='background-h'>Background</h2>
+		</div>
+		<ul class='rows'>
+			<li class='row'>
+				<div class='row-static'>
+					<span class='row-date'>2019 - now</span>
+					<div class='row-body'>
+						<h3 class='row-title'>Freelance Web Developer</h3>
+						<p class='row-text'>Remote clients</p>
+						<ul class='dots'>
+							<li>
+								WordPress sites for small businesses - hosting, domains, email setup, and redesigns.
+							</li>
+							<li>
+								Security work: malware cleanup, patching vulnerabilities, hardening compromised
+								sites.
+							</li>
+							<li>
+								Infrastructure migrations - moving DNS, email routing, and CDN across providers.
+							</li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li class='row'>
+				<div class='row-static'>
+					<span class='row-date'>BSc</span>
+					<div class='row-body'>
+						<h3 class='row-title'>BRAC University</h3>
+						<p class='row-text'>BSc. in Computer Science and Engineering</p>
+						<ul class='dots'>
+							<li>
+								Completed core courses including Data Structures, Algorithms, Discrete Mathematics,
+								Digital Logic Design, Data Communications, Operating Systems, and Database Systems.
+							</li>
+							<li>
+								Advanced coursework in Artificial Intelligence, Neural Networks, Compiler Design,
+								Computer Architecture, Computer Networks, and Software Engineering.
+							</li>
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+		<dl class='skills'>
+			{
+				skills.map(({ category, items }) => (
+					<div>
+						<dt>{category}</dt>
+						<dd>{items.join(', ')}</dd>
+					</div>
+				))
+			}
+		</dl>
 	</section>
 </ShellLayout>

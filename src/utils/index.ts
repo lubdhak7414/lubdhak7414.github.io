@@ -2,6 +2,7 @@ export { cn } from './tailwind'
 export {
 	getAllPosts,
 	getAllProjects,
+	groupProjects,
 	entryHref,
 	displayTags,
 	sortMDByDate,

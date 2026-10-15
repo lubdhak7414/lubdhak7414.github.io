@@ -26,6 +26,20 @@ export async function getAllProjects() {
 	)
 }
 
+/**
+ * Projects split into the two groups the work list and the case-study directory show:
+ * "Software" (no client, has a code link) and "Websites" (the rest). Keeps the input order
+ * within each group; empty groups drop out.
+ */
+export function groupProjects(projects: CollectionEntry<'project'>[]) {
+	const isSoftware = ({ data }: CollectionEntry<'project'>) =>
+		!data.facts.client && data.links.some((link) => link.kind === 'code')
+	return [
+		{ label: 'Software', items: projects.filter(isSoftware) },
+		{ label: 'Websites', items: projects.filter((project) => !isSoftware(project)) }
+	].filter((group) => group.items.length > 0)
+}
+
 /** Canonical URL path for a post or a project. */
 export function entryHref(entry: Entry) {
 	return entry.collection === 'project' ? `/projects/${entry.id}/` : `/blog/${entry.id}/`

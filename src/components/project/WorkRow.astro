@@ -10,20 +10,27 @@ interface Props {
 const { project } = Astro.props
 const { data } = project
 const name = `${data.draft ? '(Draft) ' : ''}${data.name ?? data.title}`
+// Who it was for, on client work only. A client whose name is the project's own name would
+// print twice.
+const { client } = data.facts
+const context = client && (client === data.name ? 'Client project' : client)
 const stack = (data.facts.stack ?? []).slice(0, 4).join(' · ')
 ---
 
 {
-	/* List view: name and summary run together on one line where they fit, then the stack and
-the links. The name's link stretches over the row; the other links sit above it. */
+	/* One case study: the name and who it was for, the summary, then the stack, the
+code/live/store links and an arrow. The name's link stretches over the row; the other links
+sit above it, so nothing nests. */
 }
-<li class='row lrow'>
-	<p class='lrow-main'>
-		<a class='lrow-name' href={`/projects/${project.id}/`} set:text={name} />
-		<span class='lrow-text'>{data.description}</span>
+<li class='prow'>
+	<p class='prow-head'>
+		<a class='prow-name' href={`/projects/${project.id}/`} set:text={name} />
+		{context && <span class='prow-ctx' set:text={context} />}
 	</p>
-	<p class='lrow-foot'>
-		{stack && <span class='lrow-stack'>{stack}</span>}
+	<p class='prow-text'>{data.description}</p>
+	<p class='prow-foot'>
+		{stack && <span class='prow-stack'>{stack}</span>}
 		<ProjectLinks project={project} />
+		<span class='prow-go' aria-hidden='true'>→</span>
 	</p>
 </li>

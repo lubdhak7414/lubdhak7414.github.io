@@ -10,11 +10,15 @@ export type Section = 'home' | 'about' | 'work' | 'writing' | 'tools' | 'error'
 
 interface Props {
 	page: Section
+	/** `site`: identity, the page's intro slot, the site nav. `project`: a compact identity
+	 * line and a one-line nav, for case studies, whose slot carries the project directory. */
+	variant?: 'site' | 'project'
 }
 
-const { page } = Astro.props
+const { page, variant = 'site' } = Astro.props
 // The name is the page's h1 only where the page is about the person.
 const NameTag = page === 'home' || page === 'about' ? 'h1' : 'p'
+const compact = variant === 'project'
 
 const counts = {
 	work: (await getAllProjects()).length,
@@ -33,29 +37,52 @@ const nav = [
 ]
 ---
 
-{/* Left column on every page: who, where to go, and whatever the page adds (slot). */}
-<aside class='side'>
-	<a class='id' href='/'>
-		<Image class='id-photo' src={avatar} alt='' width={96} height={96} loading='eager' />
+{/* Left column on every page: who, where to go, and whatever the page adds (slots). */}
+<aside class:list={['side', compact && 'side--project']}>
+	<a class:list={['id', compact && 'id--compact']} href='/'>
+		<Image
+			class='id-photo'
+			src={avatar}
+			alt=''
+			width={compact ? 64 : 96}
+			height={compact ? 64 : 96}
+			loading='eager'
+		/>
 		<div class='id-text'>
 			<NameTag class='id-name'>{siteConfig.author}</NameTag>
 			<p class='id-role'>{`${siteConfig.role} · ${siteConfig.location}`}</p>
 		</div>
 	</a>
-	<nav class='nav' aria-label='Site'>
-		<ul>
-			{
-				nav.map(({ href, label, n, on }) => (
-					<li>
-						<a href={href} aria-current={on ? 'page' : undefined}>
-							<span>{label}</span>
-							{n !== undefined && <span class='nav-n'>{n}</span>}
-						</a>
-					</li>
-				))
-			}
-		</ul>
-	</nav>
+	<slot name='intro' />
+	{
+		compact ? (
+			<>
+				<nav class='navline' aria-label='Site'>
+					<ul>
+						{nav.map(({ href, label, on }) => (
+							<li>
+								<a href={href} aria-current={on ? 'page' : undefined} set:text={label} />
+							</li>
+						))}
+					</ul>
+				</nav>
+				<a class='side-back' href='/#work' set:text='← All case studies' />
+			</>
+		) : (
+			<nav class='nav' aria-label='Site'>
+				<ul>
+					{nav.map(({ href, label, n, on }) => (
+						<li>
+							<a href={href} aria-current={on ? 'page' : undefined}>
+								<span>{label}</span>
+								{n !== undefined && <span class='nav-n'>{n}</span>}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		)
+	}
 	<slot />
 	<Footer variant='side' />
 </aside>
