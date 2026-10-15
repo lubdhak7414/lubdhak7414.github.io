@@ -1,0 +1,68 @@
+---
+import type { ImageMetadata } from 'astro'
+import { Image } from 'astro:assets'
+
+interface Props {
+	/** "Next case study", "Read next". */
+	label: string
+	/** A position like "3 / 8", printed at the label's right. */
+	count?: string | undefined
+	href: string
+	title: string
+	text: string
+	meta?: string | undefined
+	/** The call to action under the text. */
+	go: string
+	image?: { src: ImageMetadata; alt: string } | undefined
+	/** A quieter link back (the previous case study), under the main one. */
+	back?: { href: string; label: string } | undefined
+	/** Shown on devices with a keyboard: how to flip with the arrow keys. */
+	hint?: string | undefined
+}
+
+const { label, count, href, title, text, meta, go, image, back, hint } = Astro.props
+---
+
+{
+	/* The page's last word: the next thing to read, big enough to want to click. The whole block
+is one link (the title's link stretches over it). */
+}
+<nav class='upnext' aria-label={label}>
+	<p class='upnext-head'>
+		<span set:text={label} />
+		{count && <span class='upnext-count' set:text={count} />}
+	</p>
+	<div class='upnext-card'>
+		<span class:list={['upnext-media', !image && 'upnext-media--none']} aria-hidden='true'>
+			{
+				image ? (
+					<Image
+						src={image.src}
+						alt=''
+						widths={[320, 480, 640]}
+						sizes='(min-width: 640px) 18rem, 100vw'
+					/>
+				) : (
+					<span set:text={title} />
+				)
+			}
+		</span>
+		<span class='upnext-body'>
+			<a class='upnext-title' href={href} set:text={title} />
+			<span class='upnext-text'>{text}</span>
+			{meta && <span class='upnext-meta'>{meta}</span>}
+			<span class='upnext-go' aria-hidden='true'>
+				<span set:text={go} />
+				<span class='upnext-arrow'>→</span>
+			</span>
+		</span>
+	</div>
+	{
+		(back || hint) && (
+			<p class='upnext-foot'>
+				{back && <a href={back.href} set:text={back.label} />}
+				{hint && <span class='upnext-hint' set:text={hint} />}
+			</p>
+		)
+	}
+</nav>

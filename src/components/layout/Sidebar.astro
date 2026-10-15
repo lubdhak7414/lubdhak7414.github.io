@@ -11,7 +11,8 @@ export type Section = 'home' | 'about' | 'work' | 'writing' | 'tools' | 'error'
 interface Props {
 	page: Section
 	/** `site`: identity, the page's intro slot, the site nav. `project`: a compact identity
-	 * line and a one-line nav, for case studies, whose slot carries the project directory. */
+	 * line and a one-line nav, for case studies and articles, whose slot carries the
+	 * directory of its section and the contents. */
 	variant?: 'site' | 'project'
 }
 
@@ -19,6 +20,10 @@ const { page, variant = 'site' } = Astro.props
 // The name is the page's h1 only where the page is about the person.
 const NameTag = page === 'home' || page === 'about' ? 'h1' : 'p'
 const compact = variant === 'project'
+const back =
+	page === 'writing'
+		? { href: '/blog/', label: '← All writing' }
+		: { href: '/#work', label: '← All case studies' }
 
 const counts = {
 	work: (await getAllProjects()).length,
@@ -66,7 +71,7 @@ const nav = [
 						))}
 					</ul>
 				</nav>
-				<a class='side-back' href='/#work' set:text='← All case studies' />
+				<a class='side-back' href={back.href} set:text={back.label} />
 			</>
 		) : (
 			<nav class='nav' aria-label='Site'>

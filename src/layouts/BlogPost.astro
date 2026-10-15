@@ -6,13 +6,14 @@ import TOC from '@/components/blog/TOC.astro'
 import AuthorBox from '@/components/AuthorBox.astro'
 import CoverFigure from '@/components/CoverFigure.astro'
 import BalloonSurprise from '@/components/blog/BalloonSurprise.astro'
-import PostRow from '@/components/blog/PostRow.astro'
-import Details from '@/components/doc/Details.astro'
-import type { DetailRow } from '@/components/doc/Details.astro'
+import WritingDirectory from '@/components/blog/WritingDirectory.astro'
+import Gist from '@/components/doc/Gist.astro'
+import UpNext from '@/components/doc/UpNext.astro'
 
 import {
 	PERSON_ID,
 	displayTags,
+	generateToc,
 	getEntrySocialImage,
 	isoDate,
 	jsonLdScript,
@@ -41,12 +42,17 @@ const modifiedIso = updated?.toISOString()
 const { headings, remarkPluginFrontmatter } = await render(post)
 const minutesRead = parseInt(remarkPluginFrontmatter.minutesRead, 10) || 1
 const tags = displayTags(post)
-const details: DetailRow[] = [
-	{ key: 'published', text: isoDate(publishDate) },
-	{ key: 'updated', text: updated ? isoDate(updated) : undefined },
-	{ key: 'reading', text: remarkPluginFrontmatter.minutesRead },
-	{ key: 'topics', links: tags.map((tag) => ({ label: tag, href: `/tags/${slugifyTag(tag)}/` })) }
+const takeaways = (remarkPluginFrontmatter.takeaways ?? []) as string[]
+const sections = generateToc(headings)
+// One meta line under the title: when, how long, then the topics as links.
+const when = [
+	isoDate(publishDate),
+	updated && `updated ${isoDate(updated)}`,
+	remarkPluginFrontmatter.minutesRead
 ]
+	.filter(Boolean)
+	.join(' · ')
+const diveNote = `The article · ${sections.length} ${sections.length === 1 ? 'section' : 'sections'} · ${remarkPluginFrontmatter.minutesRead}`
 
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
 const blogUrl = new URL('/blog/', Astro.site).toString()
@@ -93,26 +99,39 @@ const blogPostingSchema = {
 		title
 	}}
 	page='writing'
+	sidebar='project'
 >
 	<Fragment slot='head'>
 		<script type='application/ld+json' set:html={jsonLdScript(blogPostingSchema)} is:inline />
 		<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
 	</Fragment>
 	<Fragment slot='side'>
-		<div class='side-doc'>
-			<p class='label'>Details</p>
-			<Details rows={details} />
-		</div>
+		<WritingDirectory current={post.id} />
 		<TOC headings={headings} variant='sidebar' />
 	</Fragment>
 
-	<article class='doc'>
+	<div class='progress' aria-hidden='true'></div>
+	<article class='doc doc--post'>
 		<header class='doc-head'>
-			<p class='label'>{draft && 'Draft · '}<a href='/blog/'>Writing</a></p>
+			<div class='doc-kicker'>
+				<p class='label'>{draft && 'Draft · '}<a href='/blog/'>Writing</a></p>
+			</div>
 			<h1 class='doc-title'>{title}</h1>
 			<p class='doc-lede'>{description}</p>
-			<Details rows={details} class='doc-details' />
+			<p class='doc-meta'>
+				<time datetime={isoDate(publishDate)} set:text={when} />
+				{
+					tags.length > 0 && (
+						<span class='doc-topics'>
+							{tags.map((tag) => (
+								<a href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
+							))}
+						</span>
+					)
+				}
+			</p>
 		</header>
+		<Gist takeaways={takeaways} />
 		{
 			coverImage && (
 				<div class='doc-cover'>
@@ -124,6 +143,7 @@ const blogPostingSchema = {
 				</div>
 			)
 		}
+		<p class='dive label' set:text={diveNote} />
 		<TOC headings={headings} variant='drawer' />
 		<div class='prose'>
 			<slot />
@@ -132,14 +152,16 @@ const blogPostingSchema = {
 	</article>
 	{
 		next && next.id !== post.id && (
-			<nav class='next' aria-labelledby='next-h'>
-				<h2 id='next-h' class='label'>
-					Read next
-				</h2>
-				<ul class='rows'>
-					<PostRow entry={next} />
-				</ul>
-			</nav>
+			<UpNext
+				label='Read next'
+				href={`/blog/${next.id}/`}
+				title={next.data.title}
+				text={next.data.description}
+				meta={`${isoDate(next.data.publishDate)} · ${displayTags(next).join(' · ')}`}
+				go='Read the article'
+				image={next.data.coverImage}
+				back={{ href: '/blog/', label: '← All writing' }}
+			/>
 		)
 	}
 	<BalloonSurprise slot='after' />

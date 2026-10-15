@@ -5,7 +5,9 @@
    columns on every page: a narrow sticky sidebar (who, navigation, and the page's details or
    contents) and the content beside it. Lists are dated index rows on hairlines. One accent
    (blue) for links, hover and the current page. Small radii (4-6px), no shadows, no cards,
-   no pills, no motion beyond colour. Use the variables, not new hex. */
+   no pills. Use the variables, not new hex.
+   Inside pages ("Gist"): the summary first (one tinted box), numbered sections, a big
+   "next" to end on; small, quick motion only (see Motion at the end). */
 
 :root {
 	--bg: #ffffff;
@@ -18,6 +20,8 @@
 	--line-strong: #c9cdd2;
 	--accent: #2451b8; /* 7.1:1 on white */
 	--accent-line: rgb(36 81 184 / 0.4);
+	--tint: #f2f5fc; /* the gist box: the accent at about 6% on white */
+	--tint-line: #d9e1f4;
 
 	--sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 	--mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -398,6 +402,19 @@
 		color: var(--accent);
 		font-weight: 600;
 	}
+	/* Articles: the month on its own mono line over each title. */
+	.pdir-date {
+		display: block;
+		font: 400 0.6875rem/1.5 var(--mono);
+		color: var(--faint);
+	}
+	.pdir--writing li + li {
+		margin-top: 0.35rem;
+	}
+	.pdir a[aria-current] .pdir-date {
+		font-weight: 400;
+		color: var(--accent);
+	}
 	/* The end-of-page copy only shows where the sidebar has become a header. */
 	.pdir--page {
 		display: none;
@@ -634,35 +651,6 @@
 		}
 	}
 
-	/* Screenshots: 16:10, hairline frame. Without one, the same box with the name in mono. */
-	.shot {
-		display: block;
-		aspect-ratio: 16 / 10;
-		overflow: hidden;
-		border: 1px solid var(--line);
-		border-radius: 4px;
-		background: var(--soft);
-		transition: border-color 0.15s ease;
-	}
-	.shot img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: 0 0; /* screenshots read from the top left */
-	}
-	.shot--none {
-		display: grid;
-		place-items: center;
-		padding: 0.5rem;
-		background: var(--bg);
-		font: 400 0.8125rem/1.4 var(--mono);
-		color: var(--faint);
-		text-align: center;
-	}
-	.pn-shot.shot--none {
-		font-size: 0.625rem;
-	}
-
 	/* Code / live / store links: above the stretched link, so each is clickable alone. */
 	.plinks {
 		position: relative;
@@ -778,15 +766,20 @@
 	.prow .plinks + .prow-go {
 		margin-left: 0;
 	}
+	.prow-go {
+		display: inline-block;
+		transition:
+			color 0.15s ease,
+			transform 0.18s ease-out;
+	}
 	.prow:hover .prow-go {
 		color: var(--accent);
+		transform: translateX(3px);
 	}
-	.prow-name:focus-visible,
-	.pn-link:focus-visible {
+	.prow-name:focus-visible {
 		outline: none;
 	}
-	.prow:has(.prow-name:focus-visible),
-	.pn-item:has(.pn-link:focus-visible) {
+	.prow:has(.prow-name:focus-visible) {
 		outline: 2px solid var(--accent);
 		outline-offset: 4px;
 		border-radius: 4px;
@@ -869,63 +862,332 @@
 		color: var(--accent);
 	}
 
-	/* ---------- Case studies and articles ---------- */
+	/* ---------- Case studies and articles: "Gist" ----------
+	   The first screen answers what it is, what it shows, the stack and where the code is
+	   (kicker, title, lede, link buttons, the tinted gist, the screenshots); the write-up
+	   follows under a rule, its sections numbered; the page ends on the skills, then the next
+	   thing to read. */
 	.doc-head {
-		margin-bottom: 2rem;
+		margin-bottom: 0;
+	}
+	.doc-kicker {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		min-height: 1.75rem;
+	}
+	.doc-kicker .label {
+		margin: 0;
+	}
+	.flip {
+		display: flex;
+		align-items: center;
+		gap: 0.15rem;
+		font: 400 0.75rem/1 var(--mono);
+		color: var(--faint);
+		font-variant-numeric: tabular-nums;
+	}
+	.flip span {
+		padding-inline: 0.35rem;
+	}
+	.flip a {
+		display: grid;
+		place-items: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		border-radius: 4px;
+		font: 400 0.9375rem/1 var(--sans);
+		color: var(--muted);
+		transition:
+			color 0.15s ease,
+			background-color 0.15s ease,
+			transform 0.18s ease-out;
+	}
+	.flip a:hover {
+		color: var(--accent);
+		background: var(--soft);
+	}
+	.flip a[rel='prev']:hover {
+		transform: translateX(-2px);
+	}
+	.flip a[rel='next']:hover {
+		transform: translateX(2px);
 	}
 	.doc-title {
-		margin-top: 0.15rem;
+		margin-top: 0.6rem;
 		font: 600 clamp(1.875rem, 1.4rem + 1.6vw, 2.5rem) / 1.15 var(--sans);
 		letter-spacing: -0.02em;
 		color: var(--text);
 		text-wrap: balance;
 	}
 	.doc-lede {
-		max-width: 38em;
-		margin-top: 1rem;
-		font-size: 1.125rem;
+		max-width: 40rem;
+		margin-top: 0.9rem;
+		font-size: 1.1875rem;
 		line-height: 1.55;
 		color: var(--muted);
+		text-wrap: pretty;
 	}
-	.doc-details {
-		display: none;
-	}
-	/* Case study: who it was for and the licence, the links on the right of the same line. */
+	/* Articles: one meta line, the date and reading time, then the topics as links. */
 	.doc-meta {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: baseline;
 		gap: 0.35rem 1.25rem;
 		margin-top: 1.1rem;
-		padding-top: 0.75rem;
-		border-top: 1px solid var(--line);
 		font: 400 0.8125rem/1.5 var(--mono);
 		color: var(--muted);
 	}
-	/* The screenshot beside the details; stacked on narrow screens, details alone without one. */
-	.twoup {
+	.doc-topics {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.1rem 0.75rem;
+	}
+	.doc-topics a {
+		color: var(--faint);
+		text-decoration: underline;
+		text-decoration-color: var(--line-strong);
+		text-underline-offset: 3px;
+		transition:
+			color 0.15s ease,
+			text-decoration-color 0.15s ease;
+	}
+	.doc-topics a:hover {
+		color: var(--accent);
+		text-decoration-color: currentColor;
+	}
+
+	/* Case studies: a button per link; the first (the code, usually) filled. */
+	.doc-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 1.4rem;
+		list-style: none;
+	}
+	.btn {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		padding: 0.5rem 0.85rem;
+		border: 1px solid var(--line-strong);
+		border-radius: 6px;
+		font-size: 0.875rem;
+		font-weight: 500;
+		line-height: 1.3;
+		color: var(--text);
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease,
+			background-color 0.15s ease,
+			transform 0.1s ease-out;
+	}
+	.btn-kind {
+		font: 400 0.6875rem/1 var(--mono);
+		color: var(--faint);
+		transition: color 0.15s ease;
+	}
+	.btn:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.btn--primary {
+		border-color: var(--text);
+		background: var(--text);
+		color: var(--bg);
+	}
+	.btn--primary .btn-kind {
+		color: rgb(255 255 255 / 0.7);
+	}
+	.btn--primary:hover {
+		border-color: var(--accent);
+		background: var(--accent);
+		color: var(--bg);
+	}
+	.btn:active,
+	.gal-thumb:active {
+		transform: scale(0.97);
+	}
+
+	/* The gist: the page's one tinted box. The accent bar draws in once on arrival. */
+	.gist {
+		position: relative;
+		overflow: hidden;
+		margin-top: 2rem;
+		padding: 1.2rem 1.5rem 1.3rem 1.65rem;
+		border-radius: 6px;
+		background: var(--tint);
+	}
+	.gist::before {
+		content: '';
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: 3px;
+		background: var(--accent);
+		transform-origin: 50% 0;
+	}
+	.gist-label {
+		margin-bottom: 0.7rem;
+		font: 500 0.75rem/1.5 var(--mono);
+		color: var(--accent);
+	}
+	.gist-list {
 		display: grid;
-		grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-		gap: 1.5rem;
-		align-items: start;
-		margin-bottom: 2.5rem;
+		gap: 0.55rem;
+		list-style: none;
+		font-size: 1rem;
+		line-height: 1.6;
+		color: var(--text);
+		text-wrap: pretty;
 	}
-	.twoup--solo {
-		grid-template-columns: minmax(0, 1fr);
+	.gist-list li {
+		position: relative;
+		padding-left: 1.2rem;
 	}
-	.twoup-details .label {
-		margin-bottom: 0.5rem;
+	.gist-list li::before {
+		content: '';
+		position: absolute;
+		top: 0.62em;
+		left: 0.1rem;
+		width: 6px;
+		height: 6px;
+		border-radius: 1px;
+		background: var(--accent);
 	}
-	.twoup-details .keys > div {
-		grid-template-columns: 4rem minmax(0, 1fr);
+	.gist-list strong {
+		font-weight: 600;
 	}
-	@media (max-width: 699px) {
-		.twoup {
-			grid-template-columns: minmax(0, 1fr);
-		}
+	.gist-list code {
+		padding: 0.05em 0.3em;
+		border-radius: 3px;
+		background: var(--bg);
+		font: 400 0.85em var(--mono);
+	}
+	.gist-list + .gist-keys {
+		margin-top: 1.1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--tint-line);
+	}
+	.gist-keys > div {
+		grid-template-columns: 4.25rem minmax(0, 1fr);
+	}
+	.gist-keys dt {
+		color: var(--muted);
+	}
+
+	/* Screenshots: one big stage at the image's own shape; thumbnails switch it. */
+	.gal {
+		margin-top: 1.75rem;
+	}
+	.gal-slide {
+		margin: 0;
+	}
+	.gal-slide + .gal-slide {
+		margin-top: 1.5rem;
+	}
+	.gal-frame {
+		overflow: hidden;
+		border: 1px solid var(--line);
+		border-radius: 6px;
+		background: var(--soft);
+	}
+	.gal-frame img {
+		width: 100%;
+	}
+	.gal-cap {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.2rem 0.75rem;
+		margin-top: 0.6rem;
+		font-size: 0.8125rem;
+		line-height: 1.5;
+		color: var(--muted);
+	}
+	.gal-n {
+		font: 400 0.75rem var(--mono);
+		color: var(--faint);
+		font-variant-numeric: tabular-nums;
+	}
+	.gal-alt {
+		flex: 1 1 16rem;
+		min-width: 0;
+	}
+	.gal-sec {
+		font: 400 0.75rem var(--mono);
+		color: var(--accent);
+		text-decoration: underline;
+		text-decoration-color: var(--accent-line);
+		text-underline-offset: 3px;
+		transition: text-decoration-color 0.15s ease;
+	}
+	.gal-sec:hover {
+		text-decoration-color: currentColor;
+	}
+	.gal-thumbs {
+		display: none;
+	}
+	.gal.is-live .gal-stage {
+		display: grid;
+	}
+	.gal.is-live .gal-slide {
+		grid-area: 1 / 1;
+		margin: 0;
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.22s ease-out,
+			visibility 0s linear 0.22s;
+	}
+	.gal.is-live .gal-slide[data-active] {
+		opacity: 1;
+		visibility: visible;
+		transition-delay: 0s;
+	}
+	.gal.is-live .gal-thumbs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 0.85rem;
+	}
+	.gal-thumb {
+		width: 6.25rem;
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		border: 1px solid var(--line);
+		border-radius: 4px;
+		background: var(--soft);
+		opacity: 0.55;
+		transition:
+			opacity 0.15s ease,
+			border-color 0.15s ease,
+			box-shadow 0.15s ease,
+			transform 0.1s ease-out;
+	}
+	.gal-thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 0 0;
+	}
+	.gal-thumb:hover {
+		opacity: 1;
+	}
+	.gal-thumb[aria-pressed='true'] {
+		opacity: 1;
+		border-color: var(--accent);
+		box-shadow: 0 0 0 1px var(--accent);
+	}
+
+	/* The rule between the brief and the write-up. */
+	.dive {
+		margin: 2.75rem 0 1.75rem;
+		padding-top: 0.7rem;
+		border-top: 1px solid var(--line-strong);
 	}
 	.doc-cover {
-		margin-bottom: 2.25rem;
+		margin-top: 1.75rem;
 	}
 	.figure {
 		margin: 0;
@@ -933,7 +1195,7 @@
 	.cover-frame {
 		overflow: hidden;
 		border: 1px solid var(--line);
-		border-radius: 4px;
+		border-radius: 6px;
 		background: var(--soft);
 	}
 	.cover-frame img {
@@ -945,13 +1207,20 @@
 		color: var(--faint);
 	}
 
+	/* Contents: numbered like the sections they point at. */
 	.toc ol,
 	.toc-mobile ol {
 		list-style: none;
+		counter-reset: toc;
+	}
+	.toc li,
+	.toc-mobile li {
+		counter-increment: toc;
 	}
 	.toc a,
 	.toc-mobile a {
-		display: block;
+		display: grid;
+		grid-template-columns: 1.5rem minmax(0, 1fr);
 		padding: 0.3rem 0 0.3rem 0.75rem;
 		border-left: 1px solid var(--line);
 		font-size: 0.8125rem;
@@ -959,7 +1228,16 @@
 		color: var(--muted);
 		transition:
 			color 0.15s ease,
-			border-color 0.15s ease;
+			border-color 0.2s ease;
+	}
+	.toc a::before,
+	.toc-mobile a::before {
+		content: counter(toc, decimal-leading-zero);
+		content: counter(toc, decimal-leading-zero) / '';
+		padding-top: 0.1em;
+		font: 400 0.6875rem/1.4 var(--mono);
+		color: var(--faint);
+		transition: color 0.2s ease;
 	}
 	.toc a:hover,
 	.toc-mobile a:hover {
@@ -971,12 +1249,15 @@
 		padding-left: calc(0.75rem - 1px);
 		font-weight: 600;
 	}
+	.toc a.active::before {
+		color: var(--accent);
+	}
 	.toc-mobile {
 		display: none;
 		margin-bottom: 2rem;
 		padding: 0.7rem 1rem;
 		border: 1px solid var(--line);
-		border-radius: 4px;
+		border-radius: 6px;
 	}
 	.toc-mobile summary {
 		display: flex;
@@ -1000,130 +1281,314 @@
 		content: '−';
 	}
 
+	/* The ending: skills (case studies) or the author (articles), then what to read next. */
+	.skills-end {
+		margin-top: 3.5rem;
+		padding-top: 0.7rem;
+		border-top: 1px solid var(--line-strong);
+	}
+	.skills-end .label {
+		margin-bottom: 1rem;
+	}
+	.skill-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+		gap: 1.5rem 1.75rem;
+		list-style: none;
+		counter-reset: skill;
+	}
+	.skill-list li {
+		counter-increment: skill;
+	}
+	.skill-term {
+		font: 600 1rem/1.35 var(--sans);
+		color: var(--text);
+	}
+	.skill-term::before {
+		content: counter(skill, decimal-leading-zero);
+		content: counter(skill, decimal-leading-zero) / '';
+		display: block;
+		margin-bottom: 0.35rem;
+		font: 500 0.75rem/1 var(--mono);
+		color: var(--accent);
+	}
+	.skill-text {
+		margin-top: 0.35rem;
+		font-size: 0.9375rem;
+		line-height: 1.55;
+		color: var(--muted);
+	}
+	.skill-text code {
+		font: 400 0.85em var(--mono);
+		color: var(--text);
+	}
+
 	.author {
 		display: flex;
 		align-items: flex-start;
-		gap: 0.9rem;
-		margin-top: 3rem;
-		padding-top: 1.5rem;
-		border-top: 1px solid var(--line);
+		gap: 1rem;
+		margin-top: 3.5rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--line-strong);
 	}
 	.author img {
-		width: 44px;
-		height: 44px;
+		width: 56px;
+		height: 56px;
 		flex: none;
 		border-radius: 6px;
 		object-fit: cover;
 	}
 	.author-name {
-		font-size: 0.9375rem;
+		font-size: 1rem;
 		font-weight: 600;
 	}
-	.author-name a {
+	.author-name a,
+	.author-links a {
 		text-decoration: underline;
 		text-decoration-color: var(--line-strong);
 		text-underline-offset: 3px;
+		transition:
+			color 0.15s ease,
+			text-decoration-color 0.15s ease;
 	}
-	.author-name a:hover {
+	.author-name a:hover,
+	.author-links a:hover {
 		color: var(--accent);
 		text-decoration-color: currentColor;
 	}
 	.author-bio {
-		margin-top: 0.2rem;
-		font-size: 0.875rem;
+		max-width: 38rem;
+		margin-top: 0.25rem;
+		font-size: 0.9375rem;
 		line-height: 1.55;
 		color: var(--muted);
 	}
-	/* Previous / next case study: a thumbnail beside each name; next mirrors to the right. */
-	.pn {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1.5rem 2rem;
-		margin-top: 3.5rem;
-		padding-top: 1.25rem;
-		border-top: 1px solid var(--line-strong);
-	}
-	.pn-item {
-		position: relative;
+	.author-links {
 		display: flex;
-		align-items: flex-start;
+		flex-wrap: wrap;
+		gap: 0.25rem 1rem;
+		margin-top: 0.6rem;
+		font: 400 0.75rem/1.5 var(--mono);
+		color: var(--text);
+	}
+
+	.upnext {
+		margin-top: 3.5rem;
+	}
+	.upnext-head {
+		display: flex;
+		justify-content: space-between;
 		gap: 1rem;
+		padding-bottom: 0.6rem;
+		border-bottom: 1px solid var(--line-strong);
+		font: 500 0.75rem/1.5 var(--mono);
+		color: var(--faint);
 	}
-	.pn-item--next {
-		flex-direction: row-reverse;
-		text-align: right;
+	.upnext-count {
+		font-weight: 400;
+		font-variant-numeric: tabular-nums;
 	}
-	.pn-shot {
-		width: 7rem;
-		flex: none;
+	/* One link over the whole block; the hover tint reaches past the text like the home rows. */
+	.upnext-card {
+		position: relative;
+		isolation: isolate;
+		display: grid;
+		grid-template-columns: 17rem minmax(0, 1fr);
+		gap: 1.5rem;
+		align-items: center;
+		padding: 1.25rem 0;
+		border-bottom: 1px solid var(--line);
 	}
-	.pn-body {
+	.upnext-card::before {
+		content: '';
+		position: absolute;
+		inset: 0 -0.75rem;
+		z-index: -1;
+		border-radius: 6px;
+		background: transparent;
+		transition: background-color 0.15s ease;
+	}
+	.upnext-card:hover::before {
+		background: var(--soft);
+	}
+	.upnext-media {
+		display: block;
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		border: 1px solid var(--line);
+		border-radius: 6px;
+		background: var(--soft);
+	}
+	.upnext-media img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 0 0;
+		transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	.upnext-card:hover .upnext-media img {
+		transform: scale(1.035);
+	}
+	.upnext-media--none {
+		display: grid;
+		place-items: center;
+		padding: 1rem;
+		background: var(--bg);
+		font: 400 0.875rem/1.4 var(--mono);
+		color: var(--faint);
+		text-align: center;
+	}
+	.upnext-body {
+		display: flex;
+		flex-direction: column;
 		min-width: 0;
 	}
-	.pn-body .label {
-		margin-bottom: 0.15rem;
-	}
-	.pn-link {
-		font-weight: 600;
-		line-height: 1.35;
+	.upnext-title {
+		font: 600 1.375rem/1.25 var(--sans);
+		letter-spacing: -0.01em;
 		color: var(--text);
+		text-wrap: balance;
 		transition: color 0.15s ease;
 	}
-	.pn-link::after {
+	.upnext-title::after {
 		content: '';
 		position: absolute;
 		inset: 0;
 	}
-	.pn-item:hover .pn-link {
+	.upnext-title:focus-visible {
+		outline: none;
+	}
+	.upnext-card:has(.upnext-title:focus-visible) {
+		outline: 2px solid var(--accent);
+		outline-offset: 4px;
+		border-radius: 6px;
+	}
+	.upnext-card:hover .upnext-title {
 		color: var(--accent);
 	}
-	.pn-item:hover .shot {
-		border-color: var(--line-strong);
+	.upnext-text {
+		margin-top: 0.4rem;
+		font-size: 0.9375rem;
+		line-height: 1.55;
+		color: var(--text-body);
 	}
-	.pn-text {
-		display: -webkit-box;
-		margin-top: 0.25rem;
-		overflow: hidden;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		font-size: 0.8125rem;
-		line-height: 1.5;
+	.upnext-meta {
+		margin-top: 0.5rem;
+		font: 400 0.75rem/1.5 var(--mono);
+		color: var(--faint);
+	}
+	.upnext-go {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.4rem;
+		margin-top: 0.9rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--accent);
+	}
+	.upnext-arrow {
+		display: inline-block;
+		transition: transform 0.18s ease-out;
+	}
+	.upnext-card:hover .upnext-arrow {
+		transform: translateX(4px);
+	}
+	.upnext-foot {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem 1rem;
+		margin-top: 0.75rem;
+		font-size: 0.875rem;
+	}
+	.upnext-foot a {
 		color: var(--muted);
+		font-weight: 500;
+		transition: color 0.15s ease;
+	}
+	.upnext-foot a:hover {
+		color: var(--accent);
+	}
+	.upnext-hint {
+		display: none;
+		font: 400 0.75rem/1.6 var(--mono);
+		color: var(--faint);
+	}
+	@media (hover: hover) and (pointer: fine) {
+		.upnext-hint {
+			display: inline;
+		}
 	}
 	@media (max-width: 639px) {
-		.pn {
+		.upnext-card {
 			grid-template-columns: minmax(0, 1fr);
+			gap: 1rem;
 		}
-		.pn-item--next {
-			flex-direction: row;
-			text-align: left;
+	}
+
+	/* Reading progress: a 2px accent line along the top, driven by the scroll position
+	   (CSS only; browsers without scroll timelines simply don't show it). */
+	.progress {
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 50;
+		height: 2px;
+		background: var(--accent);
+		transform: scaleX(0);
+		transform-origin: 0 50%;
+		pointer-events: none;
+	}
+	@supports (animation-timeline: scroll()) {
+		.progress {
+			animation: progress linear both;
+			animation-timeline: scroll(root block);
+		}
+	}
+	@supports not (animation-timeline: scroll()) {
+		.progress {
+			display: none;
 		}
 	}
 
 	/* ---------- Prose ---------- */
 	.prose {
-		font-size: 1.0625rem;
+		font-size: 1.125rem;
 		line-height: 1.7;
 		color: var(--text-body);
 		overflow-wrap: break-word; /* long paths and inline code wrap instead of overflowing */
+		counter-reset: sec;
 	}
 	.prose > * + * {
 		margin-top: 1.1em;
 	}
+	/* Sections: a hairline, the number in accent mono, a heading that stands apart. */
 	.prose > h2 {
-		margin-top: 2.2em;
-		font: 600 1.375rem/1.3 var(--sans);
-		letter-spacing: -0.01em;
+		counter-increment: sec;
+		margin-top: 2.6em;
+		padding-top: 1.1rem;
+		border-top: 1px solid var(--line);
+		font: 600 1.5rem/1.25 var(--sans);
+		letter-spacing: -0.015em;
 		color: var(--text);
 		text-wrap: balance;
 	}
+	.prose > h2::before {
+		content: counter(sec, decimal-leading-zero);
+		content: counter(sec, decimal-leading-zero) / '';
+		display: block;
+		margin-bottom: 0.55rem;
+		font: 500 0.75rem/1 var(--mono);
+		letter-spacing: 0;
+		color: var(--accent);
+	}
 	.prose > h2:first-child {
 		margin-top: 0;
+		padding-top: 0;
+		border-top: 0;
 	}
 	.prose h3 {
-		margin-top: 1.8em;
-		font: 600 1.125rem/1.35 var(--sans);
+		margin-top: 2em;
+		font: 600 1.1875rem/1.35 var(--sans);
 		color: var(--text);
 	}
 	.prose h4 {
@@ -1132,7 +1597,7 @@
 		color: var(--text);
 	}
 	.prose > :is(h2, h3, h4) + * {
-		margin-top: 0.55em;
+		margin-top: 0.6em;
 	}
 	.prose :is(h2, h3, h4) code {
 		font-size: 0.85em;
@@ -1192,11 +1657,10 @@
 	.prose > :is(.expressive-code, blockquote, img, table, hr, figure) + * {
 		margin-top: 1.6em;
 	}
-	/* Blockquotes (the write-ups' "Key Takeaways" first of all): a rule on the left, the bold
-	   first line printed as a mono label. */
+	/* Other blockquotes: a tinted rule, the bold first line printed as a mono label. */
 	.prose blockquote {
 		padding: 0.15rem 0 0.15rem 1.25rem;
-		border-left: 2px solid var(--text);
+		border-left: 2px solid var(--accent);
 		font-size: 0.97em;
 	}
 	.prose blockquote > * + * {
@@ -1212,7 +1676,7 @@
 	}
 	.prose img {
 		border: 1px solid var(--line);
-		border-radius: 4px;
+		border-radius: 6px;
 	}
 	.prose hr {
 		border: 0;
@@ -1336,11 +1800,11 @@
 			padding-block: 0.4rem;
 			font-size: 0.9375rem;
 		}
-		.doc-details {
-			display: grid;
-			margin-top: 1.5rem;
-			padding: 1rem 0;
-			border-block: 1px solid var(--line);
+		.prose {
+			font-size: 1.0625rem;
+		}
+		.gist {
+			padding: 1.1rem 1.1rem 1.2rem 1.3rem;
 		}
 		.toc-mobile {
 			display: block;
@@ -1369,10 +1833,84 @@ html .expressive-code .copy :is(button, div) {
 	font-family: var(--mono);
 }
 
+/* ---------- Motion ----------
+   Hover and press feedback (120-220ms, colour and small moves), the gist's accent bar drawing
+   in, the reading-progress line, and a short cross-page fade where the browser supports
+   cross-document view transitions (others just navigate). The photo and name in the sidebar
+   carry over between pages, so moving from the home page into a case study stays in place. */
+@keyframes progress {
+	to {
+		transform: scaleX(1);
+	}
+}
+@keyframes bar-in {
+	from {
+		transform: scaleY(0);
+	}
+}
+@keyframes main-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+@keyframes main-out {
+	to {
+		opacity: 0;
+	}
+}
+@view-transition {
+	navigation: auto;
+}
+.id-photo {
+	view-transition-name: id-photo;
+}
+.id-name {
+	view-transition-name: id-name;
+}
+.main {
+	view-transition-name: main;
+}
+.side {
+	view-transition-name: side;
+}
+/* The old page leaves quickly, the new one arrives just after, so the two never read as one. */
+::view-transition-group(main),
+::view-transition-group(side) {
+	animation: none;
+}
+::view-transition-old(main),
+::view-transition-old(side) {
+	animation: main-out 0.1s ease-out both;
+}
+::view-transition-new(main) {
+	animation: main-in 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) 0.08s both;
+}
+::view-transition-new(side) {
+	animation: main-out 0.2s ease-out 0.08s reverse both;
+}
+::view-transition-group(id-photo),
+::view-transition-group(id-name) {
+	animation-duration: 0.28s;
+	animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (prefers-reduced-motion: no-preference) {
+	.gist::before {
+		animation: bar-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s both;
+	}
+}
+/* Reduced motion: no moves, no draw-ins; pages still cross-fade, briefly. */
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,
 	*::after {
 		transition: none !important;
+	}
+	::view-transition-group(*) {
+		animation: none !important;
+	}
+	::view-transition-new(main),
+	::view-transition-new(side) {
+		animation: main-out 0.12s ease-out reverse both;
 	}
 }

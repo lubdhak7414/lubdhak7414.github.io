@@ -1,14 +1,25 @@
 ---
+import type { ImageMetadata } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
 
-import CoverFigure from '@/components/CoverFigure.astro'
 import TOC from '@/components/blog/TOC.astro'
-import Details from '@/components/doc/Details.astro'
+import Gist from '@/components/doc/Gist.astro'
+import Skills from '@/components/doc/Skills.astro'
+import UpNext from '@/components/doc/UpNext.astro'
 import type { DetailRow } from '@/components/doc/Details.astro'
+import Gallery from '@/components/project/Gallery.astro'
+import type { Slide } from '@/components/project/Gallery.astro'
 import ProjectDirectory from '@/components/project/ProjectDirectory.astro'
-import Shot from '@/components/project/Shot.astro'
-import { PERSON_ID, getEntrySocialImage, jsonLdScript } from '@/utils'
+import {
+	PERSON_ID,
+	generateToc,
+	getAllProjects,
+	getEntrySocialImage,
+	groupProjects,
+	jsonLdScript
+} from '@/utils'
+import type { BriefFigure, BriefSkill } from '@/utils/remarkBrief'
 import { siteConfig } from '@/site-config'
 
 import ShellLayout from './ShellLayout.astro'
@@ -21,29 +32,73 @@ interface Props {
 
 const { project, prev, next } = Astro.props
 const { data } = project
-const { headings } = await render(project)
+const { headings, remarkPluginFrontmatter: brief } = await render(project)
 const { description, facts, links, publishDate, shot, title, updatedDate } = data
+const takeaways = (brief.takeaways ?? []) as string[]
+const skills = (brief.skills ?? []) as BriefSkill[]
+const figures = (brief.figures ?? []) as BriefFigure[]
 
 const social = await getEntrySocialImage(data)
 const publishIso = publishDate.toISOString()
 const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ? updatedDate : null
 
-// The meta line under the title (who it was for) and the details beside the screenshot: only
-// facts the project actually has (rows without a value drop out). Links live in the details.
-const meta = [facts.role, facts.client && `Client: ${facts.client}`].filter(Boolean).join(' · ')
-const linkRows = (['code', 'live', 'store'] as const).map((kind) => ({
-	key: kind,
-	links: links
-		.filter((link) => link.kind === kind)
-		.map((link) => ({ label: link.label, href: link.url, external: true }))
-}))
+// Where this case study sits: its group ("Software", "Websites") and its place in the
+// homepage order, which previous/next and the arrow keys follow.
+const all = await getAllProjects()
+const place = (id: string) => `${all.findIndex((p) => p.id === id) + 1} / ${all.length}`
+const group = groupProjects(all).find(({ items }) => items.some((p) => p.id === project.id))?.label
+const flip = prev && next && next.id !== project.id ? { prev, next } : null
+const short = (p: CollectionEntry<'project'>) => p.data.name ?? p.data.title
+
+// The first screen: a button per link, then the gist (the write-up's own Key Takeaways, then
+// only the facts it actually has; "shows" is its own Skills & Deliverables terms).
+// The first link is filled, unless it is one of several of its kind (three repos, say).
+const shared = links.filter((link) => link.kind === links[0]?.kind).length > 1
+const kindLabel = { code: 'code', live: 'live', store: 'store' } as const
 const details: DetailRow[] = [
-	{ key: 'stack', text: facts.stack?.join(', ') },
-	{ key: 'status', text: facts.status },
+	{ key: 'client', text: facts.client },
+	{ key: 'role', text: facts.role },
 	{ key: 'timeline', text: facts.timeline },
-	{ key: 'license', text: facts.license },
-	...linkRows
+	{ key: 'status', text: facts.status },
+	{ key: 'stack', text: facts.stack?.join(' · ') },
+	{
+		key: 'shows',
+		text: skills
+			.map(({ term }) => term)
+			.filter(Boolean)
+			.join(' · ')
+	},
+	{ key: 'license', text: facts.license }
 ]
+
+// The gallery: the frontmatter screenshot, then every other image the write-up shows, each
+// linked to the section it sits in. Body images resolve from the project's own folder.
+const folder = import.meta.glob<{ default: ImageMetadata }>(
+	'/src/content/project/*/*.{png,jpg,jpeg,webp}',
+	{ eager: true }
+)
+const sections = generateToc(headings)
+const sectionFor = (text: string | null | undefined): Slide['section'] => {
+	const i = text ? sections.findIndex((h) => h.text === text) : -1
+	const h = sections[i]
+	return h ? { slug: h.slug, n: i + 1, text: h.text } : undefined
+}
+const fromBody = figures.map((f) => ({
+	...f,
+	src: folder[`/src/content/project/${project.id}/${f.url.replace(/^\.\//, '')}`]?.default
+}))
+const slides: Slide[] = []
+const seen = new Set<string>()
+const add = (src: ImageMetadata | undefined, alt: string, section: Slide['section']) => {
+	if (!src || seen.has(src.src)) return
+	seen.add(src.src)
+	slides.push({ src, alt, section })
+}
+if (shot) {
+	const inBody = fromBody.find((f) => f.src?.src === shot.src.src)
+	add(shot.src, shot.alt, sectionFor(inBody?.section))
+}
+for (const f of fromBody) add(f.src, f.alt, sectionFor(f.section))
 
 const projectUrl = new URL(`/projects/${project.id}/`, Astro.site).toString()
 const authorRef = { '@id': PERSON_ID, name: siteConfig.author }
@@ -67,6 +122,7 @@ const breadcrumbSchema = {
 		{ '@type': 'ListItem', position: 2, name: title, item: projectUrl }
 	]
 }
+const diveNote = `The write-up · ${sections.length} ${sections.length === 1 ? 'section' : 'sections'} · ${brief.minutesRead}`
 ---
 
 <ShellLayout
@@ -91,63 +147,95 @@ const breadcrumbSchema = {
 		<TOC headings={headings} variant='sidebar' />
 	</Fragment>
 
-	<article class='doc'>
+	<div class='progress' aria-hidden='true'></div>
+	<article class='doc doc--case'>
 		<header class='doc-head'>
-			<p class='label'>
-				{data.draft && 'Draft · '}<a href='/#work'>Case study</a>
-			</p>
+			<div class='doc-kicker'>
+				<p class='label'>
+					{data.draft && 'Draft · '}<a href='/#work'>Case study</a>{group && ` · ${group}`}
+				</p>
+				{
+					flip && (
+						<nav class='flip' aria-label='Flip through case studies'>
+							<a
+								href={`/projects/${flip.prev.id}/`}
+								rel='prev'
+								aria-label={`Previous case study: ${short(flip.prev)}`}
+								set:text='←'
+							/>
+							<span set:text={place(project.id)} />
+							<a
+								href={`/projects/${flip.next.id}/`}
+								rel='next'
+								aria-label={`Next case study: ${short(flip.next)}`}
+								set:text='→'
+							/>
+						</nav>
+					)
+				}
+			</div>
 			<h1 class='doc-title'>{title}</h1>
 			<p class='doc-lede'>{description}</p>
 			{
-				meta && (
-					<p class='doc-meta'>
-						<span set:text={meta} />
-					</p>
+				links.length > 0 && (
+					<ul class='doc-actions' aria-label='Links'>
+						{links.map((link, i) => (
+							<li>
+								<a
+									class:list={['btn', i === 0 && !shared && 'btn--primary']}
+									href={link.url}
+									target='_blank'
+									rel='noopener noreferrer'
+								>
+									<span class='btn-kind' set:text={kindLabel[link.kind]} />
+									<span set:text={`${link.label} ↗`} />
+								</a>
+							</li>
+						))}
+					</ul>
 				)
 			}
 		</header>
-		<div class:list={['twoup', !shot && 'twoup--solo']}>
-			{
-				shot && (
-					<CoverFigure
-						src={shot.src}
-						alt={shot.alt}
-						sizes='(min-width: 960px) 420px, (min-width: 700px) 60vw, 100vw'
-					/>
-				)
-			}
-			<div class='twoup-details'>
-				<p class='label'>Details</p>
-				<Details rows={details} />
-			</div>
-		</div>
+		<Gist takeaways={takeaways} rows={details} />
+		<Gallery slides={slides} />
+		<p class='dive label' set:text={diveNote} />
 		<TOC headings={headings} variant='drawer' />
 		<div class='prose'>
 			<slot />
 		</div>
+		<Skills skills={skills} />
 	</article>
 	{
-		prev && next && next.id !== project.id && (
-			<nav class='pn' aria-label='More case studies'>
-				{[
-					{ to: prev, dir: 'prev', label: '← Previous' },
-					{ to: next, dir: 'next', label: 'Next →' }
-				].map(({ to, dir, label }) => (
-					<div class:list={['pn-item', `pn-item--${dir}`]}>
-						<Shot project={to} widths={[240, 360]} sizes='112px' class='pn-shot' />
-						<div class='pn-body'>
-							<p class='label' set:text={label} />
-							<a
-								class='pn-link'
-								href={`/projects/${to.id}/`}
-								set:text={to.data.name ?? to.data.title}
-							/>
-							<p class='pn-text'>{to.data.description}</p>
-						</div>
-					</div>
-				))}
-			</nav>
+		flip && (
+			<UpNext
+				label='Next case study'
+				count={place(flip.next.id)}
+				href={`/projects/${flip.next.id}/`}
+				title={short(flip.next)}
+				text={flip.next.data.description}
+				meta={(flip.next.data.facts.stack ?? []).slice(0, 4).join(' · ')}
+				go='Read the case study'
+				image={flip.next.data.shot}
+				back={{ href: `/projects/${flip.prev.id}/`, label: `← ${short(flip.prev)}` }}
+				hint='← → flip through case studies'
+			/>
 		)
 	}
 	<ProjectDirectory current={project.id} variant='page' />
 </ShellLayout>
+
+<script>
+	// ← and → flip to the previous and next case study, like the arrows by the counter. Not
+	// while typing, with a modifier held, or from inside something that scrolls sideways.
+	document.addEventListener('keydown', (e) => {
+		if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+		if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
+		const t = e.target as HTMLElement | null
+		if (
+			t?.closest('input, textarea, select, [contenteditable], pre, .expressive-code, .gal-thumbs')
+		)
+			return
+		const rel = e.key === 'ArrowLeft' ? 'prev' : 'next'
+		document.querySelector<HTMLAnchorElement>(`.flip a[rel='${rel}']`)?.click()
+	})
+</script>

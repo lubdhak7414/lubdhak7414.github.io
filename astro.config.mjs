@@ -6,6 +6,7 @@ import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { unified } from '@astrojs/markdown-remark'
 import { remarkReadingTime } from './src/utils/remarkReadingTime.ts'
+import { remarkBrief } from './src/utils/remarkBrief.ts'
 import remarkUnwrapImages from 'remark-unwrap-images'
 import rehypeExternalLinks from 'rehype-external-links'
 import expressiveCode from 'astro-expressive-code'
@@ -80,7 +81,7 @@ export default defineConfig({
 		// the plugins now live on a `unified()` processor. Integration-added plugins
 		// (e.g. expressive-code's highlighter) are still merged in automatically.
 		processor: unified({
-			remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
+			remarkPlugins: [remarkUnwrapImages, remarkReadingTime, remarkBrief],
 			rehypePlugins: [
 				[
 					rehypeExternalLinks,

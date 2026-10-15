@@ -1,0 +1,31 @@
+---
+import type { BriefSkill } from '@/utils/remarkBrief'
+
+interface Props {
+	skills: BriefSkill[]
+}
+
+const { skills } = Astro.props
+---
+
+{
+	/* The write-up's own "Skills & Deliverables" list, lifted out of the body so the page ends
+on what the work shows, right before the next case study. */
+}
+{
+	skills.length > 0 && (
+		<section class='skills-end' aria-labelledby='skills-h'>
+			<h2 id='skills-h' class='label'>
+				Skills &amp; deliverables
+			</h2>
+			<ol class='skill-list'>
+				{skills.map(({ term, html }) => (
+					<li>
+						{term && <p class='skill-term' set:text={term} />}
+						<p class='skill-text' set:html={html} />
+					</li>
+				))}
+			</ol>
+		</section>
+	)
+}

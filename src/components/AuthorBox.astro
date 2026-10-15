@@ -2,13 +2,31 @@
 import { Image } from 'astro:assets'
 import avatar from '@/assets/face.png'
 import { siteConfig } from '@/site-config'
+
+const { email, github } = siteConfig.socials
+const links = [
+	{ label: 'email', href: `mailto:${email}`, external: false },
+	{ label: 'github ↗', href: github, external: true },
+	{ label: 'rss', href: '/rss.xml', external: false }
+]
 ---
 
 {/* data-nosnippet keeps the boilerplate bio out of Google's SERP snippets. */}
 <div class='author' data-nosnippet>
-	<Image src={avatar} alt='' width={96} height={96} />
+	<Image src={avatar} alt='' width={112} height={112} />
 	<div>
 		<p class='author-name'>Written by <a href='/about/' set:text={siteConfig.author} /></p>
 		<p class='author-bio'>{siteConfig.bio}</p>
+		<p class='author-links'>
+			{
+				links.map(({ label, href, external }) => (
+					<a
+						href={href}
+						{...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+						set:text={label}
+					/>
+				))
+			}
+		</p>
 	</div>
 </div>

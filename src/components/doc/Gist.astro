@@ -1,0 +1,36 @@
+---
+import Details from './Details.astro'
+import type { DetailRow } from './Details.astro'
+
+interface Props {
+	/** The write-up's own Key Takeaways bullets (inline HTML from remarkBrief). */
+	takeaways: string[]
+	/** Facts under the bullets; rows without a value drop out. */
+	rows?: DetailRow[]
+}
+
+const { takeaways, rows = [] } = Astro.props
+const hasRows = rows.some(({ text, links }) => text || (links && links.length > 0))
+---
+
+{
+	/* The one tinted box on the page: the summary a skimmer reads first. The bullets are the
+write-up's own "Key Takeaways", lifted from the body; the facts are frontmatter. */
+}
+{
+	(takeaways.length > 0 || hasRows) && (
+		<section class='gist' aria-labelledby='gist-h'>
+			<h2 id='gist-h' class='gist-label'>
+				{takeaways.length > 0 ? 'Key takeaways' : 'At a glance'}
+			</h2>
+			{takeaways.length > 0 && (
+				<ul class='gist-list'>
+					{takeaways.map((html) => (
+						<li set:html={html} />
+					))}
+				</ul>
+			)}
+			{hasRows && <Details rows={rows} class='gist-keys' />}
+		</section>
+	)
+}
