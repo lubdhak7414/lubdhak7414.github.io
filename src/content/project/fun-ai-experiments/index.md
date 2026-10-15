@@ -8,9 +8,21 @@ coverImage:
   alt: 'Three terminal windows showing ASCII art, cat dialogue, and assembly code'
 tags: ['Python', 'PyTorch', 'Machine Learning', 'NLP', 'Project']
 links:
-  - { label: 'ASCII Cartographer', url: 'https://github.com/lubdhak7414/ascii-cartographer', kind: 'code' }
-  - { label: 'Feline Monologue', url: 'https://github.com/lubdhak7414/feline-monologue', kind: 'code' }
-  - { label: 'Hardware Whisperer', url: 'https://github.com/lubdhak7414/hardware-whisperer', kind: 'code' }
+  - {
+      label: 'ASCII Cartographer',
+      url: 'https://github.com/lubdhak7414/ascii-cartographer',
+      kind: 'code'
+    }
+  - {
+      label: 'Feline Monologue',
+      url: 'https://github.com/lubdhak7414/feline-monologue',
+      kind: 'code'
+    }
+  - {
+      label: 'Hardware Whisperer',
+      url: 'https://github.com/lubdhak7414/hardware-whisperer',
+      kind: 'code'
+    }
 facts:
   license: 'MIT'
   stack: ['PyTorch']
