@@ -11,6 +11,9 @@ links:
   - { label: 'GitHub', url: 'https://github.com/lubdhak7414/chiptune-sfx-maestro', kind: 'code' }
 facts:
   stack: ['Python', 'PyTorch']
+shot:
+  src: './screenshot.png'
+  alt: 'Chiptune SFX Maestro interface: prompt box, temperature slider, generate button and quick categories'
 ---
 
 I built a system that turns text like "retro coin pickup" into playable 8-bit sound effects. No pre-recorded samples, no external APIs. Just a small text-to-parameter tool.

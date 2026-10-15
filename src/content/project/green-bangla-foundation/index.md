@@ -12,6 +12,9 @@ facts:
   client: 'Green Bangla Foundation'
   timeline: '11 working days'
   stack: ['WordPress', 'Gutenberg FSE']
+shot:
+  src: './homepage.png'
+  alt: 'Green Bangla Foundation homepage: navigation, headline and hero image'
 ---
 
 ## A speed-first WordPress build

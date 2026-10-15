@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+	project: CollectionEntry<'project'>
+}
+
+const { project } = Astro.props
+const { links, name, title } = project.data
+const short = name ?? title
+
+// One group per kind. A single link prints as its kind ("code ↗"); several links of one kind
+// print under the kind by their own labels (three repos, say).
+const groups = (['code', 'live', 'store'] as const)
+	.map((kind) => ({ kind, links: links.filter((link) => link.kind === kind) }))
+	.filter((group) => group.links.length > 0)
+---
+
+{
+	groups.length > 0 && (
+		<span class='plinks'>
+			{groups.map(({ kind, links: group }) =>
+				group.length === 1 ? (
+					<a
+						href={group[0]!.url}
+						target='_blank'
+						rel='noopener noreferrer'
+						aria-label={`${kind}: ${short}, ${group[0]!.label} (opens in a new tab)`}
+						set:text={`${kind} ↗`}
+					/>
+				) : (
+					<span class='plinks-group'>
+						<span class='plinks-kind' set:text={kind} />
+						{group.map((link) => (
+							<a
+								href={link.url}
+								target='_blank'
+								rel='noopener noreferrer'
+								set:text={`${link.label} ↗`}
+							/>
+						))}
+					</span>
+				)
+			)}
+		</span>
+	)
+}

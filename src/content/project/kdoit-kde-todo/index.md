@@ -13,6 +13,9 @@ links:
   - { label: 'KDE Store', url: 'https://www.opendesktop.org/p/2364121/', kind: 'store' }
 facts:
   stack: ['QML', 'Qt 6', 'KDE Plasma 6', 'Kirigami', 'Plasma Components 3.0']
+shot:
+  src: './preview2.png'
+  alt: 'KDoit settings dialog next to the to-do widget on a KDE Plasma desktop'
 ---
 
 I wanted a to-do widget for my KDE Plasma 6 desktop that just worked. No build steps, no dependencies, no fuss. So I built KDoit, a pure-QML plasmoid that lives right on your desktop panel.

@@ -10,6 +10,9 @@ coverImage:
 tags: ['Wordpress', 'SEO']
 facts:
   stack: ['Astro']
+shot:
+  src: './homepage.png'
+  alt: 'NI Driving Test Routes homepage: headline, call-to-action buttons and a road-sign photo'
 ---
 
 ## A fast, content-first site built on Astro

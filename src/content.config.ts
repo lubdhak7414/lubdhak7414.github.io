@@ -51,6 +51,14 @@ const project = defineCollection({
 	schema: (context) =>
 		entrySchema(context).extend({
 			name: z.string().max(32).optional(),
+			// A real screenshot of the thing: the work tiles, the case-study cover and the
+			// next/previous thumbnails. Projects without one get a plain text box instead.
+			shot: z
+				.object({
+					src: context.image(),
+					alt: z.string()
+				})
+				.optional(),
 			links: z
 				.array(
 					z.object({

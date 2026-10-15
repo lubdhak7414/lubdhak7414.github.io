@@ -15,6 +15,9 @@ links:
   - { label: 'RepBase', url: 'https://github.com/lubdhak7414/RepBase', kind: 'code' }
 facts:
   stack: ['PHP 8.2', 'MySQL']
+shot:
+  src: './repbase-roster.png'
+  alt: 'RepBase class roster with colour-coded full and near-full capacity rows'
 ---
 
 ## Why no framework?

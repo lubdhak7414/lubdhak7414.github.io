@@ -15,6 +15,9 @@ links:
 facts:
   license: 'GPLv3'
   stack: ['QML', 'KWin', 'KDE Plasma 6']
+shot:
+  src: './cover.png'
+  alt: 'Circular Alt+Tab switcher open on a KDE Plasma desktop, windows arranged as pie slices around the cursor'
 ---
 
 ## The idea

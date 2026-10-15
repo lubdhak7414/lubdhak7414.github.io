@@ -6,7 +6,7 @@ import CoverFigure from '@/components/CoverFigure.astro'
 import TOC from '@/components/blog/TOC.astro'
 import Details from '@/components/doc/Details.astro'
 import type { DetailRow } from '@/components/doc/Details.astro'
-import WorkRow from '@/components/project/WorkRow.astro'
+import Shot from '@/components/project/Shot.astro'
 import {
 	PERSON_ID,
 	displayTags,
@@ -21,13 +21,14 @@ import ShellLayout from './ShellLayout.astro'
 
 interface Props {
 	project: CollectionEntry<'project'>
+	prev?: CollectionEntry<'project'> | undefined
 	next?: CollectionEntry<'project'> | undefined
 }
 
-const { project, next } = Astro.props
+const { project, prev, next } = Astro.props
 const { data } = project
 const { headings, remarkPluginFrontmatter } = await render(project)
-const { coverImage, description, facts, links, publishDate, title, updatedDate } = data
+const { description, facts, links, publishDate, shot, title, updatedDate } = data
 
 const social = await getEntrySocialImage(data)
 const publishIso = publishDate.toISOString()
@@ -42,7 +43,6 @@ const linkRows = (['code', 'live', 'store'] as const).map((kind) => ({
 		.map((link) => ({ label: link.label, href: link.url, external: true }))
 }))
 const details: DetailRow[] = [
-	{ key: 'year', text: String(publishDate.getFullYear()) },
 	{ key: 'updated', text: updated ? isoDate(updated) : undefined },
 	{ key: 'client', text: facts.client },
 	{ key: 'role', text: facts.role },
@@ -113,13 +113,9 @@ const breadcrumbSchema = {
 			<Details rows={details} class='doc-details' />
 		</header>
 		{
-			coverImage && (
+			shot && (
 				<div class='doc-cover'>
-					<CoverFigure
-						src={coverImage.src}
-						alt={coverImage.alt}
-						sizes='(min-width: 960px) 704px, 100vw'
-					/>
+					<CoverFigure src={shot.src} alt={shot.alt} sizes='(min-width: 960px) 704px, 100vw' />
 				</div>
 			)
 		}
@@ -129,14 +125,25 @@ const breadcrumbSchema = {
 		</div>
 	</article>
 	{
-		next && next.id !== project.id && (
-			<nav class='next' aria-labelledby='next-h'>
-				<h2 id='next-h' class='label'>
-					Next case study
-				</h2>
-				<ul class='rows'>
-					<WorkRow project={next} />
-				</ul>
+		prev && next && next.id !== project.id && (
+			<nav class='pn' aria-label='More case studies'>
+				{[
+					{ to: prev, dir: 'prev', label: '← Previous' },
+					{ to: next, dir: 'next', label: 'Next →' }
+				].map(({ to, dir, label }) => (
+					<div class:list={['pn-item', `pn-item--${dir}`]}>
+						<Shot project={to} widths={[240, 360]} sizes='112px' class='pn-shot' />
+						<div class='pn-body'>
+							<p class='label' set:text={label} />
+							<a
+								class='pn-link'
+								href={`/projects/${to.id}/`}
+								set:text={to.data.name ?? to.data.title}
+							/>
+							<p class='pn-text'>{to.data.description}</p>
+						</div>
+					</div>
+				))}
 			</nav>
 		)
 	}

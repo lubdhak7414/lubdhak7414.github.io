@@ -23,6 +23,9 @@ facts:
       'Pydantic v2',
       'Google Gemini 2.5 Flash'
     ]
+shot:
+  src: './shot.webp'
+  alt: 'Pacioli in a browser: the chat on the left, the proposals and ledger tabs on the right'
 ---
 
 ## The premise

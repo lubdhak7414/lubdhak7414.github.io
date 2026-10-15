@@ -3,6 +3,7 @@ import ShellLayout from '@/layouts/ShellLayout.astro'
 import PostRow from '@/components/blog/PostRow.astro'
 import ContactList from '@/components/layout/ContactList.astro'
 import WorkRow from '@/components/project/WorkRow.astro'
+import WorkTile from '@/components/project/WorkTile.astro'
 
 import {
 	getAllPosts,
@@ -51,11 +52,27 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 	{
 		projects.length > 0 && (
 			<section id='work' aria-labelledby='work-h'>
-				<div class='sec'>
-					<h2 id='work-h'>Work</h2>
+				<div class='sec sec--work'>
+					<div class='sec-head'>
+						<h2 id='work-h'>Work</h2>
+						{/* Revealed by the script below; without JS the page stays on pictures. */}
+						<div class='switch' role='group' aria-label='Show work as' hidden>
+							<button type='button' data-view='pictures' aria-pressed='true'>
+								pictures
+							</button>
+							<button type='button' data-view='list' aria-pressed='false'>
+								list
+							</button>
+						</div>
+					</div>
 					<span class='sec-note'>{projects.length} case studies</span>
 				</div>
-				<ul class='rows'>
+				<ul class='tiles' data-panel='pictures'>
+					{projects.map((project, i) => (
+						<WorkTile project={project} eager={i < 2} />
+					))}
+				</ul>
+				<ul class='rows' data-panel='list' hidden>
 					{projects.map((project) => (
 						<WorkRow project={project} />
 					))}
@@ -63,6 +80,40 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 			</section>
 		)
 	}
+	{
+		/* The pictures | list switch. Runs as the page parses, so a saved "list" applies before
+the first paint. Storage can throw (private windows, blocked site data), so it's optional. */
+	}
+	<script is:inline>
+		;(() => {
+			const work = document.getElementById('work')
+			const control = work && work.querySelector('.switch')
+			if (!control) return
+			const KEY = 'work-view'
+			const panels = work.querySelectorAll('[data-panel]')
+			const buttons = control.querySelectorAll('button[data-view]')
+			const show = (view) => {
+				panels.forEach((panel) => (panel.hidden = panel.dataset.panel !== view))
+				buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)))
+			}
+			try {
+				if (localStorage.getItem(KEY) === 'list') show('list')
+			} catch {
+				/* no storage: stay on pictures */
+			}
+			control.hidden = false
+			control.addEventListener('click', (event) => {
+				const button = event.target.closest('button[data-view]')
+				if (!button) return
+				show(button.dataset.view)
+				try {
+					localStorage.setItem(KEY, button.dataset.view)
+				} catch {
+					/* the choice just won't be remembered */
+				}
+			})
+		})()
+	</script>
 	{
 		latest.length > 0 && (
 			<section id='writing' aria-labelledby='writing-h'>

@@ -11,15 +11,25 @@ interface Props {
 const { entry, filterable = false } = Astro.props
 const { data } = entry
 const isProject = entry.collection === 'project'
-// ISO date for writing; projects (on tag pages) print their year like the work list.
-const date = isProject ? String(data.publishDate.getFullYear()) : isoDate(data.publishDate)
-const meta = isProject ? 'Case study' : displayTags(entry).join(' · ')
+// Writing prints its ISO date; projects (on tag pages) print no date, like the work list,
+// and their stack instead of topics.
+const meta = isProject
+	? (entry.data.facts.stack ?? []).slice(0, 4).join(' · ')
+	: displayTags(entry).join(' · ')
 ---
 
 {/* Date | title, summary, topics in mono. */}
 <li class='row' data-tags={filterable ? data.tags.map(slugifyTag).join(' ') : undefined}>
 	<a class='row-link' href={entryHref(entry)}>
-		<time class='row-date' datetime={data.publishDate.toISOString()}>{date}</time>
+		{
+			isProject ? (
+				<span class='row-date'>case study</span>
+			) : (
+				<time class='row-date' datetime={isoDate(data.publishDate)}>
+					{isoDate(data.publishDate)}
+				</time>
+			)
+		}
 		<span class='row-body'>
 			<span class='row-title'>{data.draft && '(Draft) '}{data.title}</span>
 			<span class='row-text'>{data.description}</span>

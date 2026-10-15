@@ -1,23 +1,29 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 
+import ProjectLinks from './ProjectLinks.astro'
+
 interface Props {
 	project: CollectionEntry<'project'>
 }
 
 const { project } = Astro.props
 const { data } = project
+const name = `${data.draft ? '(Draft) ' : ''}${data.name ?? data.title}`
 const stack = (data.facts.stack ?? []).slice(0, 4).join(' · ')
 ---
 
-{/* Year | short name, one-line summary, the stack in mono. */}
-<li class='row'>
-	<a class='row-link' href={`/projects/${project.id}/`}>
-		<span class='row-date'>{data.publishDate.getFullYear()}</span>
-		<span class='row-body'>
-			<span class='row-title'>{data.draft && '(Draft) '}{data.name ?? data.title}</span>
-			<span class='row-text'>{data.description}</span>
-			{stack && <span class='row-meta'>{stack}</span>}
-		</span>
-	</a>
+{
+	/* List view: name and summary run together on one line where they fit, then the stack and
+the links. The name's link stretches over the row; the other links sit above it. */
+}
+<li class='row lrow'>
+	<p class='lrow-main'>
+		<a class='lrow-name' href={`/projects/${project.id}/`} set:text={name} />
+		<span class='lrow-text'>{data.description}</span>
+	</p>
+	<p class='lrow-foot'>
+		{stack && <span class='lrow-stack'>{stack}</span>}
+		<ProjectLinks project={project} />
+	</p>
 </li>

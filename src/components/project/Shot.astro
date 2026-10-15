@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { Image } from 'astro:assets'
+
+interface Props {
+	project: CollectionEntry<'project'>
+	widths: number[]
+	sizes: string
+	eager?: boolean
+	class?: string
+}
+
+const { project, widths, sizes, eager = false, class: className } = Astro.props
+const { shot, name, title } = project.data
+---
+
+{/* A 16:10 screenshot in a hairline frame; without one, the same box with the short name. */}
+{
+	shot ? (
+		<span class:list={['shot', className]}>
+			<Image
+				src={shot.src}
+				alt={shot.alt}
+				widths={widths}
+				sizes={sizes}
+				loading={eager ? 'eager' : 'lazy'}
+				decoding='async'
+			/>
+		</span>
+	) : (
+		<span class:list={['shot', 'shot--none', className]}>
+			<span set:text={name ?? title} />
+		</span>
+	)
+}
