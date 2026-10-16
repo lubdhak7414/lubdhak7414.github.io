@@ -17,8 +17,7 @@ import {
 	generateToc,
 	getEntrySocialImage,
 	isoDate,
-	jsonLdScript,
-	slugifyTag
+	jsonLdScript
 } from '@/utils'
 import { siteConfig } from '@/site-config'
 
@@ -42,10 +41,11 @@ const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ?
 const modifiedIso = updated?.toISOString()
 const { headings, remarkPluginFrontmatter } = await render(post)
 const minutesRead = parseInt(remarkPluginFrontmatter.minutesRead, 10) || 1
-const tags = displayTags(post)
 const takeaways = (remarkPluginFrontmatter.takeaways ?? []) as string[]
 const sections = generateToc(headings)
-// One meta line under the title: when, how long, then the topics as links.
+// Topics stay out of sight: only the head (article:tag) and the JSON-LD (keywords) carry them.
+const tags = displayTags(post)
+// One meta line under the title: when and how long.
 const when = [
 	isoDate(publishDate),
 	updated && `updated ${isoDate(updated)}`,
@@ -82,6 +82,7 @@ const blogPostingSchema = {
 	author: authorRef,
 	publisher: authorRef,
 	timeRequired: `PT${minutesRead}M`,
+	...(tags.length > 0 && { keywords: tags }),
 	mainEntityOfPage: {
 		'@type': 'WebPage',
 		'@id': postUrl
@@ -97,18 +98,19 @@ const blogPostingSchema = {
 		ogImageHeight: social.height,
 		publishDate: publishIso,
 		modifiedDate: modifiedIso,
+		tags,
 		title
 	}}
 	page='writing'
-	sidebar='project'
+	reading
 >
 	<Fragment slot='head'>
 		<script type='application/ld+json' set:html={jsonLdScript(blogPostingSchema)} is:inline />
 		<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
 	</Fragment>
 	<Fragment slot='side'>
-		<WritingDirectory current={post.id} />
 		<TOC headings={headings} variant='sidebar' />
+		<WritingDirectory current={post.id} />
 		{
 			next && next.id !== post.id && (
 				<SideNext label='Read next' href={`/blog/${next.id}/`} title={next.data.title} />
@@ -125,15 +127,6 @@ const blogPostingSchema = {
 			<p class='doc-lede'>{description}</p>
 			<p class='doc-meta'>
 				<time datetime={isoDate(publishDate)} set:text={when} />
-				{
-					tags.length > 0 && (
-						<span class='doc-topics'>
-							{tags.map((tag) => (
-								<a href={`/tags/${slugifyTag(tag)}/`} set:text={tag} />
-							))}
-						</span>
-					)
-				}
 			</p>
 		</header>
 		<Gist takeaways={takeaways} />
@@ -162,7 +155,7 @@ const blogPostingSchema = {
 				href={`/blog/${next.id}/`}
 				title={next.data.title}
 				text={next.data.description}
-				meta={`${isoDate(next.data.publishDate)} · ${displayTags(next).join(' · ')}`}
+				meta={isoDate(next.data.publishDate)}
 				go='Read the article'
 				image={next.data.coverImage}
 				back={{ href: '/blog/', label: '← All writing' }}

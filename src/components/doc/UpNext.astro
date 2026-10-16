@@ -17,10 +17,9 @@ interface Props {
 	/** A quieter link back (the previous case study), under the main one. */
 	back?: { href: string; label: string } | undefined
 	/** Shown on devices with a keyboard: how to flip with the arrow keys. */
-	hint?: string | undefined
 }
 
-const { label, count, href, title, text, meta, go, image, back, hint } = Astro.props
+const { label, count, href, title, text, meta, go, image, back } = Astro.props
 ---
 
 {
@@ -58,10 +57,9 @@ is one link (the title's link stretches over it). */
 		</span>
 	</div>
 	{
-		(back || hint) && (
+		back && (
 			<p class='upnext-foot'>
-				{back && <a href={back.href} set:text={back.label} />}
-				{hint && <span class='upnext-hint' set:text={hint} />}
+				<a href={back.href} set:text={back.label} />
 			</p>
 		)
 	}

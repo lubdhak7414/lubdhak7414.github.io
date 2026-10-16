@@ -37,5 +37,7 @@ export type SiteMeta = {
 	ogImageHeight?: number | undefined
 	publishDate?: string | undefined
 	modifiedDate?: string | undefined
+	/** Topics, kept in the head only (article:tag); the page itself shows none. */
+	tags?: string[] | undefined
 	noIndex?: boolean | undefined
 }

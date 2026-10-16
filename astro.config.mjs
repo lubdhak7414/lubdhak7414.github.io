@@ -62,6 +62,9 @@ const movedToProjects = [
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.url,
+	// Start loading a page when its link is hovered or focused, so the click lands on a page
+	// that is already there. First-party script, no third parties.
+	prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 	redirects: {
 		...Object.fromEntries(movedToProjects.map((slug) => [`/blog/${slug}/`, `/projects/${slug}/`])),
 		'/blog/2/': '/blog/'

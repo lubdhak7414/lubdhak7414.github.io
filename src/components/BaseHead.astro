@@ -18,6 +18,7 @@ const {
 	publishDate,
 	modifiedDate,
 	noIndex,
+	tags = [],
 	title
 } = Astro.props
 
@@ -99,6 +100,9 @@ const ogHeight = defaultCard ? defaultCard.height : ogImageHeight
 			<meta content={siteConfig.author} property='article:author' />
 			<meta content={publishDate} property='article:published_time' />
 			{modifiedDate && <meta content={modifiedDate} property='article:modified_time' />}
+			{tags.map((tag) => (
+				<meta content={tag} property='article:tag' />
+			))}
 		</>
 	)
 }

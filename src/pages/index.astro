@@ -1,7 +1,6 @@
 ---
 import ShellLayout from '@/layouts/ShellLayout.astro'
 import PostRow from '@/components/blog/PostRow.astro'
-import ContactList from '@/components/layout/ContactList.astro'
 import WorkRow from '@/components/project/WorkRow.astro'
 
 import {
@@ -28,10 +27,6 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 	<Fragment slot='head'>
 		<script type='application/ld+json' set:html={jsonLdScript(personSchema)} is:inline />
 		<script type='application/ld+json' set:html={jsonLdScript(websiteSchema)} is:inline />
-	</Fragment>
-	<Fragment slot='intro'>
-		<p class='side-bio'>{siteConfig.bio}</p>
-		<ContactList />
 	</Fragment>
 
 	{

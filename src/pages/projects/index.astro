@@ -1,0 +1,33 @@
+---
+import ShellLayout from '@/layouts/ShellLayout.astro'
+import WorkRow from '@/components/project/WorkRow.astro'
+import { getAllProjects, groupProjects } from '@/utils'
+
+const meta = {
+	description: 'Case studies by Safwan Usaid Lubdhak: software and websites.',
+	title: 'Work'
+}
+
+// Already in homepage order (homePageIdx, then newest); don't re-sort. Groups keep it.
+const projects = await getAllProjects()
+const groups = groupProjects(projects)
+---
+
+<ShellLayout meta={meta} page='work'>
+	<header class='page-head'>
+		<h1>Work</h1>
+		<p class='page-note'>{`${projects.length} case studies`}</p>
+	</header>
+	{
+		groups.map(({ label, items }) => (
+			<div class='pgroup'>
+				<h2 class='pgroup-label' set:text={label} />
+				<ul class='prows'>
+					{items.map((project) => (
+						<WorkRow project={project} />
+					))}
+				</ul>
+			</div>
+		))
+	}
+</ShellLayout>

@@ -72,26 +72,28 @@ caption, so nothing hides behind a script. */
 }
 
 <script>
-	for (const gal of document.querySelectorAll<HTMLElement>('[data-gal]')) {
-		const slides = Array.from(gal.querySelectorAll<HTMLElement>('.gal-slide'))
-		const thumbs = Array.from(gal.querySelectorAll<HTMLButtonElement>('.gal-thumb'))
-		if (thumbs.length < 2) continue
-		gal.classList.add('is-live')
-		let current = 0
-		const show = (i: number, focus = false) => {
-			current = (i + slides.length) % slides.length
-			slides.forEach((s, j) => s.toggleAttribute('data-active', j === current))
-			thumbs.forEach((t, j) => t.setAttribute('aria-pressed', String(j === current)))
-			if (focus) thumbs[current]?.focus()
+	document.addEventListener('astro:page-load', () => {
+		for (const gal of document.querySelectorAll<HTMLElement>('[data-gal]')) {
+			const slides = Array.from(gal.querySelectorAll<HTMLElement>('.gal-slide'))
+			const thumbs = Array.from(gal.querySelectorAll<HTMLButtonElement>('.gal-thumb'))
+			if (thumbs.length < 2) continue
+			gal.classList.add('is-live')
+			let current = 0
+			const show = (i: number, focus = false) => {
+				current = (i + slides.length) % slides.length
+				slides.forEach((s, j) => s.toggleAttribute('data-active', j === current))
+				thumbs.forEach((t, j) => t.setAttribute('aria-pressed', String(j === current)))
+				if (focus) thumbs[current]?.focus()
+			}
+			thumbs.forEach((t, i) => t.addEventListener('click', () => show(i)))
+			// Inside the strip the arrow keys move between screenshots (and don't flip the page).
+			gal.querySelector('.gal-thumbs')?.addEventListener('keydown', (e) => {
+				const ev = e as KeyboardEvent
+				if (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight') return
+				ev.preventDefault()
+				ev.stopPropagation()
+				show(current + (ev.key === 'ArrowRight' ? 1 : -1), true)
+			})
 		}
-		thumbs.forEach((t, i) => t.addEventListener('click', () => show(i)))
-		// Inside the strip the arrow keys move between screenshots (and don't flip the page).
-		gal.querySelector('.gal-thumbs')?.addEventListener('keydown', (e) => {
-			const ev = e as KeyboardEvent
-			if (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight') return
-			ev.preventDefault()
-			ev.stopPropagation()
-			show(current + (ev.key === 'ArrowRight' ? 1 : -1), true)
-		})
-	}
+	})
 </script>

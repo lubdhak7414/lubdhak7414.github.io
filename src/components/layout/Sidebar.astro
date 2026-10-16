@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets'
 import avatar from '@/assets/face.png'
 
+import ContactList from '@/components/layout/ContactList.astro'
 import Footer from '@/components/layout/Footer.astro'
 import { getAllPosts, getAllProjects } from '@/utils'
 import { siteConfig } from '@/site-config'
@@ -10,20 +11,25 @@ export type Section = 'home' | 'about' | 'work' | 'writing' | 'tools' | 'error'
 
 interface Props {
 	page: Section
-	/** `site`: identity, the page's intro slot, the site nav. `project`: a compact identity
-	 * line and a one-line nav, for case studies and articles, whose slot carries the
-	 * directory of its section and the contents. */
-	variant?: 'site' | 'project'
+	/** Case studies and articles: one path line back home instead of the identity block. */
+	reading?: boolean
 }
 
-const { page, variant = 'site' } = Astro.props
+const { page, reading = false } = Astro.props
 // The name is the page's h1 only where the page is about the person.
 const NameTag = page === 'home' || page === 'about' ? 'h1' : 'p'
-const compact = variant === 'project'
-const back =
-	page === 'writing'
-		? { href: '/blog/', label: '← All writing' }
-		: { href: '/#work', label: '← All case studies' }
+// Home and the section pages (work, writing, about, tools) carry the same identity block:
+// photo, name, bio, contacts and the site nav. Case studies and articles get one path line
+// back home ("saf1.me / work"); their section list sits right under it.
+const full = !reading
+const host = new URL(siteConfig.url).host
+const here = Astro.url.pathname
+const sections: Partial<Record<Section, { href: string; label: string }>> = {
+	work: { href: '/projects/', label: 'work' },
+	writing: { href: '/blog/', label: 'writing' },
+	tools: { href: '/tools/', label: 'tools' }
+}
+const section = sections[page]
 
 const counts = {
 	work: (await getAllProjects()).length,
@@ -31,7 +37,7 @@ const counts = {
 }
 const nav = [
 	{
-		href: page === 'home' ? '#work' : '/#work',
+		href: '/projects/',
 		label: 'Work',
 		n: counts.work,
 		on: page === 'work'
@@ -42,49 +48,51 @@ const nav = [
 ]
 ---
 
-{/* Left column on every page: who, where to go, and whatever the page adds (slots). */}
-<aside class:list={['side', compact && 'side--project']}>
-	<a class:list={['id', compact && 'id--compact']} href='/'>
-		<Image
-			class='id-photo'
-			src={avatar}
-			alt=''
-			width={compact ? 64 : 96}
-			height={compact ? 64 : 96}
-			loading='eager'
-		/>
-		<div class='id-text'>
-			<NameTag class='id-name'>{siteConfig.author}</NameTag>
-			<p class='id-role'>{`${siteConfig.role} · ${siteConfig.location}`}</p>
-		</div>
-	</a>
-	<slot name='intro' />
+{
+	/* Left column on every page: who and where to go (home and about), or one line back to the
+home page (every other page), then whatever the page adds (slots). */
+}
+<aside class='side'>
 	{
-		compact ? (
+		full ? (
 			<>
-				<nav class='navline' aria-label='Site'>
+				<a class='id' href='/'>
+					<Image class='id-photo' src={avatar} alt='' width={96} height={96} loading='eager' />
+					<div class='id-text'>
+						<NameTag class='id-name'>{siteConfig.author}</NameTag>
+						<p class='id-role'>{`${siteConfig.role} · ${siteConfig.location}`}</p>
+					</div>
+				</a>
+				<p class='side-bio'>{siteConfig.bio}</p>
+				<ContactList />
+				<nav class='nav' aria-label='Site'>
 					<ul>
-						{nav.map(({ href, label, on }) => (
+						{nav.map(({ href, label, n, on }) => (
 							<li>
-								<a href={href} aria-current={on ? 'page' : undefined} set:text={label} />
+								<a href={href} aria-current={on ? 'page' : undefined}>
+									<span>{label}</span>
+									{n !== undefined && <span class='nav-n'>{n}</span>}
+								</a>
 							</li>
 						))}
 					</ul>
 				</nav>
-				<a class='side-back' href={back.href} set:text={back.label} />
 			</>
 		) : (
-			<nav class='nav' aria-label='Site'>
-				<ul>
-					{nav.map(({ href, label, n, on }) => (
-						<li>
-							<a href={href} aria-current={on ? 'page' : undefined}>
-								<span>{label}</span>
-								{n !== undefined && <span class='nav-n'>{n}</span>}
-							</a>
-						</li>
-					))}
-				</ul>
+			<nav class='crumb' aria-label='Site'>
+				<a href='/' set:text={host} />
+				{section && (
+					<>
+						<span class='crumb-sep' aria-hidden='true'>
+							/
+						</span>
+						<a
+							href={section.href}
+							aria-current={here === section.href ? 'page' : undefined}
+							set:text={section.label}
+						/>
+					</>
+				)}
 			</nav>
 		)
 	}

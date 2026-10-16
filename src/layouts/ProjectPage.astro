@@ -6,7 +6,6 @@ import { render } from 'astro:content'
 import TOC from '@/components/blog/TOC.astro'
 import Gist from '@/components/doc/Gist.astro'
 import Skills from '@/components/doc/Skills.astro'
-import SideNext from '@/components/doc/SideNext.astro'
 import UpNext from '@/components/doc/UpNext.astro'
 import type { DetailRow } from '@/components/doc/Details.astro'
 import Gallery from '@/components/project/Gallery.astro'
@@ -14,6 +13,7 @@ import type { Slide } from '@/components/project/Gallery.astro'
 import ProjectDirectory from '@/components/project/ProjectDirectory.astro'
 import {
 	PERSON_ID,
+	displayTags,
 	generateToc,
 	getAllProjects,
 	getEntrySocialImage,
@@ -44,11 +44,11 @@ const publishIso = publishDate.toISOString()
 const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ? updatedDate : null
 
 // Where this case study sits: its group ("Software", "Websites") and its place in the
-// homepage order, which previous/next and the arrow keys follow.
+// homepage order, which the previous/next links follow.
 const all = await getAllProjects()
 const place = (id: string) => `${all.findIndex((p) => p.id === id) + 1} / ${all.length}`
 const group = groupProjects(all).find(({ items }) => items.some((p) => p.id === project.id))?.label
-const flip = prev && next && next.id !== project.id ? { prev, next } : null
+const around = prev && next && next.id !== project.id ? { prev, next } : null
 const short = (p: CollectionEntry<'project'>) => p.data.name ?? p.data.title
 
 // The first screen: a button per link, then the gist (the write-up's own Key Takeaways, then
@@ -92,6 +92,8 @@ if (shot) {
 }
 for (const f of fromBody) add(f.src, f.alt, sectionFor(f.section))
 
+// Topics stay out of sight: only the head (article:tag) and the JSON-LD (keywords) carry them.
+const tags = displayTags(project)
 const projectUrl = new URL(`/projects/${project.id}/`, Astro.site).toString()
 const authorRef = { '@id': PERSON_ID, name: siteConfig.author }
 const articleSchema = {
@@ -104,6 +106,7 @@ const articleSchema = {
 	...(social.src && { image: new URL(social.src, Astro.site).toString() }),
 	author: authorRef,
 	publisher: authorRef,
+	...(tags.length > 0 && { keywords: tags }),
 	mainEntityOfPage: { '@type': 'WebPage', '@id': projectUrl }
 }
 const breadcrumbSchema = {
@@ -125,54 +128,27 @@ const diveNote = `The write-up · ${sections.length} ${sections.length === 1 ? '
 		ogImageHeight: social.height,
 		publishDate: publishIso,
 		modifiedDate: updated?.toISOString(),
+		tags,
 		title
 	}}
 	page='work'
-	sidebar='project'
+	reading
 >
 	<Fragment slot='head'>
 		<script type='application/ld+json' set:html={jsonLdScript(articleSchema)} is:inline />
 		<script type='application/ld+json' set:html={jsonLdScript(breadcrumbSchema)} is:inline />
 	</Fragment>
 	<Fragment slot='side'>
-		<ProjectDirectory current={project.id} variant='side' />
 		<TOC headings={headings} variant='sidebar' />
-		{
-			flip && (
-				<SideNext
-					label='Next case study'
-					href={`/projects/${flip.next.id}/`}
-					title={short(flip.next)}
-				/>
-			)
-		}
+		<ProjectDirectory current={project.id} variant='side' />
 	</Fragment>
 
 	<article class='doc doc--case'>
 		<header class='doc-head'>
 			<div class='doc-kicker'>
 				<p class='label'>
-					{data.draft && 'Draft · '}<a href='/#work'>Case study</a>{group && ` · ${group}`}
+					{data.draft && 'Draft · '}<a href='/projects/'>Case study</a>{group && ` · ${group}`}
 				</p>
-				{
-					flip && (
-						<nav class='flip' aria-label='Flip through case studies'>
-							<a
-								href={`/projects/${flip.prev.id}/`}
-								rel='prev'
-								aria-label={`Previous case study: ${short(flip.prev)}`}
-								set:text='←'
-							/>
-							<span set:text={place(project.id)} />
-							<a
-								href={`/projects/${flip.next.id}/`}
-								rel='next'
-								aria-label={`Next case study: ${short(flip.next)}`}
-								set:text='→'
-							/>
-						</nav>
-					)
-				}
 			</div>
 			<h1 class='doc-title'>{title}</h1>
 			<p class='doc-lede'>{description}</p>
@@ -201,36 +177,19 @@ const diveNote = `The write-up · ${sections.length} ${sections.length === 1 ? '
 		</div>
 	</article>
 	{
-		flip && (
+		around && (
 			<UpNext
 				label='Next case study'
-				count={place(flip.next.id)}
-				href={`/projects/${flip.next.id}/`}
-				title={short(flip.next)}
-				text={flip.next.data.description}
-				meta={(flip.next.data.facts.stack ?? []).slice(0, 4).join(' · ')}
+				count={place(around.next.id)}
+				href={`/projects/${around.next.id}/`}
+				title={short(around.next)}
+				text={around.next.data.description}
+				meta={(around.next.data.facts.stack ?? []).slice(0, 4).join(' · ')}
 				go='Read the case study'
-				image={flip.next.data.shot}
-				back={{ href: `/projects/${flip.prev.id}/`, label: `← ${short(flip.prev)}` }}
-				hint='← → flip through case studies'
+				image={around.next.data.shot}
+				back={{ href: `/projects/${around.prev.id}/`, label: `← ${short(around.prev)}` }}
 			/>
 		)
 	}
 	<ProjectDirectory current={project.id} variant='page' />
 </ShellLayout>
-
-<script>
-	// ← and → flip to the previous and next case study, like the arrows by the counter. Not
-	// while typing, with a modifier held, or from inside something that scrolls sideways.
-	document.addEventListener('keydown', (e) => {
-		if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
-		if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
-		const t = e.target as HTMLElement | null
-		if (
-			t?.closest('input, textarea, select, [contenteditable], pre, .expressive-code, .gal-thumbs')
-		)
-			return
-		const rel = e.key === 'ArrowLeft' ? 'prev' : 'next'
-		document.querySelector<HTMLAnchorElement>(`.flip a[rel='${rel}']`)?.click()
-	})
-</script>

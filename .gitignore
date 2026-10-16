@@ -32,3 +32,6 @@ plans/
 ONBOARDING.md
 PUBLISH_WORTHY.md
 .claude
+# markdown notes at the repo root (README.md stays tracked); content lives under src/
+/*.md
+!/README.md

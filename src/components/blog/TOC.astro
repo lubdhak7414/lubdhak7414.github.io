@@ -58,7 +58,13 @@ const start = `01/${pad(toc.length)}`
 	// once the page is scrolled to the bottom (on tall screens the final section can't
 	// reach the line). Position-based rather than IntersectionObserver-only, which skips
 	// sections when scrolling up.
-	;(() => {
+	// Runs on every page (the router swaps pages in place); the previous page's listeners are
+	// dropped first.
+	let stop: AbortController | undefined
+	document.addEventListener('astro:page-load', () => {
+		stop?.abort()
+		stop = new AbortController()
+		const { signal } = stop
 		const links = document.querySelectorAll<HTMLAnchorElement>('.toc a')
 		if (!links.length) return
 		const sections = Array.from(links, (a) =>
@@ -96,9 +102,9 @@ const start = `01/${pad(toc.length)}`
 					requestAnimationFrame(update)
 				}
 			},
-			{ passive: true }
+			{ passive: true, signal }
 		)
-		window.addEventListener('resize', update)
+		window.addEventListener('resize', update, { signal })
 		update()
-	})()
+	})
 </script>

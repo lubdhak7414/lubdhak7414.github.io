@@ -1,25 +1,21 @@
 ---
 import type { Entry } from '@/utils'
-import { displayTags, entryHref, isoDate, slugifyTag } from '@/utils'
+import { entryHref, isoDate } from '@/utils'
 
 interface Props {
 	entry: Entry
-	/** Adds the tag slugs the writing-index filter reads. */
-	filterable?: boolean
 }
 
-const { entry, filterable = false } = Astro.props
+const { entry } = Astro.props
 const { data } = entry
 const isProject = entry.collection === 'project'
 // Writing prints its ISO date; projects (on tag pages) print no date, like the work list,
-// and their stack instead of topics.
-const meta = isProject
-	? (entry.data.facts.stack ?? []).slice(0, 4).join(' · ')
-	: displayTags(entry).join(' · ')
+// and their stack.
+const meta = isProject ? (entry.data.facts.stack ?? []).slice(0, 4).join(' · ') : ''
 ---
 
-{/* Date | title, summary, topics in mono. */}
-<li class='row' data-tags={filterable ? data.tags.map(slugifyTag).join(' ') : undefined}>
+{/* Date | title and summary (projects add their stack in mono). */}
+<li class='row'>
 	<a class='row-link' href={entryHref(entry)}>
 		{
 			isProject ? (

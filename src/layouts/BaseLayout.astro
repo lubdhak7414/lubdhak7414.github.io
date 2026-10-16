@@ -1,6 +1,8 @@
 ---
 import type { SiteMeta } from '@/types'
 
+import { ClientRouter } from 'astro:transitions'
+
 import BaseHead from '@/components/BaseHead.astro'
 
 import { siteConfig } from '@/site-config'
@@ -18,6 +20,7 @@ const {
 		publishDate,
 		modifiedDate,
 		noIndex,
+		tags,
 		title
 	}
 } = Astro.props
@@ -36,8 +39,11 @@ const {
 			publishDate={publishDate}
 			modifiedDate={modifiedDate}
 			noIndex={noIndex}
+			tags={tags}
 			title={title}
 		/>
+		{/* Pages swap in place (no full reload); scripts re-run on astro:page-load. */}
+		<ClientRouter />
 	</head>
 
 	<body>
@@ -45,5 +51,23 @@ const {
 		<main id='content'>
 			<slot />
 		</main>
+		<script>
+			// After a link swaps the page in, move keyboard focus to the new page's heading, as a full
+			// load would (the next Tab lands in the new page; screen readers hear where they are).
+			// Back/Forward and links to a #section keep the browser's own position.
+			let moved = false
+			document.addEventListener('astro:before-preparation', (e) => {
+				moved = e.navigationType === 'push' || e.navigationType === 'replace'
+			})
+			document.addEventListener('astro:page-load', () => {
+				if (!moved || location.hash) return
+				moved = false
+				const target =
+					document.querySelector<HTMLElement>('main h1') ?? document.querySelector('main')
+				if (!target) return
+				if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1')
+				target.focus({ preventScroll: true })
+			})
+		</script>
 	</body>
 </html>

@@ -64,39 +64,41 @@
 	const MIN_DELAY = 3000
 	const MAX_DELAY = 9000
 
-	const teaser = document.getElementById('balloon-teaser') as HTMLButtonElement | null
-	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+	document.addEventListener('astro:page-load', () => {
+		const teaser = document.getElementById('balloon-teaser') as HTMLButtonElement | null
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-	if (teaser && !prefersReducedMotion && Math.random() < SHOW_CHANCE) {
-		// Place the teaser at a random spot in the middle 80% of the viewport (avoids corners).
-		const size = window.innerWidth >= 640 ? 64 : 56
-		const margin = 0.1 // 10% inset from each edge
-		const x =
-			margin * window.innerWidth + Math.random() * (window.innerWidth * (1 - 2 * margin) - size)
-		const y =
-			margin * window.innerHeight + Math.random() * (window.innerHeight * (1 - 2 * margin) - size)
-		teaser.style.left = `${x}px`
-		teaser.style.top = `${y}px`
+		if (teaser && !prefersReducedMotion && Math.random() < SHOW_CHANCE) {
+			// Place the teaser at a random spot in the middle 80% of the viewport (avoids corners).
+			const size = window.innerWidth >= 640 ? 64 : 56
+			const margin = 0.1 // 10% inset from each edge
+			const x =
+				margin * window.innerWidth + Math.random() * (window.innerWidth * (1 - 2 * margin) - size)
+			const y =
+				margin * window.innerHeight + Math.random() * (window.innerHeight * (1 - 2 * margin) - size)
+			teaser.style.left = `${x}px`
+			teaser.style.top = `${y}px`
 
-		const AUTO_HIDE_MS = 8000
-		const delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY)
-		let hideTimer: number
+			const AUTO_HIDE_MS = 8000
+			const delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY)
+			let hideTimer: number
 
-		const timer = window.setTimeout(() => {
-			teaser.dataset.show = 'true'
-			hideTimer = window.setTimeout(() => {
+			const timer = window.setTimeout(() => {
+				teaser.dataset.show = 'true'
+				hideTimer = window.setTimeout(() => {
+					teaser.dataset.show = 'false'
+					teaser.disabled = true
+				}, AUTO_HIDE_MS)
+			}, delay)
+
+			teaser.addEventListener('click', () => {
+				window.clearTimeout(timer)
+				window.clearTimeout(hideTimer)
+				// Hide the teaser, then let the swarm loose.
 				teaser.dataset.show = 'false'
 				teaser.disabled = true
-			}, AUTO_HIDE_MS)
-		}, delay)
-
-		teaser.addEventListener('click', () => {
-			window.clearTimeout(timer)
-			window.clearTimeout(hideTimer)
-			// Hide the teaser, then let the swarm loose.
-			teaser.dataset.show = 'false'
-			teaser.disabled = true
-			void balloons()
-		})
-	}
+				void balloons()
+			})
+		}
+	})
 </script>

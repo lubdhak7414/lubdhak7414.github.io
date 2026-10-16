@@ -1,34 +1,38 @@
 ---
 import { siteConfig } from '@/site-config'
 
-// Key/value lines, the handle taken from each profile URL.
-const handle = (url: string) => url.replace(/\/$/, '').split('/').pop() ?? url
+// Key/value lines. The two profiles share one row as plain names, so no handle repeats.
 const external = { target: '_blank', rel: 'noopener noreferrer' }
+// The feed is XML, not a page: open it with a normal load and don't prefetch it on hover.
+const feed = { 'data-astro-reload': true, 'data-astro-prefetch': 'false' }
 const rows = [
-	{ key: 'email', text: siteConfig.socials.email, href: `mailto:${siteConfig.socials.email}` },
 	{
-		key: 'github',
-		text: handle(siteConfig.socials.github),
-		href: siteConfig.socials.github,
-		...external
+		key: 'email',
+		links: [{ text: siteConfig.socials.email, href: `mailto:${siteConfig.socials.email}` }]
 	},
 	{
-		key: 'linkedin',
-		text: handle(siteConfig.socials.linkedin),
-		href: siteConfig.socials.linkedin,
-		...external
+		key: 'profiles',
+		links: [
+			{ text: 'GitHub', href: siteConfig.socials.github, ...external },
+			{ text: 'LinkedIn', href: siteConfig.socials.linkedin, ...external }
+		]
 	},
-	{ key: 'rss', text: '/rss.xml', href: '/rss.xml' }
+	{ key: 'rss', links: [{ text: '/rss.xml', href: '/rss.xml', ...feed }] }
 ]
 ---
 
 <dl class='keys'>
 	{
-		rows.map(({ key, text, ...link }) => (
+		rows.map(({ key, links }) => (
 			<div>
 				<dt>{key}</dt>
 				<dd>
-					<a {...link} set:text={text} />
+					{links.map(({ text, ...link }, i) => (
+						<>
+							{i > 0 && <span class='keys-sep' aria-hidden='true' set:text=' · ' />}
+							<a {...link} set:text={text} />
+						</>
+					))}
 				</dd>
 			</div>
 		))

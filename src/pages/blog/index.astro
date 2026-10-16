@@ -1,7 +1,7 @@
 ---
 import ShellLayout from '@/layouts/ShellLayout.astro'
 import PostRow from '@/components/blog/PostRow.astro'
-import { getAllPosts, getUniqueTagsWithCount, slugifyTag, sortByPublishDate } from '@/utils'
+import { getAllPosts, sortByPublishDate } from '@/utils'
 
 const meta = {
 	description:
@@ -10,13 +10,6 @@ const meta = {
 }
 
 const posts = sortByPublishDate(await getAllPosts())
-
-// Topic filters: tags shared by at least two posts (a one-post filter is just a link to
-// that post). Every post carries its tag slugs in data-tags for the filter script.
-const filterTags = getUniqueTagsWithCount(posts)
-	.filter(([tag, count]) => count >= 2 && tag !== 'project')
-	.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-	.map(([tag]) => tag)
 
 // Group by the year of the original publish date, newest year first.
 const years = [...new Set(posts.map((post) => post.data.publishDate.getFullYear()))]
@@ -30,73 +23,26 @@ const byYear = years.map((year) => ({
 	<header class='page-head'>
 		<h1>Writing</h1>
 		<p class='page-note'>
-			{posts.length} posts · <a href='/rss.xml'>RSS feed</a> · <a href='/tags/'>All topics</a> · Case
-			studies are on the <a href='/#work'>front page</a>
+			{posts.length} posts · <a href='/rss.xml' data-astro-reload data-astro-prefetch='false'
+				>RSS feed</a
+			> · Case studies are on the <a href='/projects/'>Work</a> page
 		</p>
 	</header>
-	{
-		filterTags.length > 0 && (
-			<div class='filters' role='group' aria-label='Filter posts by topic'>
-				<button type='button' data-tag='all' aria-pressed='true'>
-					all
-				</button>
-				{filterTags.map((tag) => (
-					<button type='button' data-tag={slugifyTag(tag)} aria-pressed='false'>
-						{tag}
-					</button>
-				))}
-			</div>
-		)
-	}
 	<div id='posts'>
 		{posts.length === 0 && <p class='empty'>No posts yet.</p>}
 		{
 			byYear.map(({ year, posts }) => (
-				<section class='year' data-year aria-labelledby={`year-${year}`}>
+				<section class='year' aria-labelledby={`year-${year}`}>
 					<h2 id={`year-${year}`} class='label'>
 						{year}
 					</h2>
 					<ul class='rows'>
 						{posts.map((post) => (
-							<PostRow entry={post} filterable />
+							<PostRow entry={post} />
 						))}
 					</ul>
 				</section>
 			))
 		}
-		<p class='empty' hidden>
-			No posts on this topic yet. <button class='text-button' type='button' data-reset
-				>Show all posts</button
-			>
-		</p>
 	</div>
 </ShellLayout>
-
-<script>
-	// Topic filter (reference behaviour): show posts whose tags include the pressed
-	// topic, hide year groups left empty, and offer a reset if nothing matches.
-	;(() => {
-		const buttons = document.querySelectorAll<HTMLButtonElement>('.filters button')
-		const posts = document.querySelectorAll<HTMLElement>('.row[data-tags]')
-		const years = document.querySelectorAll<HTMLElement>('[data-year]')
-		const empty = document.querySelector<HTMLElement>('.empty[hidden]')
-		if (!buttons.length || !empty) return
-
-		function apply(tag: string) {
-			buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tag === tag)))
-			let total = 0
-			posts.forEach((p) => {
-				const show = tag === 'all' || (p.dataset.tags ?? '').split(' ').includes(tag)
-				p.hidden = !show
-				if (show) total++
-			})
-			years.forEach((y) => {
-				y.hidden = !y.querySelector('.row:not([hidden])')
-			})
-			empty!.hidden = total > 0
-		}
-
-		buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.tag ?? 'all')))
-		document.querySelector('[data-reset]')?.addEventListener('click', () => apply('all'))
-	})()
-</script>

@@ -23,6 +23,9 @@ const links = [
 					<a
 						href={href}
 						{...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+						{...(href === '/rss.xml'
+							? { 'data-astro-reload': true, 'data-astro-prefetch': 'false' }
+							: {})}
 						set:text={label}
 					/>
 				))

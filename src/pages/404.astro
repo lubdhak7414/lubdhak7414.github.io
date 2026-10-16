@@ -32,24 +32,26 @@ const meta = {
 	<script is:inline type='application/json' id='excuses-data' set:html={jsonLdScript(excuses)} />
 
 	<script is:inline>
-		const dataEl = document.getElementById('excuses-data')
-		const excuses = dataEl ? JSON.parse(dataEl.textContent) : []
+		;(() => {
+			const dataEl = document.getElementById('excuses-data')
+			const excuses = dataEl ? JSON.parse(dataEl.textContent) : []
 
-		const excuseEl = document.getElementById('excuse')
-		const rollBtn = document.getElementById('roll-excuse')
-		let current = 0
+			const excuseEl = document.getElementById('excuse')
+			const rollBtn = document.getElementById('roll-excuse')
+			let current = 0
 
-		function roll() {
-			if (!excuseEl) return
-			let next = current
-			while (next === current && excuses.length > 1) {
-				next = Math.floor(Math.random() * excuses.length)
+			function roll() {
+				if (!excuseEl) return
+				let next = current
+				while (next === current && excuses.length > 1) {
+					next = Math.floor(Math.random() * excuses.length)
+				}
+				current = next
+				excuseEl.textContent = excuses[next]
 			}
-			current = next
-			excuseEl.textContent = excuses[next]
-		}
 
-		rollBtn?.addEventListener('click', roll)
-		roll()
+			rollBtn?.addEventListener('click', roll)
+			roll()
+		})()
 	</script>
 </ShellLayout>
