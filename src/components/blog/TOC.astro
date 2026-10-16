@@ -15,13 +15,18 @@ const { headings, variant, label = 'Contents' } = Astro.props
 // h2 sections only. A post may have headings yet no h2; render nothing
 // then rather than an empty shell.
 const toc = generateToc(headings)
+const pad = (n: number) => String(n).padStart(2, '0')
+const start = `01/${pad(toc.length)}`
 ---
 
 {
 	toc.length > 0 &&
 		(variant === 'sidebar' ? (
 			<nav class='toc' aria-label={label}>
-				<p class='label'>{label}</p>
+				<p class='label toc-head'>
+					<span set:text={label} />
+					<span class='toc-count' aria-hidden='true' set:text={start} />
+				</p>
 				<ol>
 					{toc.map(({ slug, text }) => (
 						<li>
@@ -32,7 +37,10 @@ const toc = generateToc(headings)
 			</nav>
 		) : (
 			<details class='toc-mobile'>
-				<summary>{label}</summary>
+				<summary>
+					<span set:text={label} />
+					<span class='toc-count' aria-hidden='true' set:text={start} />
+				</summary>
 				<ol>
 					{toc.map(({ slug, text }) => (
 						<li>
@@ -56,6 +64,7 @@ const toc = generateToc(headings)
 		const sections = Array.from(links, (a) =>
 			document.getElementById(decodeURIComponent(a.hash.slice(1)))
 		)
+		const counts = document.querySelectorAll<HTMLElement>('.toc-count')
 		let ticking = false
 
 		function update() {
@@ -69,6 +78,14 @@ const toc = generateToc(headings)
 				current = sections.length - 1
 			}
 			links.forEach((a, i) => a.classList.toggle('active', i === current))
+			const text = `${String(current + 1).padStart(2, '0')}/${String(sections.length).padStart(2, '0')}`
+			counts.forEach((c) => {
+				if (c.textContent === text) return
+				c.textContent = text
+				c.classList.remove('tick')
+				void c.offsetWidth
+				c.classList.add('tick')
+			})
 		}
 
 		window.addEventListener(

@@ -1,0 +1,18 @@
+---
+interface Props {
+	label: string
+	href: string
+	title: string
+}
+
+const { label, href, title } = Astro.props
+---
+
+{/* The sidebar's last line: what comes next, reachable without scrolling back down. */}
+<a class='side-next' href={href}>
+	<span class='side-next-label' set:text={label} />
+	<span class='side-next-title'>
+		<span set:text={title} />
+		<span class='side-next-arrow' aria-hidden='true'>→</span>
+	</span>
+</a>

@@ -9,23 +9,23 @@ const { skills } = Astro.props
 ---
 
 {
-	/* The write-up's own "Skills & Deliverables" list, lifted out of the body so the page ends
-on what the work shows, right before the next case study. */
+	/* The write-up's own "Skills & Deliverables" list, lifted out of the body and set as a
+two-column table (what, then what it means here) under the screenshot. */
 }
 {
 	skills.length > 0 && (
-		<section class='skills-end' aria-labelledby='skills-h'>
+		<section class='skills-tab' aria-labelledby='skills-h'>
 			<h2 id='skills-h' class='label'>
-				Skills &amp; deliverables
+				Skills
 			</h2>
-			<ol class='skill-list'>
+			<dl class='skill-table'>
 				{skills.map(({ term, html }) => (
-					<li>
-						{term && <p class='skill-term' set:text={term} />}
-						<p class='skill-text' set:html={html} />
-					</li>
+					<div>
+						{term && <dt set:text={term} />}
+						<dd set:html={html} />
+					</div>
 				))}
-			</ol>
+			</dl>
 		</section>
 	)
 }

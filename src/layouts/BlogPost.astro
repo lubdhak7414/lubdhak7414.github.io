@@ -8,6 +8,7 @@ import CoverFigure from '@/components/CoverFigure.astro'
 import BalloonSurprise from '@/components/blog/BalloonSurprise.astro'
 import WritingDirectory from '@/components/blog/WritingDirectory.astro'
 import Gist from '@/components/doc/Gist.astro'
+import SideNext from '@/components/doc/SideNext.astro'
 import UpNext from '@/components/doc/UpNext.astro'
 
 import {
@@ -108,9 +109,13 @@ const blogPostingSchema = {
 	<Fragment slot='side'>
 		<WritingDirectory current={post.id} />
 		<TOC headings={headings} variant='sidebar' />
+		{
+			next && next.id !== post.id && (
+				<SideNext label='Read next' href={`/blog/${next.id}/`} title={next.data.title} />
+			)
+		}
 	</Fragment>
 
-	<div class='progress' aria-hidden='true'></div>
 	<article class='doc doc--post'>
 		<header class='doc-head'>
 			<div class='doc-kicker'>

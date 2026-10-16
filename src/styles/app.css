@@ -992,19 +992,6 @@
 		border-color: var(--accent);
 		color: var(--accent);
 	}
-	.btn--primary {
-		border-color: var(--text);
-		background: var(--text);
-		color: var(--bg);
-	}
-	.btn--primary .btn-kind {
-		color: rgb(255 255 255 / 0.7);
-	}
-	.btn--primary:hover {
-		border-color: var(--accent);
-		background: var(--accent);
-		color: var(--bg);
-	}
 	.btn:active,
 	.gal-thumb:active {
 		transform: scale(0.97);
@@ -1101,8 +1088,7 @@
 		align-items: baseline;
 		gap: 0.2rem 0.75rem;
 		margin-top: 0.6rem;
-		font-size: 0.8125rem;
-		line-height: 1.5;
+		font: 400 0.75rem/1.6 var(--mono);
 		color: var(--muted);
 	}
 	.gal-n {
@@ -1115,7 +1101,6 @@
 		min-width: 0;
 	}
 	.gal-sec {
-		font: 400 0.75rem var(--mono);
 		color: var(--accent);
 		text-decoration: underline;
 		text-decoration-color: var(--accent-line);
@@ -1252,6 +1237,19 @@
 	.toc a.active::before {
 		color: var(--accent);
 	}
+	.toc-head {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	.toc-count {
+		font-weight: 400;
+		font-variant-numeric: tabular-nums;
+		color: var(--faint);
+	}
+	.toc-mobile .toc-count {
+		margin-left: auto;
+	}
 	.toc-mobile {
 		display: none;
 		margin-bottom: 2rem;
@@ -1281,46 +1279,73 @@
 		content: '−';
 	}
 
-	/* The ending: skills (case studies) or the author (articles), then what to read next. */
-	.skills-end {
-		margin-top: 3.5rem;
-		padding-top: 0.7rem;
-		border-top: 1px solid var(--line-strong);
-	}
-	.skills-end .label {
-		margin-bottom: 1rem;
-	}
-	.skill-list {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
-		gap: 1.5rem 1.75rem;
-		list-style: none;
-		counter-reset: skill;
-	}
-	.skill-list li {
-		counter-increment: skill;
-	}
-	.skill-term {
-		font: 600 1rem/1.35 var(--sans);
-		color: var(--text);
-	}
-	.skill-term::before {
-		content: counter(skill, decimal-leading-zero);
-		content: counter(skill, decimal-leading-zero) / '';
+	/* The sidebar's foot: the next thing to read. */
+	.side-next {
 		display: block;
-		margin-bottom: 0.35rem;
-		font: 500 0.75rem/1 var(--mono);
+		margin-top: 1.75rem;
+		padding-top: 0.9rem;
+		border-top: 1px solid var(--line);
+	}
+	.side-next-label {
+		display: block;
+		font: 400 0.6875rem/1.5 var(--mono);
+		color: var(--faint);
+	}
+	.side-next-title {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin-top: 0.2rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		line-height: 1.4;
+		color: var(--text);
+		transition: color 0.15s ease;
+	}
+	.side-next-arrow {
+		flex: none;
+		color: var(--muted);
+		transition:
+			transform 0.18s ease-out,
+			color 0.15s ease;
+	}
+	.side-next:hover .side-next-title,
+	.side-next:hover .side-next-arrow {
 		color: var(--accent);
 	}
-	.skill-text {
-		margin-top: 0.35rem;
+	.side-next:hover .side-next-arrow {
+		transform: translateX(3px);
+	}
+
+	/* The ending: skills (case studies) or the author (articles), then what to read next. */
+	.skills-tab {
+		margin-top: 2.25rem;
+	}
+	.skill-table {
+		margin-top: 0.7rem;
+	}
+	.skill-table > div {
+		display: grid;
+		grid-template-columns: 11rem minmax(0, 1fr);
+		gap: 0.2rem 1.5rem;
+		padding: 0.75rem 0;
+		border-top: 1px solid var(--line);
+	}
+	.skill-table dt {
+		font: 600 0.9375rem/1.5 var(--sans);
+		color: var(--text);
+	}
+	.skill-table dd {
 		font-size: 0.9375rem;
 		line-height: 1.55;
 		color: var(--muted);
+		text-wrap: pretty;
 	}
-	.skill-text code {
+	.skill-table code {
 		font: 400 0.85em var(--mono);
 		color: var(--text);
+		overflow-wrap: anywhere;
 	}
 
 	.author {
@@ -1526,30 +1551,6 @@
 		}
 	}
 
-	/* Reading progress: a 2px accent line along the top, driven by the scroll position
-	   (CSS only; browsers without scroll timelines simply don't show it). */
-	.progress {
-		position: fixed;
-		inset: 0 0 auto;
-		z-index: 50;
-		height: 2px;
-		background: var(--accent);
-		transform: scaleX(0);
-		transform-origin: 0 50%;
-		pointer-events: none;
-	}
-	@supports (animation-timeline: scroll()) {
-		.progress {
-			animation: progress linear both;
-			animation-timeline: scroll(root block);
-		}
-	}
-	@supports not (animation-timeline: scroll()) {
-		.progress {
-			display: none;
-		}
-	}
-
 	/* ---------- Prose ---------- */
 	.prose {
 		font-size: 1.125rem;
@@ -1564,9 +1565,9 @@
 	/* Sections: a hairline, the number in accent mono, a heading that stands apart. */
 	.prose > h2 {
 		counter-increment: sec;
+		position: relative;
 		margin-top: 2.6em;
 		padding-top: 1.1rem;
-		border-top: 1px solid var(--line);
 		font: 600 1.5rem/1.25 var(--sans);
 		letter-spacing: -0.015em;
 		color: var(--text);
@@ -1581,10 +1582,35 @@
 		letter-spacing: 0;
 		color: var(--accent);
 	}
+	.prose > h2::after {
+		content: '';
+		position: absolute;
+		inset: 0 0 auto;
+		height: 1px;
+		background: var(--line);
+		transform-origin: 0 50%;
+	}
 	.prose > h2:first-child {
 		margin-top: 0;
 		padding-top: 0;
-		border-top: 0;
+	}
+	.prose > h2:first-child::after {
+		display: none;
+	}
+	/* Wide screens: the number hangs in the gutter beside the heading. */
+	@media (min-width: 960px) {
+		.prose > h2::before {
+			position: absolute;
+			top: 1.1rem;
+			right: 100%;
+			width: 2rem;
+			margin: 0 1rem 0 0;
+			line-height: 1.875rem;
+			text-align: right;
+		}
+		.prose > h2:first-child::before {
+			top: 0;
+		}
 	}
 	.prose h3 {
 		margin-top: 2em;
@@ -1780,6 +1806,7 @@
 		.side-doc,
 		.side > .toc,
 		.side > .pdir,
+		.side > .side-next,
 		.navline,
 		.note--side {
 			display: none;
@@ -1808,6 +1835,9 @@
 		}
 		.toc-mobile {
 			display: block;
+		}
+		.skill-table > div {
+			grid-template-columns: minmax(0, 1fr);
 		}
 		.main-foot {
 			display: block;
@@ -1838,11 +1868,6 @@ html .expressive-code .copy :is(button, div) {
    in, the reading-progress line, and a short cross-page fade where the browser supports
    cross-document view transitions (others just navigate). The photo and name in the sidebar
    carry over between pages, so moving from the home page into a case study stays in place. */
-@keyframes progress {
-	to {
-		transform: scaleX(1);
-	}
-}
 @keyframes bar-in {
 	from {
 		transform: scaleY(0);
@@ -1894,9 +1919,31 @@ html .expressive-code .copy :is(button, div) {
 	animation-duration: 0.28s;
 	animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+@keyframes rule-in {
+	from {
+		transform: scaleX(0);
+	}
+}
+@keyframes tick {
+	from {
+		opacity: 0;
+		transform: translateY(3px);
+	}
+}
 @media (prefers-reduced-motion: no-preference) {
 	.gist::before {
 		animation: bar-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s both;
+	}
+	.toc-count.tick {
+		animation: tick 0.22s ease-out;
+	}
+	/* Section rules draw in as each heading scrolls into view. */
+	@supports (animation-timeline: view()) {
+		.prose > h2::after {
+			animation: rule-in linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 70%;
+		}
 	}
 }
 /* Reduced motion: no moves, no draw-ins; pages still cross-fade, briefly. */
