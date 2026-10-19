@@ -1,7 +1,9 @@
 ---
 import type { SiteMeta } from '@/types'
 
+import ContactList from '@/components/layout/ContactList.astro'
 import Footer from '@/components/layout/Footer.astro'
+import MobileNav from '@/components/layout/MobileNav.astro'
 import Sidebar from '@/components/layout/Sidebar.astro'
 import type { Section } from '@/components/layout/Sidebar.astro'
 
@@ -23,12 +25,21 @@ goes under the navigation (or the path line); `head` takes JSON-LD. */
 }
 <PageLayout meta={meta}>
 	<slot name='head' />
+	<MobileNav page={page} />
 	<div class='frame'>
 		<Sidebar page={page} reading={reading}>
 			<slot name='side' />
 		</Sidebar>
 		<div class='main'>
 			<slot />
+			{/* Phones: the contacts the sidebar hides on section pages, above the footer note. */}
+			{
+				page !== 'home' && (
+					<div class='foot-contact'>
+						<ContactList />
+					</div>
+				)
+			}
 			{/* Below 960px the sidebar's footer note moves to the end of the page. */}
 			<Footer class='main-foot' />
 		</div>

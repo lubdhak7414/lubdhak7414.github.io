@@ -1,6 +1,5 @@
 ---
 import { siteConfig } from '@/site-config'
-import { buildCommit } from '@/utils'
 
 interface Props {
 	/** `side`: the note at the foot of the sidebar. `page`: the same note under the content. */
@@ -10,15 +9,11 @@ interface Props {
 
 const { variant = 'page', class: className } = Astro.props
 const year = new Date().getFullYear()
-// If analytics or any third-party embed is ever added, change this line in the same commit.
-const notice = 'No third-party scripts, no cookies, no tracking.'
 ---
 
 {/* data-nosnippet is only honoured on div/span/section, so it sits on a div */}
 <footer class:list={['note', `note--${variant}`, className]}>
 	<div data-nosnippet>
 		<p>{`© ${year} ${siteConfig.author}`}</p>
-		<p>{notice}</p>
-		{buildCommit && <p>{`Built from ${buildCommit}`}</p>}
 	</div>
 </footer>

@@ -52,7 +52,12 @@ const nav = [
 	/* Left column on every page: who and where to go (home and about), or one line back to the
 home page (every other page), then whatever the page adds (slots). */
 }
-<aside class='side'>
+<aside
+	class:list={[
+		'side',
+		{ 'side--compact': full && page !== 'home', 'side--about': page === 'about' }
+	]}
+>
 	{
 		full ? (
 			<>
@@ -94,6 +99,14 @@ home page (every other page), then whatever the page adds (slots). */
 					</>
 				)}
 			</nav>
+		)
+	}
+	{
+		reading && (
+			<a class='pdir-home' href='/'>
+				<span aria-hidden='true'>&larr;</span>
+				<span>Home</span>
+			</a>
 		)
 	}
 	<slot />

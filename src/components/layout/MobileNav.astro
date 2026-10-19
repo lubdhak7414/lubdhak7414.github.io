@@ -1,0 +1,251 @@
+---
+import type { Section } from '@/components/layout/Sidebar.astro'
+import { getAllPosts, getAllProjects } from '@/utils'
+
+interface Props {
+	page: Section
+}
+
+const { page } = Astro.props
+const counts = { work: (await getAllProjects()).length, writing: (await getAllPosts()).length }
+const links = [
+	{ key: 'home', href: '/', label: 'Home', on: page === 'home' },
+	{ key: 'work', href: '/projects/', label: 'Work', n: counts.work, on: page === 'work' },
+	{ key: 'writing', href: '/blog/', label: 'Writing', n: counts.writing, on: page === 'writing' },
+	{ key: 'about', href: '/about/', label: 'About', on: page === 'about' }
+]
+const here = links.find((l) => l.on)
+---
+
+{
+	/* Phones and tablets: the path line is a shell prompt ("~/work $" and a caret); tapping it lists the four pages as cd commands. Pinned to the top, it slides out of sight as you scroll down and back in at the first scroll up. A details element for the list; a small script for the hide-on-scroll and the closing animation. Hidden from 960px. */
+}
+<details class='mnav'>
+	<summary>
+		<span class='ps'>
+			<span set:text={`~/${here ? here.key : ''}`.replace('~/home', '~')} />
+			<span class='sign'>$</span>
+			<span class='caret' aria-hidden='true'></span>
+		</span>
+		<span class='hint'>tap to cd</span>
+	</summary>
+	<nav aria-label='Site'>
+		<ul>
+			{
+				links.map(({ href, key, n, on }, k) => (
+					<li style={`--k:${k}`}>
+						<a href={href} aria-current={on ? 'page' : undefined}>
+							<span class='sign' aria-hidden='true'>
+								$
+							</span>
+							<span set:text={`cd ${key === 'home' ? '~' : key + '/'}`} />
+							{n !== undefined && <span class='n' set:text={`# ${n} items`} />}
+							{on && <span class='n' set:text='(you are here)' />}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+</details>
+
+<script>
+	// Hide on scroll down, show at the first scroll up (and always near the top, while the list is open,
+	// or while keyboard focus is inside). The list is a details element, which hides its content at once, so
+	// the script also plays the closing animation; Escape closes it. With reduced motion, or if this
+	// script never runs, the bar stays put and the list just opens and closes.
+	const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches
+	const bar = () => document.querySelector<HTMLDetailsElement>('.mnav')
+	let last = 0
+	let queued = false
+	const update = () => {
+		queued = false
+		const b = bar()
+		const y = Math.max(0, scrollY)
+		const dy = y - last
+		if (!b) return
+		if (
+			y < 24 ||
+			b.open ||
+			(b.contains(document.activeElement) && document.activeElement?.matches(':focus-visible')) ||
+			calm()
+		)
+			b.classList.remove('away')
+		else if (dy > 6) b.classList.add('away')
+		else if (dy < -2) b.classList.remove('away')
+		if (Math.abs(dy) > 2) last = y
+	}
+	addEventListener(
+		'scroll',
+		() => {
+			if (queued) return
+			queued = true
+			requestAnimationFrame(update)
+		},
+		{ passive: true }
+	)
+	document.addEventListener('astro:page-load', () => {
+		last = Math.max(0, scrollY)
+	})
+
+	const close = (d: HTMLDetailsElement) => {
+		if (calm()) {
+			d.open = false
+			return
+		}
+		if (d.classList.contains('closing')) return
+		d.classList.add('closing')
+		const done = () => {
+			d.classList.remove('closing')
+			d.open = false
+		}
+		const nav = d.querySelector('nav')
+		nav?.addEventListener('animationend', (e) => e.target === nav && done(), { once: true })
+		setTimeout(() => d.classList.contains('closing') && done(), 500)
+	}
+	document.addEventListener('click', (e) => {
+		const summary = (e.target as Element).closest('.mnav > summary')
+		const d = summary?.parentElement as HTMLDetailsElement | null | undefined
+		if (!d?.open) return
+		e.preventDefault()
+		close(d)
+	})
+	document.addEventListener('keydown', (e) => {
+		const d = bar()
+		if (e.key !== 'Escape' || !d?.open) return
+		close(d)
+		d.querySelector('summary')?.focus()
+	})
+</script>
+
+<style>
+	.mnav {
+		position: sticky;
+		top: 0;
+		z-index: 20;
+		padding: 0.25rem var(--pad-x) 0;
+		background: var(--bg);
+		border-bottom: 1px solid var(--line);
+		font-family: var(--mono);
+	}
+	summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		min-height: 3rem;
+		list-style: none;
+		cursor: pointer;
+		font-size: 0.875rem;
+	}
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	.ps {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5ch;
+		color: var(--text);
+	}
+	.sign {
+		color: var(--accent);
+	}
+	.caret {
+		width: 0.6ch;
+		height: 1.15em;
+		background: var(--accent);
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.caret {
+			animation: blink 1.1s steps(1) infinite;
+		}
+		@keyframes blink {
+			50% {
+				opacity: 0;
+			}
+		}
+	}
+	.hint {
+		font-size: 0.75rem;
+		color: var(--faint);
+	}
+	/* The list floats over the page under the bar instead of pushing it down, so opening and
+	   closing never shifts the content. */
+	nav {
+		position: absolute;
+		top: calc(100% + 1px);
+		left: 0;
+		right: 0;
+		padding: 0.25rem var(--pad-x) 0.9rem;
+		background: var(--bg);
+		border-bottom: 1px solid var(--line-strong);
+	}
+	ul {
+		list-style: none;
+	}
+	a {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 1ch;
+		align-items: baseline;
+		padding: 0.6rem 0;
+		font-size: 0.9375rem;
+		color: var(--text);
+	}
+	a[aria-current] {
+		color: var(--accent);
+		font-weight: 600;
+	}
+	.n {
+		font-size: 0.75rem;
+		font-weight: 400;
+		color: var(--faint);
+	}
+
+	/* Motion, only where it is welcome. The bar slides up out of sight (.away); the list drops in
+	   with each cd line arriving a beat after the one above, like output appearing; closing
+	   (.closing, added by the script) fades it out. */
+	@media (prefers-reduced-motion: no-preference) {
+		.mnav {
+			transition: transform 0.24s cubic-bezier(0.3, 0.8, 0.3, 1);
+		}
+		.mnav.away {
+			transform: translateY(-101%);
+		}
+		@keyframes list-in {
+			from {
+				opacity: 0;
+				transform: translateY(-0.4rem);
+			}
+		}
+		@keyframes list-out {
+			to {
+				opacity: 0;
+				transform: translateY(-0.25rem);
+			}
+		}
+		@keyframes line-in {
+			from {
+				opacity: 0;
+				transform: translateX(-0.5rem);
+			}
+		}
+		details[open] nav {
+			animation: list-in 0.2s ease-out;
+		}
+		details[open].closing nav {
+			animation: list-out 0.16s ease-in forwards;
+		}
+		details[open] li {
+			animation: line-in 0.28s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+			animation-delay: calc(40ms + var(--k, 0) * 45ms);
+		}
+		details[open].closing li {
+			animation: none;
+		}
+	}
+	@media (min-width: 960px) {
+		.mnav {
+			display: none;
+		}
+	}
+</style>

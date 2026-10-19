@@ -352,6 +352,25 @@
 	.crumb-sep {
 		color: var(--faint);
 	}
+	/* A way home from a case study or article: under the path line, above the contents. */
+	.side > .pdir-home {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		margin-top: 1.25rem;
+		font-size: 0.9375rem;
+		font-weight: 500;
+		line-height: 1.4;
+		color: var(--text);
+		transition: color 0.15s ease;
+	}
+	.pdir-home > span:first-child {
+		font: 400 0.8125rem var(--mono);
+		color: var(--accent);
+	}
+	.pdir-home:hover {
+		color: var(--accent);
+	}
 	.pdir ul {
 		list-style: none;
 	}
@@ -450,7 +469,8 @@
 	.note--side {
 		margin-top: 2rem;
 	}
-	.main-foot {
+	.main-foot,
+	.foot-contact {
 		display: none;
 	}
 	/* On case studies and articles the sidebar holds details and contents; the note moves
@@ -1763,6 +1783,28 @@
 			margin-top: 4rem;
 			padding-top: 1.25rem;
 			border-top: 1px solid var(--line);
+		}
+		/* The phone navigation (MobileNav) replaces the sidebar's site nav and path line. Section
+		   pages show only photo and name here; the bio and contacts stay on the home page. */
+		.side .nav,
+		.side .crumb {
+			display: none;
+		}
+		/* On case studies and articles nothing is left in the sidebar on a phone (the contents and
+		   directory move into the page), so drop it and the grid gap it would leave. */
+		.side:has(> .crumb) {
+			display: none;
+		}
+		.foot-contact {
+			display: block;
+			margin-top: 3rem;
+		}
+		.foot-contact + .main-foot {
+			margin-top: 1.5rem;
+		}
+		.side--compact .side-bio,
+		.side--compact:not(.side--about) .keys {
+			display: none;
 		}
 	}
 }
