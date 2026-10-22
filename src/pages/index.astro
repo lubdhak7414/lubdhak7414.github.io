@@ -6,7 +6,6 @@ import WorkRow from '@/components/project/WorkRow.astro'
 import {
 	getAllPosts,
 	getAllProjects,
-	groupProjects,
 	jsonLdScript,
 	personSchema,
 	sortByPublishDate,
@@ -14,13 +13,12 @@ import {
 } from '@/utils'
 import { siteConfig } from '@/site-config'
 
-// Already in homepage order (homePageIdx, then newest); don't re-sort. Groups keep it.
+// Already in homepage order (homePageIdx, then newest); don't re-sort.
 const projects = await getAllProjects()
-const groups = groupProjects(projects)
 const posts = sortByPublishDate(await getAllPosts())
 const latest = posts.slice(0, 4)
 
-const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).toLowerCase()}${siteConfig.bio.slice(1)}`
+const homeDescription = `${siteConfig.author}: ${siteConfig.bio}`
 ---
 
 <ShellLayout meta={{ title: 'Software Developer', description: homeDescription }} page='home'>
@@ -33,19 +31,14 @@ const homeDescription = `${siteConfig.author} is a ${siteConfig.bio.charAt(0).to
 		projects.length > 0 && (
 			<section id='work' aria-labelledby='work-h'>
 				<div class='sec'>
-					<h2 id='work-h'>Case studies</h2>
+					<h2 id='work-h'>Projects</h2>
 					<span class='sec-note'>{`${projects.length} projects`}</span>
 				</div>
-				{groups.map(({ label, items }) => (
-					<div class='pgroup'>
-						<h3 class='pgroup-label' set:text={label} />
-						<ul class='prows'>
-							{items.map((project) => (
-								<WorkRow project={project} />
-							))}
-						</ul>
-					</div>
-				))}
+				<ul class='prows'>
+					{projects.map((project) => (
+						<WorkRow project={project} />
+					))}
+				</ul>
 			</section>
 		)
 	}

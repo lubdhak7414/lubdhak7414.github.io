@@ -1,61 +1,125 @@
 ---
 import type { Section } from '@/components/layout/Sidebar.astro'
 import { getAllPosts, getAllProjects } from '@/utils'
+import { siteConfig } from '@/site-config'
 
 interface Props {
 	page: Section
 }
 
 const { page } = Astro.props
+const here = Astro.url.pathname
 const counts = { work: (await getAllProjects()).length, writing: (await getAllPosts()).length }
 const links = [
-	{ key: 'home', href: '/', label: 'Home', on: page === 'home' },
-	{ key: 'work', href: '/projects/', label: 'Work', n: counts.work, on: page === 'work' },
-	{ key: 'writing', href: '/blog/', label: 'Writing', n: counts.writing, on: page === 'writing' },
-	{ key: 'about', href: '/about/', label: 'About', on: page === 'about' }
+	{ href: '/', label: 'Home', on: page === 'home' },
+	{ href: '/projects/', label: 'Projects', n: counts.work, on: page === 'work' },
+	{ href: '/blog/', label: 'Writing', n: counts.writing, on: page === 'writing' },
+	{ href: '/about/', label: 'About', on: page === 'about' },
+	{ href: '/contact/', label: 'Contact', on: page === 'contact' }
 ]
-const here = links.find((l) => l.on)
+// The section's own page is the current page; a case study or article is inside its section.
+const current = (href: string, on: boolean) => (on ? (here === href ? 'page' : 'true') : undefined)
+const host = new URL(siteConfig.url).host
 ---
 
 {
-	/* Phones and tablets: the path line is a shell prompt ("~/work $" and a caret); tapping it lists the four pages as cd commands. Pinned to the top, it slides out of sight as you scroll down and back in at the first scroll up. A details element for the list; a small script for the hide-on-scroll and the closing animation. Hidden from 960px. */
+	/* Phones and tablets: a bar at the top of every page with the site name in mono on the left
+	and one menu button on the right. The
+	menu drops over the page under the bar with the five pages and their counts. The bar hides on
+	scroll down and returns on the first scroll up. Hidden from 960px. */
 }
-<details class='mnav'>
-	<summary>
-		<span class='ps'>
-			<span set:text={`~/${here ? here.key : ''}`.replace('~/home', '~')} />
-			<span class='sign'>$</span>
-			<span class='caret' aria-hidden='true'></span>
-		</span>
-		<span class='hint'>tap to cd</span>
-	</summary>
-	<nav aria-label='Site'>
+<header class='mnav'>
+	<div class='mnav-bar'>
+		<a class='mark' href='/'>
+			<span set:text={host} />
+		</a>
+		<button class='menu-btn' type='button' aria-expanded='false' aria-controls='mnav-menu'>
+			<span class='sr-only'>Menu</span>
+			<span class='bars' aria-hidden='true'><span></span><span></span></span>
+		</button>
+	</div>
+	<nav class='menu' id='mnav-menu' aria-label='Site' hidden>
 		<ul>
 			{
-				links.map(({ href, key, n, on }, k) => (
+				links.map(({ href, label, n, on }, k) => (
 					<li style={`--k:${k}`}>
-						<a href={href} aria-current={on ? 'page' : undefined}>
-							<span class='sign' aria-hidden='true'>
-								$
-							</span>
-							<span set:text={`cd ${key === 'home' ? '~' : key + '/'}`} />
-							{n !== undefined && <span class='n' set:text={`# ${n} items`} />}
-							{on && <span class='n' set:text='(you are here)' />}
+						<a href={href} aria-current={current(href, on)}>
+							<span set:text={label} />
+							{n !== undefined && <span class='n' set:text={n} />}
 						</a>
 					</li>
 				))
 			}
 		</ul>
 	</nav>
-</details>
+</header>
 
 <script>
-	// Hide on scroll down, show at the first scroll up (and always near the top, while the list is open,
-	// or while keyboard focus is inside). The list is a details element, which hides its content at once, so
-	// the script also plays the closing animation; Escape closes it. With reduced motion, or if this
-	// script never runs, the bar stays put and the list just opens and closes.
+	// One set of document listeners for the whole visit (this script runs once; the router swaps
+	// the bar in with each page, so everything is looked up when it is needed). Each page arrives
+	// with the menu closed.
 	const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches
-	const bar = () => document.querySelector<HTMLDetailsElement>('.mnav')
+	const bar = () => document.querySelector<HTMLElement>('.mnav')
+	const parts = () => {
+		const b = bar()
+		const btn = b?.querySelector<HTMLButtonElement>('.menu-btn')
+		const menu = b?.querySelector<HTMLElement>('.menu')
+		return b && btn && menu ? { b, btn, menu } : null
+	}
+	const isOpen = () => bar()?.classList.contains('open') ?? false
+
+	const open = () => {
+		const p = parts()
+		if (!p) return
+		p.menu.hidden = false
+		p.b.classList.remove('closing', 'away')
+		p.b.classList.add('open')
+		p.btn.setAttribute('aria-expanded', 'true')
+	}
+	// Closing plays a short fade first, unless motion is reduced or `now` is set (a link was
+	// tapped and the page is about to change).
+	const close = (now = false) => {
+		const p = parts()
+		if (!p || !p.b.classList.contains('open')) return
+		p.b.classList.remove('open')
+		p.btn.setAttribute('aria-expanded', 'false')
+		if (now || calm()) {
+			p.b.classList.remove('closing')
+			p.menu.hidden = true
+			return
+		}
+		p.b.classList.add('closing')
+		const done = () => {
+			if (!p.b.classList.contains('closing')) return
+			p.b.classList.remove('closing')
+			p.menu.hidden = true
+		}
+		p.menu.addEventListener('animationend', (e) => e.target === p.menu && done(), { once: true })
+		setTimeout(done, 400)
+	}
+
+	document.addEventListener('click', (e) => {
+		const t = e.target as Element
+		if (t.closest('.mnav .menu-btn')) {
+			if (isOpen()) close()
+			else open()
+		} else if (t.closest('.mnav .menu a')) close(true)
+		else if (isOpen() && !t.closest('.mnav')) close()
+	})
+	document.addEventListener('keydown', (e) => {
+		if (e.key !== 'Escape' || !isOpen()) return
+		close()
+		parts()?.btn.focus()
+	})
+	// Tabbing out of the bar closes the menu.
+	document.addEventListener('focusout', (e) => {
+		const b = bar()
+		const to = e.relatedTarget as Node | null
+		if (b && isOpen() && b.contains(e.target as Node) && to && !b.contains(to)) close()
+	})
+
+	// Hide on scroll down, show at the first scroll up (and always near the top, while the menu is
+	// open, or while keyboard focus is inside). With reduced motion the bar stays put.
 	let last = 0
 	let queued = false
 	const update = () => {
@@ -66,7 +130,7 @@ const here = links.find((l) => l.on)
 		if (!b) return
 		if (
 			y < 24 ||
-			b.open ||
+			isOpen() ||
 			(b.contains(document.activeElement) && document.activeElement?.matches(':focus-visible')) ||
 			calm()
 		)
@@ -84,37 +148,9 @@ const here = links.find((l) => l.on)
 		},
 		{ passive: true }
 	)
+
 	document.addEventListener('astro:page-load', () => {
 		last = Math.max(0, scrollY)
-	})
-
-	const close = (d: HTMLDetailsElement) => {
-		if (calm()) {
-			d.open = false
-			return
-		}
-		if (d.classList.contains('closing')) return
-		d.classList.add('closing')
-		const done = () => {
-			d.classList.remove('closing')
-			d.open = false
-		}
-		const nav = d.querySelector('nav')
-		nav?.addEventListener('animationend', (e) => e.target === nav && done(), { once: true })
-		setTimeout(() => d.classList.contains('closing') && done(), 500)
-	}
-	document.addEventListener('click', (e) => {
-		const summary = (e.target as Element).closest('.mnav > summary')
-		const d = summary?.parentElement as HTMLDetailsElement | null | undefined
-		if (!d?.open) return
-		e.preventDefault()
-		close(d)
-	})
-	document.addEventListener('keydown', (e) => {
-		const d = bar()
-		if (e.key !== 'Escape' || !d?.open) return
-		close(d)
-		d.querySelector('summary')?.focus()
 	})
 </script>
 
@@ -123,124 +159,146 @@ const here = links.find((l) => l.on)
 		position: sticky;
 		top: 0;
 		z-index: 20;
-		padding: 0.25rem var(--pad-x) 0;
 		background: var(--bg);
 		border-bottom: 1px solid var(--line);
-		font-family: var(--mono);
 	}
-	summary {
+	/* On tablets the bar's contents line up with the one-column page under it. */
+	.mnav-bar,
+	.menu ul {
+		max-width: calc(44rem + 2 * var(--pad-x));
+		margin-inline: auto;
+		padding-inline: var(--pad-x);
+	}
+	.mnav-bar {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		min-height: 3rem;
-		list-style: none;
-		cursor: pointer;
-		font-size: 0.875rem;
+		min-height: 3.5rem;
 	}
-	summary::-webkit-details-marker {
-		display: none;
-	}
-	.ps {
+
+	/* The site name, in the mono face used for paths and keys elsewhere on the site. */
+	.mark {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.5ch;
+		min-height: 2.75rem;
+		font: 500 1rem/1 var(--mono);
 		color: var(--text);
 	}
-	.sign {
-		color: var(--accent);
+
+	/* The menu button: two lines that turn into a cross. */
+	.menu-btn {
+		display: grid;
+		place-items: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		margin-right: -0.6rem;
+		border-radius: 4px;
+		color: var(--text);
 	}
-	.caret {
-		width: 0.6ch;
-		height: 1.15em;
-		background: var(--accent);
+	.bars {
+		position: relative;
+		width: 1.25rem;
+		height: 0.75rem;
 	}
-	@media (prefers-reduced-motion: no-preference) {
-		.caret {
-			animation: blink 1.1s steps(1) infinite;
-		}
-		@keyframes blink {
-			50% {
-				opacity: 0;
-			}
-		}
+	.bars span {
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 1.5px;
+		border-radius: 1px;
+		background: currentColor;
 	}
-	.hint {
-		font-size: 0.75rem;
-		color: var(--faint);
+	.bars span:first-child {
+		top: 0.125rem;
 	}
-	/* The list floats over the page under the bar instead of pushing it down, so opening and
+	.bars span:last-child {
+		bottom: 0.125rem;
+	}
+	.open .bars span:first-child {
+		transform: translateY(calc(0.25rem - 0.75px)) rotate(45deg);
+	}
+	.open .bars span:last-child {
+		transform: translateY(calc(-0.25rem + 0.75px)) rotate(-45deg);
+	}
+
+	/* The menu floats over the page under the bar instead of pushing it down, so opening and
 	   closing never shifts the content. */
-	nav {
+	.menu {
 		position: absolute;
 		top: calc(100% + 1px);
 		left: 0;
 		right: 0;
-		padding: 0.25rem var(--pad-x) 0.9rem;
+		padding: 0.25rem 0 1rem;
 		background: var(--bg);
 		border-bottom: 1px solid var(--line-strong);
 	}
-	ul {
+	.menu ul {
 		list-style: none;
 	}
-	a {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0 1ch;
-		align-items: baseline;
-		padding: 0.6rem 0;
-		font-size: 0.9375rem;
-		color: var(--text);
+	.menu li + li {
+		border-top: 1px solid var(--line);
 	}
-	a[aria-current] {
+	.menu a {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.85rem 0;
+		font: 500 1.0625rem/1.3 var(--sans);
+		color: var(--text);
+		transition: color 0.15s ease;
+	}
+	.menu a:hover,
+	.menu a[aria-current] {
 		color: var(--accent);
+	}
+	.menu a[aria-current] {
 		font-weight: 600;
 	}
-	.n {
-		font-size: 0.75rem;
-		font-weight: 400;
+	.menu .n {
+		font: 400 0.8125rem var(--mono);
 		color: var(--faint);
 	}
 
-	/* Motion, only where it is welcome. The bar slides up out of sight (.away); the list drops in
-	   with each cd line arriving a beat after the one above, like output appearing; closing
-	   (.closing, added by the script) fades it out. */
+	/* Motion, only where it is welcome: the bar slides up out of sight (.away); the menu drops in with each line a beat
+	   after the one above, and fades out on closing (.closing, added by the script). */
 	@media (prefers-reduced-motion: no-preference) {
+		@keyframes menu-in {
+			from {
+				opacity: 0;
+				transform: translateY(-0.4rem);
+			}
+		}
+		@keyframes menu-out {
+			to {
+				opacity: 0;
+				transform: translateY(-0.25rem);
+			}
+		}
+		@keyframes menu-line-in {
+			from {
+				opacity: 0;
+				transform: translateY(-0.3rem);
+			}
+		}
 		.mnav {
 			transition: transform 0.24s cubic-bezier(0.3, 0.8, 0.3, 1);
 		}
 		.mnav.away {
 			transform: translateY(-101%);
 		}
-		@keyframes list-in {
-			from {
-				opacity: 0;
-				transform: translateY(-0.4rem);
-			}
+		.bars span {
+			transition: transform 0.2s cubic-bezier(0.3, 0.8, 0.3, 1);
 		}
-		@keyframes list-out {
-			to {
-				opacity: 0;
-				transform: translateY(-0.25rem);
-			}
+		.open .menu {
+			animation: menu-in 0.2s ease-out;
 		}
-		@keyframes line-in {
-			from {
-				opacity: 0;
-				transform: translateX(-0.5rem);
-			}
+		.closing .menu {
+			animation: menu-out 0.16s ease-in forwards;
 		}
-		details[open] nav {
-			animation: list-in 0.2s ease-out;
-		}
-		details[open].closing nav {
-			animation: list-out 0.16s ease-in forwards;
-		}
-		details[open] li {
-			animation: line-in 0.28s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
-			animation-delay: calc(40ms + var(--k, 0) * 45ms);
-		}
-		details[open].closing li {
-			animation: none;
+		.open .menu li {
+			animation: menu-line-in 0.26s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+			animation-delay: calc(30ms + var(--k, 0) * 40ms);
 		}
 	}
 	@media (min-width: 960px) {

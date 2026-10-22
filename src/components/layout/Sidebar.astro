@@ -7,7 +7,7 @@ import Footer from '@/components/layout/Footer.astro'
 import { getAllPosts, getAllProjects } from '@/utils'
 import { siteConfig } from '@/site-config'
 
-export type Section = 'home' | 'about' | 'work' | 'writing' | 'tools' | 'error'
+export type Section = 'home' | 'about' | 'contact' | 'work' | 'writing' | 'tools' | 'error'
 
 interface Props {
 	page: Section
@@ -18,14 +18,15 @@ interface Props {
 const { page, reading = false } = Astro.props
 // The name is the page's h1 only where the page is about the person.
 const NameTag = page === 'home' || page === 'about' ? 'h1' : 'p'
-// Home and the section pages (work, writing, about, tools) carry the same identity block:
-// photo, name, bio, contacts and the site nav. Case studies and articles get one path line
-// back home ("saf1.me / work"); their section list sits right under it.
+// Home and the section pages (projects, writing, about, contact, tools) carry the same identity
+// block: photo, name, bio, contacts and the site nav (no Tools: the About page links to it).
+// Case studies and articles get one path line back home ("saf1.me / projects"); their section
+// list sits right under it.
 const full = !reading
 const host = new URL(siteConfig.url).host
 const here = Astro.url.pathname
 const sections: Partial<Record<Section, { href: string; label: string }>> = {
-	work: { href: '/projects/', label: 'work' },
+	work: { href: '/projects/', label: 'projects' },
 	writing: { href: '/blog/', label: 'writing' },
 	tools: { href: '/tools/', label: 'tools' }
 }
@@ -38,13 +39,13 @@ const counts = {
 const nav = [
 	{
 		href: '/projects/',
-		label: 'Work',
+		label: 'Projects',
 		n: counts.work,
 		on: page === 'work'
 	},
 	{ href: '/blog/', label: 'Writing', n: counts.writing, on: page === 'writing' },
 	{ href: '/about/', label: 'About', on: page === 'about' },
-	{ href: '/tools/', label: 'Tools', on: page === 'tools' }
+	{ href: '/contact/', label: 'Contact', on: page === 'contact' }
 ]
 ---
 

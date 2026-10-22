@@ -374,14 +374,6 @@
 	.pdir ul {
 		list-style: none;
 	}
-	.pdir-group + .pdir-group {
-		margin-top: 0.85rem;
-	}
-	.pdir-label {
-		margin-bottom: 0.2rem;
-		font: 400 0.6875rem/1.5 var(--mono);
-		color: var(--faint);
-	}
 	.pdir a {
 		display: block;
 		padding: 0.25rem 0 0.25rem 0.75rem;
@@ -440,8 +432,33 @@
 		color: var(--text);
 		overflow-wrap: anywhere;
 	}
-	.keys-sep {
-		color: var(--faint);
+	/* Contact icons: email, GitHub, LinkedIn and RSS side by side, no text. */
+	.contacts {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.25rem;
+	}
+	/* 40px tap targets that don't overlap. The first one has no left padding, so its glyph lines
+	   up with the text above without poking out of the scrolling desktop sidebar. */
+	.contacts a {
+		display: inline-flex;
+		padding: 0.625rem;
+		color: var(--muted);
+		text-decoration: none;
+		transition: color 0.15s ease;
+	}
+	.contacts a:first-child {
+		padding-left: 0;
+	}
+	.contacts a:hover,
+	.contacts a:focus-visible {
+		color: var(--accent);
+	}
+	/* Tabler Icons outlines (src/icons), all drawn on the same 24px grid. */
+	.contact-icon {
+		width: 1.25rem;
+		height: 1.25rem;
 	}
 	.keys a {
 		text-decoration: underline;
@@ -469,9 +486,30 @@
 	.note--side {
 		margin-top: 2rem;
 	}
-	.main-foot,
-	.foot-contact {
+	.main-foot {
 		display: none;
+	}
+	/* The email as text at the end of every page but Contact (ShellLayout). */
+	.foot-contact {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.25rem 0.625rem;
+		margin-top: 4rem;
+		font: 400 0.8125rem/1.6 var(--mono);
+		color: var(--faint);
+	}
+	.foot-contact a {
+		display: inline-block;
+		padding-block: 0.5rem;
+		color: var(--text);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		text-decoration-color: var(--line-strong);
+	}
+	.foot-contact a:hover {
+		color: var(--accent);
 	}
 	/* On case studies and articles the sidebar holds details and contents; the note moves
 	   under the text so a long contents list doesn't cut it off. */
@@ -685,18 +723,10 @@
 		text-decoration-color: currentColor;
 	}
 
-	/* ---------- Work: case studies in two groups ---------- */
-	.pgroup + .pgroup {
-		margin-top: 2rem;
-	}
-	.pgroup-label {
-		padding-bottom: 0.45rem;
-		border-bottom: 1px solid var(--line-strong);
-		font: 500 0.75rem/1.5 var(--mono);
-		color: var(--faint);
-	}
+	/* ---------- Projects: one list, ruled like the writing list ---------- */
 	.prows {
 		list-style: none;
+		border-top: 1px solid var(--line-strong);
 	}
 	/* A row: the name's link covers it. The hover tint reaches a little past the text on both
 	   sides (a pseudo-element under the content), so the text keeps the column's edge. */
@@ -1759,9 +1789,6 @@
 			padding-top: 1.25rem;
 			border-top: 1px solid var(--line-strong);
 		}
-		.pdir--page .pdir-group + .pdir-group {
-			margin-top: 1.25rem;
-		}
 		.pdir--page a {
 			padding-block: 0.4rem;
 			font-size: 0.9375rem;
@@ -1796,7 +1823,6 @@
 			display: none;
 		}
 		.foot-contact {
-			display: block;
 			margin-top: 3rem;
 		}
 		.foot-contact + .main-foot {

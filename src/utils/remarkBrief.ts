@@ -9,9 +9,8 @@ import { toString } from 'mdast-util-to-string'
  * - `takeaways`: the "Key Takeaways" blockquote's bullets, as inline HTML.
  * - `skills`: the "Skills & Deliverables" list ({ term, html }), with its heading and the
  *   rule before it.
- * - `figures`: every image in the body ({ url, alt, section }), left in place; case studies
- *   use them for the gallery under the gist. The one image a case study names as its `shot`
- *   leaves the body: the gallery already shows it big, a screen above.
+ * - `figures`: every image in the body ({ url, alt, section }), left in place. The one image a
+ *   project names as its `shot` leaves the body: the layout prints it under the gist.
  *
  * The text is the author's own; this only moves it. The RSS feed renders the raw Markdown, so
  * it keeps both blocks where they were written.

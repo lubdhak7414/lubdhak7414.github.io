@@ -1,13 +1,13 @@
 ---
 import type { SiteMeta } from '@/types'
 
-import ContactList from '@/components/layout/ContactList.astro'
 import Footer from '@/components/layout/Footer.astro'
 import MobileNav from '@/components/layout/MobileNav.astro'
 import Sidebar from '@/components/layout/Sidebar.astro'
 import type { Section } from '@/components/layout/Sidebar.astro'
 
 import PageLayout from './BaseLayout.astro'
+import { siteConfig } from '@/site-config'
 
 interface Props {
 	meta: SiteMeta
@@ -32,12 +32,18 @@ goes under the navigation (or the path line); `head` takes JSON-LD. */
 		</Sidebar>
 		<div class='main'>
 			<slot />
-			{/* Phones: the contacts the sidebar hides on section pages, above the footer note. */}
 			{
-				page !== 'home' && (
-					<div class='foot-contact'>
-						<ContactList />
-					</div>
+				/* Every page but Contact ends with the email as text and a link to Contact, so a visitor
+				who lands on a case study or article from an email signature has a next step. */
+			}
+			{
+				page !== 'contact' && (
+					<p class='foot-contact'>
+						<span>Email</span>
+						<a href={`mailto:${siteConfig.socials.email}`} set:text={siteConfig.socials.email} />
+						<span aria-hidden='true'>·</span>
+						<a href='/contact/'>Contact</a>
+					</p>
 				)
 			}
 			{/* Below 960px the sidebar's footer note moves to the end of the page. */}

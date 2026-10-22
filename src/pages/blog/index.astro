@@ -4,8 +4,7 @@ import PostRow from '@/components/blog/PostRow.astro'
 import { getAllPosts, sortByPublishDate } from '@/utils'
 
 const meta = {
-	description:
-		'Articles on web development, WordPress, SEO, and project case studies by Safwan Usaid Lubdhak.',
+	description: 'Articles on web development, WordPress, SEO, and projects by Safwan Usaid Lubdhak.',
 	title: 'Writing'
 }
 
@@ -25,7 +24,7 @@ const byYear = years.map((year) => ({
 		<p class='page-note'>
 			{posts.length} posts · <a href='/rss.xml' data-astro-reload data-astro-prefetch='false'
 				>RSS feed</a
-			> · Case studies are on the <a href='/projects/'>Work</a> page
+			> · Projects are on the <a href='/projects/'>Projects</a> page
 		</p>
 	</header>
 	<div id='posts'>

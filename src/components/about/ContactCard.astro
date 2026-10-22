@@ -1,0 +1,700 @@
+---
+import { siteConfig } from '@/site-config'
+
+/* The contact card on About: two skies on one horizon (Dhaka on the left, the visitor on the
+right), then the email, large, with a copy button, and the two profiles in small text.
+
+Each sky is a hairline semicircle with a sun dot by day and a moon by night. Dhaka's sun runs
+between today's real sunrise and sunset (NOAA approximation, computed in the browser, no
+network); the visitor's place is unknown (only the time zone), so their sun runs by the clock,
+06:00 to 18:00, and no sunrise or sunset is printed for them. In Dhaka's own zone only one sky
+shows. Without JS: Dhaka's arc without a dot and "Dhaka, UTC+6". */
+const { email, github, linkedin } = siteConfig.socials
+const external = { target: '_blank', rel: 'noopener noreferrer' }
+
+// Geometry in viewBox units, one box per sky. The dots and the sunrise/sunset labels are HTML
+// placed in percent of the same box, so they keep their size when the drawing scales down.
+const W = 320
+const HY = 120 // horizon
+const H = 122
+const CX = 160
+const R = 100
+const geometry = JSON.stringify({ W, H, HY, CX, R })
+const footLeft = `left: ${((CX - R) / W) * 100}%`
+const footRight = `left: ${((CX + R) / W) * 100}%`
+const arc = `M ${CX - R} ${HY} A ${R} ${R} 0 0 1 ${CX + R} ${HY}`
+const halves = ['home', 'you'] as const
+---
+
+<div class='card' data-card data-geo={geometry}>
+	<figure class='sky' data-sky>
+		<div class='sky-grid'>
+			{
+				halves.map((who) => (
+					<div class:list={['sky-half', `sky-half--${who}`]}>
+						<div class='sky-art'>
+							<svg viewBox={`0 0 ${W} ${H}`} aria-hidden='true' focusable='false'>
+								<line
+									class='sky-horizon'
+									x1='0'
+									y1={HY}
+									x2={W}
+									y2={HY}
+									vector-effect='non-scaling-stroke'
+								/>
+								<line
+									class='sky-horizon sky-horizon--wide'
+									x1={-W / 2}
+									y1={HY}
+									x2={W * 1.5}
+									y2={HY}
+									vector-effect='non-scaling-stroke'
+								/>
+								<path class='sky-arc' d={arc} vector-effect='non-scaling-stroke' />
+							</svg>
+							<span class='sky-dot' data-dot={who} aria-hidden='true'>
+								<svg viewBox='2 2 20 20' focusable='false'>
+									<circle class='sky-sun' cx='12' cy='12' r='8.5' />
+									<path class='sky-moon' d='M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79Z' />
+								</svg>
+							</span>
+						</div>
+						{who === 'home' ? (
+							<p class='sky-feet'>
+								<span class='sky-foot' style={footLeft}>
+									<span class='sky-foot-k'>sunrise</span>
+									<span class='sky-foot-t' data-rise />
+								</span>
+								<span class='sky-foot' style={footRight}>
+									<span class='sky-foot-k'>sunset</span>
+									<span class='sky-foot-t' data-set />
+								</span>
+							</p>
+						) : (
+							<p class='sky-feet' aria-hidden='true' />
+						)}
+						<p class='sky-cap'>
+							{who === 'home' ? (
+								<span class='sky-name'>Dhaka</span>
+							) : (
+								<span class='sky-name'>
+									You <span data-city />
+								</span>
+							)}
+							<span class='sky-time' data-time={who} />
+						</p>
+					</div>
+				))
+			}
+		</div>
+		<figcaption class='sky-diff' data-diff>Dhaka, UTC+6</figcaption>
+	</figure>
+
+	<div class='reach'>
+		<p class='reach-lead'>
+			Email is the best way to reach me. Send your site's address and what you need, and I'll tell
+			you if I can help.
+		</p>
+		<div class='reach-mail'>
+			<a class='reach-addr' href={`mailto:${email}`} set:text={email} />
+			<button
+				type='button'
+				class='reach-copy'
+				data-copy={email}
+				aria-label='Copy email address'
+				hidden
+			>
+				<svg class='reach-icon' viewBox='0 0 24 24' aria-hidden='true' focusable='false'>
+					<g class='reach-icon-copy'>
+						<rect x='8' y='8' width='12' height='12' rx='2'></rect>
+						<path d='M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'></path>
+					</g>
+					<path class='reach-icon-check' d='M5 12.5l4.5 4.5L19 7.5'></path>
+				</svg>
+				<span class='reach-copy-text' data-copy-text>Copy</span>
+			</button>
+		</div>
+		<span class='sr-only' role='status' aria-live='polite' data-copy-status></span>
+		<p class='reach-reply'>I usually reply within a day.</p>
+		<p class='reach-else'>
+			<span class='reach-else-key'>also</span>
+			<a href={github} {...external} set:text='GitHub' />
+			<a href={linkedin} {...external} set:text='LinkedIn' />
+		</p>
+	</div>
+</div>
+
+<script>
+	const HOME = 'Asia/Dhaka'
+	const LAT = 23.81
+	const LON = 90.41
+	const RAD = Math.PI / 180
+	const DAY = 86400000
+
+	type Geo = { W: number; H: number; HY: number; CX: number; R: number }
+	type Parts = { y: number; mo: number; d: number; h: number; mi: number; s: number }
+
+	const pad = (n: number) => String(n).padStart(2, '0')
+	const mod = (n: number, m: number) => ((n % m) + m) % m
+	const clamp = (n: number) => Math.min(1, Math.max(0, n))
+
+	// Wall-clock fields in a zone (the visitor's own when `timeZone` is undefined).
+	function partsIn(timeZone?: string) {
+		const f = new Intl.DateTimeFormat('en-GB', {
+			timeZone,
+			hourCycle: 'h23',
+			year: 'numeric',
+			month: 'numeric',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+			second: 'numeric'
+		})
+		return (at: Date): Parts => {
+			const p: Record<string, number> = {}
+			for (const { type, value } of f.formatToParts(at)) p[type] = Number(value)
+			return { y: p.year, mo: p.month, d: p.day, h: p.hour % 24, mi: p.minute, s: p.second }
+		}
+	}
+	// Minutes east of UTC for a zone at an instant, from the zone's own wall clock.
+	function offsetOf(parts: Parts, at: Date) {
+		const wall = Date.UTC(parts.y, parts.mo - 1, parts.d, parts.h, parts.mi, parts.s)
+		return Math.round((wall - Math.floor(at.getTime() / 1000) * 1000) / 60000)
+	}
+	// "5 h", "5 h 30 min", "45 min"
+	function span(minutes: number) {
+		const h = Math.floor(minutes / 60)
+		const m = minutes % 60
+		return [h ? `${h} h` : '', m ? `${m} min` : ''].filter(Boolean).join(' ')
+	}
+	function utcLabel(offset: number) {
+		const sign = offset < 0 ? '-' : '+'
+		const abs = Math.abs(offset)
+		return `UTC${sign}${Math.floor(abs / 60)}${abs % 60 ? `:${pad(abs % 60)}` : ''}`
+	}
+	// Old IANA names some browsers still report.
+	const renamed: Record<string, string> = {
+		Calcutta: 'Kolkata',
+		Saigon: 'Ho Chi Minh',
+		Katmandu: 'Kathmandu',
+		Rangoon: 'Yangon',
+		Kiev: 'Kyiv'
+	}
+	// "Europe/London" -> "London", "America/Argentina/Buenos_Aires" -> "Buenos Aires".
+	function placeOf(zone: string | undefined, offset: number) {
+		if (!zone || !zone.includes('/') || zone.startsWith('Etc/')) return utcLabel(offset)
+		const city = zone.slice(zone.lastIndexOf('/') + 1)
+		return renamed[city] ?? city.replace(/_/g, ' ')
+	}
+
+	// NOAA general solar position approximation: sunrise and sunset instants in Dhaka for a
+	// calendar date there (zenith 90.833 degrees for refraction and the sun's disc). Anchored on
+	// the UTC midnight of the same y-m-d, which lands on the right instants for Dhaka.
+	function sunTimes(y: number, m: number, d: number) {
+		const midnight = Date.UTC(y, m - 1, d)
+		const doy = Math.round((midnight - Date.UTC(y, 0, 1)) / DAY) + 1
+		const leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0
+		const g = ((2 * Math.PI) / (leap ? 366 : 365)) * (doy - 1)
+		const eqtime =
+			229.18 *
+			(0.000075 +
+				0.001868 * Math.cos(g) -
+				0.032077 * Math.sin(g) -
+				0.014615 * Math.cos(2 * g) -
+				0.040849 * Math.sin(2 * g))
+		const decl =
+			0.006918 -
+			0.399912 * Math.cos(g) +
+			0.070257 * Math.sin(g) -
+			0.006758 * Math.cos(2 * g) +
+			0.000907 * Math.sin(2 * g) -
+			0.002697 * Math.cos(3 * g) +
+			0.00148 * Math.sin(3 * g)
+		const ha =
+			Math.acos(
+				Math.cos(90.833 * RAD) / (Math.cos(LAT * RAD) * Math.cos(decl)) -
+					Math.tan(LAT * RAD) * Math.tan(decl)
+			) / RAD
+		return {
+			rise: midnight + (720 - 4 * (LON + ha) - eqtime) * 60000,
+			set: midnight + (720 - 4 * (LON - ha) - eqtime) * 60000
+		}
+	}
+
+	let teardown: (() => void) | undefined
+
+	function setup() {
+		teardown?.()
+		teardown = undefined
+		const card = document.querySelector<HTMLElement>('[data-card]')
+		if (!card) return
+		const sky = card.querySelector<HTMLElement>('[data-sky]')
+		const geo = JSON.parse(card.dataset.geo ?? '{}') as Geo
+		const q = (sel: string) => card.querySelector<HTMLElement>(sel)
+		const homeDot = q('[data-dot="home"]')
+		const youDot = q('[data-dot="you"]')
+		const homeTime = q('[data-time="home"]')
+		const youTime = q('[data-time="you"]')
+		const riseEl = q('[data-rise]')
+		const setEl = q('[data-set]')
+		const cityEl = q('[data-city]')
+		const diffEl = q('[data-diff]')
+		const controller = new AbortController()
+		const { signal } = controller
+		let timer: number | undefined
+		let frame: number | undefined
+		let reset: number | undefined
+
+		// ---- Two skies ----
+		if (sky && homeDot && youDot && homeTime && youTime && riseEl && setEl && cityEl && diffEl) {
+			const zone = Intl.DateTimeFormat().resolvedOptions().timeZone
+			const home = partsIn(HOME)
+			const you = partsIn(zone)
+			const hm = new Intl.DateTimeFormat('en-GB', {
+				timeZone: HOME,
+				hour: '2-digit',
+				minute: '2-digit',
+				hourCycle: 'h23'
+			})
+			// f in [0, 1]: from the left foot of the arc over the top to the right foot.
+			const onArc = (f: number): [number, number] => {
+				const t = Math.PI * (1 - clamp(f))
+				return [geo.CX + geo.R * Math.cos(t), geo.HY - geo.R * Math.sin(t)]
+			}
+			const place = (dot: HTMLElement, [x, y]: [number, number], phase: 'day' | 'night') => {
+				dot.style.left = `${((x / geo.W) * 100).toFixed(3)}%`
+				dot.style.top = `${((y / geo.H) * 100).toFixed(3)}%`
+				dot.dataset.phase = phase
+			}
+			const set = (el: HTMLElement, text: string) => {
+				if (el.textContent !== text) el.textContent = text
+			}
+
+			let last = ''
+			const tick = () => {
+				const at = new Date()
+				const h = home(at)
+				const y = you(at)
+				const key = `${h.d} ${h.h}:${h.mi}|${y.h}:${y.mi}`
+				if (key === last) return
+				last = key
+
+				const homeOff = offsetOf(h, at)
+				const youOff = zone ? offsetOf(y, at) : -at.getTimezoneOffset()
+				const ahead = homeOff - youOff
+				sky.toggleAttribute('data-one', ahead === 0)
+				set(homeTime, `${pad(h.h)}:${pad(h.mi)}`)
+				set(youTime, `${pad(y.h)}:${pad(y.mi)}`)
+				set(cityEl, `(${placeOf(zone, youOff)})`)
+				set(
+					diffEl,
+					ahead === 0
+						? 'Same time as you'
+						: `Dhaka is ${span(Math.abs(ahead))} ${ahead > 0 ? 'ahead of' : 'behind'} you`
+				)
+
+				// Dhaka: the real day, sunrise to sunset; at night the moon crosses the same arc
+				// from the last sunset to the next sunrise.
+				const t = at.getTime()
+				const today = sunTimes(h.y, h.mo, h.d)
+				set(riseEl, hm.format(today.rise))
+				set(setEl, hm.format(today.set))
+				if (t >= today.rise && t <= today.set) {
+					place(homeDot, onArc((t - today.rise) / (today.set - today.rise)), 'day')
+				} else {
+					const before = t < today.rise
+					const o = new Date(Date.UTC(h.y, h.mo - 1, h.d) + (before ? -DAY : DAY))
+					const other = sunTimes(o.getUTCFullYear(), o.getUTCMonth() + 1, o.getUTCDate())
+					const [from, to] = before ? [other.set, today.rise] : [today.set, other.rise]
+					place(homeDot, onArc((t - from) / (to - from)), 'night')
+				}
+
+				// You: place unknown, so day is 06:00-18:00 by your clock.
+				const m = y.h * 60 + y.mi
+				if (m >= 360 && m < 1080) place(youDot, onArc((m - 360) / 720), 'day')
+				else place(youDot, onArc(mod(m - 1080, 1440) / 720), 'night')
+			}
+
+			tick()
+			sky.dataset.ready = ''
+			// Dots slide between minutes only after the first placement.
+			void sky.offsetWidth
+			frame = window.requestAnimationFrame(() => {
+				sky.dataset.live = ''
+			})
+			timer = window.setInterval(tick, 1000)
+		}
+
+		// ---- Copy the address ----
+		const button = card.querySelector<HTMLButtonElement>('[data-copy]')
+		const label = q('[data-copy-text]')
+		const status = q('[data-copy-status]')
+		if (button && navigator.clipboard?.writeText) {
+			button.hidden = false
+			button.addEventListener(
+				'click',
+				async () => {
+					try {
+						await navigator.clipboard.writeText(button.dataset.copy ?? '')
+					} catch {
+						if (status) status.textContent = 'Could not copy. Select the address instead.'
+						return
+					}
+					button.dataset.done = ''
+					if (label) label.textContent = 'Copied'
+					if (status) status.textContent = 'Email address copied.'
+					window.clearTimeout(reset)
+					reset = window.setTimeout(() => {
+						delete button.dataset.done
+						if (label) label.textContent = 'Copy'
+						if (status) status.textContent = ''
+					}, 2000)
+				},
+				{ signal }
+			)
+		}
+
+		teardown = () => {
+			controller.abort()
+			window.clearInterval(timer)
+			window.clearTimeout(reset)
+			if (frame !== undefined) window.cancelAnimationFrame(frame)
+		}
+	}
+
+	document.addEventListener('astro:page-load', setup)
+	document.addEventListener('astro:before-swap', () => {
+		teardown?.()
+		teardown = undefined
+	})
+</script>
+
+<style>
+	.card {
+		padding: 1.5rem;
+		border: 1px solid var(--line);
+		border-radius: 6px;
+	}
+
+	/* ---------- Two skies ---------- */
+	.sky-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		/* The shared horizon runs past each box; clipped to the card here. */
+		overflow: hidden;
+	}
+	.sky-art {
+		position: relative;
+	}
+	.sky-art > svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+	.sky-horizon {
+		stroke: var(--line-strong);
+		stroke-width: 1;
+	}
+	.sky-horizon--wide {
+		display: none;
+	}
+	.sky-arc {
+		fill: none;
+		stroke: var(--faint);
+		stroke-width: 1;
+	}
+
+	.sky-dot {
+		position: absolute;
+		width: 0.875rem;
+		height: 0.875rem;
+		margin: -0.4375rem 0 0 -0.4375rem;
+		opacity: 0;
+		transition: opacity 0.4s ease;
+	}
+	.sky-dot svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	.sky-sun {
+		fill: var(--accent);
+	}
+	.sky-moon {
+		fill: var(--muted);
+	}
+	.sky-dot:not([data-phase='night']) .sky-moon,
+	.sky-dot[data-phase='night'] .sky-sun {
+		display: none;
+	}
+	.sky[data-ready] .sky-dot {
+		opacity: 1;
+	}
+	.sky[data-live] .sky-dot {
+		transition:
+			opacity 0.4s ease,
+			left 0.6s ease,
+			top 0.6s ease;
+	}
+
+	/* Sunrise and sunset under the feet of Dhaka's arc. */
+	.sky-feet {
+		position: relative;
+		height: 1.25rem;
+		margin-top: 0.25rem;
+	}
+	.sky-foot {
+		position: absolute;
+		top: 0;
+		display: flex;
+		gap: 0.5ch;
+		transform: translateX(-50%);
+		font: 400 0.75rem/1.65 var(--mono);
+		color: var(--faint);
+		white-space: nowrap;
+	}
+	.sky-foot-t {
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.sky-cap {
+		display: grid;
+		justify-items: center;
+		margin-top: 0.5rem;
+		padding-inline: 0.5rem;
+		text-align: center;
+		font: 400 0.75rem/1.6 var(--mono);
+	}
+	.sky-name {
+		color: var(--faint);
+		overflow-wrap: anywhere;
+	}
+	/* Reserved before the script fills it, so nothing shifts. */
+	.sky-time {
+		display: block;
+		min-width: 5ch;
+		min-height: 1.5rem;
+		font: 500 1rem/1.5 var(--mono);
+		font-variant-numeric: tabular-nums;
+		color: var(--text);
+	}
+	.sky-diff {
+		margin-top: 0.75rem;
+		text-align: center;
+		font: 400 0.8125rem/1.6 var(--mono);
+		color: var(--text);
+	}
+
+	/* Before the script has run: the visitor's sky keeps its space but stays hidden. */
+	.sky:not([data-ready]) :is(.sky-half--you, .sky-feet, .sky-cap) {
+		visibility: hidden;
+	}
+	/* One sky: Dhaka's zone (or no scripting). It moves to the middle, the horizon spans the card. */
+	.sky[data-one] .sky-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.sky[data-one] .sky-half--home {
+		width: 50%;
+		justify-self: center;
+	}
+	.sky[data-one] .sky-half--you {
+		display: none;
+	}
+	.sky[data-one] .sky-horizon--wide {
+		display: inline;
+	}
+	@media (scripting: none) {
+		.sky-grid {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.sky-half--home {
+			width: 50%;
+			justify-self: center;
+		}
+		.sky-half--you,
+		.sky-feet,
+		.sky-cap,
+		.sky-dot {
+			display: none;
+		}
+		.sky-horizon--wide {
+			display: inline;
+		}
+	}
+
+	/* ---------- Email ---------- */
+	.reach {
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--line);
+	}
+	.reach-lead {
+		font-size: 1rem;
+		line-height: 1.6;
+		color: var(--text-body);
+	}
+	.reach-mail {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
+		margin-top: 0.5rem;
+	}
+	.reach-addr {
+		font: 600 clamp(1.5rem, 1.2rem + 1vw, 2rem) / 1.25 var(--sans);
+		letter-spacing: -0.015em;
+		color: var(--text);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 6px;
+		text-decoration-color: var(--line-strong);
+		transition:
+			color 0.15s ease,
+			text-decoration-color 0.15s ease;
+		overflow-wrap: anywhere;
+	}
+	.reach-addr:hover {
+		color: var(--accent);
+		text-decoration-color: currentColor;
+	}
+	.reach-copy {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		min-height: 2.75rem;
+		padding: 0 0.75rem;
+		border: 1px solid var(--line-strong);
+		border-radius: 4px;
+		background: var(--bg);
+		font: 400 0.75rem/1 var(--mono);
+		color: var(--muted);
+		cursor: pointer;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
+	}
+	.reach-copy[hidden] {
+		display: none;
+	}
+	.reach-copy:hover,
+	.reach-copy[data-done] {
+		color: var(--accent);
+		border-color: var(--accent-line);
+	}
+	.reach-copy-text {
+		min-width: 6ch;
+		text-align: left;
+	}
+	/* The icon morphs: the two sheets fade and shrink away while the check draws in. */
+	.reach-icon {
+		width: 1rem;
+		height: 1rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.75;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		overflow: visible;
+	}
+	.reach-icon-copy {
+		transform-origin: 12px 12px;
+		transition:
+			opacity 0.15s ease,
+			transform 0.2s ease;
+	}
+	.reach-icon-check {
+		stroke-dasharray: 22;
+		stroke-dashoffset: 22;
+		transition: stroke-dashoffset 0.25s ease 0.05s;
+	}
+	.reach-copy[data-done] .reach-icon-copy {
+		opacity: 0;
+		transform: scale(0.6);
+	}
+	.reach-copy[data-done] .reach-icon-check {
+		stroke-dashoffset: 0;
+	}
+	.reach-reply {
+		margin-top: 0.75rem;
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		color: var(--muted);
+	}
+	/* Phones: the address comes first; the skies follow under a rule. */
+	@media (max-width: 639px) {
+		.card {
+			display: flex;
+			flex-direction: column;
+		}
+		.reach {
+			order: -1;
+			margin-top: 0;
+			padding-top: 0;
+			border-top: 0;
+		}
+		.sky {
+			margin-top: 1.5rem;
+			padding-top: 1.5rem;
+			border-top: 1px solid var(--line);
+		}
+	}
+	.reach-else {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.25rem 1rem;
+		margin-top: 1rem;
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+	.reach-else-key {
+		font: 400 0.75rem var(--mono);
+		color: var(--faint);
+	}
+	.reach-else a {
+		color: var(--muted);
+		text-decoration: underline;
+		text-decoration-color: var(--line-strong);
+		text-underline-offset: 3px;
+		transition:
+			color 0.15s ease,
+			text-decoration-color 0.15s ease;
+	}
+	.reach-else a:hover {
+		color: var(--accent);
+		text-decoration-color: currentColor;
+	}
+
+	/* Phones: the card goes edge to edge in the column, the sunrise/sunset labels stack so both
+	   fit under a small arc. */
+	@media (max-width: 520px) {
+		.card {
+			padding: 1.5rem 1rem;
+		}
+		.sky-feet {
+			height: 2.5rem;
+		}
+		.sky-foot {
+			flex-direction: column;
+			align-items: center;
+			gap: 0;
+			line-height: 1.6;
+		}
+		.sky-cap {
+			padding-inline: 0.25rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.sky-dot,
+		.sky[data-live] .sky-dot,
+		.reach-icon-copy,
+		.reach-icon-check,
+		.reach-copy,
+		.reach-addr {
+			transition: none;
+		}
+	}
+</style>

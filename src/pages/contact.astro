@@ -1,0 +1,38 @@
+---
+import ShellLayout from '@/layouts/ShellLayout.astro'
+import HelpRows from '@/components/about/HelpRows.astro'
+import ContactCard from '@/components/about/ContactCard.astro'
+
+const meta = {
+	description:
+		'Contact Safwan Usaid Lubdhak: websites, security fixes and migrations for small businesses. Email hello@saf1.me.',
+	title: 'Contact'
+}
+---
+
+{/* For clients: what I can help with (each with proof on the site), then how to reach me. */}
+<ShellLayout meta={meta} page='contact'>
+	<header class='page-head'>
+		<h1>Contact</h1>
+	</header>
+	<section aria-labelledby='help-h'>
+		<div class='sec'><h2 id='help-h'>What I can help with</h2></div>
+		<HelpRows />
+	</section>
+	<section aria-labelledby='reach-h'>
+		<div class='sec'><h2 id='reach-h'>Get in touch</h2></div>
+		<ContactCard />
+		<p class='contact-about'>
+			My experience and education are on the <a href='/about/'>About</a> page.
+		</p>
+	</section>
+</ShellLayout>
+
+<style>
+	.contact-about {
+		margin-top: 1.25rem;
+		font-size: 0.9375rem;
+		line-height: 1.6;
+		color: var(--muted);
+	}
+</style>

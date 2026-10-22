@@ -1,37 +1,32 @@
 ---
-import { getAllProjects, groupProjects } from '@/utils'
+import { getAllProjects } from '@/utils'
 
 interface Props {
-	/** The case study being read; it takes the accent and aria-current. */
+	/** The project being read; it takes the accent and aria-current. */
 	current: string
 	/** `side`: in the sidebar (wide screens). `page`: at the end of the page (narrow ones). */
 	variant: 'side' | 'page'
 }
 
 const { current, variant } = Astro.props
-const groups = groupProjects(await getAllProjects())
-const label = variant === 'side' ? 'Case studies' : 'All case studies'
+const projects = await getAllProjects()
+const label = variant === 'side' ? 'Projects' : 'All projects'
 ---
 
-{/* Every case study by group, short names only; the one being read is marked. */}
+{/* Every project, short names only; the one being read is marked. */}
 <nav class:list={['pdir', `pdir--${variant}`]} aria-label={label}>
 	<p class='label'>{label}</p>
-	{
-		groups.map(({ label: group, items }) => (
-			<div class='pdir-group'>
-				<p class='pdir-label' set:text={group} />
-				<ul>
-					{items.map((project) => (
-						<li>
-							<a
-								href={`/projects/${project.id}/`}
-								aria-current={project.id === current ? 'page' : undefined}
-								set:text={project.data.name ?? project.data.title}
-							/>
-						</li>
-					))}
-				</ul>
-			</div>
-		))
-	}
+	<ul>
+		{
+			projects.map((project) => (
+				<li>
+					<a
+						href={`/projects/${project.id}/`}
+						aria-current={project.id === current ? 'page' : undefined}
+						set:text={project.data.name ?? project.data.title}
+					/>
+				</li>
+			))
+		}
+	</ul>
 </nav>

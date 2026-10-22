@@ -9,7 +9,7 @@ export const siteConfig: SiteConfig = {
 	// Shown under the name in the identity rail (home + about).
 	role: 'Software Developer',
 	location: 'Bangladesh',
-	bio: 'Recent CS graduate from Bangladesh, trying my hand at software development. Currently focusing on web apps, DevOps, and AI systems, while occasionally tinkering with open-source Linux tools.',
+	bio: 'Software developer at Metaora and recent CS graduate. Builds web apps and small Linux tools, and fixes websites for small businesses.',
 	socials: {
 		github: 'https://github.com/lubdhak7414',
 		linkedin: 'https://www.linkedin.com/in/lubdhak7414/',

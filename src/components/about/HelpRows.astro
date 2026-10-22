@@ -1,0 +1,140 @@
+---
+import { getAllPosts, getAllProjects, entryHref, type Entry } from '@/utils/post'
+
+// The three freelance services (the Background bullets, made parallel), each with the pages on the site that show
+// that kind of work. Proof is looked up by id, so titles come from the content collections;
+// an id that is missing (or a draft in production) simply drops out. Migrations have no
+// write-up yet, so that row has no proof.
+const [projects, posts] = await Promise.all([getAllProjects(), getAllPosts()])
+const entries: Entry[] = [...projects, ...posts]
+const find = (collection: Entry['collection'], id: string) =>
+	entries.find((entry) => entry.collection === collection && entry.id === id)
+const label = (entry: Entry) =>
+	entry.collection === 'project' ? (entry.data.name ?? entry.data.title) : entry.data.title
+
+const rows = [
+	{
+		key: 'websites',
+		text: 'WordPress sites for small businesses, including hosting, domains, email setup and redesigns.',
+		proof: [find('project', 'green-bangla-foundation'), find('project', 'ni-driving-test-routes')]
+	},
+	{
+		key: 'security',
+		text: 'Malware cleanup, patching vulnerabilities and hardening hacked sites.',
+		proof: [find('post', 'wordpress-css-rootkit'), find('post', 'legacy-api-security')]
+	},
+	{
+		key: 'migrations',
+		text: 'Moving DNS, email routing and CDN between providers.',
+		proof: []
+	}
+].map((row) => ({ ...row, proof: row.proof.filter((entry): entry is Entry => Boolean(entry)) }))
+---
+
+<ul class='help'>
+	{
+		rows.map(({ key, text, proof }) => (
+			<li class='help-row'>
+				<span class='help-key'>{key}</span>
+				<div class='help-body'>
+					<p class='help-text'>{text}</p>
+					{proof.length > 0 && (
+						<p class='help-proof'>
+							<span class='help-see'>see</span>
+							<span class='help-links'>
+								{proof.map((entry) => (
+									<a href={entryHref(entry)} set:text={label(entry)} />
+								))}
+							</span>
+						</p>
+					)}
+				</div>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.help {
+		list-style: none;
+		border-top: 1px solid var(--line-strong);
+	}
+	.help-row {
+		position: relative;
+		display: grid;
+		grid-template-columns: 5.5rem minmax(0, 1fr);
+		gap: 0.25rem 1.5rem;
+		padding: 1rem 0 1rem 1rem;
+		border-bottom: 1px solid var(--line);
+	}
+	/* The quiet hover: an accent rule slides down the left edge. */
+	.help-row::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 1rem;
+		bottom: 1rem;
+		width: 2px;
+		background: var(--accent);
+		transform: scaleY(0);
+		transform-origin: top;
+		transition: transform 0.2s ease;
+	}
+	.help-row:hover::before,
+	.help-row:focus-within::before {
+		transform: scaleY(1);
+	}
+	.help-key {
+		padding-top: 0.25rem;
+		font: 400 0.75rem/1.6 var(--mono);
+		color: var(--faint);
+		transition: color 0.15s ease;
+	}
+	.help-row:hover .help-key,
+	.help-row:focus-within .help-key {
+		color: var(--accent);
+	}
+	.help-text {
+		font-size: 1rem;
+		line-height: 1.55;
+		color: var(--text);
+	}
+	.help-proof {
+		display: flex;
+		align-items: baseline;
+		gap: 0.75rem;
+		margin-top: 0.5rem;
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+	.help-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1rem;
+		min-width: 0;
+	}
+	.help-see {
+		font: 400 0.75rem var(--mono);
+		color: var(--faint);
+	}
+	.help-proof a {
+		color: var(--accent);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		text-decoration-color: var(--accent-line);
+		transition: text-decoration-color 0.15s ease;
+	}
+	.help-proof a:hover {
+		text-decoration-color: currentColor;
+	}
+	@media (max-width: 520px) {
+		.help-row {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 0.25rem;
+		}
+		.help-key {
+			padding-top: 0;
+		}
+	}
+</style>

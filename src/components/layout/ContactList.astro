@@ -1,40 +1,67 @@
 ---
+import { Icon } from 'astro-icon/components'
 import { siteConfig } from '@/site-config'
 
-// Key/value lines. The two profiles share one row as plain names, so no handle repeats.
+interface Props {
+	// Key rows with the full address (the About page) instead of the icon row.
+	text?: boolean
+}
+
+const { text = false } = Astro.props
+
+// Icons only, side by side: the label is the link's accessible name, not printed text. With
+// `text`, each contact is a key row: the label, then the address in full.
+interface Contact {
+	label: string
+	key: string
+	icon: string
+	href: string
+	[attr: string]: unknown
+}
 const external = { target: '_blank', rel: 'noopener noreferrer' }
 // The feed is XML, not a page: open it with a normal load and don't prefetch it on hover.
 const feed = { 'data-astro-reload': true, 'data-astro-prefetch': 'false' }
-const rows = [
+const host = new URL(siteConfig.url).host
+const contacts: Contact[] = [
+	{ label: 'Email', key: 'email', icon: 'email', href: `mailto:${siteConfig.socials.email}` },
+	{ label: 'GitHub', key: 'github', icon: 'github', href: siteConfig.socials.github, ...external },
 	{
-		key: 'email',
-		links: [{ text: siteConfig.socials.email, href: `mailto:${siteConfig.socials.email}` }]
+		label: 'LinkedIn',
+		key: 'linkedin',
+		icon: 'linkedin',
+		href: siteConfig.socials.linkedin,
+		...external
 	},
-	{
-		key: 'profiles',
-		links: [
-			{ text: 'GitHub', href: siteConfig.socials.github, ...external },
-			{ text: 'LinkedIn', href: siteConfig.socials.linkedin, ...external }
-		]
-	},
-	{ key: 'rss', links: [{ text: '/rss.xml', href: '/rss.xml', ...feed }] }
+	{ label: 'RSS feed', key: 'rss', icon: 'rss', href: '/rss.xml', ...feed }
 ]
+// "hello@saf1.me", "github.com/lubdhak7414", "saf1.me/rss.xml": the address without the scheme.
+const address = (href: string) =>
+	href.startsWith('mailto:')
+		? href.slice(7)
+		: href.startsWith('/')
+			? `${host}${href}`
+			: href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
 ---
 
-<dl class='keys'>
-	{
-		rows.map(({ key, links }) => (
-			<div>
-				<dt>{key}</dt>
-				<dd>
-					{links.map(({ text, ...link }, i) => (
-						<>
-							{i > 0 && <span class='keys-sep' aria-hidden='true' set:text=' · ' />}
-							<a {...link} set:text={text} />
-						</>
-					))}
-				</dd>
-			</div>
-		))
-	}
-</dl>
+{
+	text ? (
+		<dl class='keys'>
+			{contacts.map(({ label: _label, key, icon: _icon, href, ...link }) => (
+				<div>
+					<dt>{key}</dt>
+					<dd>
+						<a href={href} {...link} set:text={address(href)} />
+					</dd>
+				</div>
+			))}
+		</dl>
+	) : (
+		<div class='keys contacts'>
+			{contacts.map(({ label, key: _key, icon, ...link }) => (
+				<a {...link} aria-label={label} title={label}>
+					<Icon is:inline name={icon} class='contact-icon' aria-hidden='true' />
+				</a>
+			))}
+		</div>
+	)
+}

@@ -19,7 +19,7 @@ const meta = isProject ? (entry.data.facts.stack ?? []).slice(0, 4).join(' · ')
 	<a class='row-link' href={entryHref(entry)}>
 		{
 			isProject ? (
-				<span class='row-date'>case study</span>
+				<span class='row-date'>project</span>
 			) : (
 				<time class='row-date' datetime={isoDate(data.publishDate)}>
 					{isoDate(data.publishDate)}

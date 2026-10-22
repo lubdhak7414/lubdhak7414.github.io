@@ -1,15 +1,13 @@
 ---
-import type { ImageMetadata } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
 
+import CoverFigure from '@/components/CoverFigure.astro'
 import TOC from '@/components/blog/TOC.astro'
 import Gist from '@/components/doc/Gist.astro'
 import Skills from '@/components/doc/Skills.astro'
 import UpNext from '@/components/doc/UpNext.astro'
 import type { DetailRow } from '@/components/doc/Details.astro'
-import Gallery from '@/components/project/Gallery.astro'
-import type { Slide } from '@/components/project/Gallery.astro'
 import ProjectDirectory from '@/components/project/ProjectDirectory.astro'
 import {
 	PERSON_ID,
@@ -17,10 +15,9 @@ import {
 	generateToc,
 	getAllProjects,
 	getEntrySocialImage,
-	groupProjects,
 	jsonLdScript
 } from '@/utils'
-import type { BriefFigure, BriefSkill } from '@/utils/remarkBrief'
+import type { BriefSkill } from '@/utils/remarkBrief'
 import { siteConfig } from '@/site-config'
 
 import ShellLayout from './ShellLayout.astro'
@@ -37,17 +34,14 @@ const { headings, remarkPluginFrontmatter: brief } = await render(project)
 const { description, facts, links, publishDate, shot, title, updatedDate } = data
 const takeaways = (brief.takeaways ?? []) as string[]
 const skills = (brief.skills ?? []) as BriefSkill[]
-const figures = (brief.figures ?? []) as BriefFigure[]
 
 const social = await getEntrySocialImage(data)
 const publishIso = publishDate.toISOString()
 const updated = updatedDate && updatedDate.valueOf() !== publishDate.valueOf() ? updatedDate : null
 
-// Where this case study sits: its group ("Software", "Websites") and its place in the
-// homepage order, which the previous/next links follow.
+// This project's place in the homepage order, which the previous/next links follow.
 const all = await getAllProjects()
 const place = (id: string) => `${all.findIndex((p) => p.id === id) + 1} / ${all.length}`
-const group = groupProjects(all).find(({ items }) => items.some((p) => p.id === project.id))?.label
 const around = prev && next && next.id !== project.id ? { prev, next } : null
 const short = (p: CollectionEntry<'project'>) => p.data.name ?? p.data.title
 
@@ -63,34 +57,7 @@ const details: DetailRow[] = [
 	{ key: 'license', text: facts.license }
 ]
 
-// The gallery: the frontmatter screenshot, then every other image the write-up shows, each
-// linked to the section it sits in. Body images resolve from the project's own folder.
-const folder = import.meta.glob<{ default: ImageMetadata }>(
-	'/src/content/project/*/*.{png,jpg,jpeg,webp}',
-	{ eager: true }
-)
 const sections = generateToc(headings)
-const sectionFor = (text: string | null | undefined): Slide['section'] => {
-	const i = text ? sections.findIndex((h) => h.text === text) : -1
-	const h = sections[i]
-	return h ? { slug: h.slug, n: i + 1, text: h.text } : undefined
-}
-const fromBody = figures.map((f) => ({
-	...f,
-	src: folder[`/src/content/project/${project.id}/${f.url.replace(/^\.\//, '')}`]?.default
-}))
-const slides: Slide[] = []
-const seen = new Set<string>()
-const add = (src: ImageMetadata | undefined, alt: string, section: Slide['section']) => {
-	if (!src || seen.has(src.src)) return
-	seen.add(src.src)
-	slides.push({ src, alt, section })
-}
-if (shot) {
-	const inBody = fromBody.find((f) => f.src?.src === shot.src.src)
-	add(shot.src, shot.alt, sectionFor(inBody?.section))
-}
-for (const f of fromBody) add(f.src, f.alt, sectionFor(f.section))
 
 // Topics stay out of sight: only the head (article:tag) and the JSON-LD (keywords) carry them.
 const tags = displayTags(project)
@@ -147,7 +114,7 @@ const diveNote = `The write-up · ${sections.length} ${sections.length === 1 ? '
 		<header class='doc-head'>
 			<div class='doc-kicker'>
 				<p class='label'>
-					{data.draft && 'Draft · '}<a href='/projects/'>Case study</a>{group && ` · ${group}`}
+					{data.draft && 'Draft · '}<a href='/projects/'>Projects</a>
 				</p>
 			</div>
 			<h1 class='doc-title'>{title}</h1>
@@ -168,7 +135,14 @@ const diveNote = `The write-up · ${sections.length} ${sections.length === 1 ? '
 			}
 		</header>
 		<Gist takeaways={takeaways} rows={details} />
-		<Gallery slides={slides} />
+		{/* The screenshot, once; the write-up's other images stay where they are in the text. */}
+		{
+			shot && (
+				<div class='doc-cover'>
+					<CoverFigure src={shot.src} alt={shot.alt} sizes='(min-width: 960px) 704px, 100vw' />
+				</div>
+			)
+		}
 		<Skills skills={skills} />
 		<p class='dive label' set:text={diveNote} />
 		<TOC headings={headings} variant='drawer' />
@@ -179,13 +153,13 @@ const diveNote = `The write-up · ${sections.length} ${sections.length === 1 ? '
 	{
 		around && (
 			<UpNext
-				label='Next case study'
+				label='Next project'
 				count={place(around.next.id)}
 				href={`/projects/${around.next.id}/`}
 				title={short(around.next)}
 				text={around.next.data.description}
 				meta={(around.next.data.facts.stack ?? []).slice(0, 4).join(' · ')}
-				go='Read the case study'
+				go='Read the project'
 				image={around.next.data.shot}
 				back={{ href: `/projects/${around.prev.id}/`, label: `← ${short(around.prev)}` }}
 			/>

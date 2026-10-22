@@ -1,7 +1,7 @@
 ---
 import ShellLayout from '@/layouts/ShellLayout.astro'
-import ContactList from '@/components/layout/ContactList.astro'
-import { jsonLdScript, personSchema } from '@/utils'
+import { getAllPosts, getAllProjects, jsonLdScript, personSchema } from '@/utils'
+import { entryHref, type Entry } from '@/utils/post'
 import { siteConfig } from '@/site-config'
 
 const skills = [
@@ -22,7 +22,17 @@ const skills = [
 ]
 
 const aboutDescription =
-	'About Safwan Usaid Lubdhak - builds web apps, scales DevOps pipelines, and integrates AI systems.'
+	'About Safwan Usaid Lubdhak: software developer at Metaora and recent CS graduate. Experience, education and skills.'
+
+// Freelance work on the site, shown under the freelance row (a missing id or a draft drops out).
+const [projects, posts] = await Promise.all([getAllProjects(), getAllPosts()])
+const freelance = [
+	projects.find((entry) => entry.id === 'green-bangla-foundation'),
+	projects.find((entry) => entry.id === 'ni-driving-test-routes'),
+	posts.find((entry) => entry.id === 'wordpress-css-rootkit')
+].filter((entry): entry is Entry => Boolean(entry))
+const label = (entry: Entry) =>
+	entry.collection === 'project' ? (entry.data.name ?? entry.data.title) : entry.data.title
 
 // AboutPage wrapper pointing at the canonical Person entity (shared `@id`).
 const aboutPageSchema = {
@@ -43,31 +53,9 @@ const aboutPageSchema = {
 		<div class='sec'><h2 id='do-h'>What I do</h2></div>
 		<div class='text'>
 			<p>
-				I'm Safwan, a CS graduate from Bangladesh. I build web apps, scale DevOps pipelines, and
-				integrate AI systems. I'm deeply passionate about the open-source ecosystem, regularly
-				writing scripts and tools to customize the Linux desktop experience and optimize self-hosted
-				environments.
-			</p>
-		</div>
-	</section>
-	<section aria-labelledby='os-h'>
-		<div class='sec'><h2 id='os-h'>Open source</h2></div>
-		<div class='text'>
-			<p>
-				Most of my projects are public. I write about what I'm working on in the blog here, and the
-				source is on <a href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
-					>GitHub</a
-				>.
-			</p>
-		</div>
-	</section>
-	<section aria-labelledby='ct-h'>
-		<div class='sec'><h2 id='ct-h'>Elsewhere &amp; contact</h2></div>
-		<ContactList />
-		<div class='text'>
-			<p>
-				Want to see what I've built? Read the <a href='/blog/'>blog</a> for write-ups, or head back to
-				the <a href='/'>homepage</a> for the case studies.
+				I'm a software developer in Dhaka. I work on web apps at Metaora, a software company in
+				Atlanta, and since 2019 I've built and fixed WordPress sites for small businesses. Outside
+				work I write small open-source tools for the Linux desktop.
 			</p>
 		</div>
 	</section>
@@ -76,6 +64,20 @@ const aboutPageSchema = {
 			<h2 id='background-h'>Background</h2>
 		</div>
 		<ul class='rows'>
+			<li class='row'>
+				<div class='row-static'>
+					<span class='row-date'>2026 - now</span>
+					<div class='row-body'>
+						<h3 class='row-title'>Software Engineering Intern</h3>
+						<p class='row-text'>Metaora, Atlanta (remote)</p>
+						<ul class='dots'>
+							<li>Working on features and fixes in the company's web app and website.</li>
+							<li>Testing changes before release and writing clear bug reports.</li>
+							<li>Working through code review with the engineering lead.</li>
+						</ul>
+					</div>
+				</div>
+			</li>
 			<li class='row'>
 				<div class='row-static'>
 					<span class='row-date'>2019 - now</span>
@@ -94,6 +96,18 @@ const aboutPageSchema = {
 								Infrastructure migrations - moving DNS, email routing, and CDN across providers.
 							</li>
 						</ul>
+						{
+							freelance.length > 0 && (
+								<p class='row-proof'>
+									<span class='row-see'>see</span>
+									<span class='row-links'>
+										{freelance.map((entry) => (
+											<a href={entryHref(entry)} set:text={label(entry)} />
+										))}
+									</span>
+								</p>
+							)
+						}
 					</div>
 				</div>
 			</li>
@@ -128,4 +142,69 @@ const aboutPageSchema = {
 			}
 		</dl>
 	</section>
+	<section aria-labelledby='os-h'>
+		<div class='sec'><h2 id='os-h'>Open source</h2></div>
+		<div class='text'>
+			<p>
+				Most of my projects are public. I write about what I'm working on in the blog here, and the
+				source is on <a href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
+					>GitHub</a
+				>.
+			</p>
+			<p>
+				Want to see what I've built? See <a href='/projects/'>Projects</a>, or
+				<a href='/blog/'>Writing</a> for the write-ups.
+			</p>
+		</div>
+	</section>
+	<p class='about-tools'>
+		<a href='/tools/'>The tools I use day to day <span aria-hidden='true'>→</span></a>
+	</p>
 </ShellLayout>
+
+<style>
+	.row-proof {
+		display: flex;
+		gap: 0.75rem;
+		margin-top: 0.625rem;
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+	.row-see {
+		flex: none;
+		font: 400 0.75rem/1.75 var(--mono);
+		color: var(--faint);
+	}
+	.row-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1rem;
+	}
+	.row-links a {
+		color: var(--accent);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		text-decoration-color: var(--accent-line);
+	}
+	.row-links a:hover {
+		text-decoration-color: currentColor;
+	}
+	.about-tools {
+		margin-top: 3rem;
+		font: 400 0.8125rem/1.6 var(--mono);
+	}
+	.about-tools a {
+		display: inline-block;
+		padding-block: 0.5rem;
+		color: var(--accent);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		text-decoration-color: var(--accent-line);
+		transition: text-decoration-color 0.15s ease;
+	}
+	.about-tools a:hover {
+		text-decoration-color: currentColor;
+	}
+</style>
