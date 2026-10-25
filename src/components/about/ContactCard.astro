@@ -26,7 +26,15 @@ const geometry = JSON.stringify({ W, H, HY, CX, R })
 const footLeft = `left: ${((CX - R) / W) * 100}%`
 const footRight = `left: ${((CX + R) / W) * 100}%`
 const arc = `M ${CX - R} ${HY} A ${R} ${R} 0 0 1 ${CX + R} ${HY}`
+const dome = `${arc} Z`
 const halves = ['home', 'you'] as const
+// A few stars inside each arc for the night, clear of the path the moon takes.
+const stars = [
+	[130, 70, 2.2],
+	[182, 52, 1.6],
+	[205, 88, 1.9],
+	[112, 95, 1.4]
+]
 ---
 
 <div class='card' data-card data-geo={geometry}>
@@ -53,7 +61,13 @@ const halves = ['home', 'you'] as const
 									y2={HY}
 									vector-effect='non-scaling-stroke'
 								/>
-								<path class='sky-arc' d={arc} vector-effect='non-scaling-stroke' />
+								<path class='sky-dome' d={dome} />
+								<path class='sky-arc' d={arc} pathLength='1' vector-effect='non-scaling-stroke' />
+								<g class='sky-stars'>
+									{stars.map(([cx, cy, r]) => (
+										<circle cx={cx} cy={cy} r={r} />
+									))}
+								</g>
 							</svg>
 							<span class='sky-dot' data-dot={who} aria-hidden='true'>
 								<svg viewBox='2 2 20 20' focusable='false'>
@@ -186,10 +200,11 @@ const halves = ['home', 'you'] as const
 	}
 
 	// NOAA general solar position approximation: sunrise and sunset instants at a place for a
-	// calendar date there (zenith 90.833 degrees for refraction and the sun's disc). Anchored on
-	// the UTC midnight of the same y-m-d, which lands on the right instants wherever the zone's
-	// offset roughly follows its longitude. NaN when the sun doesn't rise or set that day.
-	function sunTimes([lat, lon]: [number, number], y: number, m: number, d: number) {
+	// calendar date there (zenith 90.833 degrees for refraction and the sun's disc), given the
+	// zone's offset in minutes. The solar noon is the one nearest local noon of that date, so it
+	// holds where the clock is far from the longitude too (Samoa, Kiribati). NaN when the sun
+	// doesn't rise or set that day.
+	function sunTimes([lat, lon]: [number, number], y: number, m: number, d: number, off: number) {
 		const midnight = Date.UTC(y, m - 1, d)
 		const doy = Math.round((midnight - Date.UTC(y, 0, 1)) / DAY) + 1
 		const leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0
@@ -214,30 +229,36 @@ const halves = ['home', 'you'] as const
 				Math.cos(90.833 * RAD) / (Math.cos(lat * RAD) * Math.cos(decl)) -
 					Math.tan(lat * RAD) * Math.tan(decl)
 			) / RAD
-		return {
-			rise: midnight + (720 - 4 * (lon + ha) - eqtime) * 60000,
-			set: midnight + (720 - 4 * (lon - ha) - eqtime) * 60000
-		}
+		const noon = midnight + (720 - 4 * lon - eqtime) * 60000
+		const shift = Math.round((midnight - off * 60000 + DAY / 2 - noon) / DAY) * DAY
+		return { rise: noon + shift - 4 * ha * 60000, set: noon + shift + 4 * ha * 60000 }
 	}
 
-	// Where the sun or moon is on the arc at instant t, for a place and its wall-clock date: by
-	// day from sunrise to sunset, by night from the last sunset to the next sunrise. Without a
-	// place, or on a polar day, 06:00-18:00 by the clock.
-	function skyAt(t: number, p: Parts, where: [number, number] | undefined) {
-		const today = where && sunTimes(where, p.y, p.mo, p.d)
-		if (!where || !today || Number.isNaN(today.rise)) {
+	// Where the sun or moon is on the arc at instant t, for a place, its wall-clock date and its
+	// offset: by day from sunrise to sunset, by night from the last sunset to the next sunrise
+	// (looked for across three days, since a night can end or start on another date). Without a
+	// place, or next to a polar day or night, 06:00-18:00 by the clock.
+	function skyAt(t: number, p: Parts, where: [number, number] | undefined, off: number) {
+		const clock = () => {
 			const m = p.h * 60 + p.mi
 			return m >= 360 && m < 1080
 				? { f: (m - 360) / 720, night: false }
 				: { f: mod(m - 1080, 1440) / 720, night: true }
 		}
+		if (!where) return clock()
+		const day = (k: number) => {
+			const o = new Date(Date.UTC(p.y, p.mo - 1, p.d) + k * DAY)
+			return sunTimes(where, o.getUTCFullYear(), o.getUTCMonth() + 1, o.getUTCDate(), off)
+		}
+		const days = [day(-1), day(0), day(1)]
+		if (days.some((e) => Number.isNaN(e.rise))) return clock()
+		const today = days[1]
 		if (t >= today.rise && t <= today.set) {
 			return { f: (t - today.rise) / (today.set - today.rise), night: false }
 		}
-		const before = t < today.rise
-		const o = new Date(Date.UTC(p.y, p.mo - 1, p.d) + (before ? -DAY : DAY))
-		const other = sunTimes(where, o.getUTCFullYear(), o.getUTCMonth() + 1, o.getUTCDate())
-		const [from, to] = before ? [other.set, today.rise] : [today.set, other.rise]
+		const from = Math.max(...days.map((e) => e.set).filter((x) => x <= t))
+		const to = Math.min(...days.map((e) => e.rise).filter((x) => x > t))
+		if (!Number.isFinite(from) || !Number.isFinite(to)) return clock()
 		return { f: (t - from) / (to - from), night: true }
 	}
 
@@ -277,12 +298,30 @@ const halves = ['home', 'you'] as const
 			const set = (el: HTMLElement | null, text: string) => {
 				if (el && el.textContent !== text) el.textContent = text
 			}
-			// The dot on the arc, and the words under the feet (swapped at night).
-			const place = (who: string, dot: HTMLElement, { f, night }: ReturnType<typeof skyAt>) => {
+			const move = (dot: HTMLElement, f: number) => {
 				const [x, y] = onArc(f)
 				dot.style.left = `${((x / geo.W) * 100).toFixed(3)}%`
 				dot.style.top = `${((y / geo.H) * 100).toFixed(3)}%`
-				dot.dataset.phase = night ? 'night' : 'day'
+			}
+			const targets = new Map<HTMLElement, number>()
+			// The dot on the arc, the stars by night, and the words under the feet (swapped at night).
+			const place = (who: string, dot: HTMLElement, { f, night }: ReturnType<typeof skyAt>) => {
+				targets.set(dot, f)
+				// At sunrise and sunset the dot wraps from one foot to the other: jump, don't slide.
+				const phase = night ? 'night' : 'day'
+				const wraps = dot.dataset.phase !== undefined && dot.dataset.phase !== phase
+				if (wraps) dot.style.transition = 'none'
+				move(dot, f)
+				dot.dataset.phase = phase
+				// How lit the sky is, 0 to 1: the sun lights the whole arc at sunrise and it fades over
+				// the last fifth of the day; the moonlight comes and goes gently at both ends of the night.
+				const glow = night ? Math.min(1, f / 0.15, (1 - f) / 0.15) : Math.min(1, (1 - f) / 0.2)
+				dot.closest<HTMLElement>('.sky-half')?.style.setProperty('--glow', clamp(glow).toFixed(3))
+				if (wraps) {
+					void dot.offsetWidth
+					dot.style.transition = ''
+				}
+				dot.closest('.sky-half')?.toggleAttribute('data-night', night)
 				set(q(`[data-foot="${who}-start"]`), night ? 'sunset' : 'sunrise')
 				set(q(`[data-foot="${who}-end"]`), night ? 'sunrise' : 'sunset')
 			}
@@ -311,17 +350,32 @@ const halves = ['home', 'you'] as const
 				)
 
 				const t = at.getTime()
-				place('home', homeDot, skyAt(t, h, DHAKA))
-				place('you', youDot, skyAt(t, y, where))
+				place('home', homeDot, skyAt(t, h, DHAKA, homeOff))
+				place('you', youDot, skyAt(t, y, where, youOff))
 			}
 
 			tick()
 			sky.dataset.ready = ''
-			// Dots slide between minutes only after the first placement.
-			void sky.offsetWidth
-			frame = window.requestAnimationFrame(() => {
+			// On arrival the arcs draw in (CSS) and each dot rises from its left foot to where it
+			// is now. Dots slide between minutes only after that.
+			const start = performance.now()
+			const rise = (now: number) => {
+				const k = Math.min(1, (now - start) / 1100)
+				const eased = 1 - (1 - k) ** 3
+				for (const [dot, f] of targets) move(dot, f * eased)
+				if (k < 1) {
+					frame = window.requestAnimationFrame(rise)
+				} else {
+					void sky.offsetWidth
+					sky.dataset.live = ''
+				}
+			}
+			if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 				sky.dataset.live = ''
-			})
+			} else {
+				for (const dot of targets.keys()) move(dot, 0)
+				frame = window.requestAnimationFrame(rise)
+			}
 			timer = window.setInterval(tick, 1000)
 		}
 
@@ -371,6 +425,8 @@ const halves = ['home', 'you'] as const
 
 <style>
 	.card {
+		/* The sun's own colour, used only by the skies. */
+		--sun: #e09b0b;
 		padding: 1.5rem;
 		border: 1px solid var(--line);
 		border-radius: 6px;
@@ -399,10 +455,88 @@ const halves = ['home', 'you'] as const
 	.sky-horizon--wide {
 		display: none;
 	}
+	/* The sky lights up with the sun: by day the arc turns the sun's colour and the dome under it
+	   takes a warm wash; by night the moon lends both a cool grey. --glow (0-1) comes from the
+	   script; without it the arc is the plain grey line. */
 	.sky-arc {
 		fill: none;
-		stroke: var(--faint);
+		stroke: color-mix(in srgb, var(--sun) calc(var(--glow, 0) * 100%), var(--faint));
 		stroke-width: 1;
+		transition: stroke 1.2s ease;
+	}
+	.sky-half[data-night] .sky-arc {
+		stroke: color-mix(in srgb, var(--muted) calc(var(--glow, 0) * 100%), var(--faint));
+	}
+	/* A browser without color-mix keeps the plain grey arc rather than none. */
+	@supports not (stroke: color-mix(in srgb, red calc(0.5 * 100%), blue)) {
+		.sky-arc,
+		.sky-half[data-night] .sky-arc {
+			stroke: var(--faint);
+		}
+	}
+	.sky-dome {
+		fill: var(--sun);
+		opacity: calc(var(--glow, 0) * 0.12);
+		transition:
+			opacity 1.2s ease,
+			fill 1.2s ease;
+	}
+	.sky-half[data-night] .sky-dome {
+		fill: var(--muted);
+		opacity: calc(var(--glow, 0) * 0.06);
+	}
+	/* With scripting the arc waits hidden for the draw-in, so it doesn't show, vanish and redraw. */
+	@media (scripting: enabled) {
+		.sky:not([data-ready]) .sky-arc {
+			stroke-dasharray: 1;
+			stroke-dashoffset: 1;
+		}
+	}
+	.sky[data-ready] .sky-arc {
+		animation: sky-draw 0.9s cubic-bezier(0.33, 1, 0.68, 1) both;
+	}
+	@keyframes sky-draw {
+		from {
+			stroke-dasharray: 1;
+			stroke-dashoffset: 1;
+		}
+		to {
+			stroke-dasharray: 1;
+			stroke-dashoffset: 0;
+		}
+	}
+	/* Stars come out at night and twinkle slowly, each on its own beat. */
+	.sky-stars {
+		fill: var(--faint);
+		opacity: 0;
+		transition: opacity 1.2s ease;
+	}
+	.sky-half[data-night] .sky-stars {
+		opacity: 1;
+	}
+	.sky-stars circle {
+		animation: sky-twinkle 3.6s ease-in-out infinite;
+	}
+	.sky-stars circle:nth-child(2) {
+		animation-duration: 4.4s;
+		animation-delay: -1.3s;
+	}
+	.sky-stars circle:nth-child(3) {
+		animation-duration: 5.2s;
+		animation-delay: -2.6s;
+	}
+	.sky-stars circle:nth-child(4) {
+		animation-duration: 4s;
+		animation-delay: -0.7s;
+	}
+	@keyframes sky-twinkle {
+		0%,
+		100% {
+			opacity: 0.35;
+		}
+		50% {
+			opacity: 1;
+		}
 	}
 
 	.sky-dot {
@@ -419,14 +553,33 @@ const halves = ['home', 'you'] as const
 		height: 100%;
 	}
 	.sky-sun {
-		fill: var(--accent);
+		fill: var(--sun);
+	}
+	/* A soft halo round the sun. */
+	.sky-dot[data-phase='day'] svg {
+		filter: drop-shadow(0 0 3px color-mix(in srgb, var(--sun) 70%, transparent));
 	}
 	.sky-moon {
 		fill: var(--muted);
 	}
-	.sky-dot:not([data-phase='night']) .sky-moon,
+	/* At sunrise and sunset the moon and sun turn into each other (not on arrival). */
+	.sky-sun,
+	.sky-moon {
+		transform-box: fill-box;
+		transform-origin: center;
+	}
+	.sky[data-live] :is(.sky-sun, .sky-moon) {
+		transition:
+			opacity 0.5s ease,
+			transform 0.6s ease;
+	}
+	.sky-dot:not([data-phase='night']) .sky-moon {
+		opacity: 0;
+		transform: rotate(-60deg) scale(0.4);
+	}
 	.sky-dot[data-phase='night'] .sky-sun {
-		display: none;
+		opacity: 0;
+		transform: scale(0.4);
 	}
 	.sky[data-ready] .sky-dot {
 		opacity: 1;
@@ -681,8 +834,20 @@ const halves = ['home', 'you'] as const
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.sky[data-ready] .sky-arc,
+		.sky-stars circle {
+			animation: none;
+		}
+		.sky-stars circle {
+			opacity: 0.6;
+		}
 		.sky-dot,
 		.sky[data-live] .sky-dot,
+		.sky-sun,
+		.sky-moon,
+		.sky-stars,
+		.sky-arc,
+		.sky-dome,
 		.reach-icon-copy,
 		.reach-icon-check,
 		.reach-copy,
