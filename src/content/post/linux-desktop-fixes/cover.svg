@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<radialGradient id="b0" cx="8%" cy="10%" r="62%"><stop offset="0" stop-color="#8da9e2" stop-opacity="1"/><stop offset="1" stop-color="#8da9e2" stop-opacity="0"/></radialGradient>
+<radialGradient id="b1" cx="72%" cy="8%" r="62%"><stop offset="0" stop-color="#85c8d6" stop-opacity="1"/><stop offset="1" stop-color="#85c8d6" stop-opacity="0"/></radialGradient>
+<radialGradient id="b2" cx="94%" cy="70%" r="62%"><stop offset="0" stop-color="#9e98e1" stop-opacity="1"/><stop offset="1" stop-color="#9e98e1" stop-opacity="0"/></radialGradient>
+<radialGradient id="b3" cx="10%" cy="94%" r="62%"><stop offset="0" stop-color="#a6bddd" stop-opacity="1"/><stop offset="1" stop-color="#a6bddd" stop-opacity="0"/></radialGradient>
+<radialGradient id="b4" cx="48%" cy="60%" r="62%"><stop offset="0" stop-color="#b3c6ec" stop-opacity="1"/><stop offset="1" stop-color="#b3c6ec" stop-opacity="0"/></radialGradient>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#1e2a44" flood-opacity="0.22"/></filter>
+<clipPath id="eqclip"><path d="M200 215 h424 v458 a12 12 0 0 1 -12 12 h-400 a12 12 0 0 1 -12 -12 z"/></clipPath>
+<style>.m{font-family:"IBM Plex Mono";}.s{font-family:"IBM Plex Sans";}</style></defs>
+<rect width="1600" height="900" fill="#c9d2ed"/>
+<rect width="1600" height="900" fill="url(#b0)"/>
+<rect width="1600" height="900" fill="url(#b1)"/>
+<rect width="1600" height="900" fill="url(#b2)"/>
+<rect width="1600" height="900" fill="url(#b3)"/>
+<rect width="1600" height="900" fill="url(#b4)"/>
+<!-- left: the real EasyEffects equalizer screenshot, scaled down (606x671 -> 424x470) -->
+<g filter="url(#sh)"><rect x="200" y="175" width="424" height="510" rx="12" fill="#2b2b2b"/></g>
+<path d="M200 187 a12 12 0 0 1 12 -12 h400 a12 12 0 0 1 12 12 v28 h-424 z" fill="#202020"/>
+<circle cx="226" cy="195" r="6.5" fill="#ff5f57"/>
+<circle cx="248" cy="195" r="6.5" fill="#febc2e"/>
+<circle cx="270" cy="195" r="6.5" fill="#28c840"/>
+<text class="s" x="440" y="200" font-size="15" fill="#c8ccd2" text-anchor="middle">Easy Effects: Equalizer</text>
+<image x="200" y="215" width="424" height="470" preserveAspectRatio="xMidYMid slice" clip-path="url(#eqclip)" href="easyeffects-eq.webp" xlink:href="easyeffects-eq.webp"/>
+<!-- right: real terminal output -->
+<g filter="url(#sh)"><rect x="660" y="215" width="740" height="470" rx="12" fill="#22262e"/></g>
+<path d="M660 227 a12 12 0 0 1 12 -12 h716 a12 12 0 0 1 12 12 v28 h-740 z" fill="#1a1d23"/>
+<circle cx="686" cy="235" r="6.5" fill="#ff5f57"/>
+<circle cx="708" cy="235" r="6.5" fill="#febc2e"/>
+<circle cx="730" cy="235" r="6.5" fill="#28c840"/>
+<text class="s" x="1030" y="240" font-size="15" fill="#d8dce3" text-anchor="middle">kitty</text>
+<g class="m" font-size="17" xml:space="preserve">
+<text x="690" y="300"><tspan fill="#82aaff">$ </tspan><tspan fill="#e6e9ef">grep backspace ~/.config/kitty/kitty.conf</tspan></text>
+<text x="690" y="332" fill="#c3e88d">map ctrl+backspace send_text all \x17</text>
+<text x="690" y="384"><tspan fill="#82aaff">$ </tspan><tspan fill="#e6e9ef">bind -p | grep '"\C-w"'</tspan></text>
+<text x="690" y="416" fill="#c3e88d">"\C-w": unix-word-rubout</text>
+<text x="690" y="468"><tspan fill="#82aaff">$ </tspan><tspan fill="#e6e9ef">paccache -dk1</tspan></text>
+<text x="690" y="500" fill="#a9b1bd">==&gt; finished dry run: 1345 candidates (disk space saved: 8.01 GiB)</text>
+<text x="690" y="552"><tspan fill="#82aaff">$ </tspan><tspan fill="#e6e9ef">cd ~/.cache &amp;&amp; du -sh paru</tspan></text>
+<text x="690" y="584" fill="#ffcb6b">52G    paru</text>
+<text x="690" y="636"><tspan fill="#82aaff">$ </tspan><tspan fill="#e6e9ef">▌</tspan></text>
+</g>
+</svg>

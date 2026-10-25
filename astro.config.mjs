@@ -62,9 +62,10 @@ const movedToProjects = [
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.url,
-	// Start loading a page when its link is hovered or focused, so the click lands on a page
-	// that is already there. First-party script, no third parties.
-	prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
+	// Load a page as soon as its link scrolls into view, so the click lands on a page that is
+	// already there. Phones have no hover, so 'hover' never fired there. Pages are a few KB, and
+	// Astro skips prefetching on data saver and slow connections. First-party script only.
+	prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
 	redirects: {
 		...Object.fromEntries(movedToProjects.map((slug) => [`/blog/${slug}/`, `/projects/${slug}/`])),
 		'/blog/2/': '/blog/'
@@ -100,6 +101,5 @@ export default defineConfig({
 				}
 			}
 		})
-	},
-	prefetch: true
+	}
 })

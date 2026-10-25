@@ -47,6 +47,11 @@ const {
 	</head>
 
 	<body>
+		{
+			/* Cloudflare's email obfuscation rewrites the address to "[email protected]" and decodes it
+		only on a full load, so after an in-place page swap it stayed scrambled. Opt the page out. */
+		}
+		<!--email_off-->
 		<a class='skip-link' href='#content'>Skip to content</a>
 		<main id='content'>
 			<slot />
@@ -69,5 +74,6 @@ const {
 				target.focus({ preventScroll: true })
 			})
 		</script>
+		<!--/email_off-->
 	</body>
 </html>

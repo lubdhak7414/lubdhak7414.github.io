@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1088" viewBox="0 0 1200 1088">
+<rect width="1200" height="1088" fill="#ffffff"/>
+<style>.n{font:600 30px "IBM Plex Sans";fill:#2451b8}.k{font:600 21px "IBM Plex Sans";fill:#2451b8;letter-spacing:2.5px}.t{font:600 37px "IBM Plex Sans";fill:#15171a}.s{font:400 28px "IBM Plex Sans";fill:#565c66}</style>
+<rect x="60" y="56" width="1080" height="196" rx="8" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="114">01</text>
+<text class="k" x="164" y="112">YOUR SERVER</text>
+<text class="t" x="164" y="160">wp-config.php rewrites every page</text>
+<text class="s" x="164" y="202">An output buffer adds a script tag with a long base64</text>
+<text class="s" x="164" y="238">string to the &lt;head&gt; before the page is sent.</text>
+<line x1="600.0" y1="260" x2="600.0" y2="302" stroke="#565c66" stroke-width="3"/>
+<path d="M589.0 294 L600.0 310 L611.0 294" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="316" width="1080" height="196" rx="8" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="374">02</text>
+<text class="k" x="164" y="372">VISITOR'S BROWSER</text>
+<text class="t" x="164" y="420">The script asks a blockchain node for code</text>
+<text class="s" x="164" y="462">An eth_call to a public BNB Chain testnet node:</text>
+<text class="s" x="164" y="498">read-only, free, and no transaction is recorded.</text>
+<line x1="600.0" y1="520" x2="600.0" y2="562" stroke="#565c66" stroke-width="3"/>
+<path d="M589.0 554 L600.0 570 L611.0 554" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="576" width="1080" height="196" rx="8" fill="#f5f6f7" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="634">03</text>
+<text class="k" x="164" y="632">BNB CHAIN TESTNET</text>
+<text class="t" x="164" y="680">A smart contract hands back the payload</text>
+<text class="s" x="164" y="722">Nobody can take it down, and one update by the attacker</text>
+<text class="s" x="164" y="758">changes what every infected site serves.</text>
+<line x1="600.0" y1="780" x2="600.0" y2="822" stroke="#565c66" stroke-width="3"/>
+<path d="M589.0 814 L600.0 830 L611.0 814" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="836" width="1080" height="196" rx="8" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="894">04</text>
+<text class="k" x="164" y="892">VISITOR'S BROWSER</text>
+<text class="t" x="164" y="940">eval() runs whatever came back</text>
+<text class="s" x="164" y="982">In public campaigns: fake browser updates and fake</text>
+<text class="s" x="164" y="1018">CAPTCHAs that install password-stealing malware.</text>
+</svg>

@@ -1,56 +1,64 @@
 ---
 title: 'NI Driving Test Routes'
 name: 'NI Driving Test Routes'
-description: 'A showcase of how I developed a website focused on NI driving test routes, with a strong emphasis on speed, responsiveness, and SEO.'
+description: 'A WooCommerce shop selling driving test route guides for Northern Ireland, built on WordPress and Elementor, which I have kept running since launch.'
 publishDate: '03 November 2024'
 updatedDate: '03 November 2024'
 coverImage:
   src: './cover.jpg'
   alt: 'Northern Ireland Driving Test Routes Website'
-tags: ['Wordpress', 'SEO']
+links:
+  - { label: 'Live site', url: 'https://testroutesni.co.uk/', kind: 'live' }
+tags: ['WordPress', 'SEO']
 facts:
-  stack: ['Astro']
+  stack: ['WordPress', 'Elementor']
 shot:
   src: './homepage.png'
   alt: 'NI Driving Test Routes homepage: headline, call-to-action buttons and a road-sign photo'
 ---
 
-## A fast, content-first site built on Astro
-
 I built a site about Northern Ireland driving test routes. The audience: people nervous about their test who want to know exactly where they'll be driving. They're searching on their phones while prepping, so every second of load time matters.
 
-The brief was straightforward. Useful content. Fast pages. A clean mobile experience. I chose Astro, a static site generator that ships zero JavaScript by default. It proved to be the right call.
+The brief was straightforward. Useful content. Fast pages. A clean mobile experience. And a way to pay for the routes: the site is a shop. Each test centre's route guide is a product in WooCommerce, paid for by card through Stripe. It runs on WordPress with the Elementor page builder.
 
-> The site delivers perfect Lighthouse scores on desktop. No JavaScript overhead. Content loads immediately. And since most visitors arrive on mobile, mobile performance got the most attention. That's where Google's eyes are too.
+> **Key Takeaways**
+>
+> - The site is a shop: each test centre's route guide is a WooCommerce product, paid for by card through Stripe.
+> - In PageSpeed Insights it scored 97 for performance on desktop and 91 on mobile, with the main content on screen in 0.7 s and 2.6 s.
+> - I've kept the site running since launch: updates, payments, a bonus guide with each purchase and a link to the companion app.
 
 ![Homepage](./homepage.png)
 
-## Why Astro instead of WordPress?
+## What the site covers
 
-A static generator makes sense for this kind of content site. Astro ships no JavaScript by default, so the browser gets HTML and CSS it can render right away. No database queries. No plugin overhead to maintain. That simplicity shows up directly in the speed scores, and it makes the site cheap to host and hard to break.
+Route pages for all 19 test centres in Northern Ireland, the "show me, tell me" vehicle questions examiners ask at the start of the test, road signs, and a contact page. The home page leads with two actions: explore the test routes, or download the companion app.
+
+![The 'Tell me' questions, as an accordion: each question opens to its answer](./faq-ni-test.png)
 
 ## How the site performed
 
-I tested the output with Google PageSpeed Insights. Desktop scored a perfect 100.
+I tested the site with Google PageSpeed Insights in December 2024.
+
+| PageSpeed Insights       | Desktop | Mobile |
+| ------------------------ | ------: | -----: |
+| Performance              |      97 |     91 |
+| Accessibility            |      93 |     94 |
+| Best practices           |      93 |     96 |
+| SEO                      |      85 |     85 |
+| First Contentful Paint   |   0.7 s |  2.6 s |
+| Largest Contentful Paint |   0.7 s |  2.6 s |
+
+Desktop loads its main content in 0.7 seconds. Mobile is slower on PageSpeed's simulated slow phone, 2.6 seconds, and that's the number that matters most, because most people checking routes are on a phone, often while they're out.
 
 ![Page Speed Insight for Desktop](./page-speed-desktop.png)
 
-Mobile scored well too. That matters because most people checking routes are on a phone, often while they're out. I kept the layout simple and the payload small.
-
 ![Page Speed Insight for Phone](./page-speed-phone.png)
 
-Fast pages do two things. They keep visitors around. And they rank better because Google judges your site by the mobile version first. If that's slow, your rankings sink regardless of how good desktop looks.
+## Keeping it running
 
-![Faq Page](./faq-ni-test.png)
+I've kept looking after the site since launch. Some of that work:
 
-## What the site covers
-
-The site maps routes for the nine main test centres across Northern Ireland: Belfast Balmoral, Belfast Clarenagh, Antrim, Ballymena, Bangor, Londonderry, Newtownards, Newry, and Omagh. Each centre page breaks down the roads examiners typically use, the manoeuvre types that come up most often, and the local details that catch candidates off guard.
-
-Balmoral is the highest-demand centre. The routes mix A-road and dual carriageway sections near the M1 with tighter residential streets around Finaghy — a contrast that trips up candidates who have only practised one type of road. The site also covers the questions that appear in forums every week: how long the test takes, what the minor and major fault thresholds are, and the most common reasons people fail at each centre.
-
-## How it ranks
-
-Six months after launch, the site was drawing roughly 3,800 monthly organic visitors. The primary keyword "NI driving test routes" ranked in the top five positions on Google UK with a 14% click-through rate. Mobile sessions account for 73% of traffic, consistent with candidates checking routes on their phones while out practising. Average session time sits at around two minutes forty seconds — people are reading the route breakdowns, not bouncing.
-
-The site does what it was built to do. Useful content loads quickly. It reads well on any screen. And it ranks.
+- **Updates.** PHP, WordPress and every plugin kept current, with card payments through Stripe checked after updates.
+- **A bonus guide with each purchase.** The route guides now come with a bonus PDF, added to the products in WooCommerce, with a banner on the product and checkout pages.
+- **The app.** The site's popup now links to the companion app in the App Store, and I changed when the popup appears.
+- **An FAQ page.**

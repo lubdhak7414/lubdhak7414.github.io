@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1292" viewBox="0 0 1200 1292">
+<rect width="1200" height="1292" fill="#ffffff"/>
+<style>.n{font:600 30px "IBM Plex Sans";fill:#2451b8}.k{font:600 20px "IBM Plex Sans";fill:#2451b8;letter-spacing:2.5px}.t{font:600 36px "IBM Plex Sans";fill:#15171a}.s{font:400 27px "IBM Plex Sans";fill:#565c66}</style>
+<rect x="60" y="56" width="1080" height="150" rx="8" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="106">01</text>
+<text class="k" x="164" y="104">BEFORE ANY DNS CHANGE</text>
+<text class="t" x="164" y="150">Build the new side</text>
+<text class="s" x="164" y="188">Sites restored on the new web host, mailboxes created</text>
+<line x1="600" y1="212" x2="600" y2="248" stroke="#565c66" stroke-width="3"/>
+<path d="M589 240 L600 256 L611 240" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="262" width="1080" height="150" rx="8" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="312">02</text>
+<text class="k" x="164" y="310">BEFORE ANY DNS CHANGE</text>
+<text class="t" x="164" y="356">First mail copy</text>
+<text class="s" x="164" y="394">Every mailbox copied over IMAP, old server untouched</text>
+<line x1="600" y1="418" x2="600" y2="454" stroke="#565c66" stroke-width="3"/>
+<path d="M589 446 L600 462 L611 446" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="468" width="1080" height="150" rx="8" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="518">03</text>
+<text class="k" x="164" y="516">CUT-OVER</text>
+<text class="t" x="164" y="562">Switch the nameservers</text>
+<text class="s" x="164" y="600">The new zone already holds the web and mail records</text>
+<line x1="600" y1="624" x2="600" y2="660" stroke="#565c66" stroke-width="3"/>
+<path d="M589 652 L600 668 L611 652" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="674" width="1080" height="150" rx="8" fill="#f5f6f7" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="724">04</text>
+<text class="k" x="164" y="722">HOURS TO ABOUT TWO DAYS</text>
+<text class="t" x="164" y="768">Both servers receive mail</text>
+<text class="s" x="164" y="806">Resolvers with old answers still deliver to the old host</text>
+<line x1="600" y1="830" x2="600" y2="866" stroke="#565c66" stroke-width="3"/>
+<path d="M589 858 L600 874 L611 858" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="880" width="1080" height="150" rx="8" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="930">05</text>
+<text class="k" x="164" y="928">AFTER THE OVERLAP</text>
+<text class="t" x="164" y="974">Copy again, then move devices</text>
+<text class="s" x="164" y="1012">The second run only picks up what arrived since</text>
+<line x1="600" y1="1036" x2="600" y2="1072" stroke="#565c66" stroke-width="3"/>
+<path d="M589 1064 L600 1080 L611 1064" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="1086" width="1080" height="150" rx="8" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="n" x="96" y="1136">06</text>
+<text class="k" x="164" y="1134">A MONTH OR MORE LATER</text>
+<text class="t" x="164" y="1180">Tighten DMARC, cancel old services</text>
+<text class="s" x="164" y="1218">none, then quarantine, then reject; old host goes last</text>
+</svg>

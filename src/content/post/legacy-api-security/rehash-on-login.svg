@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#565c66"/></marker>
+<marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2451b8"/></marker>
+<style>.t{font:600 30px "IBM Plex Sans";fill:#15171a}.s{font:400 26px "IBM Plex Sans";fill:#565c66}.c{font:400 25px "IBM Plex Mono";fill:#15171a}.k{font:600 20px "IBM Plex Sans";letter-spacing:2px}</style>
+</defs>
+<rect width="1200" height="900" fill="#ffffff"/>
+
+<rect x="60" y="30" width="1080" height="90" rx="6" fill="#f5f6f7" stroke="#c9cdd2" stroke-width="2"/>
+<text class="t" x="600" y="86" text-anchor="middle">The app sends a login request, same as today</text>
+
+<path d="M320 120 V188" fill="none" stroke="#565c66" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M880 120 V188" fill="none" stroke="#565c66" stroke-width="3" marker-end="url(#ah)"/>
+
+<!-- md5 path -->
+<text class="k" x="60" y="224" fill="#2451b8">STORED VALUE IS MD5</text>
+<rect x="60" y="240" width="520" height="330" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<rect x="60" y="240" width="6" height="330" fill="#2451b8"/>
+<text class="t" x="94" y="292">1. Check it the old way</text>
+<text class="c" x="94" y="334">hash_equals(</text>
+<text class="c" x="94" y="368" xml:space="preserve">  $stored, md5($pw))</text>
+<line x1="94" y1="400" x2="550" y2="400" stroke="#e4e6e9" stroke-width="2"/>
+<text class="t" x="94" y="450">2. On a match, replace it</text>
+<text class="c" x="94" y="492">password_hash($pw,</text>
+<text class="c" x="94" y="526" xml:space="preserve">  PASSWORD_DEFAULT)</text>
+
+<!-- bcrypt path -->
+<text class="k" x="620" y="224" fill="#565c66">STORED VALUE IS BCRYPT</text>
+<rect x="620" y="240" width="520" height="330" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="t" x="654" y="292">1. Check it the new way</text>
+<text class="c" x="654" y="334">password_verify(</text>
+<text class="c" x="654" y="368" xml:space="preserve">  $pw, $stored)</text>
+<line x1="654" y1="400" x2="1110" y2="400" stroke="#e4e6e9" stroke-width="2"/>
+<text class="t" x="654" y="450">2. Rehash if settings changed</text>
+<text class="c" x="654" y="492">password_needs_rehash(</text>
+<text class="c" x="654" y="526" xml:space="preserve">  $stored, PASSWORD_DEFAULT)</text>
+
+<!-- next login -->
+<path d="M460 570 V620 H760 V582" fill="none" stroke="#2451b8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#aa)"/>
+<text class="s" x="610" y="664" text-anchor="middle" fill="#2451b8" style="fill:#2451b8">every later login takes this path</text>
+
+<!-- merge -->
+<path d="M200 570 V738" fill="none" stroke="#565c66" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M1000 570 V738" fill="none" stroke="#565c66" stroke-width="3" marker-end="url(#ah)"/>
+<rect x="60" y="746" width="1080" height="90" rx="6" fill="#f5f6f7" stroke="#c9cdd2" stroke-width="2"/>
+<text class="t" x="600" y="802" text-anchor="middle">Logged in: the same response the app reads today</text>
+
+<text class="s" x="600" y="880" text-anchor="middle">No match on either path: the same error the app gets today.</text>
+</svg>

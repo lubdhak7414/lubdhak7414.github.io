@@ -3,6 +3,7 @@ title: 'Three Tiny Generators That Do One Thing Each'
 name: 'Three Tiny Generators'
 description: 'Three from-scratch text generators that create ASCII maps, cat monologues, and pseudo-assembly. Same architecture, wildly different outputs.'
 publishDate: '08 July 2026'
+homePageIdx: 8
 coverImage:
   src: './cover.webp'
   alt: 'Three terminal windows showing ASCII art, cat dialogue, and assembly code'

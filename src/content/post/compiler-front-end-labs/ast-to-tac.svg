@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="680" viewBox="0 0 1600 680">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#565c66"/></marker>
+<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"IBM Plex Mono";}</style></defs>
+<rect width="1600" height="680" fill="#ffffff"/>
+<text class="s" x="80" y="70" font-size="26" font-weight="600" fill="#15171a">One line through Lab 4</text>
+<text class="s" x="80" y="104" font-size="19" fill="#565c66">The parser builds the tree; generate_code() visits children before parents and prints one instruction per node.</text>
+<text class="m" x="80" y="160" font-size="15" fill="#6b717b" letter-spacing="1">SOURCE</text>
+<text class="m" x="500" y="160" font-size="15" fill="#6b717b" letter-spacing="1">SYNTAX TREE</text>
+<text class="m" x="1130" y="160" font-size="15" fill="#6b717b" letter-spacing="1">THREE-ADDRESS CODE</text>
+<rect x="80" y="280" width="340" height="80" rx="5" fill="#f5f6f7" stroke="#e4e6e9"/>
+<text class="m" x="250" y="329" font-size="26" fill="#15171a" text-anchor="middle" xml:space="preserve">x = a + b * c;</text>
+<path d="M430 320 H486" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<path d="M770 249 L680 291" stroke="#c9cdd2" stroke-width="2" fill="none"/>
+<path d="M680 359 L570 401" stroke="#c9cdd2" stroke-width="2" fill="none"/>
+<path d="M680 359 L790 401" stroke="#c9cdd2" stroke-width="2" fill="none"/>
+<path d="M790 469 L700 511" stroke="#c9cdd2" stroke-width="2" fill="none"/>
+<path d="M790 469 L890 511" stroke="#c9cdd2" stroke-width="2" fill="none"/>
+<rect x="692" y="181" width="156" height="68" rx="5" fill="#ffffff" stroke="#2451b8" stroke-width="1.5"/>
+<text class="m" x="770" y="207" font-size="14" fill="#6b717b" text-anchor="middle">AssignNode</text>
+<text class="m" x="770" y="237" font-size="22" fill="#15171a" text-anchor="middle" xml:space="preserve">x =</text>
+<rect x="602" y="291" width="156" height="68" rx="5" fill="#ffffff" stroke="#c9cdd2" stroke-width="1.5"/>
+<text class="m" x="680" y="317" font-size="14" fill="#6b717b" text-anchor="middle">BinaryOpNode</text>
+<text class="m" x="680" y="347" font-size="22" fill="#15171a" text-anchor="middle" xml:space="preserve">+</text>
+<rect x="492" y="401" width="156" height="68" rx="5" fill="#ffffff" stroke="#c9cdd2" stroke-width="1.5"/>
+<text class="m" x="570" y="427" font-size="14" fill="#6b717b" text-anchor="middle">VarNode</text>
+<text class="m" x="570" y="457" font-size="22" fill="#15171a" text-anchor="middle" xml:space="preserve">a</text>
+<rect x="712" y="401" width="156" height="68" rx="5" fill="#ffffff" stroke="#c9cdd2" stroke-width="1.5"/>
+<text class="m" x="790" y="427" font-size="14" fill="#6b717b" text-anchor="middle">BinaryOpNode</text>
+<text class="m" x="790" y="457" font-size="22" fill="#15171a" text-anchor="middle" xml:space="preserve">*</text>
+<rect x="622" y="511" width="156" height="68" rx="5" fill="#ffffff" stroke="#c9cdd2" stroke-width="1.5"/>
+<text class="m" x="700" y="537" font-size="14" fill="#6b717b" text-anchor="middle">VarNode</text>
+<text class="m" x="700" y="567" font-size="22" fill="#15171a" text-anchor="middle" xml:space="preserve">b</text>
+<rect x="812" y="511" width="156" height="68" rx="5" fill="#ffffff" stroke="#c9cdd2" stroke-width="1.5"/>
+<text class="m" x="890" y="537" font-size="14" fill="#6b717b" text-anchor="middle">VarNode</text>
+<text class="m" x="890" y="567" font-size="22" fill="#15171a" text-anchor="middle" xml:space="preserve">c</text>
+<path d="M1010 320 H1110" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<rect x="1130" y="180" width="390" height="370" rx="5" fill="#f5f6f7" stroke="#e4e6e9"/>
+<text class="m" x="1158" y="240" font-size="23" fill="#15171a" xml:space="preserve">t3 = a</text>
+<text class="m" x="1496" y="240" font-size="14" fill="#6b717b" text-anchor="end">VarNode a</text>
+<text class="m" x="1158" y="296" font-size="23" fill="#15171a" xml:space="preserve">t4 = b</text>
+<text class="m" x="1496" y="296" font-size="14" fill="#6b717b" text-anchor="end">VarNode b</text>
+<text class="m" x="1158" y="352" font-size="23" fill="#15171a" xml:space="preserve">t5 = c</text>
+<text class="m" x="1496" y="352" font-size="14" fill="#6b717b" text-anchor="end">VarNode c</text>
+<text class="m" x="1158" y="408" font-size="23" fill="#15171a" xml:space="preserve">t6 = t4 * t5</text>
+<text class="m" x="1496" y="408" font-size="14" fill="#6b717b" text-anchor="end">BinaryOpNode *</text>
+<text class="m" x="1158" y="464" font-size="23" fill="#15171a" xml:space="preserve">t7 = t3 + t6</text>
+<text class="m" x="1496" y="464" font-size="14" fill="#6b717b" text-anchor="end">BinaryOpNode +</text>
+<text class="m" x="1158" y="520" font-size="23" fill="#2451b8" xml:space="preserve">x = t7</text>
+<text class="m" x="1496" y="520" font-size="14" fill="#6b717b" text-anchor="end">AssignNode</text>
+<text class="s" x="80" y="640" font-size="17" fill="#6b717b">Real output from my Lab 4 compiler. t0 to t2 went to the constant assignments a = 2, b = 3 and c = 4 just above this line.</text>
+</svg>

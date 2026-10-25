@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"IBM Plex Mono";}</style>
+<rect width="1600" height="900" fill="#ffffff"/>
+<text class="s" x="80.0" y="96.0" font-size="38" fill="#15171a" text-anchor="start" font-weight="600">What filling missing odds with 0 does at prediction time</text>
+<text class="s" x="80.0" y="146.0" font-size="26" fill="#565c66" text-anchor="start" font-weight="400">Log loss, lower is better. Same 3,800 test matches; only the odds inputs change.</text>
+<line x1="720.0" y1="230" x2="720.0" y2="750" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="720.0" y="786.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">0.95</text>
+<line x1="937.1" y1="230" x2="937.1" y2="750" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="937.1" y="786.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">0.99</text>
+<line x1="1154.3" y1="230" x2="1154.3" y2="750" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="1154.3" y="786.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">1.03</text>
+<line x1="1371.4" y1="230" x2="1371.4" y2="750" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="1371.4" y="786.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">1.07</text>
+<line x1="1357.0" y1="210" x2="1357.0" y2="750" stroke="#565c66" stroke-width="2" stroke-dasharray="8 6"/>
+<text class="m" x="1357.0" y="198.0" font-size="22" fill="#565c66" text-anchor="middle" font-weight="400">base rate 1.067</text>
+<text class="s" x="80.0" y="256.0" font-size="26" fill="#15171a" text-anchor="start" font-weight="600">Random forest</text>
+<text class="s" x="104.0" y="325.0" font-size="25" fill="#2e3238" text-anchor="start" font-weight="400">trained and tested with odds</text>
+<line x1="720" y1="316" x2="884.7" y2="316" stroke="#c9cdd2" stroke-width="2"/>
+<circle cx="884.7" cy="316" r="11" fill="#15171a"/>
+<text class="m" x="906.7" y="324.0" font-size="23" fill="#565c66" text-anchor="start" font-weight="400" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" paint-order="stroke">0.980</text>
+<text class="s" x="104.0" y="385.0" font-size="25" fill="#2e3238" text-anchor="start" font-weight="400">trained without odds</text>
+<line x1="720" y1="376" x2="935.0" y2="376" stroke="#c9cdd2" stroke-width="2"/>
+<circle cx="935.0" cy="376" r="11" fill="#15171a"/>
+<text class="m" x="957.0" y="384.0" font-size="23" fill="#565c66" text-anchor="start" font-weight="400" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" paint-order="stroke">0.990</text>
+<text class="s" x="104.0" y="445.0" font-size="25" fill="#2451b8" text-anchor="start" font-weight="600">trained with odds, odds set to 0</text>
+<line x1="720" y1="436" x2="1056.8" y2="436" stroke="#c9cdd2" stroke-width="2"/>
+<circle cx="1056.8" cy="436" r="11" fill="#2451b8"/>
+<text class="m" x="1078.8" y="444.0" font-size="23" fill="#2451b8" text-anchor="start" font-weight="400" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" paint-order="stroke">1.012</text>
+<text class="s" x="80.0" y="516.0" font-size="26" fill="#15171a" text-anchor="start" font-weight="600">LightGBM</text>
+<text class="s" x="104.0" y="585.0" font-size="25" fill="#2e3238" text-anchor="start" font-weight="400">trained and tested with odds</text>
+<line x1="720" y1="576" x2="919.6" y2="576" stroke="#c9cdd2" stroke-width="2"/>
+<circle cx="919.6" cy="576" r="11" fill="#15171a"/>
+<text class="m" x="941.6" y="584.0" font-size="23" fill="#565c66" text-anchor="start" font-weight="400" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" paint-order="stroke">0.987</text>
+<text class="s" x="104.0" y="645.0" font-size="25" fill="#2e3238" text-anchor="start" font-weight="400">trained without odds</text>
+<line x1="720" y1="636" x2="981.8" y2="636" stroke="#c9cdd2" stroke-width="2"/>
+<circle cx="981.8" cy="636" r="11" fill="#15171a"/>
+<text class="m" x="1003.8" y="644.0" font-size="23" fill="#565c66" text-anchor="start" font-weight="400" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" paint-order="stroke">0.998</text>
+<text class="s" x="104.0" y="705.0" font-size="25" fill="#2451b8" text-anchor="start" font-weight="600">trained with odds, odds set to 0</text>
+<line x1="720" y1="696" x2="1403.5" y2="696" stroke="#c9cdd2" stroke-width="2"/>
+<circle cx="1403.5" cy="696" r="11" fill="#2451b8"/>
+<text class="m" x="1425.5" y="704.0" font-size="23" fill="#2451b8" text-anchor="start" font-weight="400" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" paint-order="stroke">1.076</text>
+<text class="s" x="80.0" y="860.0" font-size="22" fill="#6b717b" text-anchor="start" font-weight="400">Every training row had odds, so the models never saw an implied probability of 0 before.</text>
+</svg>

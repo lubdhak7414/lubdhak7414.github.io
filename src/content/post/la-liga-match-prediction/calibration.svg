@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1220" viewBox="0 0 1600 1220">
+<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"IBM Plex Mono";}</style>
+<rect width="1600" height="1220" fill="#ffffff"/>
+<text class="s" x="80.0" y="96.0" font-size="38" fill="#15171a" text-anchor="start" font-weight="600">Home-win probability: forecast vs. what happened</text>
+<text class="s" x="80.0" y="146.0" font-size="26" fill="#565c66" text-anchor="start" font-weight="400">Matches grouped into 10-point bins of forecast. Bins with fewer than 30 matches are left out.</text>
+<line x1="180.0" y1="220" x2="180.0" y2="1020" stroke="#e4e6e9" stroke-width="2"/>
+<line x1="180" y1="1020.0" x2="980" y2="1020.0" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="180.0" y="1060.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">0%</text>
+<text class="m" x="164.0" y="1028.0" font-size="22" fill="#6b717b" text-anchor="end" font-weight="400">0%</text>
+<line x1="340.0" y1="220" x2="340.0" y2="1020" stroke="#e4e6e9" stroke-width="2"/>
+<line x1="180" y1="860.0" x2="980" y2="860.0" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="340.0" y="1060.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">20%</text>
+<text class="m" x="164.0" y="868.0" font-size="22" fill="#6b717b" text-anchor="end" font-weight="400">20%</text>
+<line x1="500.0" y1="220" x2="500.0" y2="1020" stroke="#e4e6e9" stroke-width="2"/>
+<line x1="180" y1="700.0" x2="980" y2="700.0" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="500.0" y="1060.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">40%</text>
+<text class="m" x="164.0" y="708.0" font-size="22" fill="#6b717b" text-anchor="end" font-weight="400">40%</text>
+<line x1="660.0" y1="220" x2="660.0" y2="1020" stroke="#e4e6e9" stroke-width="2"/>
+<line x1="180" y1="540.0" x2="980" y2="540.0" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="660.0" y="1060.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">60%</text>
+<text class="m" x="164.0" y="548.0" font-size="22" fill="#6b717b" text-anchor="end" font-weight="400">60%</text>
+<line x1="820.0" y1="220" x2="820.0" y2="1020" stroke="#e4e6e9" stroke-width="2"/>
+<line x1="180" y1="380.0" x2="980" y2="380.0" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="820.0" y="1060.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">80%</text>
+<text class="m" x="164.0" y="388.0" font-size="22" fill="#6b717b" text-anchor="end" font-weight="400">80%</text>
+<line x1="980.0" y1="220" x2="980.0" y2="1020" stroke="#e4e6e9" stroke-width="2"/>
+<line x1="180" y1="220.0" x2="980" y2="220.0" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="980.0" y="1060.0" font-size="22" fill="#6b717b" text-anchor="middle" font-weight="400">100%</text>
+<text class="m" x="164.0" y="228.0" font-size="22" fill="#6b717b" text-anchor="end" font-weight="400">100%</text>
+<line x1="180" y1="1020" x2="980" y2="220" stroke="#c9cdd2" stroke-width="3" stroke-dasharray="10 8"/>
+<text class="s" x="580.0" y="1112.0" font-size="24" fill="#565c66" text-anchor="middle" font-weight="400">forecast probability of a home win</text>
+<text class="s" font-size="24" fill="#565c66" text-anchor="middle" transform="translate(70,620.0) rotate(-90)">share of those matches the home side won</text>
+<path d="M239.8 889.4 L303.5 891.4 L383.9 838.1 L459.9 756.1 L539.9 642.2 L616.5 595.3 L690.8 483.4 L780.2 389.4 L860.3 375.4 L924.5 395.8" fill="none" stroke="#15171a" stroke-width="3"/>
+<circle cx="239.8" cy="889.4" r="10" fill="#15171a"/>
+<circle cx="303.5" cy="891.4" r="10" fill="#15171a"/>
+<circle cx="383.9" cy="838.1" r="10" fill="#15171a"/>
+<circle cx="459.9" cy="756.1" r="10" fill="#15171a"/>
+<circle cx="539.9" cy="642.2" r="10" fill="#15171a"/>
+<circle cx="616.5" cy="595.3" r="10" fill="#15171a"/>
+<circle cx="690.8" cy="483.4" r="10" fill="#15171a"/>
+<circle cx="780.2" cy="389.4" r="10" fill="#15171a"/>
+<circle cx="860.3" cy="375.4" r="10" fill="#15171a"/>
+<circle cx="924.5" cy="395.8" r="10" fill="#15171a"/>
+<path d="M245.5 950.4 L307.0 876.6 L385.4 851.4 L462.8 744.2 L538.9 649.9 L619.2 573.4 L698.6 424.2 L780.1 405.7 L853.1 357.0" fill="none" stroke="#2451b8" stroke-width="3"/>
+<rect x="236.5" y="941.4" width="18" height="18" fill="#2451b8"/>
+<rect x="298.0" y="867.6" width="18" height="18" fill="#2451b8"/>
+<rect x="376.4" y="842.4" width="18" height="18" fill="#2451b8"/>
+<rect x="453.8" y="735.2" width="18" height="18" fill="#2451b8"/>
+<rect x="529.9" y="640.9" width="18" height="18" fill="#2451b8"/>
+<rect x="610.2" y="564.4" width="18" height="18" fill="#2451b8"/>
+<rect x="689.6" y="415.2" width="18" height="18" fill="#2451b8"/>
+<rect x="771.1" y="396.7" width="18" height="18" fill="#2451b8"/>
+<rect x="844.1" y="348.0" width="18" height="18" fill="#2451b8"/>
+<circle cx="1090" cy="250" r="10" fill="#15171a"/>
+<text class="s" x="1114.0" y="259.0" font-size="24" fill="#2e3238" text-anchor="start" font-weight="400">Random forest: form + Elo + odds</text>
+<rect x="1081" y="291" width="18" height="18" fill="#2451b8"/>
+<text class="s" x="1114.0" y="309.0" font-size="24" fill="#2451b8" text-anchor="start" font-weight="600">Bookmaker odds</text>
+<line x1="1080" y1="350" x2="1102" y2="350" stroke="#c9cdd2" stroke-width="3" stroke-dasharray="8 6"/>
+<text class="s" x="1114.0" y="359.0" font-size="24" fill="#565c66" text-anchor="start" font-weight="400">perfect calibration</text>
+<text class="s" x="1080.0" y="470.0" font-size="24" fill="#2e3238" text-anchor="start" font-weight="400">Top bin, model: 91 matches</text>
+<text class="s" x="1080.0" y="506.0" font-size="24" fill="#2e3238" text-anchor="start" font-weight="400">forecast 93% on average,</text>
+<text class="s" x="1080.0" y="542.0" font-size="24" fill="#2e3238" text-anchor="start" font-weight="400">home side won 78% of them.</text>
+<text class="s" x="80.0" y="1180.0" font-size="22" fill="#6b717b" text-anchor="start" font-weight="400">Test matches: 2016-17 to 2025-26 (3,800). Walk-forward, trained on seasons before each test season.</text>
+</svg>

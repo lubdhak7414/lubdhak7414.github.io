@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="660" viewBox="0 0 1600 660">
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#565c66"/></marker>
+<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"IBM Plex Mono";}</style>
+</defs>
+<rect width="1600" height="660" fill="#ffffff"/>
+<text class="s" x="80" y="70" font-size="26" font-weight="600" fill="#15171a">How the labs fit together</text>
+<text class="s" x="80" y="104" font-size="19" fill="#565c66">One Flex lexer and one Bison parser; the later labs add to the parser's actions and walk the tree it builds.</text>
+
+<!-- main row -->
+<g>
+<rect x="80" y="160" width="256" height="130" rx="5" fill="#f5f6f7" stroke="#c9cdd2" stroke-width="1.5"/>
+<text class="m" x="104" y="194" font-size="15" fill="#6b717b" letter-spacing="1">INPUT</text>
+<text class="s" x="104" y="232" font-size="25" font-weight="600" fill="#15171a">Source</text>
+<text class="m" x="104" y="266" font-size="17" fill="#565c66">input.c</text>
+
+<rect x="376" y="160" width="256" height="130" rx="5" fill="#ffffff" stroke="#c9cdd2" stroke-width="1.5"/>
+<text class="m" x="400" y="194" font-size="15" fill="#6b717b" letter-spacing="1">LAB 1</text>
+<text class="s" x="400" y="232" font-size="25" font-weight="600" fill="#15171a">Lexer</text>
+<text class="m" x="400" y="266" font-size="17" fill="#565c66">Flex, .l file</text>
+
+<rect x="672" y="160" width="256" height="130" rx="5" fill="#ffffff" stroke="#c9cdd2" stroke-width="1.5"/>
+<text class="m" x="696" y="194" font-size="15" fill="#6b717b" letter-spacing="1">LAB 1</text>
+<text class="s" x="696" y="232" font-size="25" font-weight="600" fill="#15171a">Parser</text>
+<text class="m" x="696" y="266" font-size="17" fill="#565c66">Bison, .y file</text>
+
+<rect x="968" y="160" width="256" height="130" rx="5" fill="#ffffff" stroke="#2451b8" stroke-width="2"/>
+<text class="m" x="992" y="194" font-size="15" fill="#2451b8" letter-spacing="1">LAB 4</text>
+<text class="s" x="992" y="232" font-size="25" font-weight="600" fill="#15171a">Syntax tree</text>
+<text class="m" x="992" y="266" font-size="17" fill="#565c66">ast.h nodes</text>
+
+<rect x="1264" y="160" width="256" height="130" rx="5" fill="#ffffff" stroke="#2451b8" stroke-width="2"/>
+<text class="m" x="1288" y="194" font-size="15" fill="#2451b8" letter-spacing="1">LAB 4</text>
+<text class="s" x="1288" y="232" font-size="23" font-weight="600" fill="#15171a">Three-address code</text>
+<text class="m" x="1288" y="266" font-size="17" fill="#565c66">code.txt</text>
+</g>
+
+<path d="M336 225 H372" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<path d="M632 225 H668" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<path d="M928 225 H964" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<path d="M1224 225 H1260" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<text class="m" x="400" y="320" font-size="16" fill="#6b717b">tokens</text>
+<text class="m" x="992" y="320" font-size="16" fill="#6b717b">generate_code() walks it</text>
+
+<!-- parser actions -->
+<path d="M800 290 V360" stroke="#565c66" stroke-width="2" fill="none"/>
+<path d="M590 360 H1010" stroke="#565c66" stroke-width="2" fill="none"/>
+<path d="M590 360 V404" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<path d="M1010 360 V404" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<rect x="692" y="334" width="216" height="26" fill="#ffffff"/>
+<text class="m" x="800" y="352" font-size="16" fill="#6b717b" text-anchor="middle">grammar actions</text>
+
+<rect x="420" y="408" width="340" height="150" rx="5" fill="#ffffff" stroke="#2451b8" stroke-width="2"/>
+<text class="m" x="444" y="442" font-size="15" fill="#2451b8" letter-spacing="1">LAB 2</text>
+<text class="s" x="444" y="480" font-size="25" font-weight="600" fill="#15171a">Symbol table</text>
+<text class="s" x="444" y="514" font-size="18" fill="#565c66">One hash table per scope,</text>
+<text class="s" x="444" y="540" font-size="18" fill="#565c66">kept on a stack</text>
+
+<rect x="840" y="408" width="340" height="150" rx="5" fill="#ffffff" stroke="#2451b8" stroke-width="2"/>
+<text class="m" x="864" y="442" font-size="15" fill="#2451b8" letter-spacing="1">LAB 3</text>
+<text class="s" x="864" y="480" font-size="25" font-weight="600" fill="#15171a">Semantic checks</text>
+<text class="s" x="864" y="514" font-size="18" fill="#565c66">Types, declarations, array</text>
+<text class="s" x="864" y="540" font-size="18" fill="#565c66">use, function calls</text>
+
+<path d="M764 483 H836" stroke="#565c66" stroke-width="2" fill="none" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text class="m" x="800" y="470" font-size="14" fill="#6b717b" text-anchor="middle">look up</text>
+<path d="M1180 483 H1256" stroke="#565c66" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+<rect x="1260" y="462" width="150" height="42" rx="4" fill="#f5f6f7" stroke="#e4e6e9"/>
+<text class="m" x="1335" y="489" font-size="17" fill="#15171a" text-anchor="middle">error.txt</text>
+<text class="s" x="80" y="620" font-size="17" fill="#6b717b">Each lab also writes a log file: every grammar rule it matched and, from Lab 2 on, the symbol table each time a scope closes.</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<radialGradient id="b0" cx="8%" cy="10%" r="62%"><stop offset="0" stop-color="#a9c4ea"/><stop offset="1" stop-color="#a9c4ea" stop-opacity="0"/></radialGradient>
+<radialGradient id="b1" cx="70%" cy="8%" r="62%"><stop offset="0" stop-color="#9fd0dc"/><stop offset="1" stop-color="#9fd0dc" stop-opacity="0"/></radialGradient>
+<radialGradient id="b2" cx="92%" cy="64%" r="62%"><stop offset="0" stop-color="#b3b4e6"/><stop offset="1" stop-color="#b3b4e6" stop-opacity="0"/></radialGradient>
+<radialGradient id="b3" cx="96%" cy="98%" r="62%"><stop offset="0" stop-color="#9dbde4"/><stop offset="1" stop-color="#9dbde4" stop-opacity="0"/></radialGradient>
+<radialGradient id="b4" cx="6%" cy="92%" r="62%"><stop offset="0" stop-color="#a8d6de"/><stop offset="1" stop-color="#a8d6de" stop-opacity="0"/></radialGradient>
+<radialGradient id="b5" cx="44%" cy="56%" r="62%"><stop offset="0" stop-color="#bccbea"/><stop offset="1" stop-color="#bccbea" stop-opacity="0"/></radialGradient>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#1e2a44" flood-opacity="0.20"/></filter>
+<style>.m{font-family:"IBM Plex Mono";}.s{font-family:"IBM Plex Sans";}</style></defs>
+<rect width="1600" height="900" fill="#c4d2ec"/>
+<rect width="1600" height="900" fill="url(#b0)"/>
+<rect width="1600" height="900" fill="url(#b1)"/>
+<rect width="1600" height="900" fill="url(#b2)"/>
+<rect width="1600" height="900" fill="url(#b3)"/>
+<rect width="1600" height="900" fill="url(#b4)"/>
+<rect width="1600" height="900" fill="url(#b5)"/>
+<g filter="url(#sh)"><rect x="220" y="150" width="1160" height="600" rx="12" fill="#ffffff"/></g>
+<path d="M220 162 a12 12 0 0 1 12 -12 h1136 a12 12 0 0 1 12 12 v38 h-1160 z" fill="#f1f2f4"/>
+<circle cx="252" cy="175" r="7" fill="#ff5f57"/>
+<circle cx="276" cy="175" r="7" fill="#febc2e"/>
+<circle cx="300" cy="175" r="7" fill="#28c840"/>
+<text class="s" x="800" y="181" font-size="17" fill="#6b717b" text-anchor="middle">dig against example.com, 23 October 2026</text>
+<line x1="220" y1="200" x2="1380" y2="200" stroke="#e4e6e9" stroke-width="2"/>
+<g class="m" font-size="28" xml:space="preserve">
+<text x="270" y="272"><tspan fill="#2451b8">$</tspan><tspan fill="#15171a"> dig +short MX example.com</tspan></text>
+<text x="270" y="318" fill="#565c66">0 .</text>
+<text x="270" y="400"><tspan fill="#2451b8">$</tspan><tspan fill="#15171a"> dig +short TXT example.com | grep spf1</tspan></text>
+<text x="270" y="446" fill="#565c66">"v=spf1 -all"</text>
+<text x="270" y="528"><tspan fill="#2451b8">$</tspan><tspan fill="#15171a"> dig +short TXT _dmarc.example.com</tspan></text>
+<text x="270" y="574" fill="#565c66">"v=DMARC1;p=reject;sp=reject;adkim=s;aspf=s"</text>
+<text x="270" y="656"><tspan fill="#2451b8">$</tspan><tspan fill="#15171a"> </tspan></text>
+</g>
+<rect x="306" y="634" width="15" height="28" fill="#15171a"/>
+</svg>

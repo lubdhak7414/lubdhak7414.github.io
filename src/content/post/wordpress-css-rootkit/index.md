@@ -4,12 +4,12 @@ description: 'We debugged a WordPress slot spam infection and found attackers hi
 publishDate: '2 April 2026'
 coverImage:
   src: './cover.webp'
-  alt: 'WordPress admin panel showing a hidden ghost administrator account alongside the CSS display:none payload in functions.php'
+  alt: 'The real users screen counting three administrators but listing two, above the diff of functions.php where line 573 hides the row of user 1087'
 tags: ['WordPress', 'Security', 'PHP', 'Incident Response', 'Project']
 homePageIdx: 3
 ---
 
-We spent three hours last Tuesday pulling apart a compromised e-commerce site. The symptom was glaring. The frontend of the store was plastered with Indonesian gambling posts pushing "Demo Slot Tema Asia" and "Slot Deposit 5000". By the time we were called in, the attacker had injected 847 spam posts over roughly six weeks, with one ghost administrator account sitting undetected and active for 41 days.
+We spent three hours last Tuesday pulling apart a compromised e-commerce site. The symptom was glaring. The frontend of the store was plastered with Indonesian gambling posts pushing "Demo Slot Tema Asia" and "Slot Deposit 5000".
 
 ![The storefront overrun with slot spam posts injected by the attacker](./spam-frontend.jpg)
 
@@ -62,7 +62,15 @@ echo '<style>
 
 The mechanism relies entirely on CSS `display: none` to hide UI elements. Line by line:
 
-![Breakdown of each CSS rule in the payload and what it targets](./css-payload-analysis.jpg)
+| Rule in the payload                                                      | What it hides                                           |
+| ------------------------------------------------------------------------ | ------------------------------------------------------- |
+| `#wpadminbar #wp-admin-bar-hide-notifications`                           | An admin-bar item named "hide notifications"            |
+| `#adminmenu li#menu-users li:nth-of-type(5)`                             | The fifth link in the Users menu                        |
+| `#adminmenu li#toplevel_page_itsec-dashboard`                            | The iThemes Security menu                               |
+| `.plugins-php .plugins tr[data-slug="temporary-login-without-password"]` | The Temporary Login Without Password plugin in the list |
+| `.users-php .users tr[id="user-1087"]`                                   | One administrator's row in the users list               |
+| `#adminmenu li#toplevel_page_manage_notices_settings`                    | A notices plugin's settings menu                        |
+| `.plugins-php .plugins tr[data-slug="wp-hide-backed-notices"]`           | The WP Hide Backend Notices plugin in the list          |
 
 It targets specific DOM nodes to suppress warning notifications, hide the iThemes Security dashboard menu item, and cloak two specific backdoor plugins: "Temporary Login Without Password" and "WP Hide Backend Notices".
 
@@ -73,7 +81,5 @@ The last rule mattered most. `.users-php .users tr[id="user-1087"]` removes a sp
 ## Tradeoffs of the DOM-level rootkit
 
 Every technical choice has tradeoffs, even for attackers. This method is cheap to implement. It requires no complex PHP logic and quietly bypasses basic security audits performed by non-technical store owners who only look at dashboards. But it breaks easily. Because the payload lives strictly in the active theme's `functions.php` file, a simple theme update or a switch to a default theme instantly strips the persistence mechanism and exposes the rogue user. It also leaves an obvious footprint in version control.
-
-The full cleanup took four hours: roughly an hour to understand the scope and audit the database tables directly, forty minutes to identify and strip the persistence mechanism from `functions.php`, another hour to purge the 847 spam posts and reset compromised credentials, and forty minutes of post-remediation verification. No store downtime — we worked on a staging clone and pushed the cleaned files in a single deploy.
 
 You cannot trust the application UI when auditing a compromised system. If the environment is breached, the DOM is just another vector for obfuscation. Audit the raw database tables.
