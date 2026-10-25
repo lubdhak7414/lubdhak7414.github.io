@@ -4,11 +4,14 @@ import { siteConfig } from '@/site-config'
 /* The contact card on About: two skies on one horizon (Dhaka on the left, the visitor on the
 right), then the email, large, with a copy button, and the two profiles in small text.
 
-Each sky is a hairline semicircle with a sun dot by day and a moon by night. Dhaka's sun runs
+Each sky is a hairline semicircle with a sun dot by day and a moon by night. The sun runs
 between today's real sunrise and sunset (NOAA approximation, computed in the browser, no
-network); the visitor's place is unknown (only the time zone), so their sun runs by the clock,
-06:00 to 18:00, and no sunrise or sunset is printed for them. In Dhaka's own zone only one sky
-shows. Without JS: Dhaka's arc without a dot and "Dhaka, UTC+6". */
+network): Dhaka's own, and for the visitor those of their time zone's city (London for
+Europe/London; the browser gives only the zone), which is the place their caption names. Zones
+without a city (UTC) and polar days fall back to 06:00-18:00 by the clock. At night the feet
+swap: the moon runs from the last sunset on the left to the next sunrise on the right, so the
+words under each arc name the ends of the arc its dot is on. No times are printed under the
+arcs (owner, 2026-10-26). In Dhaka's own zone only one sky shows. Without JS: Dhaka's arc without a dot and "Dhaka, UTC+6". */
 const { email, github, linkedin } = siteConfig.socials
 const external = { target: '_blank', rel: 'noopener noreferrer' }
 
@@ -59,20 +62,14 @@ const halves = ['home', 'you'] as const
 								</svg>
 							</span>
 						</div>
-						{who === 'home' ? (
-							<p class='sky-feet'>
-								<span class='sky-foot' style={footLeft}>
-									<span class='sky-foot-k'>sunrise</span>
-									<span class='sky-foot-t' data-rise />
-								</span>
-								<span class='sky-foot' style={footRight}>
-									<span class='sky-foot-k'>sunset</span>
-									<span class='sky-foot-t' data-set />
-								</span>
-							</p>
-						) : (
-							<p class='sky-feet' aria-hidden='true' />
-						)}
+						<p class='sky-feet' aria-hidden='true'>
+							<span class='sky-foot' style={footLeft} data-foot={`${who}-start`}>
+								sunrise
+							</span>
+							<span class='sky-foot' style={footRight} data-foot={`${who}-end`}>
+								sunset
+							</span>
+						</p>
 						<p class='sky-cap'>
 							{who === 'home' ? (
 								<span class='sky-name'>Dhaka</span>
@@ -125,9 +122,10 @@ const halves = ['home', 'you'] as const
 </div>
 
 <script>
+	import { coordsOf } from '../../data/zoneCoords'
+
 	const HOME = 'Asia/Dhaka'
-	const LAT = 23.81
-	const LON = 90.41
+	const DHAKA: [number, number] = [23.81, 90.41]
 	const RAD = Math.PI / 180
 	const DAY = 86400000
 
@@ -187,10 +185,11 @@ const halves = ['home', 'you'] as const
 		return renamed[city] ?? city.replace(/_/g, ' ')
 	}
 
-	// NOAA general solar position approximation: sunrise and sunset instants in Dhaka for a
+	// NOAA general solar position approximation: sunrise and sunset instants at a place for a
 	// calendar date there (zenith 90.833 degrees for refraction and the sun's disc). Anchored on
-	// the UTC midnight of the same y-m-d, which lands on the right instants for Dhaka.
-	function sunTimes(y: number, m: number, d: number) {
+	// the UTC midnight of the same y-m-d, which lands on the right instants wherever the zone's
+	// offset roughly follows its longitude. NaN when the sun doesn't rise or set that day.
+	function sunTimes([lat, lon]: [number, number], y: number, m: number, d: number) {
 		const midnight = Date.UTC(y, m - 1, d)
 		const doy = Math.round((midnight - Date.UTC(y, 0, 1)) / DAY) + 1
 		const leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0
@@ -212,13 +211,34 @@ const halves = ['home', 'you'] as const
 			0.00148 * Math.sin(3 * g)
 		const ha =
 			Math.acos(
-				Math.cos(90.833 * RAD) / (Math.cos(LAT * RAD) * Math.cos(decl)) -
-					Math.tan(LAT * RAD) * Math.tan(decl)
+				Math.cos(90.833 * RAD) / (Math.cos(lat * RAD) * Math.cos(decl)) -
+					Math.tan(lat * RAD) * Math.tan(decl)
 			) / RAD
 		return {
-			rise: midnight + (720 - 4 * (LON + ha) - eqtime) * 60000,
-			set: midnight + (720 - 4 * (LON - ha) - eqtime) * 60000
+			rise: midnight + (720 - 4 * (lon + ha) - eqtime) * 60000,
+			set: midnight + (720 - 4 * (lon - ha) - eqtime) * 60000
 		}
+	}
+
+	// Where the sun or moon is on the arc at instant t, for a place and its wall-clock date: by
+	// day from sunrise to sunset, by night from the last sunset to the next sunrise. Without a
+	// place, or on a polar day, 06:00-18:00 by the clock.
+	function skyAt(t: number, p: Parts, where: [number, number] | undefined) {
+		const today = where && sunTimes(where, p.y, p.mo, p.d)
+		if (!where || !today || Number.isNaN(today.rise)) {
+			const m = p.h * 60 + p.mi
+			return m >= 360 && m < 1080
+				? { f: (m - 360) / 720, night: false }
+				: { f: mod(m - 1080, 1440) / 720, night: true }
+		}
+		if (t >= today.rise && t <= today.set) {
+			return { f: (t - today.rise) / (today.set - today.rise), night: false }
+		}
+		const before = t < today.rise
+		const o = new Date(Date.UTC(p.y, p.mo - 1, p.d) + (before ? -DAY : DAY))
+		const other = sunTimes(where, o.getUTCFullYear(), o.getUTCMonth() + 1, o.getUTCDate())
+		const [from, to] = before ? [other.set, today.rise] : [today.set, other.rise]
+		return { f: (t - from) / (to - from), night: true }
 	}
 
 	let teardown: (() => void) | undefined
@@ -235,8 +255,6 @@ const halves = ['home', 'you'] as const
 		const youDot = q('[data-dot="you"]')
 		const homeTime = q('[data-time="home"]')
 		const youTime = q('[data-time="you"]')
-		const riseEl = q('[data-rise]')
-		const setEl = q('[data-set]')
 		const cityEl = q('[data-city]')
 		const diffEl = q('[data-diff]')
 		const controller = new AbortController()
@@ -246,28 +264,27 @@ const halves = ['home', 'you'] as const
 		let reset: number | undefined
 
 		// ---- Two skies ----
-		if (sky && homeDot && youDot && homeTime && youTime && riseEl && setEl && cityEl && diffEl) {
+		if (sky && homeDot && youDot && homeTime && youTime && cityEl && diffEl) {
 			const zone = Intl.DateTimeFormat().resolvedOptions().timeZone
 			const home = partsIn(HOME)
 			const you = partsIn(zone)
-			const hm = new Intl.DateTimeFormat('en-GB', {
-				timeZone: HOME,
-				hour: '2-digit',
-				minute: '2-digit',
-				hourCycle: 'h23'
-			})
+			const where = coordsOf(zone)
 			// f in [0, 1]: from the left foot of the arc over the top to the right foot.
 			const onArc = (f: number): [number, number] => {
 				const t = Math.PI * (1 - clamp(f))
 				return [geo.CX + geo.R * Math.cos(t), geo.HY - geo.R * Math.sin(t)]
 			}
-			const place = (dot: HTMLElement, [x, y]: [number, number], phase: 'day' | 'night') => {
+			const set = (el: HTMLElement | null, text: string) => {
+				if (el && el.textContent !== text) el.textContent = text
+			}
+			// The dot on the arc, and the words under the feet (swapped at night).
+			const place = (who: string, dot: HTMLElement, { f, night }: ReturnType<typeof skyAt>) => {
+				const [x, y] = onArc(f)
 				dot.style.left = `${((x / geo.W) * 100).toFixed(3)}%`
 				dot.style.top = `${((y / geo.H) * 100).toFixed(3)}%`
-				dot.dataset.phase = phase
-			}
-			const set = (el: HTMLElement, text: string) => {
-				if (el.textContent !== text) el.textContent = text
+				dot.dataset.phase = night ? 'night' : 'day'
+				set(q(`[data-foot="${who}-start"]`), night ? 'sunset' : 'sunrise')
+				set(q(`[data-foot="${who}-end"]`), night ? 'sunrise' : 'sunset')
 			}
 
 			let last = ''
@@ -293,26 +310,9 @@ const halves = ['home', 'you'] as const
 						: `Dhaka is ${span(Math.abs(ahead))} ${ahead > 0 ? 'ahead of' : 'behind'} you`
 				)
 
-				// Dhaka: the real day, sunrise to sunset; at night the moon crosses the same arc
-				// from the last sunset to the next sunrise.
 				const t = at.getTime()
-				const today = sunTimes(h.y, h.mo, h.d)
-				set(riseEl, hm.format(today.rise))
-				set(setEl, hm.format(today.set))
-				if (t >= today.rise && t <= today.set) {
-					place(homeDot, onArc((t - today.rise) / (today.set - today.rise)), 'day')
-				} else {
-					const before = t < today.rise
-					const o = new Date(Date.UTC(h.y, h.mo - 1, h.d) + (before ? -DAY : DAY))
-					const other = sunTimes(o.getUTCFullYear(), o.getUTCMonth() + 1, o.getUTCDate())
-					const [from, to] = before ? [other.set, today.rise] : [today.set, other.rise]
-					place(homeDot, onArc((t - from) / (to - from)), 'night')
-				}
-
-				// You: place unknown, so day is 06:00-18:00 by your clock.
-				const m = y.h * 60 + y.mi
-				if (m >= 360 && m < 1080) place(youDot, onArc((m - 360) / 720), 'day')
-				else place(youDot, onArc(mod(m - 1080, 1440) / 720), 'night')
+				place('home', homeDot, skyAt(t, h, DHAKA))
+				place('you', youDot, skyAt(t, y, where))
 			}
 
 			tick()
@@ -453,10 +453,6 @@ const halves = ['home', 'you'] as const
 		font: 400 0.75rem/1.65 var(--mono);
 		color: var(--faint);
 		white-space: nowrap;
-	}
-	.sky-foot-t {
-		color: var(--muted);
-		font-variant-numeric: tabular-nums;
 	}
 
 	.sky-cap {
@@ -667,20 +663,17 @@ const halves = ['home', 'you'] as const
 		text-decoration-color: currentColor;
 	}
 
-	/* Phones: the card goes edge to edge in the column, the sunrise/sunset labels stack so both
-	   fit under a small arc. */
+	/* Phones: the card goes edge to edge in the column, and the two words where the skies meet
+	   tuck inside their own arcs so they don't run together. */
 	@media (max-width: 520px) {
 		.card {
 			padding: 1.5rem 1rem;
 		}
-		.sky-feet {
-			height: 2.5rem;
+		.sky-half--home .sky-foot:last-child {
+			transform: translateX(-100%);
 		}
-		.sky-foot {
-			flex-direction: column;
-			align-items: center;
-			gap: 0;
-			line-height: 1.6;
+		.sky-half--you .sky-foot:first-child {
+			transform: none;
 		}
 		.sky-cap {
 			padding-inline: 0.25rem;
