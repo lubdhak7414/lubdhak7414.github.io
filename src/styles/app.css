@@ -274,9 +274,9 @@
 	}
 	.id-role {
 		margin-top: 0.1rem;
-		font-size: 0.875rem;
+		font-size: 0.8125rem;
 		line-height: 1.4;
-		color: var(--muted);
+		color: var(--faint);
 	}
 	.nav {
 		margin-top: 2rem;
@@ -318,9 +318,10 @@
 	/* The bio and the contact lines sit between the name and the navigation. */
 	.side-bio {
 		margin-top: 1.25rem;
-		font-size: 0.9375rem;
-		line-height: 1.6;
-		color: var(--text-body);
+		font-size: 1.0625rem;
+		line-height: 1.5;
+		font-weight: 400;
+		color: var(--text);
 		text-wrap: pretty;
 	}
 	.side-bio + .keys {
@@ -733,8 +734,23 @@
 	.prow {
 		position: relative;
 		isolation: isolate;
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		column-gap: 1rem;
 		padding: 1rem 0 1.05rem;
 		border-bottom: 1px solid var(--line);
+	}
+	.picon {
+		width: 2.5rem;
+		height: 2.5rem;
+		margin-top: 0.15rem;
+		padding: 3px;
+		border: 1px solid var(--line);
+		border-radius: 6px;
+		background: #fff;
+	}
+	.prow:not(:has(.picon)) {
+		grid-template-columns: minmax(0, 1fr);
 	}
 	.prow::before {
 		content: '';
@@ -819,6 +835,13 @@
 	}
 	/* Phones: name, summary and the arrow; the whole row still opens the case study. */
 	@media (max-width: 639px) {
+		.picon {
+			width: 2rem;
+			height: 2rem;
+		}
+		.prow {
+			column-gap: 0.75rem;
+		}
 		.prow-stack,
 		.prow .plinks {
 			display: none;

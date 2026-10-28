@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 
+import ProjectIcon from './ProjectIcon.astro'
 import ProjectLinks from './ProjectLinks.astro'
 
 interface Props {
@@ -23,14 +24,17 @@ code/live/store links and an arrow. The name's link stretches over the row; the 
 sit above it, so nothing nests. */
 }
 <li class='prow'>
-	<p class='prow-head'>
-		<a class='prow-name' href={`/projects/${project.id}/`} set:text={name} />
-		{context && <span class='prow-ctx' set:text={context} />}
-	</p>
-	<p class='prow-text'>{data.description}</p>
-	<p class='prow-foot'>
-		{stack && <span class='prow-stack'>{stack}</span>}
-		<ProjectLinks project={project} />
-		<span class='prow-go' aria-hidden='true'>→</span>
-	</p>
+	<ProjectIcon id={project.id} />
+	<div class='prow-body'>
+		<p class='prow-head'>
+			<a class='prow-name' href={`/projects/${project.id}/`} set:text={name} />
+			{context && <span class='prow-ctx' set:text={context} />}
+		</p>
+		<p class='prow-text'>{data.description}</p>
+		<p class='prow-foot'>
+			{stack && <span class='prow-stack'>{stack}</span>}
+			<ProjectLinks project={project} />
+			<span class='prow-go' aria-hidden='true'>→</span>
+		</p>
+	</div>
 </li>

@@ -1,0 +1,25 @@
+---
+import { projectIcons } from '../../data/projectIcons'
+
+interface Props {
+	id: string
+}
+
+const { id } = Astro.props
+const markup = projectIcons[id]
+---
+
+{/* Decorative: the row's name already says what it is. Projects without a mark get none. */}
+{
+	markup && (
+		<svg
+			class='picon'
+			viewBox='0 0 48 48'
+			width='40'
+			height='40'
+			aria-hidden='true'
+			focusable='false'
+			set:html={markup}
+		/>
+	)
+}
