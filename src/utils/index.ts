@@ -12,6 +12,8 @@ export {
 	getRelatedPosts
 } from './post'
 export type { Entry } from './post'
+export { getSeries, writingItems, seriesSlug } from './series'
+export type { Series, WritingItem } from './series'
 export { getFormattedDate, isoDate } from './date'
 export { slugifyTag } from './slugify'
 export { generateToc } from './generateToc'

@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+
+import ShellLayout from '@/layouts/ShellLayout.astro'
+import { getAllPosts, getSeries, isoDate } from '@/utils'
+
+export const getStaticPaths = (async () => {
+	return getSeries(await getAllPosts()).map((series) => ({
+		params: { slug: series.slug },
+		props: { series }
+	}))
+}) satisfies GetStaticPaths
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { series } = Astro.props
+const first = series.parts[0]!
+---
+
+<ShellLayout meta={{ title: series.name, description: series.about }} page='writing'>
+	<header class='page-head'>
+		<p class='label'><a href='/blog/'>Writing</a> · series</p>
+		<h1>{series.name}</h1>
+		<p class='page-note'>
+			{series.about}
+			<span class='series-count'
+				>{`${series.parts.length} parts · ${isoDate(first.data.publishDate)}`}</span
+			>
+		</p>
+	</header>
+	<ol class='rows series-rows'>
+		{
+			series.parts.map((part, i) => (
+				<li class='row'>
+					<a class='row-link' href={`/blog/${part.id}/`}>
+						<span class='row-date'>{`Part ${String(i + 1).padStart(2, '0')}`}</span>
+						<span class='row-body'>
+							<span class='row-title'>
+								{part.data.draft && '(Draft) '}
+								{part.data.title}
+							</span>
+							<span class='row-text'>{part.data.description}</span>
+						</span>
+					</a>
+				</li>
+			))
+		}
+	</ol>
+</ShellLayout>

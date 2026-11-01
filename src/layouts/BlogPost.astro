@@ -6,11 +6,13 @@ import TOC from '@/components/blog/TOC.astro'
 import AuthorBox from '@/components/AuthorBox.astro'
 import CoverFigure from '@/components/CoverFigure.astro'
 import BalloonSurprise from '@/components/blog/BalloonSurprise.astro'
+import SeriesBlock from '@/components/blog/SeriesBlock.astro'
 import WritingDirectory from '@/components/blog/WritingDirectory.astro'
 import Gist from '@/components/doc/Gist.astro'
 import SideNext from '@/components/doc/SideNext.astro'
 import UpNext from '@/components/doc/UpNext.astro'
 
+import type { Series } from '@/utils'
 import {
 	PERSON_ID,
 	displayTags,
@@ -26,9 +28,12 @@ import ShellLayout from './ShellLayout.astro'
 interface Props {
 	post: CollectionEntry<'post'>
 	next?: CollectionEntry<'post'> | undefined
+	/** Series preview: the part before this one, and the series this post belongs to. */
+	prev?: CollectionEntry<'post'> | undefined
+	series?: Series | undefined
 }
 
-const { post, next } = Astro.props
+const { post, next, prev, series } = Astro.props
 const {
 	data: { coverImage, description, draft, publishDate, title, updatedDate }
 } = post
@@ -113,7 +118,11 @@ const blogPostingSchema = {
 		<WritingDirectory current={post.id} />
 		{
 			next && next.id !== post.id && (
-				<SideNext label='Read next' href={`/blog/${next.id}/`} title={next.data.title} />
+				<SideNext
+					label={series ? 'Next part' : 'Read next'}
+					href={`/blog/${next.id}/`}
+					title={next.data.title}
+				/>
 			)
 		}
 	</Fragment>
@@ -130,6 +139,7 @@ const blogPostingSchema = {
 			</p>
 		</header>
 		<Gist takeaways={takeaways} />
+		{series && <SeriesBlock series={series} current={post.id} />}
 		{
 			coverImage && (
 				<div class='doc-cover'>
@@ -149,17 +159,34 @@ const blogPostingSchema = {
 		<AuthorBox />
 	</article>
 	{
-		next && next.id !== post.id && (
+		series ? (
 			<UpNext
-				label='Read next'
-				href={`/blog/${next.id}/`}
-				title={next.data.title}
-				text={next.data.description}
-				meta={isoDate(next.data.publishDate)}
-				go='Read the article'
-				image={next.data.coverImage}
-				back={{ href: '/blog/', label: '← All writing' }}
+				label={next ? 'Next part' : 'Series complete'}
+				count={`${series.parts.findIndex((p) => p.id === post.id) + 1} / ${series.parts.length}`}
+				href={next ? `/blog/${next.id}/` : `/series/${series.slug}/`}
+				title={next ? next.data.title : series.name}
+				text={next ? next.data.description : series.about}
+				go={next ? 'Read the next part' : 'See all parts'}
+				back={
+					prev
+						? { href: `/blog/${prev.id}/`, label: `← Previous part: ${prev.data.title}` }
+						: { href: `/series/${series.slug}/`, label: `← All parts of ${series.name}` }
+				}
 			/>
+		) : (
+			next &&
+			next.id !== post.id && (
+				<UpNext
+					label='Read next'
+					href={`/blog/${next.id}/`}
+					title={next.data.title}
+					text={next.data.description}
+					meta={isoDate(next.data.publishDate)}
+					go='Read the article'
+					image={next.data.coverImage}
+					back={{ href: '/blog/', label: '← All writing' }}
+				/>
+			)
 		)
 	}
 	<BalloonSurprise slot='after' />

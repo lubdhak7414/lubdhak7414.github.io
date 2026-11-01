@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 520" width="1040" height="520" role="img" aria-labelledby="t d" font-family="DejaVu Sans, Helvetica, Arial, sans-serif"><title id="t">LSTM autoencoder unrolled over 50 steps</title><desc id="d">Encoder LSTM reads x_1 to x_50, each of shape (batch, 2), passing h and c of shape (batch, 100). Its last hidden state h_50 is the code z of shape (batch, 100). RepeatVector copies z 50 times giving (batch, 50, 100). The decoder LSTM runs over the copies and one shared Dense layer maps each step's (batch, 100) state to (batch, 2), giving (batch, 50, 2).</desc><defs><marker id="ah-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d232b"/></marker><marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563c9"/></marker><marker id="ah-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b85f08"/></marker><marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="ah-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="ah-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#56606c"/></marker><marker id="ah-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker></defs><rect x="1" y="1" width="1038" height="518" rx="16" fill="#f8f7f3" stroke="#d3cfc6" stroke-width="1.5"/><text x="230" y="205" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">h_t, c_t: (batch, 100)</text>
+<rect x="40" y="232" width="90" height="56" rx="8" fill="#dbe7fb" stroke="#2563c9" stroke-width="1.6"/>
+<text x="85.0" y="250.9" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">LSTM</text>
+<text x="85.0" y="269.1" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">t = 1</text>
+<rect x="40" y="334" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="85.0" y="348.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x_1</text>
+<text x="85.0" y="365.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
+<line x1="85.0" y1="334" x2="85.0" y2="291" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<rect x="160" y="232" width="90" height="56" rx="8" fill="#dbe7fb" stroke="#2563c9" stroke-width="1.6"/>
+<text x="205.0" y="250.9" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">LSTM</text>
+<text x="205.0" y="269.1" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">t = 2</text>
+<rect x="160" y="334" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="205.0" y="348.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x_2</text>
+<text x="205.0" y="365.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
+<line x1="205.0" y1="334" x2="205.0" y2="291" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<rect x="330" y="232" width="90" height="56" rx="8" fill="#dbe7fb" stroke="#2563c9" stroke-width="1.6"/>
+<text x="375.0" y="250.9" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">LSTM</text>
+<text x="375.0" y="269.1" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">t = 50</text>
+<rect x="330" y="334" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="375.0" y="348.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x_50</text>
+<text x="375.0" y="365.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
+<line x1="375.0" y1="334" x2="375.0" y2="291" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<line x1="130" y1="260" x2="157" y2="260" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<line x1="250" y1="260" x2="272" y2="260" stroke="#1d232b" stroke-width="1.6"/>
+<text x="290" y="260" font-size="16" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">...</text>
+<line x1="305" y1="260" x2="327" y2="260" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<text x="230" y="402" font-size="14" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">input (batch, 50, 2)</text>
+<text x="230" y="440" font-size="14" text-anchor="middle" font-weight="bold" fill="#2563c9" dominant-baseline="middle">Encoder LSTM, 100 units</text>
+<text x="230" y="462" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">4(2x100 + 100^2 + 100) = 41,200 params</text>
+<rect x="460" y="232" width="110" height="56" rx="8" fill="#fbe3c8" stroke="#b85f08" stroke-width="1.6"/>
+<text x="515.0" y="250.9" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">z = h_50</text>
+<text x="515.0" y="269.1" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 100)</text>
+<line x1="420" y1="260" x2="457" y2="260" stroke="#b85f08" stroke-width="2" marker-end="url(#ah-orange)"/>
+<text x="515" y="214" font-size="13" text-anchor="middle" font-weight="normal" fill="#b85f08" dominant-baseline="middle">the code</text>
+<rect x="450" y="340" width="130" height="52" rx="8" fill="#ffffff" stroke="#b85f08" stroke-width="1.6"/>
+<text x="515.0" y="357.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">RepeatVector(50)</text>
+<text x="515.0" y="374.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0 params</text>
+<line x1="515" y1="288" x2="515" y2="337" stroke="#b85f08" stroke-width="2" marker-end="url(#ah-orange)"/>
+<path d="M 580 366 L 955 366" fill="none" stroke="#b85f08" stroke-width="2"/>
+<line x1="665.0" y1="366" x2="665.0" y2="291" stroke="#b85f08" stroke-width="1.8" marker-end="url(#ah-orange)"/>
+<line x1="785.0" y1="366" x2="785.0" y2="291" stroke="#b85f08" stroke-width="1.8" marker-end="url(#ah-orange)"/>
+<line x1="955.0" y1="366" x2="955.0" y2="291" stroke="#b85f08" stroke-width="1.8" marker-end="url(#ah-orange)"/>
+<text x="790" y="388" font-size="13" text-anchor="middle" font-weight="normal" fill="#b85f08" dominant-baseline="middle">(batch, 50, 100): copy t feeds decoder step t</text>
+<rect x="620" y="232" width="90" height="56" rx="8" fill="#d5efdf" stroke="#18794a" stroke-width="1.6"/>
+<text x="665.0" y="250.9" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">LSTM</text>
+<text x="665.0" y="269.1" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">t = 1</text>
+<rect x="620" y="132" width="90" height="44" rx="8" fill="#e7defa" stroke="#6b3fb3" stroke-width="1.6"/>
+<text x="665.0" y="154.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Dense 2</text>
+<line x1="665.0" y1="232" x2="665.0" y2="179" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<rect x="620" y="40" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="665.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x'_1</text>
+<text x="665.0" y="71.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
+<line x1="665.0" y1="132" x2="665.0" y2="89" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<rect x="740" y="232" width="90" height="56" rx="8" fill="#d5efdf" stroke="#18794a" stroke-width="1.6"/>
+<text x="785.0" y="250.9" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">LSTM</text>
+<text x="785.0" y="269.1" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">t = 2</text>
+<rect x="740" y="132" width="90" height="44" rx="8" fill="#e7defa" stroke="#6b3fb3" stroke-width="1.6"/>
+<text x="785.0" y="154.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Dense 2</text>
+<line x1="785.0" y1="232" x2="785.0" y2="179" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<rect x="740" y="40" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="785.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x'_2</text>
+<text x="785.0" y="71.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
+<line x1="785.0" y1="132" x2="785.0" y2="89" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<rect x="910" y="232" width="90" height="56" rx="8" fill="#d5efdf" stroke="#18794a" stroke-width="1.6"/>
+<text x="955.0" y="250.9" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">LSTM</text>
+<text x="955.0" y="269.1" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">t = 50</text>
+<rect x="910" y="132" width="90" height="44" rx="8" fill="#e7defa" stroke="#6b3fb3" stroke-width="1.6"/>
+<text x="955.0" y="154.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Dense 2</text>
+<line x1="955.0" y1="232" x2="955.0" y2="179" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<rect x="910" y="40" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="955.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x'_50</text>
+<text x="955.0" y="71.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
+<line x1="955.0" y1="132" x2="955.0" y2="89" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<text x="800" y="205" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">(batch, 100) per step</text>
+<line x1="710" y1="260" x2="737" y2="260" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<line x1="830" y1="260" x2="852" y2="260" stroke="#1d232b" stroke-width="1.6"/>
+<text x="870" y="260" font-size="16" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">...</text>
+<line x1="885" y1="260" x2="907" y2="260" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
+<path d="M 710 154 L 740 154" fill="none" stroke="#6b3fb3" stroke-width="1.6" stroke-dasharray="5 4"/>
+<path d="M 830 154 L 910 154" fill="none" stroke="#6b3fb3" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="1010" y="24" font-size="14" text-anchor="end" font-weight="bold" fill="#1d232b" dominant-baseline="middle">stacked output (batch, 50, 2)</text>
+<text x="790" y="110" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b3fb3" dominant-baseline="middle">one Dense layer, same weights at every step</text>
+<text x="790" y="440" font-size="14" text-anchor="middle" font-weight="bold" fill="#18794a" dominant-baseline="middle">Decoder LSTM, 100 units</text>
+<text x="790" y="462" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">4(100x100 + 100^2 + 100) = 80,400 params</text>
+<text x="520" y="500" font-size="14" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Dense counted once: 100 x 2 + 2 = 202.  Total 41,200 + 80,400 + 202 = 121,802 parameters.</text></svg>

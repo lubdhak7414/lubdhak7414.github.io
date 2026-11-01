@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 994" width="860" height="994" role="img" aria-labelledby="t d" font-family="DejaVu Sans, Helvetica, Arial, sans-serif"><title id="t">Shape trace of the 28x28x1 conv and pool chain</title><desc id="d">Input 28x28x1, conv 25 filters 3x3 gives 26x26x25 with 250 parameters, 2x2 pool gives 13x13x25, conv 50 filters 3x3 gives 11x11x50 with 11,300 parameters, 2x2 pool gives 5x5x50, flatten gives 1250. Conv parameters total 11,550.</desc><defs><marker id="ah-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d232b"/></marker><marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563c9"/></marker><marker id="ah-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b85f08"/></marker><marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="ah-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="ah-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#56606c"/></marker><marker id="ah-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker></defs><rect x="1" y="1" width="858" height="992" rx="16" fill="#f8f7f3" stroke="#d3cfc6" stroke-width="1.5"/><text x="40" y="36" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Tensor shape</text>
+<text x="450" y="36" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Layer, size arithmetic, parameters</text>
+<rect x="40.0" y="74.2" width="47.6" height="47.6" rx="0" fill="#dbe7fb" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="160" y="70" width="250" height="56" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="285.0" y="88.25" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">28 x 28 x 1</text>
+<text x="285.0" y="107.75" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">784 values</text>
+<rect x="46.0" y="225.9" width="44.199999999999996" height="44.199999999999996" rx="0" fill="#c9d9f5" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="40.0" y="231.9" width="44.199999999999996" height="44.199999999999996" rx="0" fill="#dbe7fb" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="160" y="226" width="250" height="56" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="285.0" y="244.25" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">26 x 26 x 25</text>
+<text x="285.0" y="263.75" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">16,900 values</text>
+<rect x="46.0" y="392.95" width="22.099999999999998" height="22.099999999999998" rx="0" fill="#c9d9f5" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="40.0" y="398.95" width="22.099999999999998" height="22.099999999999998" rx="0" fill="#dbe7fb" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="160" y="382" width="250" height="56" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="285.0" y="400.25" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">13 x 13 x 25</text>
+<text x="285.0" y="419.75" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">4,225 values</text>
+<rect x="58.0" y="538.65" width="18.7" height="18.7" rx="0" fill="#c9d9f5" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="52.0" y="544.65" width="18.7" height="18.7" rx="0" fill="#c9d9f5" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="46.0" y="550.65" width="18.7" height="18.7" rx="0" fill="#c9d9f5" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="40.0" y="556.65" width="18.7" height="18.7" rx="0" fill="#dbe7fb" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="160" y="538" width="250" height="56" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="285.0" y="556.25" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">11 x 11 x 50</text>
+<text x="285.0" y="575.75" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">6,050 values</text>
+<rect x="58.0" y="699.75" width="8.5" height="8.5" rx="0" fill="#c9d9f5" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="52.0" y="705.75" width="8.5" height="8.5" rx="0" fill="#c9d9f5" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="46.0" y="711.75" width="8.5" height="8.5" rx="0" fill="#c9d9f5" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="40.0" y="717.75" width="8.5" height="8.5" rx="0" fill="#dbe7fb" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="160" y="694" width="250" height="56" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="285.0" y="712.25" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">5 x 5 x 50</text>
+<text x="285.0" y="731.75" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1,250 values</text>
+<rect x="40" y="874.0" width="100" height="8" rx="0" fill="#dbe7fb" stroke="#5d7fbf" stroke-width="1"/>
+<rect x="160" y="850" width="250" height="56" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
+<text x="285.0" y="868.25" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">vector of 1250</text>
+<text x="285.0" y="887.75" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1,250 values</text>
+<line x1="285" y1="128" x2="285" y2="223" stroke="#1d232b" stroke-width="1.8" marker-end="url(#ah-ink)"/>
+<text x="450" y="150" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Conv: 25 filters, 3x3, s=1, p=0</text>
+<text x="450" y="174" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">(28 - 3)/1 + 1 = 26; depth = 25 filters</text>
+<text x="450" y="198" font-size="14" text-anchor="start" font-weight="normal" fill="#18794a" dominant-baseline="middle">params 25 x (3x3x1 + 1) = 250</text>
+<line x1="285" y1="284" x2="285" y2="379" stroke="#1d232b" stroke-width="1.8" marker-end="url(#ah-ink)"/>
+<text x="450" y="306" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Max pool 2x2, stride 2</text>
+<text x="450" y="330" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">26 / 2 = 13; channels unchanged</text>
+<text x="450" y="354" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">params 0</text>
+<line x1="285" y1="440" x2="285" y2="535" stroke="#1d232b" stroke-width="1.8" marker-end="url(#ah-ink)"/>
+<text x="450" y="462" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Conv: 50 filters, 3x3, s=1, p=0</text>
+<text x="450" y="486" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">13 - 3 + 1 = 11; each filter is 3x3x25</text>
+<text x="450" y="510" font-size="14" text-anchor="start" font-weight="normal" fill="#18794a" dominant-baseline="middle">params 50 x (3x3x25 + 1) = 11,300</text>
+<line x1="285" y1="596" x2="285" y2="691" stroke="#1d232b" stroke-width="1.8" marker-end="url(#ah-ink)"/>
+<text x="450" y="618" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Max pool 2x2, stride 2</text>
+<text x="450" y="642" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">floor(11 / 2) = 5; last row and column dropped</text>
+<text x="450" y="666" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">params 0</text>
+<line x1="285" y1="752" x2="285" y2="847" stroke="#1d232b" stroke-width="1.8" marker-end="url(#ah-ink)"/>
+<text x="450" y="774" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Flatten</text>
+<text x="450" y="798" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">5 x 5 x 50 = 1250 (channels included)</text>
+<text x="450" y="822" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">params 0</text>
+<text x="430" y="936" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">conv parameters: 250 + 11,300 = 11,550</text>
+<text x="430" y="960" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">flatten length = 1250</text></svg>

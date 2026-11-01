@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="t d">
+<title id="t">Batch norm at training and test time</title>
+<desc id="d">Training takes mean and variance from the current mini-batch and also updates running averages; test uses the stored averages; both use the same learned gamma and beta.</desc>
+<defs><style>
+text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size:15px}
+.s{font-size:13px}.l{font-size:17px}.m{fill:#57606a}.bl{fill:#1d4ed8}.rd{fill:#b91c1c}
+.gr{fill:#15803d}.or{fill:#c2410c}.pu{fill:#7e22ce}.bo{font-weight:bold}
+.lab{paint-order:stroke;stroke:#fafaf7;stroke-width:6px;stroke-linejoin:round}
+.mono{font-family:'DejaVu Sans Mono',Consolas,monospace}
+</style><marker id="a1f2328" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f2328"/></marker><marker id="a57606a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker><marker id="a1d4ed8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker><marker id="ab91c1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="a15803d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker><marker id="ac2410c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker><marker id="a7e22ce" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker></defs>
+<rect x="0" y="0" width="1200" height="640" rx="16" fill="#fafaf7"/>
+<text x="255.0" y="50.0" class="l bo" text-anchor="middle">Training: statistics from this mini-batch</text>
+<text x="945.0" y="50.0" class="l bo" text-anchor="middle">Test: statistics from storage, no batch</text>
+<rect x="30" y="95.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
+<text x="255.0" y="124.0" class="bo" text-anchor="middle">mini-batch of one feature, m = 4</text>
+<text x="255.0" y="148.0" class="bl" text-anchor="middle">x = [2, 4, 6, 8]</text>
+<rect x="30" y="205.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
+<text x="255.0" y="234.0" class="bo" text-anchor="middle">batch mean and variance (divide by m)</text>
+<text x="255.0" y="258.0" class="bl" text-anchor="middle">μ_B = 5,  σ_B² = 5</text>
+<rect x="30" y="315.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
+<text x="255.0" y="344.0" class="bo" text-anchor="middle">normalize: (x - μ_B) / √(σ_B² + ε), ε = 0</text>
+<text x="255.0" y="368.0" class="bl" text-anchor="middle">x̂ = [-1.342, -0.447, 0.447, 1.342]</text>
+<rect x="30" y="445.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
+<text x="255.0" y="474.0" class="bo" text-anchor="middle">scale and shift: y = γ x̂ + β</text>
+<text x="255.0" y="498.0" class="bl" text-anchor="middle">y = [-1.31, -0.24, 0.84, 1.91]</text>
+<rect x="720" y="95.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
+<text x="945.0" y="124.0" class="bo" text-anchor="middle">one input</text>
+<text x="945.0" y="148.0" class="bl" text-anchor="middle">x = 6</text>
+<rect x="720" y="205.0" width="450" height="70" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2" />
+<text x="945.0" y="234.0" class="bo" text-anchor="middle">stored running averages</text>
+<text x="945.0" y="258.0" class="bl" text-anchor="middle">EMA_μ = 5,  EMA_σ² = 5</text>
+<rect x="720" y="315.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
+<text x="945.0" y="344.0" class="bo" text-anchor="middle">normalize with the stored values</text>
+<text x="945.0" y="368.0" class="bl" text-anchor="middle">x̂ = (6 - 5) / √5 = 0.447</text>
+<rect x="720" y="445.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
+<text x="945.0" y="474.0" class="bo" text-anchor="middle">scale and shift: y = γ x̂ + β</text>
+<text x="945.0" y="498.0" class="bl" text-anchor="middle">y = 1.2 (0.447) + 0.3 = 0.837</text>
+<line x1="255.0" y1="165.0" x2="255.0" y2="203.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
+<line x1="255.0" y1="275.0" x2="255.0" y2="313.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
+<line x1="255.0" y1="385.0" x2="255.0" y2="443.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
+<line x1="945.0" y1="165.0" x2="945.0" y2="203.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
+<line x1="945.0" y1="275.0" x2="945.0" y2="313.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
+<line x1="945.0" y1="385.0" x2="945.0" y2="443.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
+<line x1="480.0" y1="240.0" x2="718.0" y2="240.0" stroke="#c2410c" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#ac2410c)"/>
+<text x="600.0" y="194.0" class="s or bo" text-anchor="middle">every training step:</text>
+<text x="600.0" y="212.0" class="s or bo" text-anchor="middle">update running averages</text>
+<text x="600.0" y="270.0" class="s or" text-anchor="middle">EMA ← (1 - α) EMA + α μ_B</text>
+<text x="600.0" y="290.0" class="s or" text-anchor="middle">(same for σ²)</text>
+<rect x="495.0" y="355" width="210" height="70" rx="10" fill="#f0fdf4" stroke="#15803d" stroke-width="2" />
+<text x="600.0" y="383.0" class="s bo gr" text-anchor="middle">learned γ = 1.2, β = 0.3</text>
+<text x="600.0" y="405.0" class="s gr" text-anchor="middle">same values in both</text>
+<path d="M495.0,390.0 C445.0,390.0 520,480 482,480" stroke="#15803d" stroke-width="2.2" fill="none" marker-end="url(#a15803d)"/>
+<path d="M705.0,390.0 C755.0,390.0 680,480 718,480" stroke="#15803d" stroke-width="2.2" fill="none" marker-end="url(#a15803d)"/>
+<text x="30.0" y="578.0" class="s m" text-anchor="start">Training uses batch statistics, so each output depends on the other samples in the batch.</text>
+<text x="30.0" y="600.0" class="s m" text-anchor="start">At test time one input has no usable batch variance, so the stored averages are used and the output</text>
+<text x="30.0" y="622.0" class="s m" text-anchor="start">for x = 6 is always 0.837, whatever else is being predicted.</text>
+</svg>

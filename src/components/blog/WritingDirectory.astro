@@ -1,5 +1,5 @@
 ---
-import { getAllPosts, isoDate, sortByPublishDate } from '@/utils'
+import { getAllPosts, isoDate, sortByPublishDate, writingItems } from '@/utils'
 
 interface Props {
 	/** The article being read; it takes the accent and aria-current. */
@@ -8,6 +8,9 @@ interface Props {
 
 const { current } = Astro.props
 const posts = sortByPublishDate(await getAllPosts())
+// A series is one line (to its hub), marked when the article being read is one of its parts.
+const items = writingItems(posts)
+const currentSeries = posts.find((post) => post.id === current)?.data.series
 ---
 
 {
@@ -18,14 +21,32 @@ case-study directory. Sidebar only. */
 	<p class='label'>Writing</p>
 	<ul>
 		{
-			posts.map((post) => (
-				<li>
-					<a href={`/blog/${post.id}/`} aria-current={post.id === current ? 'page' : undefined}>
-						<span class='pdir-date' set:text={isoDate(post.data.publishDate).slice(0, 7)} />
-						<span set:text={post.data.title} />
-					</a>
-				</li>
-			))
+			items.map((item) =>
+				item.kind === 'series' ? (
+					<li>
+						<a
+							href={`/series/${item.series.slug}/`}
+							aria-current={item.series.name === currentSeries ? 'page' : undefined}
+						>
+							<span
+								class='pdir-date'
+								set:text={`${isoDate(item.series.parts[0]!.data.publishDate).slice(0, 7)} · ${item.series.parts.length} parts`}
+							/>
+							<span set:text={item.series.name} />
+						</a>
+					</li>
+				) : (
+					<li>
+						<a
+							href={`/blog/${item.entry.id}/`}
+							aria-current={item.entry.id === current ? 'page' : undefined}
+						>
+							<span class='pdir-date' set:text={isoDate(item.entry.data.publishDate).slice(0, 7)} />
+							<span set:text={item.entry.data.title} />
+						</a>
+					</li>
+				)
+			)
 		}
 	</ul>
 </nav>

@@ -1,20 +1,23 @@
 ---
 import ShellLayout from '@/layouts/ShellLayout.astro'
 import PostRow from '@/components/blog/PostRow.astro'
-import { getAllPosts, sortByPublishDate } from '@/utils'
+import SeriesRow from '@/components/blog/SeriesRow.astro'
+import { getAllPosts, sortByPublishDate, writingItems } from '@/utils'
 
 const meta = {
 	description: 'Articles on web development, WordPress, SEO, and projects by Safwan Usaid Lubdhak.',
 	title: 'Writing'
 }
 
-const posts = sortByPublishDate(await getAllPosts())
+const posts = writingItems(sortByPublishDate(await getAllPosts()))
+const dateOf = (item: (typeof posts)[number]) =>
+	(item.kind === 'series' ? item.series.parts[0]! : item.entry).data.publishDate
 
 // Group by the year of the original publish date, newest year first.
-const years = [...new Set(posts.map((post) => post.data.publishDate.getFullYear()))]
+const years = [...new Set(posts.map((item) => dateOf(item).getFullYear()))]
 const byYear = years.map((year) => ({
 	year,
-	posts: posts.filter((post) => post.data.publishDate.getFullYear() === year)
+	posts: posts.filter((item) => dateOf(item).getFullYear() === year)
 }))
 ---
 
@@ -36,9 +39,13 @@ const byYear = years.map((year) => ({
 						{year}
 					</h2>
 					<ul class='rows'>
-						{posts.map((post) => (
-							<PostRow entry={post} />
-						))}
+						{posts.map((item) =>
+							item.kind === 'series' ? (
+								<SeriesRow series={item.series} />
+							) : (
+								<PostRow entry={item.entry} />
+							)
+						)}
 					</ul>
 				</section>
 			))
