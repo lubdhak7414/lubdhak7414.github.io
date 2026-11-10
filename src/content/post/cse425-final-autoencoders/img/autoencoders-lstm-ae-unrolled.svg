@@ -48,7 +48,7 @@
 <text x="665.0" y="154.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Dense 2</text>
 <line x1="665.0" y1="232" x2="665.0" y2="179" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
 <rect x="620" y="40" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
-<text x="665.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x'_1</text>
+<text x="665.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x̂_1</text>
 <text x="665.0" y="71.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
 <line x1="665.0" y1="132" x2="665.0" y2="89" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
 <rect x="740" y="232" width="90" height="56" rx="8" fill="#d5efdf" stroke="#18794a" stroke-width="1.6"/>
@@ -58,7 +58,7 @@
 <text x="785.0" y="154.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Dense 2</text>
 <line x1="785.0" y1="232" x2="785.0" y2="179" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
 <rect x="740" y="40" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
-<text x="785.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x'_2</text>
+<text x="785.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x̂_2</text>
 <text x="785.0" y="71.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
 <line x1="785.0" y1="132" x2="785.0" y2="89" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
 <rect x="910" y="232" width="90" height="56" rx="8" fill="#d5efdf" stroke="#18794a" stroke-width="1.6"/>
@@ -68,7 +68,7 @@
 <text x="955.0" y="154.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Dense 2</text>
 <line x1="955.0" y1="232" x2="955.0" y2="179" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
 <rect x="910" y="40" width="90" height="46" rx="8" fill="#ffffff" stroke="#1d232b" stroke-width="1.6"/>
-<text x="955.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x'_50</text>
+<text x="955.0" y="54.55" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">x̂_50</text>
 <text x="955.0" y="71.45" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">(batch, 2)</text>
 <line x1="955.0" y1="132" x2="955.0" y2="89" stroke="#1d232b" stroke-width="1.6" marker-end="url(#ah-ink)"/>
 <text x="800" y="205" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">(batch, 100) per step</text>

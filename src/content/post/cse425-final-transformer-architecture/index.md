@@ -1,6 +1,6 @@
 ---
 title: "The Transformer, Block by Block"
-description: "Trace data through an encoder and decoder block, write the Add and Norm updates, count the parameters of a layer, and say how BERT and GPT differ."
+description: "How data moves through an encoder block and a decoder block, the Add and Norm update, a parameter count, a decoder step by hand, and how BERT and GPT differ."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, transformer, bert, gpt]
@@ -8,65 +8,140 @@ series: "CSE 425 Final"
 part: 7
 ---
 
-A single attention layer has an odd limitation. Its output for each token is a weighted average of value vectors, so it is a linear mix no matter how sharp the softmax looks. Stack ten of them with nothing in between and you have not added much expressive power.
+A common first picture of a Transformer is a tall stack of attention layers and nothing else. Attention on its own only averages: each token's output is a weighted average of value vectors. The one place where a block applies a fresh nonlinear function to each token's own vector is a small feed-forward layer, and the rest of the block (residual connections and normalisation) is there to make deep stacks trainable.
 
-The Transformer fixes that by wrapping attention in a small repeating block: attention to mix tokens, a feed-forward layer to add the nonlinearity, and a residual connection plus normalisation around each. The original model uses 6 of these blocks as an encoder and 6 as a decoder. Everything in this post is about what sits inside one block and how the blocks connect.
+The original model uses 6 blocks as an encoder and 6 as a decoder. Most of this note is the inside of one block; BERT and GPT come at the end, since each keeps only one half. It assumes [Attention: Q, K, V](/blog/cse425-final-attention/), where queries, keys and values and the mask were built up from numbers. To keep symbols few, $T_k$ is the number of source tokens and $T_q$ the number of target tokens, the same names as in cross-attention, and $n_h$ is the number of heads.
 
-## Picture it
+> **Key Takeaways**
+> - An encoder block has two sublayers (self-attention, feed-forward) and a decoder block has three (masked self-attention, cross-attention, feed-forward).
+> - Every sublayer is wrapped as $\mathrm{LN}(x+\text{sublayer}(x))$, which needs its output to have the same width as its input.
+> - Attention moves information between tokens, and the feed-forward layer transforms each token on its own with the same weights at every position.
+> - Heads add no parameters, because $n_h$ heads of width $d_{model}/n_h$ use the same weights as one head of width $d_{model}$.
+> - BERT keeps the encoder and looks both ways, GPT keeps the decoder and looks only left.
+
+## The shape of a block
+
+Every layer takes a matrix with one row per token and returns a matrix of the same shape. With $T=16$ tokens, $d_{model}=512$ and $n_h=8$ heads, $X$ is $16\times512$. Each head's $Q$, $K$ and $V$ is $16\times64$ (since $512/8=64$), the scores are $8$ matrices of size $16\times16$, the per-head outputs are $8$ matrices of $16\times64$, concatenating them gives $16\times512$ again, and $W^O$ keeps it $16\times512$. Same shape out as in, which is why you can put another block on top.
 
 The encoder block has two sublayers and the decoder block has three. The decoder's extra pieces are the mask and the look at the encoder.
 
 ```mermaid
 flowchart TD
     A["Token embedding + positional encoding"] --> B["Encoder block x N"]
-    B --> C["Encoder output H_enc"]
+    B --> C["Encoder output X_enc"]
     D["Previous target tokens, shifted right, + PE"] --> E["Decoder block x N"]
     C --> E
     E --> F["Linear layer"]
     F --> G["Softmax over vocabulary"]
 ```
 
-![Encoder layer with self-attention, Add and Norm, feed-forward, Add and Norm, and decoder layer with masked self-attention, cross-attention fed K and V from H_enc, and feed-forward, each sublayer wrapped by a residual skip, shapes S x 512 and T x 512](img/transformer-architecture-transformer-block.svg)
+![Encoder layer with self-attention, Add and Norm, feed-forward, Add and Norm, and decoder layer with masked self-attention, cross-attention fed K and V from X_enc, and feed-forward, each sublayer wrapped by a residual skip, shapes T_k x 512 and T_q x 512](img/transformer-architecture-transformer-block.svg)
 
-*Every sublayer keeps the width at 512 so the residual add works; the encoder output feeds K and V to the cross-attention in all 6 decoder layers.*
+## The feed-forward layer, with numbers
 
-## The detail
+The feed-forward layer is a small two-layer network applied to each token's vector separately. Say one token is $x=[1,2]$, with a first weight matrix that widens it from 2 to 3 numbers and a second that brings it back to 2 (biases 0 here):
 
-**Shapes stay fixed.** Every layer takes a $S\times d_{model}$ matrix ($S$ tokens) and returns one of the same shape. That is what lets blocks stack and lets a residual addition make sense. For $S=16$, $d_{model}=512$, $h=8$ heads: $X$ is $16\times512$, each head's $Q,K,V$ is $16\times64$, scores are $8\times16\times16$, per-head outputs $8\times16\times64$, concatenated back to $16\times512$, and $W^O$ keeps it $16\times512$.
+$$W_1=\begin{bmatrix}1&0&-1\\1&1&0\end{bmatrix}$$
 
-**Encoder block.** Self-attention is unmasked, so every token sees every other token.
+$$xW_1=[1+2,\ 0+2,\ -1+0]=[3,\ 2,\ -1]$$
 
-$$\tilde X=\mathrm{LN}\big(X+\mathrm{MHA}(X,X,X)\big),\qquad X'=\mathrm{LN}\big(\tilde X+\mathrm{FFN}(\tilde X)\big)$$
+ReLU, which turns any negative number into 0, gives $[3,2,0]$. Then
 
-**Decoder block.** Three sublayers: masked self-attention over the target so far, cross-attention with queries from the decoder and keys and values from $H_{enc}$, then the feed-forward layer.
+$$W_2=\begin{bmatrix}1&0\\0&1\\1&1\end{bmatrix}$$
 
-$$\tilde Y=\mathrm{LN}\big(Y+\mathrm{MHA}_{mask}(Y,Y,Y)\big),\qquad \hat Y=\mathrm{LN}\big(\tilde Y+\mathrm{MHA}_{cross}(\tilde Y,H_{enc},H_{enc})\big)$$
+$$[3,2,0]\,W_2=[3,\ 2]$$
 
-$$Y'=\mathrm{LN}\big(\hat Y+\mathrm{FFN}(\hat Y)\big)$$
+In symbols, for a token vector $x$:
 
-**Feed-forward layer.** The same two-layer network is applied to each token separately, with the same weights at every position and no mixing between tokens.
+$$\mathrm{FFN}(x)=\max(0,\,xW_1+b_1)\,W_2+b_2$$
 
-$$\mathrm{FFN}(h)=\max(0,\,hW_1+b_1)\,W_2+b_2$$
+The same $W_1$, $W_2$ are used for every token, and no token sees another here. In the original model $d_{model}=512$ is widened to $d_{ff}=2048$ and back. Attention is the only step where tokens mix.
 
-Division of labour: attention moves information between tokens, the FFN transforms each token on its own.
+## Residual connections and layer norm
 
-**Residual connections.** For $y=x+f(x)$ the gradient is $\partial y/\partial x=1+\partial f/\partial x$. The 1 gives gradients a direct path back through many layers, even when $\partial f/\partial x$ is tiny.
+A residual connection adds a layer's input to its output, $y=x+f(x)$. With $x=[1,2]$ and $f(x)=[0.1,-0.2]$, the result is $[1.1,1.8]$. The gradient shows why this helps: $\partial y/\partial x=1+\partial f/\partial x$. The 1 gives gradients a direct path back through many layers, even when $\partial f/\partial x$ is tiny. It also means $f(x)$ must have the same width as $x$.
 
-**Layer norm.** It normalises one token across its own $d_{model}$ features, with learned scale $\gamma$ and shift $\beta$, and $\odot$ is element-wise product.
+Layer norm then rescales each token. It is like [batch norm](/blog/cse425-mid-batch-norm/), but the mean and spread are taken over one token's own $d_{model}$ numbers, not over a batch, so a sentence of any length gives the same result however it is grouped. Say a token plus sublayer sum is $[1.5,\ 1.0,\ 3.2,\ 4.8]$, with $\gamma=1$, $\beta=0$ and $\epsilon=10^{-5}$:
+
+$$\mu=\frac{1.5+1.0+3.2+4.8}{4}=2.625$$
+
+$$\sigma^2=\frac{1.125^2+1.625^2+0.575^2+2.175^2}{4}$$
+
+$$=2.2419$$
+
+$$\frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}=[-0.751,\ -1.085,\ 0.384,\ 1.453]$$
+
+The general form, with learned scale $\gamma$ and shift $\beta$ and $\odot$ for entry-by-entry multiplication:
 
 $$\mathrm{LN}(x)=\gamma\odot\frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta$$
 
-Here $\mu,\sigma^2$ are the mean and variance of that single token's features. Nothing depends on the batch, which suits sentences of different lengths, unlike batch norm from the earlier part of the course. By hand with $\gamma=1$, $\beta=0$, $\epsilon=10^{-5}$: a token plus sublayer sum $[1.5,1.0,3.2,4.8]$ has mean 2.625 and variance 2.2419, giving $[-0.751,-1.085,0.384,1.453]$.
+Here $\mu$ and $\sigma^2$ are the mean and variance of that single token's features, as computed above.
 
-**Output.** After the last decoder block, a linear layer maps each position to vocabulary size and softmax gives next-token probabilities, $P_t=\mathrm{softmax}(Y^{(L)}_tW_o+b_o)$. The loss per position is $-\log P(\text{correct token})$, summed over positions.
+## The encoder and decoder blocks
 
-**Training versus inference.** The next two points are standard material rather than something the typed course notes spell out. In training, the decoder input is the correct target sequence shifted right by one (teacher forcing). The causal mask stops each position from peeking ahead, so all positions train in parallel. At inference there is no target. Start from a begin token, predict one token, append it, and repeat until the end token. That loop is sequential, which is the cost of generation.
+The encoder block's self-attention is unmasked, so every token sees every other token. Writing $X'$ for the output of the first sublayer and $X_{out}$ for the block's output:
 
-**Counting parameters.** Heads add none: eight heads of width 64 use the same weights as one head of width 512. Multi-head attention has four $d_{model}\times d_{model}$ matrices with biases.
+$$X'=\mathrm{LN}\big(X+\mathrm{MHA}(X,X,X)\big)$$
+
+$$X_{out}=\mathrm{LN}\big(X'+\mathrm{FFN}(X')\big)$$
+
+The decoder block has three sublayers: masked self-attention over the target so far, cross-attention with queries from the decoder and keys and values from the encoder output $X_{enc}$, then the feed-forward layer. Each sublayer's output gets one more prime:
+
+$$Y'=\mathrm{LN}\big(Y+\mathrm{MHA}_{mask}(Y,Y,Y)\big)$$
+
+$$Y^{\prime\prime}=\mathrm{LN}\big(Y'+\mathrm{MHA}_{cross}(Y',X_{enc},X_{enc})\big)$$
+
+$$Y_{out}=\mathrm{LN}\big(Y^{\prime\prime}+\mathrm{FFN}(Y^{\prime\prime})\big)$$
+
+The encoder output feeds the keys and values of the cross-attention in every one of the 6 decoder blocks.
+
+## One decoder step by hand
+
+Suppose the encoder has produced two source vectors, the rows of $X_{enc}$: $[1.0,\ 0.5]$ and $[0.3,\ 1.2]$. The decoder's current vector is the query $q=[1,3]$, and $d_k=2$. To keep the numbers small, the example uses $K=V=X_{enc}$ (no projection matrices). A score is a dot product:
+
+$$q\cdot[1.0,0.5]=1+1.5=2.5$$
+
+$$q\cdot[0.3,1.2]=0.3+3.6=3.9$$
+
+Dividing by $\sqrt{d_k}=1.4142$ gives $[1.7678,\ 2.7577]$. Softmax: $e^{1.7678}=5.858$ and $e^{2.7577}=15.764$, total $21.622$, so the weights are $[0.2709,\ 0.7291]$. Nearly three quarters of the weight goes to the second source vector, the one with the bigger score. The context is the weighted sum of the rows:
+
+$$0.2709[1.0,0.5]+0.7291[0.3,1.2]$$
+
+$$=[0.2709+0.2187,\ 0.1355+0.8749]$$
+
+$$=[0.4896,\ 1.0104]$$
+
+Now the output layer. Suppose the vocabulary has three words and the output matrix is
+
+$$W_{vocab}=\begin{bmatrix}1&0&1\\0&1&-1\end{bmatrix}$$
+
+The logits (raw scores, one per word) are the context times $W_{vocab}$:
+
+$$[0.4896,\ 1.0104,\ 0.4896-1.0104]$$
+
+$$=[0.4896,\ 1.0104,\ -0.5208]$$
+
+Softmax: $e^{0.4896}=1.6316$, $e^{1.0104}=2.7467$, $e^{-0.5208}=0.5940$, total $4.9724$, so the probabilities are $[0.3281,\ 0.5524,\ 0.1195]$. The predicted token is word 2, with probability 0.552. If word 2 were the correct token, the loss for this position would be $-\ln0.5524=0.593$.
+
+## The output layer, in general
+
+After the last decoder block, a linear layer maps each position to the vocabulary size and softmax gives next-token probabilities:
+
+$$P_t=\mathrm{softmax}(Y_{out,t}\,W_{vocab}+b)$$
+
+The loss at position $t$ is $-\log P_t(\text{correct token})$, as computed above, summed over positions. Check against the example: one position, correct token word 2, loss 0.593.
+
+## Training and generating
+
+In training, the decoder input is the correct target sequence shifted right by one, the same idea as teacher forcing in the [RNN note](/blog/cse425-mid-rnn-basics/). The causal mask stops each position from seeing the tokens after it, so all positions can be trained in parallel. At generation time there is no target. The model starts from a begin token, predicts one token, appends it and repeats until an end token. Each new token waits for the one before it, so this part can't be done in parallel.
+
+## Counting parameters
+
+Heads add none: eight heads of width 64 use the same weights as one head of width 512. Multi-head attention has four $d_{model}\times d_{model}$ matrices ($W^Q$, $W^K$, $W^V$ and $W^O$) with biases:
 
 $$4\,(512\cdot512+512)=1{,}050{,}624$$
 
-Feed-forward width $d_{ff}=2048$ is the original paper's choice, so an exam would need to give it. Then the FFN has $512\cdot2048+2048+2048\cdot512+512=2{,}099{,}712$ parameters, and each layer norm has $2\cdot512=1024$.
+The feed-forward width $d_{ff}=2048$ is the original paper's choice, so a question would need to give it. The feed-forward layer has $512\cdot2048+2048+2048\cdot512+512=2{,}099{,}712$ parameters, and each layer norm has $2\cdot512=1024$ (a $\gamma$ and a $\beta$ per feature).
 
 | Piece | Parameters |
 |---|---|
@@ -78,7 +153,7 @@ Feed-forward width $d_{ff}=2048$ is the original paper's choice, so an exam woul
 
 Embedding tables and the output layer come on top. A vocabulary of 50,000 at width 512 is 25,600,000 for the table alone.
 
-**BERT and GPT.** These keep one half of the Transformer.
+## BERT and GPT
 
 | Model | Stack | Attention direction | Training objective | Typical use |
 |---|---|---|---|---|
@@ -86,56 +161,46 @@ Embedding tables and the output layer come on top. A vocabulary of 50,000 at wid
 | BERT | Encoder only | Both ways | Predict masked tokens | Understanding tasks |
 | GPT | Decoder only | Causal | Predict next token | Generation |
 
-BERT base has 12 layers, 12 heads and about 110 million parameters. It learns its position embeddings instead of using fixed sinusoids. In its masked-token task, 15 percent of tokens are picked, and of those 80 percent become a mask symbol, 10 percent a random word and 10 percent stay unchanged. For fine-tuning, the final state of the first token feeds one extra output layer. GPT cannot simply replace BERT for understanding tasks because it only looks left.
+BERT base has 12 layers, 12 heads and about 110 million parameters. It learns its position embeddings instead of using fixed sinusoids. In its masked-token task, 15 percent of tokens are picked, and of those 80 percent become a mask symbol, 10 percent a random word and 10 percent stay unchanged. For fine-tuning, the final state of the first token feeds one extra output layer. GPT reads only leftwards, so for a task that needs the whole sentence at once it sees less of the context than BERT does.
 
 ![Four 5 by 5 grids: BERT fully filled, GPT lower triangle, and for the original Transformer a full encoder grid beside a lower-triangle decoder grid](img/transformer-architecture-attention-direction.svg)
 
-*BERT looks both ways, GPT only left, and the original Transformer uses one of each.*
+For a visual walk-through see [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/), and for the original design [Attention Is All You Need](https://arxiv.org/abs/1706.03762). The [BERT paper](https://arxiv.org/abs/1810.04805) has the masked-token objective and the encoder-only design.
 
-## Worked example
+## Writing the answer
 
-One decoder step, cross-attention then output. Encoder output rows $[1.0,0.5]$ and $[0.3,1.2]$. The current decoder state is $q=[1,1]$. $d_k=2$. Output layer $W_o=\begin{bmatrix}1&0&1\\0&1&-1\end{bmatrix}$ for a three-word vocabulary. To keep the numbers small, take $K=V=H_{enc}$.
+A good answer lists each block's sublayers in order, writes $\mathrm{LN}(x+\mathrm{sublayer}(x))$, and shows shapes at each step. For parameter counts, write the formula before the arithmetic. Typical points to cover on this topic are the benefit of residuals and of layer norm, parallelism against recurrence, the $T^2$ cost of attention, and head-width arithmetic such as $d_{model}=768$ with $n_h=12$ giving $d_k=64$.
 
-Scores: $q\cdot[1.0,0.5]=1.5$ and $q\cdot[0.3,1.2]=1.5$.
+## Questions on the block
 
-Scaled: $1.5/1.4142=1.0607$ for both, so weights $[0.5,\,0.5]$.
+Why must every sublayer output have the same width as its input?
 
-Context: $0.5[1.0,0.5]+0.5[0.3,1.2]=[0.65,\,0.85]$.
+<details><summary>Answer</summary>
 
-Logits: $[0.65,\;0.85,\;0.65\cdot1-0.85\cdot1]=[0.65,\;0.85,\;-0.20]$.
+The residual adds the input to the output, which needs matching shapes. It also lets identical blocks stack.
 
-Softmax: $e^{0.65}=1.9155$, $e^{0.85}=2.3396$, $e^{-0.20}=0.8187$, sum $5.0738$, so $[0.3775,\;0.4611,\;0.1614]$.
+</details>
 
-$$\boxed{\text{predicted token = word 2, probability } 0.461}$$
+In the decoder's cross-attention, which sequence supplies $Q$ and which supplies $K$ and $V$?
 
-## Exam corner
+<details><summary>Answer</summary>
 
-Asked in past exams: transformers did not appear in any past paper we have. Older finals are CNN, recurrent networks and backprop. The weight here comes from the typed practice set and mock paper, which test: writing multi-head attention, writing the Add and Norm update, naming the sublayers of each block, one benefit each of residuals and layer norm, parallelism versus recurrence, the $T^2$ cost, head-dimension arithmetic, and the shape of $XW^Q$. One study-guide problem asks why GPT is not a drop-in BERT replacement (attention direction).
+$Q$ comes from the decoder, $K$ and $V$ from the encoder output $X_{enc}$.
 
-Marks come from: stating each block's sublayers in order, writing $\mathrm{LN}(x+\mathrm{sublayer}(x))$, showing shapes at each step, and for parameter counts writing the formula before the arithmetic.
+</details>
 
-Common slips: masking the encoder. Saying layer norm averages across the batch. Thinking the FFN mixes tokens. Taking cross-attention keys and values from the decoder instead of the encoder. Mixing up teacher forcing (training) with the token-by-token loop (inference). Claiming more heads means more parameters.
+With $d_{model}=512$, how many parameters does multi-head attention have with biases, and does it change from 1 head to 8?
 
-Cheat line: encoder $=$ self-attn, FFN. Decoder $=$ masked self-attn, cross-attn, FFN. Each wrapped as $\mathrm{LN}(x+f(x))$.
+<details><summary>Answer</summary>
 
-## Check yourself
+$4(512^2+512)=1{,}050{,}624$. It does not change, because heads split the width rather than add to it.
 
-1. Why must every sublayer output have the same width as its input?
+</details>
 
-<details><summary>Answer</summary>The residual adds the input to the output, which needs matching shapes. It also lets identical blocks stack.</details>
+Using the decoder step above, the query changes to $q=[3,1]$. Which source vector gets the bigger weight?
 
-2. In the decoder's cross-attention, which sequence supplies $Q$ and which supplies $K$ and $V$?
+<details><summary>Answer</summary>
 
-<details><summary>Answer</summary>$Q$ comes from the decoder, $K$ and $V$ from the encoder output.</details>
+The scores are $q\cdot[1.0,0.5]=3.5$ and $q\cdot[0.3,1.2]=2.1$, so the first source vector wins (weights $[0.7291,\ 0.2709]$ after scaling and softmax, by the same arithmetic as before with the two scores swapped).
 
-3. With $d_{model}=512$, how many parameters does multi-head attention have with biases, and does it change from 1 head to 8?
-
-<details><summary>Answer</summary>$4(512^2+512)=1{,}050{,}624$. It does not change, because heads split the width rather than add to it.</details>
-
-## Read more
-
-- [The Illustrated Transformer by Jay Alammar](https://jalammar.github.io/illustrated-transformer/), the encoder and decoder walked through with pictures.
-- [Attention Is All You Need on arXiv](https://arxiv.org/abs/1706.03762), the original architecture.
-- [BERT paper on arXiv](https://arxiv.org/abs/1810.04805), for the masked-token objective and the encoder-only design.
-
-<!-- Reviewer note: training, teacher forcing and the feed-forward width 2048 are not in the typed course sources; flagged in the text as standard or from the original paper. Digest flagged errors in student decks (GPT-3 "combines encoding and decoding", 470x parameter claim, slide softmax rounding) and they were not used. Worked example uses K=V=H_enc and the classroom-rounded input embedding was avoided. Zero past papers cover this topic. -->
+</details>

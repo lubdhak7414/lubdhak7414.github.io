@@ -1,6 +1,6 @@
 ---
 title: "Backpropagation Through Time"
-description: "Compute the gradient of an unrolled RNN by hand, explain why it vanishes or explodes, and state what clipping and truncation fix."
+description: "How the gradient of an unrolled RNN is computed by hand, why it vanishes or explodes over long sequences, and what clipping and truncation do."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, rnn, bptt]
@@ -8,51 +8,115 @@ series: "CSE 425 Mid"
 part: 9
 ---
 
-## Quick idea
+Say a network reads three words in a row and only the last one gets graded. The error has to travel back to the first word. Each step back multiplies it by 0.8 and by a slope that is never above 1. By the time it reaches word one, an error of 0.66 has become 0.23. Any long chain of multiplications does this, and it's the reason plain RNNs struggle with long sequences.
 
-Take a 3-step RNN with one recurrent weight $u=0.8$. Compute the loss at step 3 and push the error backward. By the time it reaches step 1 the signal has shrunk from $-0.657$ to $-0.230$, and nothing exotic happened. It just got multiplied by a factor below 1 at every step.
+Backpropagation through time (BPTT) is ordinary backprop applied to the [unrolled RNN](./07a-rnn.md). The only new facts are that one weight is used many times, and that the error passes through that weight again and again on its way back.
 
-That is the whole story of backpropagation through time (BPTT). It is ordinary backprop on the unrolled network. Two things are new. The same weight appears at every step, so its gradient is a sum of one piece per step. And the error travelling backward passes through the same matrix again and again, so it is a product, and products of many numbers either die or blow up.
+> **Key Takeaways**
+> - In a tiny RNN you can get every forward value, every step's error and both shared-weight gradients by hand.
+> - A shared weight's gradient is a sum of one term per step, while the error travelling back is multiplied once per step.
+> - A per-step factor below 1 makes the signal vanish and one above 1 makes it explode: $0.9^{20}\approx0.12$ against $1.1^{20}\approx6.7$.
+> - Clipping shortens a gradient that is too long, and truncation stops the error from travelling past a fixed window.
 
-## Picture it
+## One tiny RNN, three steps
 
-Unrolled for three steps, the error at step 3 has to travel back along the hidden-state chain. Each arrow backward multiplies by $u\cdot\tanh'$.
+The smallest RNN that shows everything has one hidden unit, one input per step and no output layer. At each step it adds the new input and its own previous value, each times a weight, and passes the sum through tanh, which keeps the result between -1 and 1. In symbols, the hidden value at step $t$ is
+
+$$h_t=\tanh(w\,x_t+u\,h_{t-1})$$
+
+Here $w$ is the weight on the input and $u$ is the weight on the previous hidden value. These are the scalar versions of $W_{xh}$ and $W_{hh}$. The same $w$ and the same $u$ are used at every step. Start with $h_0=0$.
+
+Let $w=0.5$, $u=0.8$, inputs $x=(1,\ 0.5,\ -1)$, and a target $y=0.6$ that is checked only at step 3. The loss is $L=\tfrac12(h_3-y)^2$.
+
+Forward pass, one step at a time:
+
+$$h_1=\tanh(0.5\cdot1+0.8\cdot0)$$
+
+$$=\tanh(0.5)=0.4621$$
+
+$$h_2=\tanh(0.5\cdot0.5+0.8\cdot0.4621)$$
+
+$$=\tanh(0.6197)=0.5509$$
+
+$$h_3=\tanh(0.5\cdot(-1)+0.8\cdot0.5509)$$
+
+$$=\tanh(-0.0593)=-0.0592$$
+
+$$L=\tfrac12(-0.0592-0.6)^2=0.2173$$
 
 ![Scalar RNN unrolled for three steps with forward values, tanh slopes and deltas; the delta shrinks by 0.557 and 0.629 going back, and the gradients of w and u are sums of one term per step](img/bptt-bptt-gradient-paths.svg)
 
-*The delta shrinks by 0.557 and then 0.629 on its way back, and each shared weight collects one term per step: 0.2436 for w and -0.5310 for u.*
+## Sending the error back
 
-## The detail
+Backprop needs one number per step: how much the loss changes if you nudge the sum going into tanh at that step, $z_t=w\,x_t+u\,h_{t-1}$. Call it $\delta_t$. The tanh slope is how much $h_t$ moves per unit nudge of $z_t$, and it equals $1-h_t^2$. Here the three slopes are 0.7864, 0.6965 and 0.9965.
 
-Notation follows the series: $\mathbf z_t=W_{xh}\mathbf x_t+W_{hh}\mathbf h_{t-1}+\mathbf b_h$, $\mathbf h_t=\tanh(\mathbf z_t)$, output $\hat{\mathbf y}_t$ from $W_{hy}\mathbf h_t$. Total loss is $L=\sum_t L_t$. Some sources divide by $T$; that changes only a constant.
+At step 3 the loss depends on $h_3$ directly. Its derivative is $h_3-y=-0.6592$, and passing it through the tanh slope gives
 
-The delta recursion. Define $\boldsymbol\delta_t=\partial L/\partial\mathbf z_t$. Step $t$ affects the loss in two ways: through its own output $\hat{\mathbf y}_t$, and through the next hidden state $\mathbf h_{t+1}$. Add both contributions and multiply by the tanh slope $1-\mathbf h_t^2$:
+$$\delta_3=-0.6592\times0.9965=-0.6569$$
 
-$$\boldsymbol\delta_t=\mathrm{diag}\!\big(1-\mathbf h_t^2\big)\Big(W_{hy}^{\top}(\hat{\mathbf y}_t-\mathbf y_t)+W_{hh}^{\top}\boldsymbol\delta_{t+1}\Big),\qquad \boldsymbol\delta_{T+1}=\mathbf 0$$
+Step 2 can only affect the loss by changing $z_3$. A nudge to $z_2$ moves $h_2$ by the slope 0.6965, that moves $z_3$ by $u=0.8$ times as much, and $z_3$ affects the loss through $\delta_3$. The error from step 3 therefore gets multiplied by $u$ and by the slope at step 2:
 
-The term $\hat{\mathbf y}_t-\mathbf y_t$ is what softmax with cross-entropy gives at the output. You start at $t=T$ and walk backward.
+$$\delta_2=\delta_3\cdot0.8\cdot0.6965=-0.3660$$
 
-Time-summed gradients. $W_{hh}$ is used at every step, so each use contributes $\boldsymbol\delta_t\,\mathbf h_{t-1}^{\top}$ and the total is their sum:
+$$\delta_1=\delta_2\cdot0.8\cdot0.7864=-0.2303$$
 
-$$\frac{\partial L}{\partial W_{hh}}=\sum_{t=1}^{T}\boldsymbol\delta_t\,\mathbf h_{t-1}^{\top},\qquad \frac{\partial L}{\partial W_{xh}}=\sum_{t=1}^{T}\boldsymbol\delta_t\,\mathbf x_t^{\top},\qquad \frac{\partial L}{\partial \mathbf b_h}=\sum_{t=1}^{T}\boldsymbol\delta_t$$
+Going back from step 3 to step 2 costs a factor of $0.8\times0.6965=0.557$, and from step 2 to step 1 a factor of $0.8\times0.7864=0.629$. Those are the only multiplications that happen. After just two steps back, the signal is down to about a third of its size.
 
-Forgetting this sum, and using a single term, is the most common slip.
+## The weight gradients are sums
 
-Product-of-Jacobians form. Look at one loss term $L_t$ and ask how $W_{hh}$ reaches it. It reaches $\mathbf h_t$ through every earlier state $\mathbf h_i$, so
+The weight $w$ appears in $z_1$, $z_2$ and $z_3$. Nudging $w$ by a small amount nudges each $z_t$ by $x_t$ times that amount, and each of those nudges changes the loss through its own $\delta_t$. The contributions add:
 
-$$\frac{\partial L_t}{\partial W_{hh}}=\sum_{i=1}^{t}\frac{\partial L_t}{\partial \mathbf h_t}\Big(\prod_{j=i+1}^{t}\frac{\partial \mathbf h_j}{\partial \mathbf h_{j-1}}\Big)\frac{\partial^{+}\mathbf h_i}{\partial W_{hh}}$$
+$$\frac{\partial L}{\partial w}=\delta_3x_3+\delta_2x_2+\delta_1x_1$$
 
-Here $\partial^{+}$ means the direct partial only, holding $\mathbf h_{i-1}$ fixed. Without that mark the equation double counts. The new object is the one-step Jacobian:
+$$=0.6569-0.1830-0.2303=0.2436$$
 
-$$\frac{\partial \mathbf h_j}{\partial \mathbf h_{j-1}}=\mathrm{diag}\big(\tanh'(\mathbf z_j)\big)\,W_{hh}$$
+The weight $u$ multiplies $h_{t-1}$ at each step, so the same argument gives
 
-Signal from step $t$ back to step $i$ passes through $t-i$ of these. Weights sum across time. Signal multiplies across time.
+$$\frac{\partial L}{\partial u}=\delta_3h_2+\delta_2h_1+\delta_1h_0$$
 
-Vanishing and exploding. Taking norms,
+$$=-0.3619-0.1691-0=-0.5310$$
 
-$$\Big\|\frac{\partial \mathbf h_t}{\partial \mathbf h_i}\Big\|\le\prod_{j=i+1}^{t}\|W_{hh}\|\,\|\mathrm{diag}(\tanh'(\mathbf z_j))\|\le(\sigma_{\max}\gamma)^{t-i}$$
+The last term is zero only because $h_0=0$.
 
-where $\sigma_{\max}$ is the largest singular value of $W_{hh}$ (how much the matrix can stretch a vector) and $\gamma\le1$ is the largest tanh slope. In the scalar case this is just $u^k$ after $k$ steps:
+If you doubt this, nudge $w$ from 0.5 to 0.501 and rerun the forward pass. The loss rises by 0.000244, and $0.2436\times0.001=0.000244$. The same check works for $u$.
+
+One gradient step with learning rate $\eta=0.5$ gives $w=0.5-0.5(0.2436)=0.3782$ and $u=0.8+0.5(0.5310)=1.0655$.
+
+A common mistake is to use only the last step's term, as if $w$ were used once. It is used three times, so you add three terms.
+
+## The same thing for a real RNN
+
+In the full RNN from the previous note the hidden state is a vector, there is an output $\widehat{\mathbf y}_t$ at each step, and the loss is the sum $L=\sum_t L_t$. The recipe is the same, with matrices in place of the scalars. Write $\mathbf e_t=\widehat{\mathbf y}_t-\mathbf y_t$ for the error at the output of step $t$. For softmax with cross-entropy, the derivative of the loss with respect to the output scores comes out as exactly this difference, so you can use it directly. Then, working from $t=T$ down to 1:
+
+$$\mathbf s_t=W_{hh}^{\top}\boldsymbol\delta_{t+1}$$
+
+$$\mathbf r_t=W_{hy}^{\top}\mathbf e_t+\mathbf s_t$$
+
+$$\boldsymbol\delta_t=(1-\mathbf h_t^2)\odot\mathbf r_t$$
+
+with $\boldsymbol\delta_{T+1}=\mathbf 0$. Here $\mathbf s_t$ is the part that comes back from the next step, and $\mathbf r_t$ adds the step's own output error to it, so together they cover the two ways step $t$ can affect the loss. The last line passes that through the tanh slope, one entry at a time ($\odot$ means entry-by-entry multiplication). In the scalar example the only output error was $h_3-y$ at step 3, which made $r_3=h_3-y$ and $r_t=u\,\delta_{t+1}$ for the earlier steps.
+
+The shared matrices again collect one term per step:
+
+$$\frac{\partial L}{\partial W_{hh}}=\sum_{t=1}^{T}\boldsymbol\delta_t\,\mathbf h_{t-1}^{\top}$$
+
+$$\frac{\partial L}{\partial W_{xh}}=\sum_{t=1}^{T}\boldsymbol\delta_t\,\mathbf x_t^{\top}$$
+
+$$\frac{\partial L}{\partial \mathbf b_h}=\sum_{t=1}^{T}\boldsymbol\delta_t$$
+
+Set $T=3$ and all sizes to 1 and these are the sums you just computed.
+
+## Why the signal dies or blows up
+
+Look at how much the hidden state at step $j$ changes when the hidden state at step $j-1$ changes. For a vector state this is a table of numbers called the one-step Jacobian, and it is
+
+$$\frac{\partial \mathbf h_j}{\partial \mathbf h_{j-1}}=\mathrm{diag}\big(1-\mathbf h_j^2\big)\,W_{hh}$$
+
+In the scalar case it is the factor $u\cdot\text{slope}$ you met above. To go back $k$ steps you multiply $k$ of these. How big can the product get? Let $\sigma_{\max}$ be the largest singular value of $W_{hh}$, which is the most that the matrix can stretch any vector, and let $\lVert\cdot\rVert$ be the length of a vector. The tanh slope is at most 1. Then
+
+$$\Big\|\frac{\partial \mathbf h_t}{\partial \mathbf h_i}\Big\|\le(\sigma_{\max})^{\,t-i}$$
+
+where a $\sigma_{\max}$ below 1 pulls the bound toward 0 and one above 1 lets it grow. In the scalar case the factor is just $u^k$ after $k$ steps:
 
 | $k$ | $0.9^k$ | $1.1^k$ |
 |---|---|---|
@@ -61,61 +125,56 @@ where $\sigma_{\max}$ is the largest singular value of $W_{hh}$ (how much the ma
 | 20 | 0.1216 | 6.7275 |
 | 50 | 0.0052 | 117.39 |
 
-Add a typical tanh slope of 0.7 and $(0.9\times0.7)^{10}=0.0098$. Vanishing means early steps get almost no learning signal, so the network cannot link a word at step 1 to a loss at step 20. Exploding means a single update can wreck the weights.
+Real tanh slopes are below 1, which makes shrinking worse: with a slope of 0.7, ten steps back gives $(0.9\times0.7)^{10}=0.0098$.
 
-Clipping. For explosions, rescale the gradient when its norm passes a threshold $c$: if $\|g\|>c$, set $g\leftarrow c\,g/\|g\|$. The direction is kept, only the length shrinks. Clipping does nothing for vanishing. Vanishing is handled by gated cells (the next two posts) and sensible initialisation.
+Vanishing means the early steps get almost no learning signal, so the network can't connect a word at step 1 to a loss at step 20. Exploding is the other side: one update can throw the weights far away.
 
-Truncated BPTT. For long sequences, backpropagate only $\tau$ steps. Every term with $t-i>\tau$ is dropped. This is cheaper in time and memory, but the network cannot learn dependencies longer than $\tau$. The dropped terms are ignored, not set to a wrong value, and the gradient does not become zero.
+## Clipping and truncation
 
-## Worked example
+Clipping handles explosions (it comes from [Pascanu, Mikolov and Bengio](https://arxiv.org/abs/1211.5063), who also analyse the vanishing and exploding cases). If the gradient's norm is above a limit $c$, scale it down to length $c$ and keep its direction:
 
-Scalar RNN, $h_t=\tanh(wx_t+uh_{t-1})$, $h_0=0$, $w=0.5$, $u=0.8$, inputs $x=(1,\,0.5,\,-1)$, target $y=0.6$ at $t=3$ only, $L=\tfrac12(h_3-y)^2$.
+$$\mathbf g\leftarrow c\,\frac{\mathbf g}{\lVert\mathbf g\rVert}\quad\text{if }\lVert\mathbf g\rVert>c$$
 
-Forward: $h_1=\tanh(0.5)=0.4621$, $h_2=\tanh(0.25+0.3697)=0.5509$, $h_3=\tanh(-0.5+0.4407)=-0.0592$, so $L=\tfrac12(-0.6592)^2=0.2173$.
+With $\mathbf g=(30,40)$ the norm is 50. For $c=5$ you get $5\cdot(30,40)/50=(3,4)$. Clipping does nothing for vanishing, because there is no big number to cut. Gated cells fix vanishing, and the [LSTM](./08-lstm.md) and [GRU](./09-gru.md) notes show how.
 
-Slopes $1-h^2$: $0.7864,\ 0.6965,\ 0.9965$.
+Truncated BPTT limits how far back the error travels. With window $\tau$, you keep the terms where the loss step $t$ and the earlier step $i$ are at most $\tau$ apart, and drop the ones with $t-i>\tau$. In practice you run the forward pass over the whole sequence but cut the gradient at the window edge. It saves time and memory; [d2l.ai](https://d2l.ai/chapter_recurrent-neural-networks/bptt.html) works through the idea with code. The cost is that a dependency longer than $\tau$ never gets any gradient, so the network can't learn it.
 
-Backward: $\delta_3=(h_3-y)(0.9965)=-0.6592\times0.9965=-0.6569$. Then $\delta_2=\delta_3\cdot u\cdot0.6965=-0.3660$ and $\delta_1=\delta_2\cdot u\cdot0.7864=-0.2303$.
+Try it on the example with $\tau=1$. The loss is at step 3, so the terms from steps 3 and 2 stay, and the step-1 terms go:
 
-Gradients, summed over time:
+$$\frac{\partial L}{\partial w}=0.6569-0.1830=0.4739$$
 
-$$\frac{\partial L}{\partial w}=\delta_3x_3+\delta_2x_2+\delta_1x_1=0.6569-0.1830-0.2303=0.2436$$
+The full answer was 0.2436, so dropping step 1 here nearly doubles the gradient for $w$. The gradient for $u$ stays at $-0.5310$ because its step-1 term was already zero.
 
-$$\frac{\partial L}{\partial u}=\delta_3h_2+\delta_2h_1+\delta_1h_0=-0.3619-0.1691-0=-0.5310$$
+## Writing it in an exam
 
-One step with $\eta=0.5$: $w=0.5-0.5(0.2436)=0.3782$ and $u=0.8+0.5(0.5310)=1.0655$.
+For a numeric question, show the forward values, the slopes and each $\delta$ before you get to the shared weights, and write each weight's sum out term by term. On a theory question on vanishing gradients, draw the unrolled network, write the product of one-step Jacobians, and finish with a number such as $0.9^{20}\approx0.12$ against $1.1^{20}\approx6.7$.
 
-Truncate at $\tau=2$ by dropping the step-1 terms: $\partial L/\partial w=0.6569-0.1830=0.4739$, against the true $0.2436$. The step-1 piece was not small enough to ignore here. $\partial L/\partial u$ is unchanged because $h_0=0$ kills its step-1 term.
+## Sum or product, clipping, truncation
 
-$$\boxed{\partial L/\partial w=0.2436,\quad \partial L/\partial u=-0.5310}$$
+Why is the gradient for $W_{hh}$ a sum over time, but the signal from step $t$ back to step $i$ a product?
 
-## Exam corner
+<details><summary>Answer</summary>
 
-Asked in past exams: the practice set has six items here (exploding gradients and clipping, long-range dependence from the repeated $W_{hh}$ product, truncated BPTT with $\tau=5$ and what it omits, singular values of 0.9 over $T=20$, distributing $\partial L/\partial W_{hh}$ across time, and teacher forcing). The explain-vanishing-gradients question appeared in 1 past paper we have, and it asks how gates fix it. A full numeric BPTT derivation did not show up in the past papers we could read, so expect the explanation and short-calculation forms.
+The same weight is used at every step, so each use contributes its own term and they add. The signal from $t$ back to $i$ passes through $t-i$ steps in a chain, and chained derivatives multiply.
 
-Marks come from: drawing or stating the unrolled graph, writing the sum over time for the shared weight, showing the product of Jacobians, and concluding with the norm argument ($0.9^{20}\approx0.12$, $1.1^{20}\approx6.7$). For truncation, say which terms are omitted and name the trade-off.
+</details>
 
-Common slips: forgetting to sum over time; writing $\partial h_t/\partial W$ as one term; offering clipping as a fix for vanishing; saying truncation "makes gradients zero" instead of "ignores long-range paths". For teacher forcing, the advantage is faster convergence and the drawback is exposure bias at test time, when the model sees its own outputs.
+A gradient is $\mathbf g=(12,5)$ and the clip limit is $c=6.5$. What is the clipped gradient?
 
-Cheat line: $\delta_t=(1-h_t^2)\odot(W_{hy}^{\top}e_t+W_{hh}^{\top}\delta_{t+1})$, $\partial L/\partial W_{hh}=\sum_t\delta_th_{t-1}^{\top}$, factor per step $\approx\sigma_{\max}\gamma$.
+<details><summary>Answer</summary>
 
-## Check yourself
+The norm is $\sqrt{144+25}=13$, which is above 6.5, so scale by $6.5/13=0.5$.
 
-1. Why is the gradient for $W_{hh}$ a sum over time but the signal from step $t$ to step $i$ a product?
+$$\mathbf g\leftarrow0.5\cdot(12,5)=(6,\ 2.5)$$
 
-<details><summary>Answer</summary>The same weight is used at every step, so each use adds its own piece. The signal from $t$ back to $i$ passes through $t-i$ chained steps, and chained derivatives multiply.</details>
+The direction is the same and the new norm is 6.5.
 
-2. A gradient has norm 50 and the clip threshold is 5. What is the clipped gradient for $g=(30,40)$?
+</details>
 
-<details><summary>Answer</summary>$5\cdot(30,40)/50=(3,4)$. Direction unchanged, norm now 5.</details>
+With $\tau=1$ on this three-step sequence, which terms are dropped? Why can't truncation help a network learn that the word at step 1 decides the answer at step 10?
 
-3. With $\tau=2$ on a 3-step sequence, which gradient terms are lost, and why can't truncation help with a 10-step dependency?
+<details><summary>Answer</summary>
 
-<details><summary>Answer</summary>Terms with $t-i>2$ are dropped, here the step-1 contributions. Any dependency longer than $\tau$ never receives gradient, so it cannot be learned.</details>
+Terms with $t-i>1$ are dropped. For the loss at step 3 that is the step-1 terms. A dependency spanning 9 steps is longer than any $\tau$ below 9, and error that never travels that far never produces a gradient for it.
 
-## Read more
-
-- [d2l.ai on backpropagation through time](https://d2l.ai/chapter_recurrent-neural-networks/bptt.html), including truncation and the exploding and vanishing cases.
-- [Pascanu et al., On the difficulty of training recurrent neural networks](https://arxiv.org/abs/1211.5063), the paper behind gradient clipping.
-
-<!-- Reviewer note: the digest says the lecture did not cover BPTT, so the exam section relies on practice items and one past-paper count only. No solutions exist for practice items 23-30; the teacher forcing line is from the digest summary. 07a-rnn.md did not exist when this was written; the link assumes it will. -->
+</details>

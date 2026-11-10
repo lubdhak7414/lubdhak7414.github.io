@@ -18,11 +18,11 @@ text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size
 <text x="255.0" y="234.0" class="bo" text-anchor="middle">batch mean and variance (divide by m)</text>
 <text x="255.0" y="258.0" class="bl" text-anchor="middle">μ_B = 5,  σ_B² = 5</text>
 <rect x="30" y="315.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="255.0" y="344.0" class="bo" text-anchor="middle">normalize: (x - μ_B) / √(σ_B² + ε), ε = 0</text>
-<text x="255.0" y="368.0" class="bl" text-anchor="middle">x̂ = [-1.342, -0.447, 0.447, 1.342]</text>
+<text x="255.0" y="344.0" class="bo" text-anchor="middle">normalise: (x - μ_B) / √(σ_B² + ε), ε = 0</text>
+<text x="255.0" y="368.0" class="bl" text-anchor="middle">x̄ = [-1.342, -0.447, 0.447, 1.342]</text>
 <rect x="30" y="445.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="255.0" y="474.0" class="bo" text-anchor="middle">scale and shift: y = γ x̂ + β</text>
-<text x="255.0" y="498.0" class="bl" text-anchor="middle">y = [-1.31, -0.24, 0.84, 1.91]</text>
+<text x="255.0" y="474.0" class="bo" text-anchor="middle">scale and shift: o = γ x̄ + β</text>
+<text x="255.0" y="498.0" class="bl" text-anchor="middle">o = [-1.31, -0.24, 0.84, 1.91]</text>
 <rect x="720" y="95.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
 <text x="945.0" y="124.0" class="bo" text-anchor="middle">one input</text>
 <text x="945.0" y="148.0" class="bl" text-anchor="middle">x = 6</text>
@@ -30,11 +30,11 @@ text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size
 <text x="945.0" y="234.0" class="bo" text-anchor="middle">stored running averages</text>
 <text x="945.0" y="258.0" class="bl" text-anchor="middle">EMA_μ = 5,  EMA_σ² = 5</text>
 <rect x="720" y="315.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="945.0" y="344.0" class="bo" text-anchor="middle">normalize with the stored values</text>
-<text x="945.0" y="368.0" class="bl" text-anchor="middle">x̂ = (6 - 5) / √5 = 0.447</text>
+<text x="945.0" y="344.0" class="bo" text-anchor="middle">normalise with the stored values</text>
+<text x="945.0" y="368.0" class="bl" text-anchor="middle">x̄ = (6 - 5) / √5 = 0.447</text>
 <rect x="720" y="445.0" width="450" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="945.0" y="474.0" class="bo" text-anchor="middle">scale and shift: y = γ x̂ + β</text>
-<text x="945.0" y="498.0" class="bl" text-anchor="middle">y = 1.2 (0.447) + 0.3 = 0.837</text>
+<text x="945.0" y="474.0" class="bo" text-anchor="middle">scale and shift: o = γ x̄ + β</text>
+<text x="945.0" y="498.0" class="bl" text-anchor="middle">o = 1.2 (0.447) + 0.3 = 0.837</text>
 <line x1="255.0" y1="165.0" x2="255.0" y2="203.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
 <line x1="255.0" y1="275.0" x2="255.0" y2="313.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
 <line x1="255.0" y1="385.0" x2="255.0" y2="443.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>

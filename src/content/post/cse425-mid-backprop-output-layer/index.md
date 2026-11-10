@@ -1,6 +1,6 @@
 ---
-title: "Backpropagation Part 1: Blaming the Output Layer"
-description: "Compute the output-layer delta and update the last layer's weights and bias by hand, with a sigmoid neuron."
+title: "Backpropagation Part 1: The Output Layer"
+description: "The output layer's delta, from error times slope to updated weights and bias, with a nudge test that checks the formula."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, backprop]
@@ -8,115 +8,130 @@ series: "CSE 425 Mid"
 part: 3
 ---
 
-## Quick idea
+Predicting 0.55 for a target of 1 leaves a network 0.45 short. That single number has to be turned into a change for every weight, because each weight contributed some unknown share of the miss. Backpropagation is the method for finding each share.
 
-Your network predicts 0.55 and the target is 1. The error is 0.45, but a network has many weights, and you have to decide how much of that 0.45 each one caused. Backpropagation is the bookkeeping that hands out the blame.
+The last layer is the easy case, since its weights touch the error directly. This note does the last layer, and the [next one](/blog/cse425-mid-backprop-hidden-layers/) passes the result back through the hidden layers.
 
-The last layer is the easy case. Its weights touch the error directly, so the blame for each one is just the error, multiplied by how steeply the neuron's output responds, multiplied by the signal that arrived on that weight. Once you can do this for the output layer, Part 2 only has to pass the blame backwards one layer at a time.
+> **Key Takeaways**
+> - The delta of a neuron is $\delta=\partial L/\partial z$, how much the loss changes per unit nudge of that neuron's weighted sum.
+> - For an output neuron, $\delta=e\,f'(z)$, where $e=\widehat{y}-y$ is the error and $f'$ is the activation's slope.
+> - Each weight changes by $-\eta\,\delta$ times the signal that arrived on it, and the bias by $-\eta\,\delta$.
+> - A sigmoid neuron stuck near 0 or 1 has a slope near 0, so its weights barely move.
 
-One line to hold on to: the weight change is $\eta\,\delta\,a_{in}$, where $\delta$ is the neuron's blame.
+## One output neuron, with numbers
 
-## Picture it
+One sigmoid output neuron receives two signals from a hidden layer, $a_1=0.64566$ and $a_2=0.52498$. Its weights are $w_1=0.6$ and $w_2=-0.7$, its bias is $b=0.2$, the target is $y=1$ and the learning rate is $\eta=0.5$.
 
-The forward pass runs left to right and stores every $z$ and $a$. The backward pass starts from the error and works out $\delta$ at the output first.
+Forward first. The weighted sum is
 
-```mermaid
-flowchart LR
-  A["inputs x"] --> B["z = w.a + b"]
-  B --> C["a = f of z"]
-  C --> D["error e = d - a"]
-  D --> E["delta = e * f prime of z"]
-  E --> F["change w by eta * delta * incoming a"]
-```
+$$z=0.6(0.64566)-0.7(0.52498)+0.2$$
 
-## The detail
+$$=0.21991$$
 
-Notation follows the series: $z$ is a neuron's weighted sum plus bias, $a=f(z)$ its output, $\eta$ the learning rate. Some exam papers write $v$ for $z$, $y$ for $a$ and $\varphi$ for $f$. Same objects, different letters. The weight $w_{kj}$ goes from neuron $j$ into neuron $k$, so the first index is the destination.
+and the output is $\widehat{y}=f(0.21991)=0.55476$. The error is the output minus the target:
 
-For output neuron $k$ with target $d_k$:
+$$e=0.55476-1=-0.44524$$
 
-$$z_k=\sum_j w_{kj}a_j+b_k,\qquad a_k=f(z_k),\qquad e_k=d_k-a_k,\qquad E=\tfrac12\sum_k e_k^2$$
+The sigmoid slope at this $z$ is $f'(z)=0.55476\,(1-0.55476)=0.24700$. The delta is the error times the slope:
 
-Here $a_j$ is the output of a neuron in the previous layer, and $E$ is the loss. The $\tfrac12$ is only there so the 2 from differentiating cancels.
+$$\delta=e\,f'(z)=-0.44524\times0.24700$$
 
-The blame of a neuron is defined as the negative slope of the loss with respect to its $z$:
+$$=-0.10998$$
 
-$$\delta_k=-\frac{\partial E}{\partial z_k}$$
+Each weight then moves by $-\eta\,\delta$ times the signal that came in on it:
 
-Derivation, every step. The loss reaches $z_k$ through $e_k$ and $a_k$:
+$$w_1\leftarrow0.6-0.5(-0.10998)(0.64566)$$
 
-$$\frac{\partial E}{\partial z_k}=\frac{\partial E}{\partial e_k}\,\frac{\partial e_k}{\partial a_k}\,\frac{\partial a_k}{\partial z_k}$$
+$$=0.63550$$
 
-Each factor is short. $\partial E/\partial e_k=e_k$, because only the $k$-th square in the sum depends on $e_k$. $\partial e_k/\partial a_k=-1$, because $e_k=d_k-a_k$. $\partial a_k/\partial z_k=f'(z_k)$. Multiply them and apply the minus sign from the definition:
+$$w_2\leftarrow-0.7-0.5(-0.10998)(0.52498)$$
 
-$$\boxed{\delta_k=e_k\,f'(z_k)}$$
+$$=-0.67113$$
 
-Now the weight. Since $z_k=\sum_j w_{kj}a_j+b_k$, only one term depends on $w_{kj}$, so $\partial z_k/\partial w_{kj}=a_j$. By the chain rule $\partial E/\partial w_{kj}=-\delta_k a_j$. Gradient descent moves against the slope:
+$$b\leftarrow0.2-0.5(-0.10998)=0.25499$$
 
-$$\Delta w_{kj}=-\eta\frac{\partial E}{\partial w_{kj}}=\eta\,\delta_k\,a_j,\qquad \Delta b_k=\eta\,\delta_k$$
+The delta is negative, which says that raising $z$ would lower the loss. Both incoming signals are positive, so every weight goes up. Note that $w_2$ was negative and moved up towards zero. The neuron needs a bigger $z$ to reach the target of 1, and the signal on $w_2$ is positive, so a less negative weight helps.
 
-The bias is a weight whose incoming signal is always 1, which is why its update has no $a_j$.
+Did it work? With the same two incoming signals and the new weights, the loss is $\tfrac12(\widehat{y}-y)^2=0.08921$, down from 0.09912.
 
-The minus sign in the definition of $\delta$ is a convention. With it the update is $+\eta\delta a_j$. Without it you write $-\eta\,\partial E/\partial w$. They are the same rule, so pick one and keep it for the whole answer.
+## Why those formulas
 
-For a sigmoid, $f(z)=1/(1+e^{-z})$, the slope is read off the stored output:
+Let neuron $k$ be an output neuron, and let $w_{kj}$ be the weight from neuron $j$ of the layer before into neuron $k$ (the first index is the destination). With $a_j$ the output of neuron $j$ and $f$ the activation function,
 
-$$f'(z)=\frac{e^{-z}}{(1+e^{-z})^2}=\frac{1}{1+e^{-z}}\cdot\frac{e^{-z}}{1+e^{-z}}=a\,(1-a)$$
+$$z_k=\sum_j w_{kj}a_j+b_k$$
 
-The last step uses $1-a=\dfrac{e^{-z}}{1+e^{-z}}$. No new exponential is needed during backprop. A neuron stuck near $a=0$ or $a=1$ has $a(1-a)\approx 0$, so its $\delta$ is tiny and its weights barely move.
+$$\widehat{y}_k=a_k=f(z_k)$$
 
-## Worked example
+$$e_k=\widehat{y}_k-y_k$$
 
-One sigmoid output neuron with two inputs from a hidden layer, $\eta=0.5$, target $d=1$. The incoming signals are $a_1=0.64566$ and $a_2=0.52498$, the weights are $w_1=0.6$, $w_2=-0.7$ and the bias is $b=0.2$.
+and the loss is $L=\tfrac12\sum_k e_k^2$, summed over the output neurons. The error is output minus target because that difference is exactly the slope of the loss $\tfrac12 e^2$ with respect to the output. It is positive when the output is too high and negative when it is too low. The $\tfrac12$ cancels the 2 that differentiating produces.
 
-Forward: $z=0.6(0.64566)-0.7(0.52498)+0.2=0.21991$, so $a=f(0.21991)=0.55476$ and $e=1-0.55476=0.44524$.
+The delta is defined as the slope of the loss with respect to the pre-activation:
 
-Slope: $f'(z)=0.55476(1-0.55476)=0.24700$.
+$$\delta_k=\frac{\partial L}{\partial z_k}$$
 
-Delta: $\delta=0.44524\times0.24700=0.10998$.
+The loss reaches $z_k$ through the output $\widehat{y}_k$, so the chain rule has two factors:
 
-Updates, all positive because $\delta>0$ and both incoming signals are positive:
+$$\frac{\partial L}{\partial z_k}=\frac{\partial L}{\partial \widehat{y}_k}\cdot\frac{\partial \widehat{y}_k}{\partial z_k}$$
 
-$$w_1^{new}=0.6+0.5(0.10998)(0.64566)=0.63550$$
+The first is $e_k$, because only the $k$-th square in the sum depends on $\widehat{y}_k$, and the slope of $\tfrac12(\widehat{y}_k-y_k)^2$ with respect to $\widehat{y}_k$ is $\widehat{y}_k-y_k$. The second is $f'(z_k)$. Multiplying them:
 
-$$w_2^{new}=-0.7+0.5(0.10998)(0.52498)=-0.67113,\qquad b^{new}=0.2+0.5(0.10998)=0.25499$$
+$$\delta_k=e_k\,f'(z_k)$$
 
-$$\boxed{\delta=0.10998,\quad w_1\to 0.63550,\quad w_2\to -0.67113,\quad b\to 0.25499}$$
+For the weight, $z_k=\sum_j w_{kj}a_j+b_k$ contains $w_{kj}$ in one term only, so $\partial z_k/\partial w_{kj}=a_j$. The chain rule then gives the gradient, and gradient descent moves against it:
 
-Note that $w_2$ was negative and moved up towards zero. The neuron needs a bigger $z$ to reach the target of 1, and the signal on $w_2$ is positive, so a less negative weight helps. Part 2 uses these same numbers inside a full 2-2-1 network.
+$$\frac{\partial L}{\partial w_{kj}}=\delta_k\,a_j$$
 
-## Exam corner
+$$w_{kj}\leftarrow w_{kj}-\eta\,\delta_k\,a_j$$
 
-Asked in past exams. The output-layer delta is the first step of the "compute the local induced gradient for the first layer of a four-layer network" question, which appeared in 2 distinct quiz sittings among the papers we have. A Fall 2021 Mid asked about the signal-flow graph that returns the delta, which belongs to Part 2. The proof that the sigmoid derivative equals $f(1-f)$ was a quiz question. Across the papers we have, that is about 3 appearances in 2 semesters, and no numeric Mid question on backprop turned up, though numeric 2-2-2 questions are in the practice material.
+The bias is a weight whose incoming signal is always 1, which is why its update has no $a_j$:
 
-Marks come from: defining $\delta$, the chain rule written out with its three factors, the final $\delta_k=e_k f'(z_k)$, and the update rule with the right indices.
+$$b_k\leftarrow b_k-\eta\,\delta_k$$
 
-Common slips: writing $e=y-d$ (it is $d-a$, and the update then moves the wrong way); forgetting $f'$ and using only the error; leaving the bias without its update; updating $w$ before you have finished computing the deltas.
+Writing the error the other way round, $e=y-\widehat{y}$, makes the update run uphill unless you also flip the sign in the update, so keep to one convention for the whole answer. Some course papers do exactly that: they write $d$, $v$ and $\varphi$ for the target, the pre-activation and the activation function, take the error as target minus output, and use $\delta=-\partial E/\partial z$. Every $\delta$ then has the opposite sign to the ones here, and the weight updates come out identical.
 
-Formula cheat line: $\delta_k=e_kf'(z_k)$, $\Delta w_{kj}=\eta\delta_ka_j$, $\Delta b_k=\eta\delta_k$, $f'=a(1-a)$ for sigmoid.
+For a sigmoid, $f(z)=1/(1+e^{-z})$, the slope can be read off the stored output, because the [prerequisites note](/blog/cse425-mid-prerequisites/) shows that $f'(z)=a(1-a)$. At $z=0.21991$ the direct formula gives
 
-## Check yourself
+$$\frac{e^{-z}}{(1+e^{-z})^2}=0.24700$$
 
-Output $a=0.8$, target $d=0$, sigmoid. What is $\delta$?
+which equals $0.55476\times0.44524$, the value used above. No new exponential is needed during backprop. A neuron stuck near $a=0$ or $a=1$ has $a(1-a)\approx 0$, so its $\delta$ is tiny and its weights barely move.
+
+## Checking the formula against the numbers
+
+The formula says that $\partial L/\partial w_1=\delta\,a_1=-0.10998\times0.64566=-0.07101$. That can be tested without any calculus: raise $w_1$ from 0.6 to 0.61, recompute the neuron and its loss, and compare. The loss falls by 0.000709, and the formula predicts $-0.07101\times0.01=-0.000710$. Close enough, and a smaller nudge would bring them closer still. It costs one extra forward pass, so I'd run it on any derivation where a sign or an index looks doubtful.
+
+If the target is already met, $\widehat{y}=y$, so $e=0$ and $\delta=0$, and no weight changes whatever the slope is.
+
+The [3Blue1Brown video on backpropagation](https://www.3blue1brown.com/lessons/backpropagation) shows the same nudging idea with pictures.
+
+## Questions on the output delta
+
+The output is $\widehat{y}=0.8$, the target is $y=0$, and the neuron is a sigmoid. What is $\delta$?
 
 <details><summary>Answer</summary>
-$e=0-0.8=-0.8$ and $f'=0.8(0.2)=0.16$, so $\delta=-0.128$. Negative, so the weights on positive incoming signals go down.
+
+$$e=0.8-0=0.8$$
+
+$$f'=0.8(1-0.8)=0.16$$
+
+$$\delta=0.8\times0.16=0.128$$
+
+It is positive, so weights on positive incoming signals go down.
+
 </details>
 
 Why does the bias update have no $a_j$ factor?
 
 <details><summary>Answer</summary>
-The bias multiplies a constant signal of 1, so $\partial z/\partial b=1$ and $\Delta b=\eta\delta$.
+
+The bias multiplies a constant signal of 1, so $\partial z/\partial b=1$ and the update is $-\eta\,\delta$.
+
 </details>
 
-In the example, what would $\delta$ be if the target were already met, $a=d$?
+In the example, what would the update to $w_1$ be if the target were $y=0.55476$?
 
 <details><summary>Answer</summary>
-$e=0$, so $\delta=0$ and no weight changes, whatever the slope.
+
+Then $e=0$, so $\delta=0$ and $w_1$ stays at 0.6.
+
 </details>
-
-## Read more
-
-- [3Blue1Brown: What is backpropagation really doing?](https://www.3blue1brown.com/lessons/backpropagation) for the picture of nudging weights.
-- [CS231n notes on backpropagation and the chain rule](https://cs231n.github.io/optimization-2/) for the same idea on computation graphs.
-- [Wikipedia: Backpropagation](https://en.wikipedia.org/wiki/Backpropagation) for definitions and history.

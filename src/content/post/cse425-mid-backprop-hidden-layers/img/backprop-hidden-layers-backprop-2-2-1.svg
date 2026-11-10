@@ -9,7 +9,7 @@ text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size
 .mono{font-family:'DejaVu Sans Mono',Consolas,monospace}
 </style><marker id="a1f2328" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f2328"/></marker><marker id="a57606a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker><marker id="a1d4ed8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker><marker id="ab91c1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="a15803d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker><marker id="ac2410c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker><marker id="a7e22ce" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker></defs>
 <rect x="0" y="0" width="1200" height="600" rx="16" fill="#fafaf7"/>
-<text x="24.0" y="36.0" class="l bo" text-anchor="start">Input x = (1, 0), target d = 1, sigmoid everywhere, learning rate 0.5</text>
+<text x="24.0" y="36.0" class="l bo" text-anchor="start">Input x = (1, 0), target y = 1, sigmoid everywhere, learning rate 0.5</text>
 <circle cx="80" cy="175" r="36" fill="#ffffff" stroke="#1f2328" stroke-width="2"/>
 <text x="80.0" y="173.0" class="" text-anchor="middle">x1</text>
 <text x="80.0" y="193.0" class="bl s" text-anchor="middle">= 1</text>
@@ -21,27 +21,27 @@ text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size
 <text x="452.0" y="148.0" class="bl" text-anchor="start">z1 = 0.6</text>
 <text x="452.0" y="168.5" class="bl" text-anchor="start">a1 = 0.64566</text>
 <text x="452.0" y="189.0" class="m" text-anchor="start">f'(z1) = 0.22878</text>
-<text x="452.0" y="209.5" class="rd bo" text-anchor="start">δ1 = 0.015096</text>
+<text x="452.0" y="209.5" class="rd bo" text-anchor="start">δ1 = -0.015096</text>
 <text x="452.0" y="230.0" class="gr" text-anchor="start">b1: 0.1 → 0.10755</text>
 <rect x="440" y="370.0" width="230" height="150" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
 <text x="452.0" y="394.0" class="bo" text-anchor="start">hidden 2</text>
 <text x="452.0" y="418.0" class="bl" text-anchor="start">z2 = 0.1</text>
 <text x="452.0" y="438.5" class="bl" text-anchor="start">a2 = 0.52498</text>
 <text x="452.0" y="459.0" class="m" text-anchor="start">f'(z2) = 0.24938</text>
-<text x="452.0" y="479.5" class="rd bo" text-anchor="start">δ2 = -0.019198</text>
+<text x="452.0" y="479.5" class="rd bo" text-anchor="start">δ2 = 0.019198</text>
 <text x="452.0" y="500.0" class="gr" text-anchor="start">b2: -0.2 → -0.20960</text>
 <rect x="840" y="235.0" width="230" height="150" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
 <text x="852.0" y="259.0" class="bo" text-anchor="start">output</text>
 <text x="852.0" y="283.0" class="bl" text-anchor="start">zo = 0.21991</text>
 <text x="852.0" y="303.5" class="bl" text-anchor="start">ao = 0.55476</text>
 <text x="852.0" y="324.0" class="m" text-anchor="start">f'(zo) = 0.24700</text>
-<text x="852.0" y="344.5" class="rd bo" text-anchor="start">δo = e f'(zo) = 0.10998</text>
+<text x="852.0" y="344.5" class="rd bo" text-anchor="start">δo = e f'(zo) = -0.10998</text>
 <text x="852.0" y="365.0" class="gr" text-anchor="start">bo: 0.2 → 0.25499</text>
 <rect x="1088" y="250" width="100" height="120" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2" />
 <text x="1138.0" y="276.0" class="bo" text-anchor="middle">error</text>
-<text x="1138.0" y="300.0" class="s" text-anchor="middle">e = 1 - ao</text>
-<text x="1138.0" y="322.0" class="s or" text-anchor="middle">= 0.44524</text>
-<text x="1138.0" y="350.0" class="s or bo" text-anchor="middle">E = 0.09912</text>
+<text x="1138.0" y="300.0" class="s" text-anchor="middle">e = ao - 1</text>
+<text x="1138.0" y="322.0" class="s or" text-anchor="middle">= -0.44524</text>
+<text x="1138.0" y="350.0" class="s or bo" text-anchor="middle">L = 0.09912</text>
 <line x1="1070.0" y1="310.0" x2="1086.0" y2="310.0" stroke="#1d4ed8" stroke-width="2" marker-end="url(#a1d4ed8)"/>
 <line x1="116.0" y1="175.0" x2="438.0" y2="175.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
 <text x="277.0" y="166.0" class="s lab" text-anchor="middle" transform="rotate(0.00 277.0 166.0)"><tspan class="bo">w11 = 0.5</tspan><tspan class="gr" dx="8">→ 0.50755</tspan></text>
@@ -54,13 +54,13 @@ text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size
 <line x1="670.0" y1="175.0" x2="838.0" y2="270.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
 <text x="745.2" y="240.0" class="s lab" text-anchor="middle" transform="rotate(29.20 745.2 240.0)"><tspan class="bo">wo1 = 0.6</tspan><tspan class="gr" dx="8">→ 0.63550</tspan></text>
 <line x1="836.0" y1="244.0" x2="674.0" y2="149.0" stroke="#b91c1c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ab91c1c)"/>
-<text x="759.4" y="188.6" class="s rd lab" text-anchor="middle" transform="rotate(29.20 759.4 188.6)">δo wo1 = 0.065986</text>
+<text x="759.4" y="188.6" class="s rd lab" text-anchor="middle" transform="rotate(29.20 759.4 188.6)">δo wo1 = -0.065986</text>
 <line x1="670.0" y1="445.0" x2="838.0" y2="350.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
 <text x="750.6" y="389.6" class="s lab" text-anchor="middle" transform="rotate(-29.20 750.6 389.6)"><tspan class="bo">wo2 = -0.7</tspan><tspan class="gr" dx="8">→ -0.67113</tspan></text>
 <line x1="836.0" y1="376.0" x2="674.0" y2="471.0" stroke="#b91c1c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ab91c1c)"/>
-<text x="764.8" y="441.0" class="s rd lab" text-anchor="middle" transform="rotate(-29.20 764.8 441.0)">δo wo2 = -0.076983</text>
+<text x="764.8" y="441.0" class="s rd lab" text-anchor="middle" transform="rotate(-29.20 764.8 441.0)">δo wo2 = 0.076983</text>
 <text x="24.0" y="570.0" class="bl" text-anchor="start">blue: forward values</text>
 <text x="230.0" y="570.0" class="rd" text-anchor="start">red: deltas, sent back along dashed arrows</text>
 <text x="600.0" y="570.0" class="gr" text-anchor="start">green: value after one update (old weights used throughout)</text>
-<text x="24.0" y="544.0" class="s m" text-anchor="start">δj = f'(zj) × (δo wo,j),   new w = w + 0.5 × δ × (signal entering the weight); w12 and w22 stay the same because x2 = 0</text>
+<text x="24.0" y="544.0" class="s m" text-anchor="start">δj = f'(zj) × (δo wo,j),   new w = w - 0.5 × δ × (signal entering the weight); w12 and w22 stay the same because x2 = 0</text>
 </svg>
