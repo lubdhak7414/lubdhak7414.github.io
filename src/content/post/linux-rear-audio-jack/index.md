@@ -129,7 +129,7 @@ So the last step is in the sound settings. In KDE Plasma, use the "Analog Stereo
 
 ## Check it after a reboot or a kernel update
 
-The override still applies two months and a few kernel updates later. Three quick checks. First, that the kernel loaded the patch:
+The override is meant to outlast reboots and kernel updates, and three quick checks confirm it. First, that the kernel loaded the patch:
 
 ```bash
 journalctl -k -b -o cat | grep retask

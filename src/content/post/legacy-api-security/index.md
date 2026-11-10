@@ -53,20 +53,18 @@ That check matters more than it sounds. Many JSON decoders skip keys they don't 
 
 Severity alone doesn't set the order. I weighed how much damage each flaw could do against how likely its fix was to break the installed app.
 
-| Order | Flaw | Fix | Why this slot |
-| --- | --- | --- | --- |
-| 1 | Admin login checked only in the browser | Server-side session check in one gatekeeper that runs before any admin page | Anyone could reach the admin scripts. The app never touches the admin panel, so the contract can't break. |
-| 2 | Uploads not checked | Image formats only, MIME and image-structure checks, random file names, no script execution in the upload folder | A file that runs as code hands over the server. The app only sends images, so it doesn't notice. |
-| 3 | SQL built from strings in the admin scripts | Bound parameters through CodeIgniter's Query Builder | Admin-only code, so no contract risk. |
-| 4 | Framework 3.1.11 | CodeIgniter 3.1.13, custom application layer kept | Picks up a session security fix and PHP 8 support. The API's output doesn't change. |
-| 5 | Reset mail through `mail()` | Authenticated SMTP with a proper HTML email | Reset mail has to reach the inbox before the reset flow can change. |
-| 6 | Unauthenticated write and delete calls, hardcoded token | Real token checks that fail with the error JSON the app already handles | First fix the app can feel, so it waits until the server-only work is done. |
-| 7 | Reset password returned in the response | A one-time link by email, nothing secret in the response | The key stays if the old app reads it. Only its contents change. |
-| 8 | md5 passwords | bcrypt, rehashed on the next login | No forced reset, no change to the login request or response. |
-| 9 | Payment status trusted from the app | The server checks its own payment record | The old app keeps sending its flag. The server stops believing it. |
-| 10 | Credentials in the source | Moved to the environment, then rotated | Rotate last, once deploys and rollbacks are routine. |
+1. **Admin login checked only in the browser.** Fix: a server-side session check in one gatekeeper that runs before any admin page. Why first: anyone could reach the admin scripts, and the app never touches the admin panel, so the contract can't break.
+2. **Uploads not checked.** Fix: image formats only, MIME and image-structure checks, random file names, no script execution in the upload folder. Why now: a file that runs as code hands over the server, and the app only sends images, so it doesn't notice.
+3. **SQL built from strings in the admin scripts.** Fix: prepared statements with bound parameters. Why now: admin-only code, so no contract risk.
+4. **Framework 3.1.11.** Fix: CodeIgniter 3.1.13, with the custom application layer kept. Why now: it picks up a session security fix and PHP 8 support, and the API's output doesn't change.
+5. **Reset mail through `mail()`.** Fix: authenticated SMTP with a proper HTML email. Why now: reset mail has to reach the inbox before the reset flow can change.
+6. **Unauthenticated write and delete calls, and a hardcoded token.** Fix: real token checks that fail with the error JSON the app already handles. Why here: it's the first fix the app can feel, so it waits until the server-only work is done.
+7. **Reset password returned in the response.** Fix: a one-time link by email, nothing secret in the response. Why here: the key stays in case the old app reads it. Only its contents change.
+8. **md5 passwords.** Fix: bcrypt, rehashed on the next login. Why here: no forced reset, and no change to the login request or response.
+9. **Payment status trusted from the app.** Fix: the server checks its own payment record. Why here: the old app keeps sending its flag. The server stops believing it.
+10. **Credentials in the source.** Fix: moved to the environment, then rotated. Why last: rotate once deploys and rollbacks are routine.
 
-The first round of work covered the admin login, uploads, the framework and mail, plus the new response fields. The rest of the table touches requests the app makes, so each one gets the keep-the-shape treatment.
+The first round of work covered the admin login, uploads, the framework and mail, plus the new response fields. Items 6 to 9 touch requests the app makes, so each one gets the keep-the-shape treatment.
 
 ## The first round
 
@@ -174,7 +172,7 @@ private function save_hash(int $id, string $hash): void
 }
 ```
 
-The login request and response don't change, so the installed app never knows. I tested the same logic with PHP 8.5 on my machine against a one-row stand-in for the users table: a wrong password, then the right one, then the right one again.
+The login request and response don't change, so the installed app never knows. I tested the same logic with PHP 8.5 on my machine against a one-row stand-in for the users table: a wrong password, then the right one, then the right one again, and finally whether the new hash needed a rehash.
 
 ```text
 before: 3cb4e732631f47e6eb961f34554b7cde
@@ -186,7 +184,7 @@ bool(true)
 bool(false)
 ```
 
-The wrong password left the md5 row alone. The right one replaced it with bcrypt, and the third login went through `password_verify()` with nothing left to rehash.
+The wrong password left the md5 row alone. The right one replaced it with bcrypt. The third login went through `password_verify()`, and the last line shows there was nothing left to rehash.
 
 A few details decide whether this works in production:
 

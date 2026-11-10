@@ -3,6 +3,7 @@ title: 'BIZ BEE website'
 name: 'BIZ BEE'
 description: 'The website for BRAC University Business Club (BIZ BEE), built on WordPress and Elementor: events, six department pages and a recruitment page.'
 publishDate: '23 October 2026'
+homePageIdx: 9
 coverImage:
   src: './cover.webp'
   alt: 'The BIZ BEE homepage in a desktop browser window and on a phone'

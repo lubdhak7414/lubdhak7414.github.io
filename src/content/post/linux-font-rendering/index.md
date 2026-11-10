@@ -4,11 +4,9 @@ description: 'How I fixed blurry, thin fonts on KDE CachyOS with a 1080p monitor
 publishDate: '24 June 2026'
 coverImage:
   src: './cover.webp'
-  alt: 'Side-by-side comparison of Linux font rendering before and after lucidglyph stem-darkening on a 1080p display'
+  alt: 'Illustration of the same letters rendered three ways: Windows ClearType, default Linux with thin stems, and Linux with lucidglyph stem-darkening'
 tags: ['Linux', 'KDE Plasma', 'Fonts', 'CachyOS']
 ---
-
-## The problem nobody warns you about
 
 When I made the jump from Windows to KDE CachyOS, I expected the usual adjustment
 period: learning new shortcuts, finding equivalent apps, tweaking the desktop. What
@@ -20,18 +18,18 @@ light on a dark background. On a 1080p IPS monitor like the BenQ GW2480, it was
 impossible to ignore. Windows fonts had always felt sharp and weighted just right.
 Linux felt like reading through frosted glass.
 
-> **Key Takeaways**
->
-> - Linux and Windows use fundamentally different font rendering philosophies; neither is buggy, they just disagree on what "correct" means.
-> - The Windows-style fix (subpixel rendering, aggressive hinting) gets you close to ClearType but can introduce colour fringing on some panels.
-> - The macOS-style fix via **lucidglyph** uses stem-darkening to add weight without distorting letterforms, and works best on 90–110 PPI displays.
-> - KDE Plasma can silently override your Fontconfig settings — you must set sub-pixel rendering to "None" in System Settings.
-> - Chromium-based browsers have dropped FreeType entirely, so stem-darkening only works in Firefox.
-
 This is one of the longest-standing complaints in the Linux desktop world. If
 you've just migrated from Windows on a non-HiDPI 1080p display, there's a good
 chance you're experiencing the same thing. Here is everything I tried, what I
 learned, and what actually fixed it.
+
+> **Key Takeaways**
+>
+> - Linux and Windows use fundamentally different font rendering philosophies; neither is buggy, they just disagree on what "correct" means.
+> - The Windows-style fix (subpixel rendering, aggressive hinting) gets you close to ClearType but can introduce colour fringing on some panels.
+> - The macOS-style fix via **lucidglyph** uses stem-darkening to add weight without distorting letterforms, and works best on low pixel density displays like a 24-inch 1080p monitor.
+> - KDE Plasma can silently override your Fontconfig settings, so set sub-pixel rendering to "None" in System Settings.
+> - Chromium-based browsers no longer render text through FreeType, so among browsers, stem-darkening only shows up in Firefox.
 
 ## Why do Linux fonts look different from Windows?
 
@@ -40,7 +38,7 @@ The root cause isn't a bug. It's a deliberate difference in philosophy and techn
 Windows uses a rendering pipeline built around **ClearType**, which relies on aggressive
 hinting and subpixel rendering tuned specifically for LCD screens at typical desktop
 pixel densities. The result is fonts that look crisp, heavy, and punchy, especially
-on a 24-inch 1080p monitor like the BenQ GW2480 (which sits at roughly 91 PPI —
+on a 24-inch 1080p monitor like the BenQ GW2480 (which sits at roughly 92 PPI,
 firmly in "low pixel density" territory by modern standards).
 
 Linux uses **FreeType** for font rasterization and **Fontconfig** for font selection
@@ -86,8 +84,6 @@ closer to their designed forms, just slightly bolder and more readable.
 This is the approach that worked best on my BenQ GW2480, and it is the approach
 taken by the **lucidglyph** project.
 
-I ran a rough before-and-after check on a screenshot of body text in Inter at 13px, measuring vertical stroke widths on a handful of lowercase characters against the pixel grid. Before lucidglyph, average stroke width came out at about 1.0px, with some hairline strokes at 0.8px — thin enough that they read as grey rather than black on a dark background at normal viewing distance. After lucidglyph, the same characters measured around 1.7px — a 70% increase in stem weight. The letterforms themselves kept their shape; only the weight changed. On a 91 PPI display that difference is immediately visible without zooming in.
-
 ## Discovering lucidglyph
 
 The project is maintained by **maximilionus** on GitHub:
@@ -112,7 +108,7 @@ What lucidglyph does, concretely:
 
 Critically for 1080p monitors: the project description specifically flags low pixel
 density (low-PPI) displays as the primary beneficiary of stem-darkening. The BenQ
-GW2480 at 91 PPI is exactly the kind of screen this was designed for.
+GW2480 at roughly 92 PPI is exactly the kind of screen this was designed for.
 
 ## Installation
 
@@ -132,11 +128,11 @@ If you prefer a per-user install without touching system files, use the `--user`
 ./lucidglyph.sh --user install
 ```
 
-## KDE Plasma specific step — do not skip this
+## The KDE Plasma step: don't skip this
 
 Here's something that caught me out. KDE Plasma, in some configurations, overrides
 Fontconfig's anti-aliasing settings, particularly when fractional scaling is involved.
-This is an acknowledged regression tracked in the KDE bug tracker, and it means
+This is a known issue, and it means
 lucidglyph's grayscale anti-aliasing can get quietly overwritten.
 
 The fix:
@@ -145,7 +141,7 @@ The fix:
 2. Go to **Appearance & Style → Text & Fonts**
 3. Make sure **Sub-pixel rendering** is set to **None**
 
-Without this step, you might install lucidglyph, reboot, and see no improvement —
+Without this step, you might install lucidglyph, reboot, and see no improvement,
 because Plasma is still forcing subpixel (RGBA) rendering behind the scenes.
 
 ## The Chromium problem (and why it matters)
@@ -207,8 +203,8 @@ distortion.
 
 The **macOS-style fix** via **lucidglyph** uses stem-darkening to add weight without
 distorting letterforms, producing a result that is arguably more faithful to the
-fonts' intended appearance. On a BenQ GW2480 specifically, and on any other IPS
-panel in the 90–110 PPI range, this approach produces noticeably better results.
+fonts' intended appearance. On my BenQ GW2480, this approach produced noticeably
+better results, and low pixel density panels like it are what lucidglyph targets.
 
 Either way, don't forget to check your KDE sub-pixel rendering settings. They will
 silently undo everything else you configure.

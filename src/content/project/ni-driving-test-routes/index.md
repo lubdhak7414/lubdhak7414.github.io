@@ -3,10 +3,11 @@ title: 'NI Driving Test Routes'
 name: 'NI Driving Test Routes'
 description: 'A WooCommerce shop selling driving test route guides for Northern Ireland, built on WordPress and Elementor, which I have kept running since launch.'
 publishDate: '03 November 2024'
+homePageIdx: 11
 updatedDate: '03 November 2024'
 coverImage:
   src: './cover.jpg'
-  alt: 'Northern Ireland Driving Test Routes Website'
+  alt: 'NI Driving Test Routes website'
 links:
   - { label: 'Live site', url: 'https://testroutesni.co.uk/', kind: 'live' }
 tags: ['WordPress', 'SEO']
@@ -17,7 +18,7 @@ shot:
   alt: 'NI Driving Test Routes homepage: headline, call-to-action buttons and a road-sign photo'
 ---
 
-I built a site about Northern Ireland driving test routes. The audience: people nervous about their test who want to know exactly where they'll be driving. They're searching on their phones while prepping, so every second of load time matters.
+I built a site about Northern Ireland driving test routes. The audience: people nervous about their test who want to know exactly where they'll be driving. Many of them look on a phone, so the pages have to load fast on one.
 
 The brief was straightforward. Useful content. Fast pages. A clean mobile experience. And a way to pay for the routes: the site is a shop. Each test centre's route guide is a product in WooCommerce, paid for by card through Stripe. It runs on WordPress with the Elementor page builder.
 
@@ -25,7 +26,7 @@ The brief was straightforward. Useful content. Fast pages. A clean mobile experi
 >
 > - The site is a shop: each test centre's route guide is a WooCommerce product, paid for by card through Stripe.
 > - In PageSpeed Insights it scored 97 for performance on desktop and 91 on mobile, with the main content on screen in 0.7 s and 2.6 s.
-> - I've kept the site running since launch: updates, payments, a bonus guide with each purchase and a link to the companion app.
+> - I've kept the site running since launch: updates, payment checks, a bonus guide with each purchase and a link to the companion app.
 
 ![Homepage](./homepage.png)
 
@@ -37,7 +38,7 @@ Route pages for all 19 test centres in Northern Ireland, the "show me, tell me" 
 
 ## How the site performed
 
-I tested the site with Google PageSpeed Insights in December 2024.
+I tested the site with Google PageSpeed Insights on 6 December 2024.
 
 | PageSpeed Insights       | Desktop | Mobile |
 | ------------------------ | ------: | -----: |
@@ -48,11 +49,11 @@ I tested the site with Google PageSpeed Insights in December 2024.
 | First Contentful Paint   |   0.7 s |  2.6 s |
 | Largest Contentful Paint |   0.7 s |  2.6 s |
 
-Desktop loads its main content in 0.7 seconds. Mobile is slower on PageSpeed's simulated slow phone, 2.6 seconds, and that's the number that matters most, because most people checking routes are on a phone, often while they're out.
+Desktop loads its main content in 0.7 seconds. Mobile is slower on PageSpeed's simulated mid-range phone over slow 4G: 2.6 seconds. That's the figure to watch, since people preparing for a test often check routes on a phone.
 
-![Page Speed Insight for Desktop](./page-speed-desktop.png)
+![PageSpeed Insights desktop report, 6 December 2024: performance 97, accessibility 93, best practices 93, SEO 85](./page-speed-desktop.png)
 
-![Page Speed Insight for Phone](./page-speed-phone.png)
+![PageSpeed Insights mobile report, 6 December 2024: performance 91, accessibility 94, best practices 96, SEO 85](./page-speed-phone.png)
 
 ## Keeping it running
 
@@ -61,4 +62,4 @@ I've kept looking after the site since launch. Some of that work:
 - **Updates.** PHP, WordPress and every plugin kept current, with card payments through Stripe checked after updates.
 - **A bonus guide with each purchase.** The route guides now come with a bonus PDF, added to the products in WooCommerce, with a banner on the product and checkout pages.
 - **The app.** The site's popup now links to the companion app in the App Store, and I changed when the popup appears.
-- **An FAQ page.**
+- **An FAQ page.** A new page of common questions, added after launch.

@@ -94,9 +94,9 @@ At line no: 6 Multiple declaration of variable c
 
 At line no: 7 array index is not of integer type : a
 
-At line no: 8 Warning: Assignment of float value into variable of integer type 
+At line no: 8 Warning: Assignment of float value into variable of integer type
 
-At line no: 9 Modulus operator on non integer type 
+At line no: 9 Modulus operator on non integer type
 
 At line no: 10 variable is of array type : a
 
@@ -124,7 +124,7 @@ int main(){
 ```
 
 ```text
-At line no: 3 Modulus by 0 
+At line no: 3 Modulus by 0
 
 At line no: 5 Undeclared variable k
 
@@ -199,7 +199,7 @@ return t1
 
 `m = n` loaded `n` into `t1` and cached it. The loop test at `L0` then compares `t1`, and the body subtracts from `t1`. The body stores the new value in `n`, but nothing reloads `t1`, so every pass through `L0` sees 3. The loop never ends, and the `return` would hand back the old value.
 
-When `n` isn't read before the loop, the load happens after `L0` and the code is correct. That's why the lab's samples didn't catch it. The reference output for the second sample has the same pattern in its `while (c > 0)` loop.
+When `n` isn't read before the loop, the load happens after `L0` and the code is correct. The lab's samples couldn't catch it anyway: the reference output for the second sample has the same pattern in its `while (c > 0)` loop, so matching the sample means keeping the bug.
 
 The fix is to forget cached temporaries at any label a jump can land on, so the loop head always reads the variable from memory. A simpler option is to drop the cache after each statement and accept a few extra loads.
 

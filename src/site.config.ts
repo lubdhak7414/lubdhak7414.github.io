@@ -7,7 +7,7 @@ export const siteConfig: SiteConfig = {
 	title: 'Safwan Usaid Lubdhak',
 	description: 'Software engineer - resume, projects, and blog',
 	// Shown under the name in the identity rail (home + about).
-	role: 'Software Developer',
+	role: 'Full stack developer',
 	location: 'Bangladesh',
 	bio: 'Full stack developer at Metaora. Builds web applications and open-source Linux desktop tools.',
 	socials: {

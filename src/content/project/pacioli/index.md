@@ -1,7 +1,7 @@
 ---
-title: 'Pacioli - An AI Ledger That Never Trusts the AI With Math'
+title: 'Pacioli: chat-driven bookkeeping where Python does the math'
 name: 'Pacioli'
-description: 'A deterministic double-entry bookkeeping engine where the LLM only proposes; every number and every write is computed and gated by Python.'
+description: 'A double-entry bookkeeping engine where the language model only proposes edits. Python computes every number and gates every write.'
 publishDate: '13 June 2026'
 updatedDate: '13 June 2026'
 coverImage:
@@ -32,14 +32,14 @@ shot:
 
 Most "AI accountant" demos hand the language model a spreadsheet and let it report the
 totals. That is exactly the thing language models are worst at. Pacioli is built on the
-opposite assumption. LLMs are excellent at _parsing intent_ and _structuring_ an instruction
+opposite assumption. LLMs are good at _parsing intent_ and _structuring_ an instruction
 into well-formed accounting actions, and unreliable at _arithmetic_ and _state mutation_, so
 the design draws that line explicitly in code.
 
 The model is confined to producing a structured, schema-validated proposal. Every figure in
 a report, every balance check, and every byte written to disk is computed and gated by
 deterministic Python. Nothing the model emits touches the ledger until a human approves it, and
-anything approved can be reverted in a single call. The AI is a convenience at the edge, not a
+anything approved can be reverted in a single call. The model is a convenience at the edge, not a
 dependency in the critical path.
 
 > **Key Takeaways**
@@ -71,8 +71,6 @@ Remember: debits must equal credits.
 
 The model repairs its own output, up to a retry cap. That turns the LLM's most common failure
 mode, _almost_-valid JSON, from a hard error into a recoverable round-trip.
-
-Across 340 test proposals during development, 87% passed schema validation on the first attempt. Of the 13% that failed, 71% self-corrected within one retry and 24% within two, leaving 5% that exhausted the cap and returned actionable error messages instead of silently producing bad output. Average end-to-end latency for a passing proposal was 2.1 seconds; self-correcting proposals averaged 3.8 seconds. That overhead is acceptable — a rejected proposal the operator has to rephrase and resubmit costs more in practice than a second round-trip the system handles automatically.
 
 ### 2. Deterministic math
 

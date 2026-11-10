@@ -1,6 +1,6 @@
 ---
 title: 'Self-Hosting a Private SearXNG Search Engine'
-description: 'How I put a private, single-user SearXNG metasearch engine behind a Caddy reverse proxy with Docker Compose, so my searches never leave my own machine.'
+description: 'How I put a private, single-user SearXNG metasearch engine behind a Caddy reverse proxy with Docker Compose, with only the proxy exposed to the host.'
 publishDate: '21 June 2026'
 coverImage:
   src: './cover.webp'
@@ -8,23 +8,21 @@ coverImage:
 tags: ['Docker', 'Self-Hosting', 'Linux', 'Privacy', 'DevOps']
 ---
 
-## Why run your own search engine
-
 SearXNG is a metasearch engine: it takes your query, forwards it to dozens of
 upstream engines (Google, Bing, DuckDuckGo, Wikipedia, and so on), merges the
 results, and hands them back without building a profile of you. There are public
 instances you can use for free, but you are still trusting a stranger's server
 with every query, and the popular ones get rate-limited into uselessness.
 
-Running my own fixes both problems. The queries never leave my machine, there is
-no shared instance to throttle me, and I get to tune exactly which engines and
+Running my own fixes both problems. No stranger's server sits between me and the
+engines, there is no shared instance to throttle me, and I get to tune exactly which engines and
 plugins are on. The goal I set was modest and specific: a private, single-user
 instance, reachable at a friendly local hostname, locked down so that only a
 reverse proxy is ever exposed to the host.
 
 > **Key Takeaways**
 >
-> - SearXNG aggregates results from many engines without profiling you; self-hosting keeps your queries on your own box.
+> - SearXNG aggregates results from many engines without profiling you; self-hosting means no stranger's server handles your queries.
 > - The whole thing is three containers (Caddy, the SearXNG core, Valkey), and only the Caddy reverse proxy is bound to the host.
 > - The secret key has to be identical in `.env` and `settings.yml`, and it should never be committed or shared.
 > - A handful of config choices (`limiter: false`, `public_instance: false`, a privacy-friendly favicon resolver) turn a public-instance template into a sane single-user setup.
@@ -268,17 +266,17 @@ A `200` through Caddy means the proxy, core, and cache are all talking.
 
 ## Log lines that look scary but are not
 
-The startup logs include a few warnings that look scary but aren't:
+The startup logs include a few warnings you can ignore:
 
 | Message                                                      | What it means                                              |
 | ------------------------------------------------------------ | ---------------------------------------------------------- |
 | `loading engine ahmia failed: set engine to inactive!`       | Ahmia needs Tor, which isn't running, so it auto-disables. |
 | `loading engine torch failed: set engine to inactive!`       | Same: a Tor-only engine, auto-disabled.                    |
 | `missing config file: /etc/searxng/limiter.toml`             | The limiter is intentionally off.                          |
-| Caddy: `listening only on the HTTP port, no automatic HTTPS` | By design; we serve plain HTTP on a local hostname.        |
+| Caddy: `listening only on the HTTP port, no automatic HTTPS` | By design: this setup serves plain HTTP on a local name.   |
 
-If there is _no_ secret-key mismatch warning, your `.env` and `settings.yml`
-agree, which is the one warning you actually care about.
+The one warning you do care about is a secret-key mismatch. If it isn't there,
+your `.env` and `settings.yml` agree.
 
 ## Living with it
 
@@ -294,8 +292,6 @@ docker compose up -d              # start again
 
 Editing `settings.yml`, `favicons.toml`, or `.env` only takes effect after a
 restart of the relevant container.
-
-After eight months of daily use, the instance has processed around 11,400 queries. Average response time sits at 380ms — measured across a sample of searches against the five most active engines. The nearest public instance I used before self-hosting was averaging around 2,100ms on the same queries, plus it logged IP addresses by default. In eight months, the only unplanned downtime was two container restarts for version updates, one for SearXNG and one for Valkey. Uptime otherwise: 99.7%.
 
 Updating is the usual Compose dance:
 
@@ -317,8 +313,8 @@ https://search.localhost {
 }
 ```
 
-Caddy installs its root CA into the system trust store on first run (needs sudo),
-then update `SEARXNG_BASE_URL` and `server.base_url` to
+Caddy installs its root CA into the system trust store on first run (needs sudo).
+Then update `SEARXNG_BASE_URL` and `server.base_url` to
 `https://search.localhost/` and bring the stack back up.
 
 ## Tearing it down

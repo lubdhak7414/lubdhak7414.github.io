@@ -1722,6 +1722,19 @@
 		color: var(--text);
 		border-bottom-color: var(--line-strong);
 	}
+	/* Phones: let a table wrap inside the column instead of clipping it behind a scroll. */
+	@media (max-width: 640px) {
+		.prose table {
+			display: table;
+			width: 100%;
+			font-size: 0.8125em;
+		}
+		.prose th,
+		.prose td {
+			padding-right: 0.5rem;
+			overflow-wrap: anywhere;
+		}
+	}
 
 	/* ---------- 404 ---------- */
 	.terminal {

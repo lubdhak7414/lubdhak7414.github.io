@@ -25,7 +25,7 @@ export const personSchema = {
 	url: ORIGIN,
 	mainEntityOfPage: `${ORIGIN}/about/`,
 	email: `mailto:${siteConfig.socials.email}`,
-	jobTitle: 'Software Developer',
+	jobTitle: 'Full stack developer',
 	description: siteConfig.bio,
 	knowsAbout: ['Software Development', 'KDE', 'Linux', 'Web Development', 'Databases', 'DevOps'],
 	publishingPrinciples: `${ORIGIN}/about/`,

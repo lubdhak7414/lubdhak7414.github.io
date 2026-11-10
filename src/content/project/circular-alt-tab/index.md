@@ -1,7 +1,7 @@
 ---
 title: 'A Circular Alt+Tab Switcher for KDE Plasma 6'
 name: 'Circular Alt+Tab'
-description: 'A KWin window switcher that arranges windows as pie slices around the cursor - live thumbnails, multi-ring layout, and full theme integration in pure QML.'
+description: 'A KWin window switcher that arranges windows as pie slices around the cursor, with live thumbnails, a multi-ring layout and theme integration in pure QML.'
 publishDate: '17 June 2026'
 updatedDate: '17 June 2026'
 coverImage:
@@ -62,11 +62,9 @@ rotation-based positioning and an `OpacityMask` for clipping each annular sector
   window enumeration), a deliberate, documented trade-off, since the polished interaction simply
   isn't reachable through the public TabBox surface.
 
-On an RTX 3070 with 30 simultaneous windows (4 rings), peak GPU SM utilization sat at 52% and
-KWin held under half a core, idle between interactions. No sustained load at realistic-to-extreme
-window counts.
-
-I ran an informal trial with 14 KDE Plasma users over a week. Eleven stayed with the circular layout by the end. The most consistent feedback: the cursor-centric layout clicked quickly because the windows appear where you are already looking. On a self-timed 10-window selection task, participants averaged 2.1 seconds with the default strip switcher and 0.9 seconds with the circular one. That is not a controlled experiment, but it lines up with what the geometry predicts — shorter average cursor travel to the target when the target is distributed around the cursor rather than in a strip at the screen edge.
+The layout rests on a simple piece of geometry, the same idea behind Fitts's law: when windows
+are spread around the cursor rather than lined up in a strip at the screen edge, the cursor has
+less distance to travel, on average, to reach the one you want.
 
 ## Limitations
 

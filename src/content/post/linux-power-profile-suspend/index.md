@@ -268,4 +268,4 @@ slept_at,woke_at,hours,pct_before,pct_after,unit,before,after,lost_per_hour
 
 When `unit` is `uWh`, `lost_per_hour` is µWh lost per hour, which is the average draw in µW. Divide it by 1,000,000 for watts. When it's `uAh`, the rate is in µA instead, and you'd need the battery voltage to turn it into watts. If the charger was plugged in during the sleep, the numbers can go negative.
 
-The CSV keeps one row per night, so it's easy to open in a spreadsheet or plot later.
+With one row per sleep, the file is easy to open in a spreadsheet or plot later.

@@ -1,7 +1,7 @@
 ---
 title: 'KDoit: A To-Do Widget for KDE Plasma 6'
 name: 'KDoit'
-description: 'A pure-QML to-do list plasmoid with priorities, due dates, drag-and-drop, Markdown export, and live file sync. Zero build steps required.'
+description: 'A to-do list widget for the KDE Plasma 6 desktop in pure QML: priorities, due dates, drag-and-drop, Markdown and iCalendar export, live file sync.'
 publishDate: '08 July 2026'
 coverImage:
   src: './cover.png'
@@ -18,7 +18,7 @@ shot:
   alt: 'KDoit settings dialog next to the to-do widget on a KDE Plasma desktop'
 ---
 
-I wanted a to-do widget for my KDE Plasma 6 desktop that just worked. No build steps, no dependencies, no fuss. So I built KDoit, a pure-QML plasmoid that lives right on your desktop panel.
+KDoit is a to-do list widget (a plasmoid) for the KDE Plasma 6 desktop, for anyone who wants their tasks on the desktop or panel instead of in a separate app. I built it because I wanted one that just worked: pure QML, no build steps, no dependencies. It's published on the KDE Store.
 
 > **Key Takeaways**
 >
@@ -30,9 +30,9 @@ I wanted a to-do widget for my KDE Plasma 6 desktop that just worked. No build s
 
 ## What it does
 
-KDoit handles the basics: create tasks, mark them done, reorder with drag-and-drop. It goes further than most desktop widgets, though.
+KDoit handles the basics: create tasks, mark them done, reorder with drag-and-drop. It also does more than the basics.
 
-Priorities show up as color-coded stripes: red for high, yellow for medium, grey for low. Due dates display verbosely, so you see "Today" or "Tomorrow" instead of a raw date. Overdue items turn red. Categories let you filter by Work, Personal, or Education, and you can manage your own. Nested sublists go one level deep.
+Priorities show up as color-coded stripes: red for high, yellow for medium, grey for low. Due dates display as words where they can, so you see "Today" or "Tomorrow" instead of a raw date. Overdue items turn red. Categories let you filter by Work, Personal, or Education, and you can manage your own. Nested sublists go one level deep.
 
 ## Under the hood
 
@@ -44,13 +44,13 @@ kpackagetool6 -t Plasma/Applet -i KDoit/
 
 It uses Kirigami for the UI layer and Plasma Components 3.0 for native look and feel. The widget works on both Wayland and X11.
 
-Dual-write keeps things fast: data goes to both a JSON file and KConfig, so startup is instant without reading the full task list from disk. A 3-second poll watches the JSON file for changes, so if you edit tasks in another app, KDoit picks them up automatically.
+Tasks are written to both a JSON file and KConfig. A 3-second poll watches the JSON file for changes, so if you edit tasks in another app, KDoit picks them up automatically.
 
 ## Export and sync
 
 Markdown export produces Obsidian Tasks-compatible output, which is handy if you want to review your tasks in a note-taking app. iCalendar export follows RFC 5545 VTODO, so you can import into calendar apps that support it.
 
-The live file sync uses UUID-based merge with mtime detection. Edit the JSON file externally, and KDoit reflects your changes within seconds. No manual refresh needed.
+The live file sync uses UUID-based merge with mtime detection. Edit the JSON file externally, and KDoit picks up your changes on the next poll. No manual refresh needed.
 
 ## Details that matter
 
@@ -60,4 +60,4 @@ KDoit ships with five demo tasks, including "Exit vim" with nested subtasks. It'
 
 ## Wrapping up
 
-KDoit started because I couldn't find a to-do widget that fit my workflow. Building something for yourself is the best way to understand what actually matters. The features that seemed nice-to-have, like live file sync and Markdown export, ended up being the ones I use most. You build what you need, and sometimes other people need it too.
+KDoit started because I couldn't find a to-do widget that fit my workflow. Building it for myself showed me what actually matters. The features that seemed nice-to-have, like live file sync and Markdown export, ended up being the ones I use most. You build what you need, and sometimes other people need it too.

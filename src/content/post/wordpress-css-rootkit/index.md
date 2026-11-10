@@ -1,6 +1,6 @@
 ---
-title: 'Dissecting a WordPress Hack: Ghost Admins and CSS'
-description: 'We debugged a WordPress slot spam infection and found attackers hiding rogue admin accounts and backdoor plugins using a simple CSS override in functions.php.'
+title: 'Dissecting a WordPress Hack: A Ghost Admin Hidden by CSS'
+description: 'We debugged a WordPress slot spam infection and found an attacker hiding a rogue admin account and backdoor plugins with a CSS override in functions.php.'
 publishDate: '2 April 2026'
 coverImage:
   src: './cover.webp'
@@ -18,16 +18,16 @@ We assumed the usual entry point: a vulnerable plugin allowing unauthenticated p
 > **Key Takeaways**
 >
 > - Application UIs are unreliable during incident response; always verify user privileges and counts directly against `wp_users` and `wp_usermeta` database tables.
-> - Attackers frequently use native theme files to inject CSS payloads, hiding security warnings and backdoor plugins via DOM manipulation.
+> - An attacker can use an ordinary theme file to inject CSS that hides security warnings, backdoor plugins and admin accounts from the dashboard.
 > - Relying entirely on standard security plugins is insufficient if an attacker gains enough privilege to apply `display: none` to the plugin's own dashboard interface.
 
-## The discrepancy: ghost admins in the UI
+## The discrepancy: a ghost admin in the UI
 
-I checked the WordPress users list to audit administrator accounts. The UI showed an immediate discrepancy. The aggregate count at the top of the table clearly registers "Administrator (3)", but the data table only renders two rows.
+We checked the WordPress users list to audit administrator accounts. The UI showed an immediate discrepancy. The aggregate count at the top of the table clearly registers "Administrator (3)", but the data table only renders two rows.
 
 ![WordPress admin users list showing Administrator count of 3 but only two visible rows](./ghost-admin-count.jpg)
 
-A standard visual inspection misses this entirely. One administrator account was invisible to the site owner.
+A quick glance at the list misses this. One administrator account was invisible to the site owner.
 
 ### Bypassing visual audits
 
@@ -80,6 +80,6 @@ The last rule mattered most. `.users-php .users tr[id="user-1087"]` removes a sp
 
 ## Tradeoffs of the DOM-level rootkit
 
-Every technical choice has tradeoffs, even for attackers. This method is cheap to implement. It requires no complex PHP logic and quietly bypasses basic security audits performed by non-technical store owners who only look at dashboards. But it breaks easily. Because the payload lives strictly in the active theme's `functions.php` file, a simple theme update or a switch to a default theme instantly strips the persistence mechanism and exposes the rogue user. It also leaves an obvious footprint in version control.
+Every technical choice has tradeoffs, even for attackers. This method is cheap to implement. It requires no complex PHP logic and quietly bypasses basic security audits performed by non-technical store owners who only look at dashboards. But it breaks easily. Because the payload lives strictly in the active theme's `functions.php` file, a simple theme update or a switch to a default theme instantly strips the persistence mechanism and exposes the rogue user. It also shows up in any diff against the official theme.
 
 You cannot trust the application UI when auditing a compromised system. If the environment is breached, the DOM is just another vector for obfuscation. Audit the raw database tables.

@@ -1,14 +1,14 @@
 ---
 title: 'Three Apps in Raw PHP: A Lesson in SQL Transactions'
 name: 'Three Apps in Raw PHP'
-description: 'A café, a library, and a gym - three management systems built in plain PHP and MySQL with no framework, where the real lessons were all about transactions.'
+description: 'A café, a library, and a gym: three management systems built in plain PHP and MySQL with no framework, where the real lessons were all about transactions.'
 publishDate: '23 December 2024'
 updatedDate: '4 March 2026'
 coverImage:
   src: './cover.webp'
   alt: 'RepBase gym class schedule showing live seats-left badges'
 tags: ['PHP', 'MySQL', 'Backend', 'Databases', 'Project']
-homePageIdx: 4
+homePageIdx: 12
 links:
   - { label: 'BrewQuery', url: 'https://github.com/lubdhak7414/BrewQuery', kind: 'code' }
   - { label: 'ShelfAware', url: 'https://github.com/lubdhak7414/ShelfAware', kind: 'code' }
@@ -61,8 +61,8 @@ moment a copy comes back. Four coordinated writes that must either all land or a
 ## RepBase
 
 [RepBase](https://github.com/lubdhak7414/RepBase) manages members, class bookings, waitlists,
-attendance, and payments across member/trainer/admin roles. The booking flow is the transaction-
-heavy one: booking a full class drops you onto the waitlist, and cancelling a spot
+attendance, and payments across member/trainer/admin roles. The booking flow is the
+transaction-heavy one: booking a full class drops you onto the waitlist, and cancelling a spot
 auto-promotes the next person in line. The "seats left" figure is a `LEFT JOIN` aggregate
 against active bookings, not a counter you can let drift:
 
@@ -72,8 +72,6 @@ FROM class c
 LEFT JOIN booking b ON b.Class_id = c.Class_id AND b.Status = 'booked'
 GROUP BY c.Class_id;
 ```
-
-Under a 50-concurrent-user load test (Docker Compose, table seeded with 8,000 booking rows), the seats-left query completed in an average of 3.2ms. A PHP loop doing the same calculation row-by-row — fetching all bookings and summing in application code — averaged 47ms on the same dataset, roughly fifteen times slower. At 200 concurrent users the SQL aggregate held at 4.1ms while the PHP loop climbed past 200ms. The difference is not the query versus the loop in isolation; it's that the aggregate runs inside the database engine, which keeps the booking rows in a buffer pool and never sends them across the PHP/MySQL boundary at all.
 
 ![RepBase class roster with colour-coded full and near-full capacity rows](./repbase-roster.png)
 

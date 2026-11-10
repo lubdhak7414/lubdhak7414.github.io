@@ -18,7 +18,7 @@ Each one has the symptom, the cause, the fix, and the catch I didn't write down 
 > - Easy Effects can make thin laptop speakers usable. A preset made for your model beats a hand-made EQ, and a limiter belongs at the end of the chain.
 > - `--password-store=basic` stops Brave's keyring prompt by keeping saved passwords and the cookie key unencrypted on disk. Unlocking the keyring at login is the better fix.
 > - In kitty, Ctrl+Backspace sends `^H`, which bash treats as a one-letter delete. Mapping it to send `^W` turns it into a word delete.
-> - pacman and AUR helpers never clean their own caches. On my desktop the AUR helper's clone folder alone was 52G.
+> - pacman and AUR helpers don't clean their caches unless you tell them to. On my desktop the AUR helper's clone folder alone was 52G.
 
 ## Thin, quiet laptop speakers
 
@@ -143,8 +143,8 @@ Keeping three versions frees under 1 GiB here. Keeping one frees 8 GiB.
 
 To stop thinking about it, enable `paccache.timer`, which runs weekly; its arguments go in `/etc/conf.d/pacman-contrib`. It's disabled on my desktop. paru also has a `CleanAfter` option that removes untracked files after each install; it's commented out in my `/etc/paru.conf`.
 
-**The catch.** The cache is your downgrade path. With `-k1` you have one older version to roll back to, and nothing older without the [Arch Linux Archive](https://wiki.archlinux.org/title/Arch_Linux_Archive).
+**The catch.** The cache is your downgrade path. With `-k1` the cache keeps one version of each package, normally the one you have installed, so there's nothing older to roll back to without the [Arch Linux Archive](https://wiki.archlinux.org/title/Arch_Linux_Archive).
 
-For orphans, the [wiki's version](https://wiki.archlinux.org/title/Pacman/Tips_and_tricks#Removing_unused_packages_(orphans)) is `pacman -Qdtq | pacman -Rns -`. When there are none it prints `error: argument '-' specified with empty stdin`, which is expected; my desktop had none today. Read the list before you confirm: if something on it is a package you want, mark it with `pacman -D --asexplicit` and it drops off.
+For orphans, the [wiki's version](<https://wiki.archlinux.org/title/Pacman/Tips_and_tricks#Removing_unused_packages_(orphans)>) is `pacman -Qdtq | pacman -Rns -`. When there are none it prints `error: argument '-' specified with empty stdin`, which is expected; my desktop had none today. Read the list before you confirm: if something on it is a package you want, mark it with `pacman -D --asexplicit` and it drops off.
 
 `paru -Sc` also deletes downloaded sources, so the next update of those AUR packages downloads them again. Its man page says it keeps sources for VCS packages.
