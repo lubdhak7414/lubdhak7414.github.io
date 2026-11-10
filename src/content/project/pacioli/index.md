@@ -13,6 +13,7 @@ links:
   - { label: 'GitHub', url: 'https://github.com/lubdhak7414/pacioli', kind: 'code' }
 facts:
   status: 'Open source on GitHub'
+  license: 'MIT'
   stack:
     [
       'FastAPI',

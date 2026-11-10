@@ -15,6 +15,7 @@ links:
   - { label: 'RepBase', url: 'https://github.com/lubdhak7414/RepBase', kind: 'code' }
 facts:
   status: 'Open source on GitHub'
+  license: 'MIT'
   stack: ['PHP 8.2', 'MySQL']
 shot:
   src: './repbase-roster.png'

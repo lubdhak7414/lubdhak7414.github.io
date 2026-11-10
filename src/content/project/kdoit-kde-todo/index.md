@@ -13,6 +13,7 @@ links:
   - { label: 'KDE Store', url: 'https://www.opendesktop.org/p/2364121/', kind: 'store' }
 facts:
   status: 'Published on the KDE Store'
+  license: 'GPLv3 or later'
   stack: ['QML', 'Qt 6', 'KDE Plasma 6', 'Kirigami', 'Plasma Components 3.0']
 shot:
   src: './preview2.png'
