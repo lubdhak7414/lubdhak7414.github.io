@@ -39,7 +39,12 @@ const entrySchema = ({ image }: SchemaContext) =>
 // Long-form writing at /blog/<id>/.
 const post = defineCollection({
 	loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/post' }),
-	schema: entrySchema
+	schema: (context) =>
+		entrySchema(context).extend({
+			// TEMPORARY series preview: posts sharing `series` read as ordered parts.
+			series: z.string().optional(),
+			part: z.number().int().optional()
+		})
 })
 
 // Things that were built, at /projects/<id>/ and in the homepage project list.

@@ -1,6 +1,7 @@
 ---
 import ShellLayout from '@/layouts/ShellLayout.astro'
 import PostRow from '@/components/blog/PostRow.astro'
+import SeriesRow from '@/components/blog/SeriesRow.astro'
 import WorkRow from '@/components/project/WorkRow.astro'
 
 import {
@@ -9,13 +10,14 @@ import {
 	jsonLdScript,
 	personSchema,
 	sortByPublishDate,
-	websiteSchema
+	websiteSchema,
+	writingItems
 } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 // Already in homepage order (homePageIdx, then newest); don't re-sort.
 const projects = await getAllProjects()
-const posts = sortByPublishDate(await getAllPosts())
+const posts = writingItems(sortByPublishDate(await getAllPosts()))
 const latest = posts.slice(0, 4)
 
 const homeDescription = `${siteConfig.author}: ${siteConfig.bio}`
@@ -52,9 +54,13 @@ const homeDescription = `${siteConfig.author}: ${siteConfig.bio}`
 					</a>
 				</div>
 				<ul class='rows'>
-					{latest.map((post) => (
-						<PostRow entry={post} />
-					))}
+					{latest.map((item) =>
+						item.kind === 'series' ? (
+							<SeriesRow series={item.series} />
+						) : (
+							<PostRow entry={item.entry} />
+						)
+					)}
 				</ul>
 			</section>
 		)

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1350 660" width="1350" height="660" role="img" aria-labelledby="t d">
+<title id="t">LSTM cell</title>
+<desc id="d">Cell state runs along the top and is only multiplied by the forget gate and added to; forget, input and output gates and the tanh candidate read the stacked vector [h_t-1, x_t]. Values from the worked example.</desc>
+<defs><style>
+text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size:15px}
+.s{font-size:13px}.l{font-size:17px}.m{fill:#57606a}.bl{fill:#1d4ed8}.rd{fill:#b91c1c}
+.gr{fill:#15803d}.or{fill:#c2410c}.pu{fill:#7e22ce}.bo{font-weight:bold}
+.lab{paint-order:stroke;stroke:#fafaf7;stroke-width:6px;stroke-linejoin:round}
+.mono{font-family:'DejaVu Sans Mono',Consolas,monospace}
+</style><marker id="a1f2328" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f2328"/></marker><marker id="a57606a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker><marker id="a1d4ed8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker><marker id="ab91c1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="a15803d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker><marker id="ac2410c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker><marker id="a7e22ce" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker></defs>
+<rect x="0" y="0" width="1350" height="660" rx="16" fill="#fafaf7"/>
+<rect x="190" y="100" width="1110" height="420" rx="18" fill="#ffffff" stroke="#57606a" stroke-width="2" />
+<text x="205.0" y="88.0" class="bo rd" text-anchor="start">Cell state highway: only × f_t and + touch it, so the gradient along it is multiplied by f_t only</text>
+<line x1="40.0" y1="150.0" x2="285.0" y2="150.0" stroke="#1f2328" stroke-width="3"/>
+<text x="40.0" y="138.0" class="bo" text-anchor="start">c_t-1 = 0.4</text>
+<circle cx="300" cy="150" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="300.0" y="156.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<line x1="315.0" y1="150.0" x2="600.0" y2="150.0" stroke="#1f2328" stroke-width="3"/>
+<circle cx="615" cy="150" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="615.0" y="156.0" class="bo or" text-anchor="middle" style="font-size:18px">+</text>
+<line x1="630.0" y1="150.0" x2="1328.0" y2="150.0" stroke="#1f2328" stroke-width="3" marker-end="url(#a1f2328)"/>
+<text x="1328.0" y="138.0" class="bo" text-anchor="end">c_t = 0.8471</text>
+<text x="645.0" y="182.0" class="s bo" text-anchor="start">c_t = f_t ⊙ c_t-1 + i_t ⊙ c̃_t</text>
+<text x="645.0" y="202.0" class="s" text-anchor="start">= 0.8455(0.4) + 0.6682(0.7616) = 0.8471</text>
+<line x1="40.0" y1="480.0" x2="885.0" y2="480.0" stroke="#1f2328" stroke-width="2.5"/>
+<text x="40.0" y="468.0" class="bo" text-anchor="start">h_t-1 = 0.5</text>
+<line x1="240.0" y1="610.0" x2="240.0" y2="482.0" stroke="#1f2328" stroke-width="2.5"/>
+<circle cx="240" cy="480" r="4" fill="#1f2328" stroke="#1f2328" stroke-width="2"/>
+<text x="252.0" y="600.0" class="bo" text-anchor="start">x_t = 1</text>
+<text x="255.0" y="504.0" class="s m" text-anchor="start">stack: [h_t-1, x_t]</text>
+<line x1="255.0" y1="480.0" x2="255.0" y2="324.0" stroke="#b91c1c" stroke-width="2.2" marker-end="url(#ab91c1c)"/>
+<rect x="245" y="278" width="110" height="44" rx="8" fill="#ffffff" stroke="#b91c1c" stroke-width="2.5" />
+<text x="300.0" y="306.0" class="bo rd" text-anchor="middle">σ  → f_t</text>
+<text x="265.0" y="350.0" class="s bo rd" text-anchor="start">forget gate</text>
+<text x="265.0" y="370.0" class="s" text-anchor="start">σ(W_f [h_t-1, x_t] + b_f)</text>
+<text x="265.0" y="392.0" class="s bo rd" text-anchor="start">f_t = 0.8455</text>
+<line x1="465.0" y1="480.0" x2="465.0" y2="324.0" stroke="#15803d" stroke-width="2.2" marker-end="url(#a15803d)"/>
+<rect x="455" y="278" width="110" height="44" rx="8" fill="#ffffff" stroke="#15803d" stroke-width="2.5" />
+<text x="510.0" y="306.0" class="bo gr" text-anchor="middle">σ  → i_t</text>
+<text x="475.0" y="350.0" class="s bo gr" text-anchor="start">input gate</text>
+<text x="475.0" y="370.0" class="s" text-anchor="start">σ(W_i [h_t-1, x_t] + b_i)</text>
+<text x="475.0" y="392.0" class="s bo gr" text-anchor="start">i_t = 0.6682</text>
+<line x1="675.0" y1="480.0" x2="675.0" y2="324.0" stroke="#7e22ce" stroke-width="2.2" marker-end="url(#a7e22ce)"/>
+<rect x="665" y="278" width="110" height="44" rx="8" fill="#ffffff" stroke="#7e22ce" stroke-width="2.5" />
+<text x="720.0" y="306.0" class="bo pu" text-anchor="middle">tanh  → c̃_t</text>
+<text x="685.0" y="350.0" class="s bo pu" text-anchor="start">candidate</text>
+<text x="685.0" y="370.0" class="s" text-anchor="start">tanh(W_c [h_t-1, x_t] + b_c)</text>
+<text x="685.0" y="392.0" class="s bo pu" text-anchor="start">c̃_t = 0.7616</text>
+<line x1="885.0" y1="480.0" x2="885.0" y2="324.0" stroke="#1d4ed8" stroke-width="2.2" marker-end="url(#a1d4ed8)"/>
+<rect x="875" y="278" width="110" height="44" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="2.5" />
+<text x="930.0" y="306.0" class="bo bl" text-anchor="middle">σ  → o_t</text>
+<text x="895.0" y="350.0" class="s bo bl" text-anchor="start">output gate</text>
+<text x="895.0" y="370.0" class="s" text-anchor="start">σ(W_o [h_t-1, x_t] + b_o)</text>
+<text x="895.0" y="392.0" class="s bo bl" text-anchor="start">o_t = 0.6341</text>
+<line x1="300.0" y1="278.0" x2="300.0" y2="167.0" stroke="#b91c1c" stroke-width="2.2" marker-end="url(#ab91c1c)"/>
+<circle cx="615" cy="228" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="615.0" y="234.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<path d="M510,278 L510,228 L598,228" stroke="#15803d" stroke-width="2.2" fill="none" marker-end="url(#a15803d)"/>
+<path d="M720,278 L720,228 L632,228" stroke="#7e22ce" stroke-width="2.2" fill="none" marker-end="url(#a7e22ce)"/>
+<line x1="615.0" y1="213.0" x2="615.0" y2="167.0" stroke="#c2410c" stroke-width="2.2" marker-end="url(#ac2410c)"/>
+<circle cx="1080" cy="150" r="4" fill="#1f2328" stroke="#1f2328" stroke-width="2"/>
+<line x1="1080.0" y1="150.0" x2="1080.0" y2="200.0" stroke="#1f2328" stroke-width="2.2" marker-end="url(#a1f2328)"/>
+<rect x="1035" y="202" width="90" height="34" rx="8" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
+<text x="1080.0" y="225.0" class="bo" text-anchor="middle">tanh</text>
+<line x1="1080.0" y1="236.0" x2="1080.0" y2="283.0" stroke="#1f2328" stroke-width="2.2" marker-end="url(#a1f2328)"/>
+<circle cx="1080" cy="300" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="1080.0" y="306.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<line x1="985.0" y1="300.0" x2="1063.0" y2="300.0" stroke="#1d4ed8" stroke-width="2.2" marker-end="url(#a1d4ed8)"/>
+<path d="M1080,315 L1080,420 L1328,420" stroke="#1f2328" stroke-width="3" fill="none" marker-end="url(#a1f2328)"/>
+<text x="1328.0" y="410.0" class="bo" text-anchor="end">h_t = 0.4373</text>
+<text x="1102.0" y="278.0" class="s" text-anchor="start">tanh(c_t) = 0.6896</text>
+<text x="1102.0" y="334.0" class="s bo" text-anchor="start">h_t = o_t ⊙ tanh(c_t)</text>
+<text x="1102.0" y="354.0" class="s" text-anchor="start">= 0.6341 × 0.6896</text>
+<text x="1328.0" y="448.0" class="s m" text-anchor="end">to the next cell, and to the output layer</text>
+<text x="1328.0" y="178.0" class="s m" text-anchor="end">to the next cell</text>
+<text x="40.0" y="648.0" class="s m" text-anchor="start">Worked example: x = 1, h_t-1 = 0.5, c_t-1 = 0.4. Each W acts on the stacked vector [h_t-1, x_t] of size H + D; ⊙ is the elementwise product.</text>
+</svg>

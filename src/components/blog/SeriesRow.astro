@@ -1,0 +1,25 @@
+---
+import type { Series } from '@/utils'
+import { isoDate } from '@/utils'
+
+interface Props {
+	series: Series
+}
+
+const { series } = Astro.props
+const first = series.parts[0]!
+---
+
+{/* A whole series as one Writing row: date | name, one line, "13 parts" in mono. */}
+<li class='row'>
+	<a class='row-link' href={`/series/${series.slug}/`}>
+		<time class='row-date' datetime={isoDate(first.data.publishDate)}>
+			{isoDate(first.data.publishDate)}
+		</time>
+		<span class='row-body'>
+			<span class='row-title'>{first.data.draft && '(Draft) '}{series.name}</span>
+			<span class='row-text'>{series.about}</span>
+			<span class='row-meta'>{`Series · ${series.parts.length} parts`}</span>
+		</span>
+	</a>
+</li>

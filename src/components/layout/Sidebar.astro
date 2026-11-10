@@ -4,7 +4,7 @@ import avatar from '@/assets/face.png'
 
 import ContactList from '@/components/layout/ContactList.astro'
 import Footer from '@/components/layout/Footer.astro'
-import { getAllPosts, getAllProjects } from '@/utils'
+import { getAllPosts, getAllProjects, sortByPublishDate, writingItems } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 export type Section = 'home' | 'about' | 'contact' | 'work' | 'writing' | 'tools' | 'error'
@@ -34,7 +34,8 @@ const section = sections[page]
 
 const counts = {
 	work: (await getAllProjects()).length,
-	writing: (await getAllPosts()).length
+	// A series counts once, like its one row on the Writing page.
+	writing: writingItems(sortByPublishDate(await getAllPosts())).length
 }
 const nav = [
 	{

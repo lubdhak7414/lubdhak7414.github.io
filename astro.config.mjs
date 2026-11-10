@@ -9,6 +9,25 @@ import { remarkReadingTime } from './src/utils/remarkReadingTime.ts'
 import { remarkBrief } from './src/utils/remarkBrief.ts'
 import remarkUnwrapImages from 'remark-unwrap-images'
 import rehypeExternalLinks from 'rehype-external-links'
+import remarkMath from 'remark-math'
+import { remarkDisplayMath } from './src/utils/remarkDisplayMath.ts'
+import rehypeKatex from 'rehype-katex'
+import rehypeMermaid from 'rehype-mermaid'
+import { readdirSync } from 'node:fs'
+import { homedir } from 'node:os'
+
+// TEMPORARY series preview: playwright 1.64 wants a newer Chromium than the one cached locally,
+// so point rehype-mermaid at the cached headless shell (undefined = playwright's own).
+function cachedChrome() {
+	try {
+		const root = `${homedir()}/.cache/ms-playwright`
+		const dir = readdirSync(root).find((d) => d.startsWith('chromium_headless_shell'))
+		const sub = readdirSync(`${root}/${dir}`).find((d) => d.startsWith('chrome-headless-shell'))
+		return `${root}/${dir}/${sub}/chrome-headless-shell`
+	} catch {
+		return undefined
+	}
+}
 import expressiveCode from 'astro-expressive-code'
 import { siteConfig, expressiveCodeOptions } from './src/site.config'
 import icon from 'astro-icon'
@@ -85,8 +104,25 @@ export default defineConfig({
 		// the plugins now live on a `unified()` processor. Integration-added plugins
 		// (e.g. expressive-code's highlighter) are still merged in automatically.
 		processor: unified({
-			remarkPlugins: [remarkUnwrapImages, remarkReadingTime, remarkBrief],
+			remarkPlugins: [
+				remarkUnwrapImages,
+				remarkMath,
+				remarkDisplayMath,
+				remarkReadingTime,
+				remarkBrief
+			],
 			rehypePlugins: [
+				// Math at build time as MathML: no CSS, fonts or client script.
+				[rehypeKatex, { output: 'mathml' }],
+				// Mermaid blocks become static inline SVG at build time (headless Chromium, no client JS).
+				[
+					rehypeMermaid,
+					{
+						strategy: 'inline-svg',
+						launchOptions: { executablePath: cachedChrome() },
+						mermaidConfig: { theme: 'neutral', fontFamily: 'IBM Plex Sans, sans-serif' }
+					}
+				],
 				[
 					rehypeExternalLinks,
 					{

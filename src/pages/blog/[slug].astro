@@ -3,23 +3,41 @@ import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
 import { render } from 'astro:content'
 
 import PostLayout from '@/layouts/BlogPost.astro'
-import { getAllPosts, sortByPublishDate } from '@/utils'
+import { getAllPosts, getSeries, sortByPublishDate, writingItems } from '@/utils'
 
 export const getStaticPaths = (async () => {
-	// "Read next" is the next older post, wrapping round to the newest.
 	const posts = sortByPublishDate(await getAllPosts())
-	return posts.map((entry, i) => ({
-		params: { slug: entry.id },
-		props: { entry, next: posts[(i + 1) % posts.length] }
-	}))
+	const items = writingItems(posts)
+	const allSeries = getSeries(posts)
+	// "Read next" is the next older item (a series counts as its first part), wrapping round to
+	// the newest. Inside a series it is the next part instead, and `prev` the part before.
+	const after = (i: number) => {
+		const item = items[(i + 1) % items.length]!
+		return item.kind === 'series' ? item.series.parts[0]! : item.entry
+	}
+	return posts.map((entry) => {
+		const series = allSeries.find((s) => s.name === entry.data.series)
+		if (series) {
+			const at = series.parts.findIndex((p) => p.id === entry.id)
+			return {
+				params: { slug: entry.id },
+				props: { entry, series, next: series.parts[at + 1], prev: series.parts[at - 1] }
+			}
+		}
+		const i = items.findIndex((item) => item.kind === 'post' && item.entry.id === entry.id)
+		return {
+			params: { slug: entry.id },
+			props: { entry, series: undefined, next: after(i), prev: undefined }
+		}
+	})
 }) satisfies GetStaticPaths
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
-const { entry, next } = Astro.props
+const { entry, next, prev, series } = Astro.props
 const { Content } = await render(entry)
 ---
 
-<PostLayout post={entry} next={next}>
+<PostLayout post={entry} next={next} prev={prev} series={series}>
 	<Content />
 </PostLayout>

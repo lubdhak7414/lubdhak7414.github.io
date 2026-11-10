@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 540" width="1260" height="540" role="img" aria-labelledby="t d">
+<title id="t">Gradient paths through time: LSTM cell state vs vanilla RNN</title>
+<desc id="d">Backward along the LSTM cell state each step multiplies only by f_t; backward along a vanilla RNN each step multiplies by diag(1 - h^2) W_hh. Over 45 steps 0.99^45 = 0.636 while 0.5^45 = 2.8e-14.</desc>
+<defs><style>
+text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size:15px}
+.s{font-size:13px}.l{font-size:17px}.m{fill:#57606a}.bl{fill:#1d4ed8}.rd{fill:#b91c1c}
+.gr{fill:#15803d}.or{fill:#c2410c}.pu{fill:#7e22ce}.bo{font-weight:bold}
+.lab{paint-order:stroke;stroke:#fafaf7;stroke-width:6px;stroke-linejoin:round}
+.mono{font-family:'DejaVu Sans Mono',Consolas,monospace}
+</style><marker id="a1f2328" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f2328"/></marker><marker id="a57606a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker><marker id="a1d4ed8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker><marker id="ab91c1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="a15803d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker><marker id="ac2410c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker><marker id="a7e22ce" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker></defs>
+<rect x="0" y="0" width="1260" height="540" rx="16" fill="#fafaf7"/>
+<text x="30.0" y="40.0" class="l bo" text-anchor="start">LSTM: backward along the cell state</text>
+<rect x="85.0" y="90" width="170" height="128" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="2" />
+<text x="170.0" y="208.0" class="s m" text-anchor="middle">LSTM cell t-2</text>
+<circle cx="170" cy="130" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="170.0" y="136.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<text x="170.0" y="186.0" class="s bo or" text-anchor="middle">f_t-2</text>
+<line x1="170.0" y1="170.0" x2="170.0" y2="147.0" stroke="#c2410c" stroke-width="2" marker-end="url(#ac2410c)"/>
+<rect x="345.0" y="90" width="170" height="128" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="2" />
+<text x="430.0" y="208.0" class="s m" text-anchor="middle">LSTM cell t-1</text>
+<circle cx="430" cy="130" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="430.0" y="136.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<text x="430.0" y="186.0" class="s bo or" text-anchor="middle">f_t-1</text>
+<line x1="430.0" y1="170.0" x2="430.0" y2="147.0" stroke="#c2410c" stroke-width="2" marker-end="url(#ac2410c)"/>
+<rect x="605.0" y="90" width="170" height="128" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="2" />
+<text x="690.0" y="208.0" class="s m" text-anchor="middle">LSTM cell t</text>
+<circle cx="690" cy="130" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="690.0" y="136.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<text x="690.0" y="186.0" class="s bo or" text-anchor="middle">f_t</text>
+<line x1="690.0" y1="170.0" x2="690.0" y2="147.0" stroke="#c2410c" stroke-width="2" marker-end="url(#ac2410c)"/>
+<line x1="40.0" y1="130.0" x2="155.0" y2="130.0" stroke="#1f2328" stroke-width="3"/>
+<line x1="185.0" y1="130.0" x2="413.0" y2="130.0" stroke="#1f2328" stroke-width="3" marker-end="url(#a1f2328)"/>
+<line x1="445.0" y1="130.0" x2="673.0" y2="130.0" stroke="#1f2328" stroke-width="3" marker-end="url(#a1f2328)"/>
+<line x1="705.0" y1="130.0" x2="800.0" y2="130.0" stroke="#1f2328" stroke-width="3" marker-end="url(#a1f2328)"/>
+<text x="36.0" y="120.0" class="s bo" text-anchor="start">c_t-3</text>
+<text x="806.0" y="136.0" class="s bo" text-anchor="start">c_t</text>
+<line x1="680.0" y1="74.0" x2="440.0" y2="74.0" stroke="#b91c1c" stroke-width="2.6" stroke-dasharray="8 5" marker-end="url(#ab91c1c)"/>
+<text x="560.0" y="64.0" class="s bo rd lab" text-anchor="middle">× f_t</text>
+<line x1="420.0" y1="74.0" x2="180.0" y2="74.0" stroke="#b91c1c" stroke-width="2.6" stroke-dasharray="8 5" marker-end="url(#ab91c1c)"/>
+<text x="300.0" y="64.0" class="s bo rd lab" text-anchor="middle">× f_t-1</text>
+<text x="810.0" y="74.0" class="s bo rd" text-anchor="start">∂c_t/∂c_t-1 = diag(f_t)</text>
+<text x="810.0" y="96.0" class="s rd" text-anchor="start">no weight matrix, no tanh slope</text>
+<text x="30.0" y="280.0" class="l bo" text-anchor="start">Vanilla RNN: backward along the hidden state</text>
+<rect x="85.0" y="310" width="170" height="90" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="2" />
+<text x="170.0" y="360.0" class="s bo" text-anchor="middle">h_t-2 = tanh(...)</text>
+<rect x="345.0" y="310" width="170" height="90" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="2" />
+<text x="430.0" y="360.0" class="s bo" text-anchor="middle">h_t-1 = tanh(...)</text>
+<rect x="605.0" y="310" width="170" height="90" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="2" />
+<text x="690.0" y="360.0" class="s bo" text-anchor="middle">h_t = tanh(...)</text>
+<line x1="255.0" y1="355.0" x2="343.0" y2="355.0" stroke="#1f2328" stroke-width="2.5" marker-end="url(#a1f2328)"/>
+<text x="300.0" y="345.0" class="s bo" text-anchor="middle">W_hh</text>
+<line x1="515.0" y1="355.0" x2="603.0" y2="355.0" stroke="#1f2328" stroke-width="2.5" marker-end="url(#a1f2328)"/>
+<text x="560.0" y="345.0" class="s bo" text-anchor="middle">W_hh</text>
+<line x1="40.0" y1="355.0" x2="83.0" y2="355.0" stroke="#1f2328" stroke-width="2.5" marker-end="url(#a1f2328)"/>
+<line x1="775.0" y1="355.0" x2="800.0" y2="355.0" stroke="#1f2328" stroke-width="2.5" marker-end="url(#a1f2328)"/>
+<line x1="680.0" y1="432.0" x2="440.0" y2="432.0" stroke="#b91c1c" stroke-width="2.6" stroke-dasharray="8 5" marker-end="url(#ab91c1c)"/>
+<text x="560.0" y="456.0" class="s bo rd lab" text-anchor="middle">× diag(1 - h_t²) W_hh</text>
+<line x1="420.0" y1="432.0" x2="180.0" y2="432.0" stroke="#b91c1c" stroke-width="2.6" stroke-dasharray="8 5" marker-end="url(#ab91c1c)"/>
+<text x="300.0" y="456.0" class="s bo rd lab" text-anchor="middle">× diag(1 - h_t-1²) W_hh</text>
+<text x="810.0" y="420.0" class="s bo rd" text-anchor="start">∂h_t/∂h_t-1 = diag(1 - h_t²) W_hh</text>
+<text x="810.0" y="442.0" class="s rd" text-anchor="start">a matrix and a slope ≤ 1 at every step</text>
+<text x="830.0" y="180.0" class="bo" text-anchor="start">Gradient left after 45 steps</text>
+<rect x="830" y="196" width="360" height="30" rx="4" fill="#e5e7eb" stroke="none" stroke-width="2" />
+<rect x="830" y="262" width="360" height="30" rx="4" fill="#e5e7eb" stroke="none" stroke-width="2" />
+<rect x="830" y="196" width="229.02677498299354" height="30" rx="4" fill="#15803d" stroke="none" stroke-width="2" />
+<text x="830.0" y="248.0" class="s bo gr" text-anchor="start">LSTM, f ≈ 0.99 each step: 0.99^45 = 0.636</text>
+<rect x="830" y="262" width="2" height="30" rx="0" fill="#b91c1c" stroke="none" stroke-width="2" />
+<text x="840.0" y="283.0" class="s m" text-anchor="start">(too small to draw)</text>
+<text x="830.0" y="314.0" class="s bo rd" text-anchor="start">RNN, factor 0.5 each step: 0.5^45 ≈ 2.8 × 10⁻¹⁴</text>
+<text x="830.0" y="338.0" class="s m" text-anchor="start">Grey track = the full gradient (1.0).</text>
+<text x="30.0" y="515.0" class="s m" text-anchor="start">Red dashed arrows run backward in time. Other LSTM paths exist through the gates, but they are smaller; the direct cell-state path is what keeps long gradients alive.</text>
+</svg>

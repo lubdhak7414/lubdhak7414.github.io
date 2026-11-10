@@ -1,0 +1,32 @@
+---
+import type { Series } from '@/utils'
+
+interface Props {
+	series: Series
+	current: string
+}
+
+const { series, current } = Astro.props
+const at = series.parts.findIndex((part) => part.id === current)
+---
+
+{/* On an article in a series: where it sits, and every part in order. Plain details, no script. */}
+<details class='series' open>
+	<summary>
+		<span class='label'>Series</span>
+		<a href={`/series/${series.slug}/`} set:text={series.name} />
+		<span class='series-pos' set:text={`Part ${at + 1} of ${series.parts.length}`} />
+	</summary>
+	<ol>
+		{
+			series.parts.map((part, i) => (
+				<li>
+					<a href={`/blog/${part.id}/`} aria-current={part.id === current ? 'page' : undefined}>
+						<span class='series-n' set:text={String(i + 1).padStart(2, '0')} />
+						<span set:text={part.data.title} />
+					</a>
+				</li>
+			))
+		}
+	</ol>
+</details>

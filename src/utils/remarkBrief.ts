@@ -1,6 +1,7 @@
 import type { Root, RootContent, PhrasingContent, ListItem } from 'mdast'
 import type { VFile } from 'vfile'
 import { toString } from 'mdast-util-to-string'
+import katex from 'katex'
 
 /**
  * Lifts a write-up's summary pieces out of the body so the layout can print them where a
@@ -32,6 +33,11 @@ const escape = (s: string) =>
 function inline(nodes: PhrasingContent[]): string {
 	return nodes
 		.map((node) => {
+			// remark-math's inline node: keep the maths (native MathML), not the raw LaTeX.
+			if ((node.type as string) === 'inlineMath') {
+				const { value } = node as unknown as { value: string }
+				return katex.renderToString(value, { output: 'mathml', throwOnError: false })
+			}
 			switch (node.type) {
 				case 'text':
 					return escape(node.value)

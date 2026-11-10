@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1310 650" width="1310" height="650" role="img" aria-labelledby="t d">
+<title id="t">GRU cell</title>
+<desc id="d">Reset gate r_t scales h_t-1 before it enters the candidate; x_t enters the candidate unscaled; update gate z_t blends the candidate with h_t-1. No separate cell state. Values from the worked example.</desc>
+<defs><style>
+text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size:15px}
+.s{font-size:13px}.l{font-size:17px}.m{fill:#57606a}.bl{fill:#1d4ed8}.rd{fill:#b91c1c}
+.gr{fill:#15803d}.or{fill:#c2410c}.pu{fill:#7e22ce}.bo{font-weight:bold}
+.lab{paint-order:stroke;stroke:#fafaf7;stroke-width:6px;stroke-linejoin:round}
+.mono{font-family:'DejaVu Sans Mono',Consolas,monospace}
+</style><marker id="a1f2328" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f2328"/></marker><marker id="a57606a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker><marker id="a1d4ed8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker><marker id="ab91c1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="a15803d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker><marker id="ac2410c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker><marker id="a7e22ce" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker></defs>
+<rect x="0" y="0" width="1310" height="650" rx="16" fill="#fafaf7"/>
+<rect x="170" y="112" width="1024" height="470" rx="18" fill="#ffffff" stroke="#57606a" stroke-width="2" />
+<text x="24.0" y="36.0" class="l bo" text-anchor="start">GRU: one state line h, two gates, no separate cell state</text>
+<line x1="40.0" y1="150.0" x2="993.0" y2="150.0" stroke="#1f2328" stroke-width="3"/>
+<text x="40.0" y="138.0" class="bo" text-anchor="start">h_t-1 = 0.5</text>
+<circle cx="1010" cy="150" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="1010.0" y="156.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<line x1="1025.0" y1="150.0" x2="1135.0" y2="150.0" stroke="#1f2328" stroke-width="3"/>
+<circle cx="1150" cy="150" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="1150.0" y="156.0" class="bo or" text-anchor="middle" style="font-size:18px">+</text>
+<line x1="1165.0" y1="150.0" x2="1295.0" y2="150.0" stroke="#1f2328" stroke-width="3" marker-end="url(#a1f2328)"/>
+<text x="1295.0" y="138.0" class="bo" text-anchor="end">h_t = 0.6402</text>
+<text x="1295.0" y="176.0" class="s m" text-anchor="end">becomes h_t-1</text>
+<text x="1295.0" y="194.0" class="s m" text-anchor="end">of the next cell</text>
+<text x="560.0" y="78.0" class="bo" text-anchor="start">h_t = z_t ⊙ h̃_t + (1 - z_t) ⊙ h_t-1</text>
+<text x="560.0" y="100.0" class="s" text-anchor="start">= 0.6682(0.7098) + 0.3318(0.5) = 0.6402</text>
+<circle cx="120" cy="150" r="4" fill="#1f2328" stroke="#1f2328" stroke-width="2"/>
+<line x1="120.0" y1="150.0" x2="120.0" y2="480.0" stroke="#1f2328" stroke-width="2.5"/>
+<line x1="120.0" y1="480.0" x2="980.0" y2="480.0" stroke="#1f2328" stroke-width="2.5"/>
+<text x="130.0" y="470.0" class="s bo" text-anchor="start">h_t-1</text>
+<line x1="40.0" y1="545.0" x2="1000.0" y2="545.0" stroke="#1d4ed8" stroke-width="2.5"/>
+<text x="40.0" y="535.0" class="bo bl" text-anchor="start">x_t = 1</text>
+<line x1="300.0" y1="480.0" x2="300.0" y2="354.0" stroke="#1f2328" stroke-width="2" marker-end="url(#a1f2328)"/>
+<circle cx="300" cy="480" r="4" fill="#1f2328" stroke="#1f2328" stroke-width="2"/>
+<line x1="320.0" y1="545.0" x2="320.0" y2="354.0" stroke="#1d4ed8" stroke-width="2" marker-end="url(#a1d4ed8)"/>
+<circle cx="320" cy="545" r="4" fill="#1d4ed8" stroke="#1d4ed8" stroke-width="2"/>
+<line x1="980.0" y1="480.0" x2="980.0" y2="354.0" stroke="#1f2328" stroke-width="2" marker-end="url(#a1f2328)"/>
+<circle cx="980" cy="480" r="4" fill="#1f2328" stroke="#1f2328" stroke-width="2"/>
+<line x1="1000.0" y1="545.0" x2="1000.0" y2="354.0" stroke="#1d4ed8" stroke-width="2" marker-end="url(#a1d4ed8)"/>
+<circle cx="1000" cy="545" r="4" fill="#1d4ed8" stroke="#1d4ed8" stroke-width="2"/>
+<line x1="640.0" y1="545.0" x2="640.0" y2="354.0" stroke="#1d4ed8" stroke-width="2" marker-end="url(#a1d4ed8)"/>
+<circle cx="640" cy="545" r="4" fill="#1d4ed8" stroke="#1d4ed8" stroke-width="2"/>
+<rect x="275" y="308" width="110" height="44" rx="8" fill="#ffffff" stroke="#b91c1c" stroke-width="2.5" />
+<text x="330.0" y="336.0" class="bo rd" text-anchor="middle">σ → r_t</text>
+<text x="328.0" y="378.0" class="s bo rd" text-anchor="start">reset gate</text>
+<text x="328.0" y="398.0" class="s" text-anchor="start">σ(W_r x_t + U_r h_t-1 + b_r)</text>
+<text x="328.0" y="420.0" class="s bo rd" text-anchor="start">r_t = 0.6225</text>
+<rect x="595" y="308" width="110" height="44" rx="8" fill="#ffffff" stroke="#7e22ce" stroke-width="2.5" />
+<text x="650.0" y="336.0" class="bo pu" text-anchor="middle">tanh → h̃_t</text>
+<text x="648.0" y="378.0" class="s bo pu" text-anchor="start">candidate</text>
+<text x="648.0" y="398.0" class="s" text-anchor="start">tanh(W_h x_t + U_h (r_t ⊙ h_t-1) + b_h)</text>
+<text x="648.0" y="420.0" class="s bo pu" text-anchor="start">h̃_t = 0.7098</text>
+<rect x="955" y="308" width="110" height="44" rx="8" fill="#ffffff" stroke="#15803d" stroke-width="2.5" />
+<text x="1010.0" y="336.0" class="bo gr" text-anchor="middle">σ → z_t</text>
+<text x="1008.0" y="378.0" class="s bo gr" text-anchor="start">update gate</text>
+<text x="1008.0" y="398.0" class="s" text-anchor="start">σ(W_z x_t + U_z h_t-1 + b_z)</text>
+<text x="1008.0" y="420.0" class="s bo gr" text-anchor="start">z_t = 0.6682</text>
+<circle cx="470" cy="150" r="4" fill="#1f2328" stroke="#1f2328" stroke-width="2"/>
+<line x1="470.0" y1="150.0" x2="470.0" y2="218.0" stroke="#1f2328" stroke-width="2.2" marker-end="url(#a1f2328)"/>
+<circle cx="470" cy="235" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="470.0" y="241.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<path d="M330,308 L330,235 L453,235" stroke="#b91c1c" stroke-width="2.2" fill="none" marker-end="url(#ab91c1c)"/>
+<path d="M485,235 L620,235 L620,306" stroke="#1f2328" stroke-width="2.2" fill="none" marker-end="url(#a1f2328)"/>
+<text x="494.0" y="225.0" class="s bo" text-anchor="start">r_t ⊙ h_t-1</text>
+<text x="494.0" y="257.0" class="s m" text-anchor="start">(x_t is never reset)</text>
+<rect x="984" y="186" width="52" height="30" rx="8" fill="#ffffff" stroke="#15803d" stroke-width="2" />
+<text x="1010.0" y="207.0" class="s bo gr" text-anchor="middle">1 -</text>
+<line x1="1010.0" y1="308.0" x2="1010.0" y2="218.0" stroke="#15803d" stroke-width="2.2" marker-end="url(#a15803d)"/>
+<line x1="1010.0" y1="186.0" x2="1010.0" y2="167.0" stroke="#15803d" stroke-width="2.2" marker-end="url(#a15803d)"/>
+<text x="976.0" y="180.0" class="s bo gr" text-anchor="end">1 - z_t = 0.3318</text>
+<circle cx="1150" cy="262" r="15" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="1150.0" y="268.0" class="bo or" text-anchor="middle" style="font-size:18px">×</text>
+<path d="M1010,290 L1150,290 L1150,279" stroke="#15803d" stroke-width="2.2" fill="none" marker-end="url(#a15803d)"/>
+<line x1="1003" y1="262" x2="1017" y2="262" stroke="#ffffff" stroke-width="10"/>
+<path d="M680,308 L680,262 L1133,262" stroke="#7e22ce" stroke-width="2.2" fill="none" marker-end="url(#a7e22ce)"/>
+<line x1="1150.0" y1="247.0" x2="1150.0" y2="167.0" stroke="#c2410c" stroke-width="2.2" marker-end="url(#ac2410c)"/>
+<text x="1140.0" y="232.0" class="s bo" text-anchor="end">z_t ⊙ h̃_t</text>
+<text x="24.0" y="620.0" class="s m" text-anchor="start">Worked example: x = 1, h_t-1 = 0.5. With z_t near 0 the cell copies h_t-1; with z_t near 1 it takes the candidate.</text>
+</svg>
