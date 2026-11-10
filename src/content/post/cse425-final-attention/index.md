@@ -68,7 +68,7 @@ $$K=XW^K$$
 
 $$V=XW^V$$
 
-Here $W^Q$ and $W^K$ have size $d_{model}\times d_k$ and $W^V$ has size $d_{model}\times d_v$. These three are the only learned parts of attention. The whole computation is
+Here $W^Q$ and $W^K$ have size $d_{model}\times d_k$ and $W^V$ has size $d_{model}\times d_v$. In single-head attention these three are the only learned weights. The whole computation is
 
 $$\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V$$
 
@@ -77,7 +77,7 @@ Check it against the example: $QK^\top$ for one query and two keys is the row of
 Keep track of the shapes. $Q$ is $T_q\times d_k$ and $K$ is $T_k\times d_k$, so $QK^\top$ is $T_q\times T_k$: one row of scores per query. Softmax runs along each row, so every query's weights add up to 1, and the output is $T_q\times d_v$. In self-attention the queries and keys come from the same tokens, so $T_q=T_k=T$ and the score matrix is $T\times T$. That is why the cost grows as $T^2$ even though the number of sequential steps stays at one.
 
 ```mermaid
-flowchart LR
+flowchart TD
     X["X: T x d_model"] --> Q["Q = X W_Q"]
     X --> K["K = X W_K"]
     X --> V["V = X W_V"]
@@ -107,11 +107,11 @@ the output of each row is
 
 $$0.8044[1,2]+0.1956[3,4]=[1.3911,\ 2.3911]$$
 
-## Why divide by $\sqrt{d_k}$
+## Why divide by the square root of d_k
 
 Each score is a sum of $d_k$ products, so a longer vector gives a bigger sum. With 64 dimensions the scores get so large that softmax gives one word everything and the rest nothing, and training stalls. A concrete case: scores $[8,0,0,0]$ give weights $[0.9990,\ 0.0003,\ 0.0003,\ 0.0003]$. The weights barely respond to a small change in any score, so there is almost nothing for training to learn from.
 
-How large do the scores get? Suppose each number in $q$ and $k$ is random with a typical size (spread) of about 1. Each product $q_ik_i$ then also has a spread of about 1. Adding 64 of them gives a spread of about 8, because spreads of independent terms add as squares: $1^2$ added 64 times is 64, and the square root of 64 is 8. In general, the sum of $d_k$ such products has spread $\sqrt{d_k}$. Dividing by $\sqrt{d_k}$ brings the scores back to a spread of about 1.
+How large do the scores get? Suppose each number in $q$ and $k$ is random and independent, centred on 0, with a typical size (spread) of about 1. Each product $q_ik_i$ then also has a spread of about 1. Adding 64 of them gives a spread of about 8, because spreads of independent terms add as squares: $1^2$ added 64 times is 64, and the square root of 64 is 8. In general, the sum of $d_k$ such products has spread $\sqrt{d_k}$. Dividing by $\sqrt{d_k}$ brings the scores back to a spread of about 1.
 
 Check on the example: dividing $[8,0,0,0]$ by $\sqrt{64}=8$ gives $[1,0,0,0]$, and softmax gives $[0.4754,\ 0.1749,\ 0.1749,\ 0.1749]$. These weights still move when a score moves, so training has something to work with. In the two-key example $d_k=2$ the effect is small: without scaling $[1,4]$ gives weights $[0.047,0.953]$, and with scaling $[0.107,0.893]$.
 
@@ -165,7 +165,7 @@ $$S=\frac{(YW^Q)(X_{enc}W^K)^\top}{\sqrt{d_k}}$$
 
 $$\mathrm{CrossAttn}(Y,X_{enc})=\mathrm{softmax}(S)\,X_{enc}W^V$$
 
-The score matrix is $T_q\times T_k$, so source and target lengths can differ. Only the decoder's self-attention gets a mask; encoder self-attention and cross-attention see every position.
+The score matrix is $T_q\times T_k$, so source and target lengths can differ. Only the decoder's self-attention gets the causal mask; encoder self-attention and cross-attention see every position.
 
 ![Left: a 4 by 4 causal mask with 0 on and below the diagonal and minus infinity above. Right: cross-attention with 3 decoder tokens giving Q and 4 encoder outputs giving K and V, a 3 by 4 score grid and a 3 by d_v output](img/attention-masked-cross-attention.svg)
 

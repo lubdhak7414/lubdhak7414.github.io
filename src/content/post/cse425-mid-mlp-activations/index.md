@@ -77,17 +77,17 @@ $$\mathbf a^{(l)}=f\!\left(\mathbf z^{(l)}\right)$$
 
 Here $f$ acts on each entry separately. $W^{(l)}$ has shape $n_l\times n_{l-1}$ (out by in), so row $j$ is the weights of neuron $j$, and $\mathbf b^{(l)}$ has $n_l$ entries. In the example $n_1=2$ and $n_0=2$, which matches the $2\times2$ matrix above. Some lecture material stores $W$ as in by out and transposes it; pick one and keep it. Course papers also write $v$ for $z$ and $\varphi$ for $f$.
 
-To run many inputs at once, put them side by side as columns of a matrix $X$. For the columns $(1,0.5)$, $(0,1)$ and $(1,0)$ the same network gives $\widehat{y}=(0.528,\ 0.5091,\ 0.5452)$ in one pass.
+To run many inputs at once, put them side by side as columns of a matrix $X$. For the columns $(1,0.5)$, $(0,1)$ and $(1,0)$ the same network gives $\widehat{y}=(0.5280,\ 0.5091,\ 0.5452)$ in one pass.
 
 ## Counting parameters
 
-A parameter is any number the network can learn, so weights and biases. Each neuron in layer $l$ has $n_{l-1}$ weights and one bias, so the layer has $n_l(n_{l-1}+1)$ and the network has the sum over its layers. You want this number because it sets how much memory the network takes and how much data it needs.
+A parameter is any number the network can learn, so weights and biases. Each neuron in layer $l$ has $n_{l-1}$ weights and one bias, so the layer has $n_l(n_{l-1}+1)$ and the network has the sum over its layers. You want this number because it sets how much memory the network takes, and it's a rough guide to how much data it needs.
 
 A $2\to3\to1$ network has $3\cdot3+1\cdot4=13$. For $4\to5\to3$ I'd write the matrices out: $5\times4$ and $3\times5$, so $20+15$ weights, plus $5+3$ biases, 43 in total. With one more layer, $3\to4\to3\to2$, it's $12+12+6=30$ weights and $4+3+2=9$ biases, so 39.
 
 ## Why the activation must be nonlinear
 
-Without $f$, two layers give $W_2(W_1\mathbf x)=(W_2W_1)\mathbf x$, which is one matrix. With $W_1=\begin{pmatrix}1&2\\0&1\end{pmatrix}$ and $W_2=(3\ \ -1)$:
+Without $f$, two layers give $W_2(W_1\mathbf x)=(W_2W_1)\mathbf x$, which is one matrix. Biases only add a constant vector, so with them it's still one layer. With $W_1=\begin{pmatrix}1&2\\0&1\end{pmatrix}$ and $W_2=(3\ \ -1)$:
 
 $$W_2W_1=(3\cdot1-1\cdot0\ \ \ \ 3\cdot2-1\cdot1)=(3\ \ 5)$$
 
@@ -123,13 +123,13 @@ Values at three inputs:
 
 ## Vanishing gradients and dead units
 
-Training will multiply one slope per layer on the way back (the backprop notes show where). If every layer is a sigmoid, that product is at most $0.25^n$ after $n$ layers: $0.25^5\approx9.8\times10^{-4}$ and $0.25^{10}\approx9.5\times10^{-7}$. That is the best case, before the weights enter. With a product that small the early layers get almost no signal to learn from. That's a vanishing gradient. ReLU passes slope 1 for positive inputs, and that's the reason it's the usual hidden-layer choice.
+Training will multiply one slope per layer on the way back (the [backprop notes](/blog/cse425-mid-backprop-hidden-layers/) show where). If every layer is a sigmoid, that product is at most $0.25^n$ after $n$ layers: $0.25^5\approx9.8\times10^{-4}$ and $0.25^{10}\approx9.5\times10^{-7}$. That is the best case, before the weights enter. With a product that small the early layers get almost no signal to learn from. That's a vanishing gradient. ReLU passes slope 1 for positive inputs, and that's the reason it's the usual hidden-layer choice.
 
 Its weakness is the dead unit: if the input to a ReLU is negative for every example, its slope is 0 and the neuron never changes. One zero output on one example does not make a neuron dead.
 
 ## What a hidden layer can approximate
 
-One hidden layer with enough neurons and a non-polynomial activation can approximate any continuous function on a bounded region (the [universal approximation theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem)). The intuition is that two sigmoids subtract to a bump, and bumps of different heights add up to a curve. For $x=0,\dots,5$, the bump $\sigma(10(x-1.5))-\sigma(10(x-3.5))$ gives $0,\ 0.0067,\ 0.9933,\ 0.9933,\ 0.0067,\ 0$. The theorem is only an existence statement. It gives no bound on how many neurons are needed and no promise that training finds the weights.
+One hidden layer with enough neurons and a non-polynomial activation can approximate any continuous function on a closed, bounded region (the [universal approximation theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem)). The intuition is that two sigmoids subtract to a bump, and bumps of different heights add up to a curve. For $x=0,\dots,5$, the bump $\sigma(10(x-1.5))-\sigma(10(x-3.5))$ gives $0,\ 0.0067,\ 0.9933,\ 0.9933,\ 0.0067,\ 0$. The theorem is only an existence statement. It gives no bound on how many neurons are needed and no promise that training finds the weights.
 
 ## Practice on counts, linear stacks and slopes
 

@@ -29,7 +29,7 @@ $$\widehat{y}=\max(0,5)=5$$
 $$L=\tfrac12(5-1)^2=8$$
 
 ```mermaid
-flowchart LR
+flowchart TD
   x["x = 2"] --> m["multiply: p = 6"]
   w["w = 3"] --> m
   m --> s["add: z = 5"]
@@ -66,7 +66,7 @@ $$\frac{\partial L}{\partial u}=\sum_{v}\frac{\partial L}{\partial v}\,\frac{\pa
 
 The sum is the fork rule: if a value feeds two later nodes, both routes carry gradient back and you add them. For example, take $u=x^2$, $v=3x$ and $L=u+v$. The node $x$ has two children, so $\partial L/\partial x=2x+3$, which is 7 at $x=2$. Drop one branch and you get 4 or 3 instead, and neither looks obviously wrong.
 
-At exactly $z=0$ the ReLU slope is taken as 0 by convention. Make sure you test $z>0$ on $z$ itself; it's easy to check the output or $p$ by accident. (The target's own gradient is $-(\widehat{y}-y)$, the opposite of the output's, though you rarely need it.)
+At exactly $z=0$ the ReLU slope is taken as 0 by convention. Make sure you test $z>0$ on $z$ itself; it's easy to test $p$ by accident, and $p$ and $z$ differ whenever $b\ne0$. (The target's own gradient is $-(\widehat{y}-y)$, the opposite of the output's, though you rarely need it.)
 
 Now flip the signs: $x=2$, $w=-3$, $b=1$ and $y=4$. The forward values are $p=-6$, $z=-5$, $\widehat{y}=0$ and $L=8$. Since $z\le0$ the ReLU blocks the path, so every gradient is 0 even though the loss is large. If $z$ stays negative for every training example, the neuron never gets a gradient again. That's a dead ReLU.
 
@@ -74,7 +74,7 @@ Now flip the signs: $x=2$, $w=-3$, $b=1$ and $y=4$. The forward values are $p=-6
 
 A logistic neuron has a pre-activation $z=\mathbf w\cdot\mathbf x+b$, an output $\widehat{y}=\sigma(z)$ and the cross-entropy loss, which suits a 0 or 1 target by punishing confident wrong answers heavily:
 
-$$L=-\big[y\ln\widehat{y}+(1-y)\ln(1-\widehat{y})\big]$$
+$$L=-\big[y\,\ln\widehat{y}+(1-y)\,\ln(1-\widehat{y})\big]$$
 
 Two local derivatives matter. Differentiating $L$ with respect to $\widehat{y}$ and putting the two terms over one denominator gives
 

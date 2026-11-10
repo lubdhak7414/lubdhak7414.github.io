@@ -1592,6 +1592,10 @@
 	.prose math {
 		font-size: 1.1em;
 	}
+	/* Native MathML matrices: the reset zeroes cell padding, so columns collide. */
+	.prose math mtd {
+		padding: 0.15em 0.35em;
+	}
 	/* Mermaid diagrams (static SVG): fit the column, scroll if wider */
 	.prose pre.mermaid,
 	.prose .mermaid {

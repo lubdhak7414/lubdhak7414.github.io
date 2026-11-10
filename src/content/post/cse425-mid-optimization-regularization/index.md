@@ -13,10 +13,11 @@ Gradient descent on a loss with a single weight, $L=(w-3)^2$, started at $w=0$, 
 Getting to a low training loss quickly and without blowing up is optimization, and it's the first half of this note. The second half starts from a different symptom. A network scores 99% on its training data and 62% on validation data. The code is fine and the network has memorised the training set. Regularization is the set of ways to make a low training loss carry over to data the network has not seen.
 
 > **Key Takeaways**
-> - Gradient descent moves the weight by $\eta$ times the gradient, opposite to its sign; too small a $\eta$ crawls and one above 1 diverges on $L=(w-3)^2$.
+> - Gradient descent moves the weight by $\eta$ times the gradient, opposite to its sign; too small an $\eta$ crawls and one above 1 diverges on $L=(w-3)^2$.
 > - Momentum adds up past gradients, so steps in a steady direction grow and zig-zags cancel.
 > - Adam divides a smoothed gradient by a smoothed gradient size, and corrects both for starting at zero.
-> - L2 shrinks every weight by the factor $(1-\eta\lambda)$ per step, L1 pulls with a fixed size and can reach exactly zero, dropout zeroes random units during training.
+> - L2 shrinks every weight by the factor $(1-\eta\lambda)$ per step; L1 pulls with a fixed size and can reach exactly zero.
+> - Dropout zeroes random units during training and scales the survivors so test time needs no change.
 
 ## One weight, three learning rates
 
@@ -67,7 +68,7 @@ The rule used each time is
 
 $$u_{t+1}=\beta u_t+g_t,\qquad w_{t+1}=w_t-\eta\,u_{t+1}$$
 
-where $\beta$ (often 0.9) is the share of the old velocity that survives. Check it against the first lines: with $u_0=0$ the first velocity is just the first gradient, $-6$. In the lines above the velocity grew from 6 to 11.9 because the gradient kept pointing the same way. With many weights, a gradient component that flips sign from step to step partly cancels inside $u$, so zig-zags get damped while the steady direction speeds up.
+where $\beta$ (often 0.9) is the share of the old velocity that survives. Check it against the first lines: with $u_0=0$ the first velocity is just the first gradient, $-6$. In the lines above the velocity grew in size from 6 to 11.9 because the gradient kept pointing the same way. With many weights, a gradient component that flips sign from step to step partly cancels inside $u$, so zig-zags get damped while the steady direction speeds up.
 
 The cost is overshoot: at step 4 the weight is 3.926, past the minimum at 3, which plain SGD at $\eta=0.1$ never does. In exchange it had passed 3 after four steps, where plain SGD with the same $\eta$ was only at 2.68 after ten. Some books write $(1-\beta)g_t$ in the velocity line instead, which scales everything differently, so state the form you use.
 
@@ -127,7 +128,7 @@ $$w\leftarrow(1-\eta\lambda)\,w-\eta\nabla L_{\text{data}}$$
 
 Every step first shrinks the weight by the factor $(1-\eta\lambda)$, which is why this is called weight decay. With $\eta=0.1$ and $\lambda=0.5$ the factor is $1-0.05=0.95$, so a weight of 2 becomes 1.9 before the data gradient is applied.
 
-L1 uses $\lambda\lVert w\rVert_1$ instead, whose gradient is $\lambda\,\mathrm{sign}(w)$, a fixed size whatever the weight. Compare the shrink per step with $\eta=0.1$, $\lambda=0.5$ at a weight of 0.2: L2 removes $0.1\times0.5\times0.2=0.01$ and L1 removes $0.1\times0.5=0.05$. At a weight of 0.02, L2 removes 0.001 and L1 still removes 0.05. The L2 pull fades as the weight shrinks, so weights get small but rarely exactly zero. The L1 pull does not fade and drives weights to exactly zero, which gives sparse models.
+L1 uses $\lambda\lVert w\rVert_1$ instead, whose gradient is $\lambda\,\mathrm{sign}(w)$, a fixed size whatever the weight. Compare the shrink per step with $\eta=0.1$, $\lambda=0.5$ at a weight of 0.2: L2 removes $0.1\times0.5\times0.2=0.01$ and L1 removes $0.1\times0.5=0.05$. At a weight of 0.02, L2 removes 0.001 and L1 would still remove 0.05, which is more than the weight itself. The L2 pull fades as the weight shrinks, so weights get small but rarely exactly zero. The L1 pull does not fade, so small weights get pushed all the way to zero, which gives sparse models. (A plain L1 step would carry 0.02 past zero to $-0.03$; to land on exactly zero, implementations clip the weight at 0 when the step would cross it.)
 
 AdamW applies the decay step $w\leftarrow w-\eta\lambda w$ directly to the weights, separate from the Adam step. A penalty placed inside the loss would be divided by Adam's per-weight scale and distorted.
 
@@ -151,7 +152,7 @@ Why divide? The average of $\tilde h_i$ over many random masks is
 
 $$\mathbb{E}[\tilde h_i]=\frac{(1-p)\,h_i}{1-p}=h_i$$
 
-so the layer's average output is unchanged, and at test time you can run the full network with no mask and no rescaling. Dropout stops units from relying on particular partners being present, which is called co-adaptation (the [dropout paper](https://jmlr.org/papers/v15/srivastava14a.html) explains the idea at length). Here "rate" means the drop probability $p$; at $p=0.5$ the keep and drop probabilities are equal and hide any mix-up.
+so the layer's average output is unchanged, and at test time you can run the full network with no mask and no rescaling. Dropout stops units from relying on particular partners being present, which is called co-adaptation (the [dropout paper](https://jmlr.org/papers/v15/srivastava14a.html) explains the idea at length). Here "rate" means the drop probability $p$, as in PyTorch's `nn.Dropout(p)` and Keras's `Dropout(rate)`. The dropout paper uses $p$ the other way round, for the keep probability, and scales the weights at test time instead of the survivors during training. At $p=0.5$ the keep and drop probabilities are equal and hide any mix-up.
 
 Label smoothing (the true class gets a little less than 1 and the others share the rest) and max-norm (force $\lVert w\rVert_2$ below a limit after each step) are two other regularizers you may see named.
 

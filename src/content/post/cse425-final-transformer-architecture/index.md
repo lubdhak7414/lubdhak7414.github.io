@@ -8,15 +8,15 @@ series: "CSE 425 Final"
 part: 7
 ---
 
-A common first picture of a Transformer is a tall stack of attention layers and nothing else. Attention on its own only averages: each token's output is a weighted average of value vectors. The one place where a block applies a fresh nonlinear function to each token's own vector is a small feed-forward layer, and the rest of the block (residual connections and normalisation) is there to make deep stacks trainable.
+A common first picture of a Transformer is a tall stack of attention layers and nothing else. Attention on its own only averages: each token's output is a weighted average of value vectors. The only ReLU in a block sits in a small feed-forward layer that works on each token's own vector, and the rest of the block (residual connections and normalisation) is there to make deep stacks trainable.
 
 The original model uses 6 blocks as an encoder and 6 as a decoder. Most of this note is the inside of one block; BERT and GPT come at the end, since each keeps only one half. It assumes [Attention: Q, K, V](/blog/cse425-final-attention/), where queries, keys and values and the mask were built up from numbers. To keep symbols few, $T_k$ is the number of source tokens and $T_q$ the number of target tokens, the same names as in cross-attention, and $n_h$ is the number of heads.
 
 > **Key Takeaways**
 > - An encoder block has two sublayers (self-attention, feed-forward) and a decoder block has three (masked self-attention, cross-attention, feed-forward).
-> - Every sublayer is wrapped as $\mathrm{LN}(x+\text{sublayer}(x))$, which needs its output to have the same width as its input.
+> - Every sublayer is wrapped as LN(x + sublayer(x)), so its output must have the same width as its input.
 > - Attention moves information between tokens, and the feed-forward layer transforms each token on its own with the same weights at every position.
-> - Heads add no parameters, because $n_h$ heads of width $d_{model}/n_h$ use the same weights as one head of width $d_{model}$.
+> - Heads add no parameters: 8 heads of width 64 use as many weights as one head of width 512.
 > - BERT keeps the encoder and looks both ways, GPT keeps the decoder and looks only left.
 
 ## The shape of a block
@@ -27,9 +27,9 @@ The encoder block has two sublayers and the decoder block has three. The decoder
 
 ```mermaid
 flowchart TD
-    A["Token embedding + positional encoding"] --> B["Encoder block x N"]
+    A["Token embedding + positional encoding"] --> B["Encoder block x 6"]
     B --> C["Encoder output X_enc"]
-    D["Previous target tokens, shifted right, + PE"] --> E["Decoder block x N"]
+    D["Previous target tokens, shifted right, + PE"] --> E["Decoder block x 6"]
     C --> E
     E --> F["Linear layer"]
     F --> G["Softmax over vocabulary"]
@@ -59,9 +59,9 @@ The same $W_1$, $W_2$ are used for every token, and no token sees another here. 
 
 ## Residual connections and layer norm
 
-A residual connection adds a layer's input to its output, $y=x+f(x)$. With $x=[1,2]$ and $f(x)=[0.1,-0.2]$, the result is $[1.1,1.8]$. The gradient shows why this helps: $\partial y/\partial x=1+\partial f/\partial x$. The 1 gives gradients a direct path back through many layers, even when $\partial f/\partial x$ is tiny. It also means $f(x)$ must have the same width as $x$.
+A residual connection adds a layer's input to its output, $y=x+f(x)$. With $x=[1,2]$ and $f(x)=[0.1,-0.2]$, the result is $[1.1,1.8]$. The gradient shows why this helps: $\partial y/\partial x=I+\partial f/\partial x$, with $I$ the identity matrix. The $I$ gives gradients a direct path back through many layers, even when $\partial f/\partial x$ is tiny. It also means $f(x)$ must have the same width as $x$.
 
-Layer norm then rescales each token. It is like [batch norm](/blog/cse425-mid-batch-norm/), but the mean and spread are taken over one token's own $d_{model}$ numbers, not over a batch, so a sentence of any length gives the same result however it is grouped. Say a token plus sublayer sum is $[1.5,\ 1.0,\ 3.2,\ 4.8]$, with $\gamma=1$, $\beta=0$ and $\epsilon=10^{-5}$:
+Layer norm then rescales each token. It is like [batch norm](/blog/cse425-mid-batch-norm/), but the mean and spread are taken over one token's own $d_{model}$ numbers, not over a batch, so a token's result doesn't depend on which other sentences share its batch or how long they are. Say a token plus sublayer sum is $[1.5,\ 1.0,\ 3.2,\ 4.8]$, with $\gamma=1$, $\beta=0$ and $\epsilon=10^{-5}$:
 
 $$\mu=\frac{1.5+1.0+3.2+4.8}{4}=2.625$$
 
@@ -97,7 +97,7 @@ The encoder output feeds the keys and values of the cross-attention in every one
 
 ## One decoder step by hand
 
-Suppose the encoder has produced two source vectors, the rows of $X_{enc}$: $[1.0,\ 0.5]$ and $[0.3,\ 1.2]$. The decoder's current vector is the query $q=[1,3]$, and $d_k=2$. To keep the numbers small, the example uses $K=V=X_{enc}$ (no projection matrices). A score is a dot product:
+Suppose the encoder has produced two source vectors, the rows of $X_{enc}$: $[1.0,\ 0.5]$ and $[0.3,\ 1.2]$. The decoder's current vector is the query $q=[1,3]$, and $d_k=2$. To keep the numbers small, the example uses $K=V=X_{enc}$ (no projection matrices) and one head. A score is a dot product:
 
 $$q\cdot[1.0,0.5]=1+1.5=2.5$$
 
@@ -111,7 +111,7 @@ $$=[0.2709+0.2187,\ 0.1355+0.8749]$$
 
 $$=[0.4896,\ 1.0104]$$
 
-Now the output layer. Suppose the vocabulary has three words and the output matrix is
+Now the output layer. In a real decoder block the context would still go through $W^O$, Add and Norm and the feed-forward layer first; here it goes straight to the output layer to keep the arithmetic short. Suppose the vocabulary has three words and the output matrix is
 
 $$W_{vocab}=\begin{bmatrix}1&0&1\\0&1&-1\end{bmatrix}$$
 
@@ -129,7 +129,7 @@ After the last decoder block, a linear layer maps each position to the vocabular
 
 $$P_t=\mathrm{softmax}(Y_{out,t}\,W_{vocab}+b)$$
 
-The loss at position $t$ is $-\log P_t(\text{correct token})$, as computed above, summed over positions. Check against the example: one position, correct token word 2, loss 0.593.
+The loss at position $t$ is $-\log P_t(\text{correct token})$, as computed above, summed over positions. The example had one position with word 2 as the correct token, so its loss was 0.593.
 
 ## Training and generating
 
@@ -141,7 +141,13 @@ Heads add none: eight heads of width 64 use the same weights as one head of widt
 
 $$4\,(512\cdot512+512)=1{,}050{,}624$$
 
-The feed-forward width $d_{ff}=2048$ is the original paper's choice, so a question would need to give it. The feed-forward layer has $512\cdot2048+2048+2048\cdot512+512=2{,}099{,}712$ parameters, and each layer norm has $2\cdot512=1024$ (a $\gamma$ and a $\beta$ per feature).
+The feed-forward width $d_{ff}=2048$ is the original paper's choice and doesn't follow from $d_{model}$, so state it before using it. The feed-forward layer has two weight matrices and two bias vectors:
+
+$$512\cdot2048+2048$$
+
+$$+\,2048\cdot512+512=2{,}099{,}712$$
+
+Each layer norm has $2\cdot512=1024$ (a $\gamma$ and a $\beta$ per feature).
 
 | Piece | Parameters |
 |---|---|
@@ -155,13 +161,13 @@ Embedding tables and the output layer come on top. A vocabulary of 50,000 at wid
 
 ## BERT and GPT
 
-| Model | Stack | Attention direction | Training objective | Typical use |
-|---|---|---|---|---|
-| Transformer | Encoder + decoder | Encoder both ways, decoder causal | Cross-entropy on target tokens | Translation |
-| BERT | Encoder only | Both ways | Predict masked tokens | Understanding tasks |
-| GPT | Decoder only | Causal | Predict next token | Generation |
+| Model | Stack | Attention | Trained to |
+|---|---|---|---|
+| Transformer | Encoder + decoder | Encoder both ways, decoder causal | Predict target tokens (translation) |
+| BERT | Encoder | Both ways | Predict masked tokens, plus next-sentence prediction |
+| GPT | Decoder | Causal, left only | Predict the next token |
 
-BERT base has 12 layers, 12 heads and about 110 million parameters. It learns its position embeddings instead of using fixed sinusoids. In its masked-token task, 15 percent of tokens are picked, and of those 80 percent become a mask symbol, 10 percent a random word and 10 percent stay unchanged. For fine-tuning, the final state of the first token feeds one extra output layer. GPT reads only leftwards, so for a task that needs the whole sentence at once it sees less of the context than BERT does.
+BERT base has 12 layers, 12 heads and about 110 million parameters. It learns its position embeddings instead of using fixed sinusoids. In its masked-token task, 15 percent of tokens are picked, and of those 80 percent become a mask symbol, 10 percent a random word and 10 percent stay unchanged. For fine-tuning on a classification task, the final state of the first token (a special [CLS] token) feeds one extra output layer. BERT is used for understanding tasks such as classification; GPT is used for generation. GPT reads only leftwards, so for a task that needs the whole sentence at once it sees less of the context than BERT does.
 
 ![Four 5 by 5 grids: BERT fully filled, GPT lower triangle, and for the original Transformer a full encoder grid beside a lower-triangle decoder grid](img/transformer-architecture-attention-direction.svg)
 
@@ -169,7 +175,7 @@ For a visual walk-through see [The Illustrated Transformer](https://jalammar.git
 
 ## Writing the answer
 
-A good answer lists each block's sublayers in order, writes $\mathrm{LN}(x+\mathrm{sublayer}(x))$, and shows shapes at each step. For parameter counts, write the formula before the arithmetic. Typical points to cover on this topic are the benefit of residuals and of layer norm, parallelism against recurrence, the $T^2$ cost of attention, and head-width arithmetic such as $d_{model}=768$ with $n_h=12$ giving $d_k=64$.
+A good answer lists each block's sublayers in order, writes $\mathrm{LN}(x+\mathrm{sublayer}(x))$, and shows shapes at each step. For parameter counts, write the formula before the arithmetic. Other things worth being able to explain: the benefit of residuals and of layer norm, parallelism against recurrence, the $T^2$ cost of attention, and head-width arithmetic such as $d_{model}=768$ with $n_h=12$ giving $d_k=64$.
 
 ## Questions on the block
 

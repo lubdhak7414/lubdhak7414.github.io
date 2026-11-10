@@ -44,7 +44,7 @@ $$\bar x=\frac{[2,4,6,8]-5}{2.236}=\frac{[-3,-1,1,3]}{2.236}$$
 
 $$\bar x=[-1.342,\ -0.447,\ 0.447,\ 1.342]$$
 
-They add to 0, and their squares add to about 4, so the mean is 0 and the variance is 1. That holds for any batch, not just this one.
+They add to 0, and their squares add to 4, so the mean is 0 and the variance is 1. That holds for any batch, not just this one.
 
 Forcing every feature to mean 0 and spread 1 would limit what a layer can express, because a sigmoid fed only those values stays on its nearly straight middle part. The layer therefore gets two learned numbers per feature, a scale $\gamma$ and a shift $\beta$, and outputs $o_i=\gamma\bar x_i+\beta$. Let $\gamma=1.2$ and $\beta=0.3$:
 
@@ -76,7 +76,7 @@ Anywhere between fully normalised and untouched is reachable, and gradient desce
 
 For a matrix batch with samples as rows and features as columns, the mean and variance are taken down each column, and every column $j$ has its own $\gamma_j$ and $\beta_j$. Taking them along rows is a different thing and gives wrong numbers.
 
-## Learning $\gamma$ and $\beta$
+## Learning γ and β
 
 These two are trained like any other weights. Let $L$ be the loss and suppose the errors arriving from above are $\delta_i=\partial L/\partial o_i$. Let $\delta=[0.5,\ -0.5,\ 1,\ -1]$ and the learning rate be $\eta=0.1$.
 
@@ -105,6 +105,8 @@ When the network is used on a single new input, there is no batch. One value has
 $$\text{EMA}_\mu\leftarrow(1-\alpha)\,\text{EMA}_\mu+\alpha\,\mu_B$$
 
 The variance average is updated the same way. As a small case, if the stored mean was 4 and $\alpha=0.1$, this batch (mean 5) moves it to $0.9\cdot4+0.1\cdot5=4.1$. After many batches it settles near the typical batch mean.
+
+One catch on the variance: the original paper stores the unbiased estimate for test time (divide by $m-1$, so 20/3 rather than 5 for this batch), and PyTorch's running variance does the same. The divide-by-$m$ rule is for the batch statistics during training. If a question hands you the stored values, just use them.
 
 At test time the layer uses these stored values with the learned $\gamma$ and $\beta$:
 

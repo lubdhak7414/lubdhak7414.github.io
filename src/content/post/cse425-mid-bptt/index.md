@@ -10,7 +10,7 @@ part: 9
 
 Say a network reads three words in a row and only the last one gets graded. The error has to travel back to the first word. Each step back multiplies it by 0.8 and by a slope that is never above 1. By the time it reaches word one, an error of 0.66 has become 0.23. Any long chain of multiplications does this, and it's the reason plain RNNs struggle with long sequences.
 
-Backpropagation through time (BPTT) is ordinary backprop applied to the [unrolled RNN](./07a-rnn.md). The only new facts are that one weight is used many times, and that the error passes through that weight again and again on its way back.
+Backpropagation through time (BPTT) is ordinary backprop applied to the [unrolled RNN](/blog/cse425-mid-rnn-basics/). The only new facts are that one weight is used many times, and that the error passes through that weight again and again on its way back.
 
 > **Key Takeaways**
 > - In a tiny RNN you can get every forward value, every step's error and both shared-weight gradients by hand.
@@ -112,11 +112,11 @@ Look at how much the hidden state at step $j$ changes when the hidden state at s
 
 $$\frac{\partial \mathbf h_j}{\partial \mathbf h_{j-1}}=\mathrm{diag}\big(1-\mathbf h_j^2\big)\,W_{hh}$$
 
-In the scalar case it is the factor $u\cdot\text{slope}$ you met above. To go back $k$ steps you multiply $k$ of these. How big can the product get? Let $\sigma_{\max}$ be the largest singular value of $W_{hh}$, which is the most that the matrix can stretch any vector, and let $\lVert\cdot\rVert$ be the length of a vector. The tanh slope is at most 1. Then
+In the scalar case it is the factor $u\cdot\text{slope}$ you met above. To go back $k$ steps you multiply $k$ of these. How big can the product get? Let $\sigma_{\max}$ be the largest singular value of $W_{hh}$, which is the most that the matrix can stretch any vector. For a matrix, $\lVert\cdot\rVert$ below means that same stretch factor (the spectral norm), so $\lVert W_{hh}\rVert=\sigma_{\max}$. The diagonal tanh-slope matrix has entries at most 1, so it can't stretch anything. Then
 
 $$\Big\|\frac{\partial \mathbf h_t}{\partial \mathbf h_i}\Big\|\le(\sigma_{\max})^{\,t-i}$$
 
-where a $\sigma_{\max}$ below 1 pulls the bound toward 0 and one above 1 lets it grow. In the scalar case the factor is just $u^k$ after $k$ steps:
+where a $\sigma_{\max}$ below 1 pulls the bound toward 0 and one above 1 lets it grow. In the scalar case, leaving out the slopes, the factor is just $u^k$ after $k$ steps:
 
 | $k$ | $0.9^k$ | $1.1^k$ |
 |---|---|---|
@@ -135,7 +135,7 @@ Clipping handles explosions (it comes from [Pascanu, Mikolov and Bengio](https:/
 
 $$\mathbf g\leftarrow c\,\frac{\mathbf g}{\lVert\mathbf g\rVert}\quad\text{if }\lVert\mathbf g\rVert>c$$
 
-With $\mathbf g=(30,40)$ the norm is 50. For $c=5$ you get $5\cdot(30,40)/50=(3,4)$. Clipping does nothing for vanishing, because there is no big number to cut. Gated cells fix vanishing, and the [LSTM](./08-lstm.md) and [GRU](./09-gru.md) notes show how.
+With $\mathbf g=(30,40)$ the norm is 50. For $c=5$ you get $5\cdot(30,40)/50=(3,4)$. Clipping does nothing for vanishing, because there is no big number to cut. Gated cells fix vanishing, and the [LSTM](/blog/cse425-mid-lstm/) and [GRU](/blog/cse425-mid-gru/) notes show how.
 
 Truncated BPTT limits how far back the error travels. With window $\tau$, you keep the terms where the loss step $t$ and the earlier step $i$ are at most $\tau$ apart, and drop the ones with $t-i>\tau$. In practice you run the forward pass over the whole sequence but cut the gradient at the window edge. It saves time and memory; [d2l.ai](https://d2l.ai/chapter_recurrent-neural-networks/bptt.html) works through the idea with code. The cost is that a dependency longer than $\tau$ never gets any gradient, so the network can't learn it.
 
@@ -145,9 +145,9 @@ $$\frac{\partial L}{\partial w}=0.6569-0.1830=0.4739$$
 
 The full answer was 0.2436, so dropping step 1 here nearly doubles the gradient for $w$. The gradient for $u$ stays at $-0.5310$ because its step-1 term was already zero.
 
-## Writing it in an exam
+## Writing it out by hand
 
-For a numeric question, show the forward values, the slopes and each $\delta$ before you get to the shared weights, and write each weight's sum out term by term. On a theory question on vanishing gradients, draw the unrolled network, write the product of one-step Jacobians, and finish with a number such as $0.9^{20}\approx0.12$ against $1.1^{20}\approx6.7$.
+When I work a numeric BPTT problem, I show the forward values, the slopes and each $\delta$ before I get to the shared weights, and write each weight's sum out term by term. To explain vanishing gradients, draw the unrolled network, write the product of one-step Jacobians, and finish with a number such as $0.9^{20}\approx0.12$ against $1.1^{20}\approx6.7$.
 
 ## Sum or product, clipping, truncation
 

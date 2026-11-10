@@ -12,7 +12,7 @@ Is the point $(1, 3)$ a yes or a no under this rule: add $2x_1 - x_2 - 1$, and s
 
 > **Key Takeaways**
 > - A perceptron outputs 1 if its weighted sum plus bias is positive and 0 otherwise, which draws one straight line through the input plane.
-> - After each example it adds or subtracts the input from its weights, and the update is zero when the answer was right.
+> - After each example it adds the input to its weights or subtracts it from them, and the update is zero when the answer was right.
 > - AND, OR and NOT are learnable by one perceptron. XOR is not, because its two 1s sit on opposite corners of the square.
 > - Of the 16 Boolean functions of two inputs, 14 are linearly separable and 2 (XOR and XNOR) are not.
 
@@ -108,7 +108,7 @@ Not separable is $2^{2^n}$ minus separable. The separable counts are the publish
 
 ## Getting past one line
 
-XOR can still be computed if you give up on a single plain perceptron. One way is a feature map that adds a product input: with $\phi=(x_1,x_2,x_1x_2)$, XOR is $x_1+x_2-2x_1x_2$, which is linear in $\phi$. Check: it gives 0, 1, 1, 0 on $00,01,10,11$. The other way is a hidden layer, covered in the [next note](/blog/cse425-mid-mlp-activations/). Any Boolean function can be built from AND, OR and NOT neurons, so two layers of perceptrons can compute any of them.
+XOR can still be computed if you give up on a single plain perceptron. One way is a feature map that adds a product input: with $\phi=(x_1,x_2,x_1x_2)$, XOR is $x_1+x_2-2x_1x_2$, which is linear in $\phi$. Check: it gives 0, 1, 1, 0 on $00,01,10,11$. The other way is a hidden layer, covered in the [next note](/blog/cse425-mid-mlp-activations/). Any Boolean function can be written as an OR of ANDs, and a NOT is just a negative weight, so two layers of perceptrons can compute any of them.
 
 For a design question, write the truth table first, choose weights and the bias, state whether you fire at $z>0$ or $z\ge0$, and test every row. If one row fails, the weights compute some other function.
 

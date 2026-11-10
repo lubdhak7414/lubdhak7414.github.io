@@ -43,18 +43,18 @@ For many examples the loss is the average of this over $N$ examples. With a leng
 
 $$L=\frac1N\sum_{n=1}^{N}\left\lVert\mathbf x^{(n)}-\widehat{\mathbf x}^{(n)}\right\rVert^2$$
 
-Check it on the example: $N=1$ and the squared length of $(0.30,\,0.74)$ is $0.09+0.5476=0.6376$. For a single example you can drop the $\frac1N$, and an answer should say which version it uses.
+Check it on the example: $N=1$ and the squared length of $(0.30,\,0.74)$ is $0.09+0.5476=0.6376$. For a single example you can drop the $\frac1N$; just say which version you're using.
 
 ## Why the code has to be narrow
 
 If the middle layer is as wide as the input, the network can just copy it and learn nothing. Make it narrow (undercomplete) and the network has to keep only the structure that repeats across the data. After training, the encoder is the half you keep: its code is a compact feature vector for the image, while the decoder only knows how to rebuild pixels.
 
-Why not make the network linear? Two linear layers stack into one, because $W_2(W_1\mathbf x)=(W_2W_1)\mathbf x$ and $W_2W_1$ is just another matrix. However many linear layers you add, an autoencoder trained with squared error ends up matching PCA, which finds the best straight-line summary directions of the data. With non-linear activations (ReLU, sigmoid) it can fit curved data too.
+Why not make the network linear? Two linear layers stack into one, because $W_2(W_1\mathbf x)=(W_2W_1)\mathbf x$ and $W_2W_1$ is just another matrix. However many linear layers you add, a linear autoencoder trained with squared error learns the same $K$-dimensional subspace as PCA, the span of the top $K$ principal directions, which is the best flat summary of the data. It needn't find the principal directions themselves, only the space they span. With non-linear activations (ReLU, sigmoid) it can fit curved data too.
 
 The parameter count below uses this 784-300-100-2-100-300-784 network:
 
 ```mermaid
-flowchart LR
+flowchart TD
   A["x: 784"] --> B["300"]
   B --> C["100"]
   C --> D["z: 2"]
@@ -63,7 +63,7 @@ flowchart LR
   F --> G["x hat: 784"]
 ```
 
-The first four boxes are the encoder, the last four are the decoder, and the narrow middle box is the bottleneck $\mathbf z$.
+The encoder runs from $\mathbf x$ down to $\mathbf z$ and the decoder from $\mathbf z$ back up to $\widehat{\mathbf x}$. The narrow box in the middle, shared by both, is the bottleneck $\mathbf z$.
 
 ## Counting parameters
 
@@ -125,13 +125,13 @@ The Dense layer from 100 to 2 has $100\cdot2+2=202$. RepeatVector adds none, and
 
 ## Why a denoising autoencoder works
 
-In a denoising autoencoder the network receives a noisy input $\widetilde{x}_t=x_t+\varepsilon_t$, where $\varepsilon_t$ is random noise, but the loss compares the output with the clean $x_t$:
+In a denoising LSTM autoencoder the network receives a noisy step $\widetilde{x}_t=x_t+\varepsilon_t$ at each of the $T$ steps, where $\varepsilon_t$ is random noise, but the loss compares the output with the clean $x_t$:
 
 $$L=\frac1T\sum_{t=1}^{T}\left\lVert x_t-\widehat{x}_t\right\rVert^2$$
 
 The code $\mathbf z$ has a fixed size, so it can only hold a short description of the sequence. A smooth signal has a short description and random noise doesn't, so the noise is what gets dropped on the way through.
 
-The forget gate helps too. If a one-off spike enters the cell state and the forget gate sits near $f$, its contribution after $k$ steps is about $f^k$. That is a simplification, since the real update also involves the input gate, but with $f=0.1$ the spike is $10^{-1},\,10^{-2},\,10^{-3},\,10^{-4},\,10^{-5}$ of its size after 1 to 5 steps.
+The forget gate helps too. If a one-off spike enters the cell state and the forget gate stays at about the same value $f$, its contribution after $k$ steps is about $f^k$. That is a simplification, since the real update also involves the input gate, but with $f=0.1$ the spike is $10^{-1},\,10^{-2},\,10^{-3},\,10^{-4},\,10^{-5}$ of its size after 1 to 5 steps.
 
 ## Two counts and one design choice
 

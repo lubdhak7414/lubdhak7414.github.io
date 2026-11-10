@@ -35,7 +35,7 @@ $$z=\mathbf w\cdot\mathbf x+b,\qquad a=f(z)$$
 Bold letters are lists of numbers (vectors), and the dot between $\mathbf w$ and $\mathbf x$ is explained a little further down. The total $z$ is called the pre-activation, because it is the number just before the activation function is applied. The word "neuron" comes from biology, where a cell adds up incoming signals and fires only if the total passes a threshold. The artificial version borrows the add-then-fire shape and very little else.
 
 ```mermaid
-flowchart LR
+flowchart TD
   x1["x1"] -->|"w1"| S["sum: z = w.x + b"]
   x2["x2"] -->|"w2"| S
   x3["x3"] -->|"w3"| S
@@ -43,7 +43,7 @@ flowchart LR
   F --> A["output a"]
 ```
 
-A network is many neurons wired together, with the outputs of some becoming the inputs of others. Training is the search for weights that make the network's answers close to the right ones. That needs a single number for how wrong the network is (the loss) and, for each weight, the direction in which the loss gets smaller (a derivative). The neuron above already uses a dot product, so that's next, then matrices.
+A network is many neurons wired together, with the outputs of some becoming the inputs of others. Training is the search for weights that make the network's answers close to the right ones. That needs a single number for how wrong the network is (the loss) and, for each weight, the direction in which the loss gets smaller (a derivative).
 
 ## Where the course starts
 
@@ -57,7 +57,7 @@ A vector is an ordered list of numbers. The dot product multiplies matching entr
 
 $$\mathbf w\cdot\mathbf x=\sum_i w_ix_i$$
 
-For $\mathbf u=(2,-1,3)$ and $\mathbf v=(4,0,1)$ it is $8+0+3=11$. The result is large and positive when the two vectors point the same way, near zero when they are unrelated and negative when they oppose. In a neuron, $\mathbf w\cdot\mathbf x$ is the evidence in favour, with each input counted as much as its weight says it should be.
+For $\mathbf u=(2,-1,3)$ and $\mathbf v=(4,0,1)$ it is $8+0+3=11$. The result is large and positive when the two vectors point the same way, near zero when they are close to perpendicular and negative when they oppose. In a neuron, $\mathbf w\cdot\mathbf x$ is the evidence in favour, with each input counted as much as its weight says it should be.
 
 ## Matrices
 
@@ -91,10 +91,13 @@ $$\sigma'(z)=\sigma(z)\,\big(1-\sigma(z)\big)$$
 
 The slope is at most 0.25, reached at $z=0$, and it flattens out in both tails:
 
-| $z$ | $-4$ | $-2$ | $0$ | $2$ | $4$ |
-|---|---|---|---|---|---|
-| $\sigma(z)$ | 0.0180 | 0.1192 | 0.5000 | 0.8808 | 0.9820 |
-| $\sigma'(z)$ | 0.0177 | 0.1050 | 0.2500 | 0.1050 | 0.0177 |
+| $z$ | $\sigma(z)$ | $\sigma'(z)$ |
+|---|---|---|
+| $-4$ | 0.0180 | 0.0177 |
+| $-2$ | 0.1192 | 0.1050 |
+| $0$ | 0.5000 | 0.2500 |
+| $2$ | 0.8808 | 0.1050 |
+| $4$ | 0.9820 | 0.0177 |
 
 That 0.25 ceiling returns in the RNN notes, where many small slopes multiplied together shrink a gradient to almost nothing.
 
@@ -142,7 +145,7 @@ Each step closes 20 percent of the remaining gap to 3. Nobody shrinks the step s
 
 ## Bias and variance
 
-Bias here means the error from a model too simple to capture the pattern, such as a straight line through a curve. Variance is the error from a model so flexible that it chases the noise in one particular training set. Simple models have high bias and low variance, and they underfit. Flexible models have low bias and high variance, and they overfit. The expected error splits into bias squared, variance and irreducible noise (see [the Wikipedia article](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff) for the derivation). The sign of overfitting is training loss still falling while validation loss rises. Regularization, dropout and early stopping, all in the [optimization note](/blog/cse425-mid-optimization-regularization/), add a little bias in exchange for lower variance.
+Bias here means the error from a model too simple to capture the pattern, such as a straight line through a curve. Variance is the error from a model so flexible that it chases the noise in one particular training set. Simple models have high bias and low variance, and they underfit. Flexible models have low bias and high variance, and they overfit. For squared-error loss, the expected error splits into bias squared, variance and irreducible noise (see [the Wikipedia article](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff) for the derivation). The sign of overfitting is training loss still falling while validation loss rises. Regularization, dropout and early stopping, all in the [optimization note](/blog/cse425-mid-optimization-regularization/), add a little bias in exchange for lower variance.
 
 ## The notation every note uses
 
@@ -154,7 +157,7 @@ Course papers often use other letters for the same things: $d$ for the target, $
 
 ## Reading order
 
-The notes assume the ones before them. [The perceptron](/blog/cse425-mid-perceptron/) and [layers with activations](/blog/cse425-mid-mlp-activations/) come first, then backprop in two parts ([output layer](/blog/cse425-mid-backprop-output-layer/) and [hidden layers](/blog/cse425-mid-backprop-hidden-layers/)) and [computation graphs](/blog/cse425-mid-computation-graphs/). After those come [batch normalization](/blog/cse425-mid-batch-norm/) and [optimization and regularization](/blog/cse425-mid-optimization-regularization/), then recurrent networks in two parts ([unrolling](/blog/cse425-mid-rnn-basics/) and [BPTT](/blog/cse425-mid-bptt/)), the [LSTM](/blog/cse425-mid-lstm/) and the [GRU](/blog/cse425-mid-gru/). The [exam clinic](/blog/cse425-mid-exam-clinic/) collects worked patterns for revision. The Final series starts at [its own prerequisites note](/blog/cse425-mid-prerequisites/).
+The notes assume the ones before them. [The perceptron](/blog/cse425-mid-perceptron/) and [layers with activations](/blog/cse425-mid-mlp-activations/) come first, then backprop in two parts ([output layer](/blog/cse425-mid-backprop-output-layer/) and [hidden layers](/blog/cse425-mid-backprop-hidden-layers/)) and [computation graphs](/blog/cse425-mid-computation-graphs/). After those come [batch normalization](/blog/cse425-mid-batch-norm/) and [optimization and regularization](/blog/cse425-mid-optimization-regularization/), then recurrent networks in two parts ([unrolling](/blog/cse425-mid-rnn-basics/) and [BPTT](/blog/cse425-mid-bptt/)), the [LSTM](/blog/cse425-mid-lstm/) and the [GRU](/blog/cse425-mid-gru/). The [exam clinic](/blog/cse425-mid-exam-clinic/) collects worked patterns for revision. The Final series starts at [its own prerequisites note](/blog/cse425-final-prerequisites/).
 
 Following a worked example and doing one are different skills. Redo each one on paper with a changed input or target, then compare your working with the note. For a visual version of the neuron picture, [3Blue1Brown](https://www.3blue1brown.com/lessons/neural-networks) is hard to beat, and the [d2l.ai chapter on multilayer perceptrons](https://d2l.ai/chapter_multilayer-perceptrons/mlp.html) rewards a second read after the layers note.
 

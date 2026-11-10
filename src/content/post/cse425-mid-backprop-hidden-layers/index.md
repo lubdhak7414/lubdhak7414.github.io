@@ -72,7 +72,7 @@ Now the general rule. Let neuron $j$ feed several neurons $k$ in the next layer,
 
 $$\frac{\partial L}{\partial a_j}=\sum_k\frac{\partial L}{\partial z_k}\cdot\frac{\partial z_k}{\partial a_j}$$
 
-Each $z_k=\sum_j w_{kj}a_j+b_k$ contains $a_j$ in one term only, so $\partial z_k/\partial a_j=w_{kj}$. The first factor is the delta of neuron $k$. Then the slope of $f$ converts a nudge of $a_j$ into a nudge of $z_j$:
+Each $z_k=\sum_{j'} w_{kj'}a_{j'}+b_k$ contains $a_j$ in one term only, so $\partial z_k/\partial a_j=w_{kj}$. The first factor is the delta of neuron $k$. Then the slope of $f$ converts a nudge of $a_j$ into a nudge of $z_j$:
 
 $$\delta_j=f'(z_j)\sum_k\delta_k\,w_{kj}$$
 
@@ -90,17 +90,17 @@ Training has two phases. The forward pass computes and stores every $z$ and $a$.
 
 With $\eta=0.5$:
 
-| Weight | Rule | New value |
-|---|---|---|
-| $w_{o1}$ | $0.6-0.5(-0.10998)(0.64566)$ | 0.63550 |
-| $w_{o2}$ | $-0.7-0.5(-0.10998)(0.52498)$ | $-0.67113$ |
-| $b_o$ | $0.2-0.5(-0.10998)$ | 0.25499 |
-| $w_{11}$ | $0.5-0.5(-0.015096)(1)$ | 0.50755 |
-| $w_{12}$ | input is 0, so no change | $-0.4$ |
-| $b_1$ | $0.1-0.5(-0.015096)$ | 0.10755 |
-| $w_{21}$ | $0.3-0.5(0.019198)(1)$ | 0.29040 |
-| $w_{22}$ | input is 0, so no change | 0.8 |
-| $b_2$ | $-0.2-0.5(0.019198)$ | $-0.20960$ |
+| Update | New value |
+|---|---|
+| $w_{o1}=$ $0.6-0.5(-0.10998)(0.64566)$ | 0.63550 |
+| $w_{o2}=$ $-0.7-0.5(-0.10998)(0.52498)$ | -0.67113 |
+| $b_o=$ $0.2-0.5(-0.10998)$ | 0.25499 |
+| $w_{11}=$ $0.5-0.5(-0.015096)(1)$ | 0.50755 |
+| $w_{12}$: input is 0, so no change | -0.4 |
+| $b_1=$ $0.1-0.5(-0.015096)$ | 0.10755 |
+| $w_{21}=$ $0.3-0.5(0.019198)(1)$ | 0.29040 |
+| $w_{22}$: input is 0, so no change | 0.8 |
+| $b_2=$ $-0.2-0.5(0.019198)$ | -0.20960 |
 
 A weight on an input of 0 never moves in this step, because its gradient $\delta\,a$ is multiplied by that 0.
 
@@ -112,7 +112,7 @@ Run the forward pass again with the new weights. The output becomes $\widehat{y}
 
 That shows the step went downhill, but not that the gradients were right. For that, use finite differences: nudge one weight by $\pm10^{-6}$, recompute $L$, and divide the change by $2\times10^{-6}$. This gives $\partial L/\partial w_{o1}=-0.071007$ and $\partial L/\partial w_{11}=-0.015096$. Backprop gives $\delta_o\,a_1=-0.10998(0.64566)=-0.071007$ and $\delta_1\,x_1=-0.015096$. They agree to the digits shown. A flipped sign or a swapped index in the backward pass would make the two numbers differ.
 
-## Hidden deltas and update order
+## Questions on hidden deltas
 
 A hidden neuron feeds two outputs whose deltas are $-0.2$ and $0.1$, through weights $0.5$ and $0.4$. Its own output is $a=0.5$. What is its delta?
 

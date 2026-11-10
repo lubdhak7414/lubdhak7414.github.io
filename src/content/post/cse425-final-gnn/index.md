@@ -8,14 +8,14 @@ series: "CSE 425 Final"
 part: 8
 ---
 
-Nine atoms can be written down in 9! = 362,880 different orders, and a molecule is the same molecule in every one of them. A network that reads a list of atoms and gives a different answer for each order has learned nothing about chemistry.
+Nine atoms can be written down in 9! = 362,880 different orders, and a molecule is the same molecule in every one of them. A network that reads a list of atoms and gives a different answer for each order is reacting to the list, not the molecule.
 
 Graph neural networks (GNNs) are built so the order cannot matter. A graph is a set of nodes joined by edges, like atoms and bonds, or people and friendships. There's no first node and no fixed number of neighbours, so a plain dense layer or a fixed-size kernel does not fit. GNNs borrow the idea of a convolution. Each node looks at its neighbours, combines what it sees with an order-free operation such as a sum or a mean, and updates its own vector.
 
 > **Key Takeaways**
 > - A GNN layer gathers neighbour vectors, combines them with an order-free function, and updates each node with weights and a nonlinearity.
 > - Relabelling the nodes only relabels the output rows, a property called permutation equivariance, and a mean, sum or max readout over all nodes is unaffected by order.
-> - GCN adds self-loops and normalises by the degree at both ends of an edge, GraphSAGE-mean averages neighbours and gives the node's own vector a separate weight, and GAT learns the weights.
+> - GCN adds self-loops and normalises by the degree at both ends of an edge, GraphSAGE-mean averages neighbours and gives the node's own vector a separate weight, and GAT learns a weight for each neighbour.
 > - Too many layers pull all node vectors toward one value, called oversmoothing, so two or three layers are typical.
 
 ## A tiny graph and its matrix
@@ -68,7 +68,7 @@ Here $H^{(k)}$ stacks all node vectors, one per row, and $\bar A$ is the normali
 
 $$\mathbf h_v=f\Big(\sum_{u\in\mathcal N(v)\cup\{v\}}\frac{1}{\sqrt{\tilde d_v\tilde d_u}}\,W\mathbf h_u\Big)$$
 
-Dividing by both degrees damps high-degree nodes at both ends of an edge, so rows of $\bar A$ need not sum to 1. In matrix form, $\bar AH$ aggregates and multiplying by $W$ transforms.
+Because it divides by the degree at both ends of an edge, a high-degree neighbour counts for less, and the rows of $\bar A$ need not sum to 1 (in the worked example below, row 1 sums to 1.150). In matrix form, $\bar AH$ aggregates and multiplying by $W$ transforms.
 
 GAT (graph attention) learns how much each neighbour matters instead of fixing weights from degrees. A score for the pair $(v,u)$ comes from a learned vector $\mathbf c$ applied to the two transformed vectors joined end to end (the symbol $\|$ is that concatenation), and a softmax turns the scores into weights $\alpha$ that sum to 1:
 
@@ -76,7 +76,7 @@ $$e_{vu}=\text{LeakyReLU}\big(\mathbf c^\top[W\mathbf h_v\,\|\,W\mathbf h_u]\big
 
 $$\alpha_{vu}=\frac{\exp e_{vu}}{\sum_{w\in\mathcal N(v)\cup\{v\}}\exp e_{vw}}$$
 
-$$\mathbf h_v=f\Big(\sum_u\alpha_{vu}W\mathbf h_u\Big)$$
+$$\mathbf h_v=f\Big(\sum_{u\in\mathcal N(v)\cup\{v\}}\alpha_{vu}W\mathbf h_u\Big)$$
 
 This is the same softmax idea as in [attention](/blog/cse425-final-attention/), applied only over a node's neighbours.
 
@@ -114,11 +114,11 @@ For one label per graph, pool the final node vectors, for example $\mathbf g=\fr
 
 After $k$ layers a node has seen its $k$-hop neighbourhood, everything reachable in $k$ steps, and entry $(A^k)_{ij}$ counts the walks of length $k$ between $i$ and $j$. Go too deep and every node has averaged over most of the graph, until all node vectors drift toward the same value. That's oversmoothing, and it's why two or three layers is typical.
 
-The weights are shared across nodes, so a layer from 16 to 8 features has $16\cdot8+8=136$ parameters whether the graph has 4 nodes or $10^6$. Compute still grows with the number of edges.
+The weights are shared across nodes, so a layer from 16 to 8 features has $16\cdot8+8=136$ parameters (the weight matrix plus a bias) whether the graph has 4 nodes or $10^6$. Compute still grows with the number of edges.
 
 ## Answering a GNN question
 
-A short theory question here would ask for the three steps (gather, aggregate, update), the normalised equation with every symbol defined, or how GCN differs from GAT. Questions like this are possible; check what your instructor expects. For a numeric layer, show $\bar AH$ first and then times $W$, and do not drop the self-loops: $\tilde A$ is $A+I$, and the symmetric form $\tilde D^{-1/2}\tilde A\tilde D^{-1/2}$ is not the row normalisation $\tilde D^{-1}\tilde A$.
+For a written answer, the pieces I'd want to be able to produce cold are the three steps (gather, aggregate, update), the normalised equation with every symbol defined, and how GCN differs from GAT. For a numeric layer, show $\bar AH$ first and then times $W$, and do not drop the self-loops: $\tilde A$ is $A+I$, and the symmetric form $\tilde D^{-1/2}\tilde A\tilde D^{-1/2}$ is not the row normalisation $\tilde D^{-1}\tilde A$.
 
 The [Distill introduction to graph neural networks](https://distill.pub/2021/gnn-intro/) is an illustrated walk through graphs, message passing and readout, and [Kipf's explainer](https://tkipf.github.io/graph-convolutional-networks/) comes from the GCN author.
 

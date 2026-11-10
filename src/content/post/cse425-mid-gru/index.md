@@ -1,5 +1,5 @@
 ---
-title: "GRU and LSTM vs GRU"
+title: "GRU and How It Compares with the LSTM"
 description: "The GRU folds the LSTM's cell state into the hidden state and uses two gates, not three. One step by hand, then a gate-by-gate comparison with the LSTM."
 publishDate: '2026-11-02'
 draft: true
@@ -13,10 +13,10 @@ A GRU is an LSTM with the cell state folded into the hidden state and the three 
 The reset gate is the part that gets mixed up with the LSTM's forget gate, though the two act in different places. This note assumes the [LSTM](/blog/cse425-mid-lstm/) note, in particular what a gate is: a set of numbers between 0 and 1 that multiply something, where 0 keeps none of it and 1 keeps all of it.
 
 > **Key Takeaways**
-> - A GRU has no separate cell state, only the hidden state $h_t$, and two gates: update $z_t$ and reset $r_t$.
-> - The new state is a blend $h_t=z_t\odot\tilde h_t+(1-z_t)\odot h_{t-1}$, whose two weights add to 1.
-> - The reset gate scales only the old state $h_{t-1}$ inside the candidate, never the input $x_t$.
-> - A GRU has $3H(H+D+1)$ parameters, three quarters of an LSTM's $4H(H+D+1)$.
+> - A GRU has no separate cell state, only the hidden state, and two gates: the update gate z and the reset gate r.
+> - The new state is a blend of the candidate and the old state, weighted by z and 1 minus z, so the two weights add to 1.
+> - The reset gate scales only the old state inside the candidate, never the input.
+> - A GRU has three weight blocks to the LSTM's four, so 75% of the LSTM's parameters at the same sizes.
 
 ## One step by hand
 
@@ -46,7 +46,7 @@ $$h_t=0.4743+0.1659=0.6402$$
 
 ## The general equations
 
-Now the same step for any sizes. The symbols: $\sigma$ is the sigmoid, $\odot$ is entry-by-entry multiplication, $x_t$ is the input at step $t$ (size $D$) and $h_{t-1}$ the previous hidden state (size $H$). The matrices $W$ act on the input and the matrices $U$ on the hidden state, and each block has a bias $b$.
+Now the same step for any sizes. The symbols: $\sigma$ is the sigmoid, $\odot$ is entry-by-entry multiplication, $x_t$ is the input at step $t$ (size $D$) and $h_{t-1}$ the previous hidden state (size $H$). The matrices $W$ act on the input and the matrices $U$ on the hidden state, and each block has a bias $b$. The [LSTM](/blog/cse425-mid-lstm/) note stacked $[h_{t-1},x_t]$ under one matrix; $W_zx_t+U_zh_{t-1}$ is the same thing split in two, and here the split is worth keeping because the reset gate touches only the $h_{t-1}$ part.
 
 $$z_t=\sigma(W_zx_t+U_zh_{t-1}+b_z)$$
 
@@ -60,7 +60,7 @@ Here $z_t$ is the value of the update gate, a number between 0 and 1, not a pre-
 
 The last line is a blend whose two weights add to 1. With $z_t\approx0$ the cell copies its old state, $h_t\approx h_{t-1}$, and with $z_t\approx1$ it overwrites, $h_t\approx\tilde h_t$. This is the convention used in this note. Some books and PyTorch swap the roles, $h_t=(1-z_t)\odot\tilde h_t+z_t\odot h_{t-1}$. On the example this gives $0.3318\cdot0.7098+0.6682\cdot0.5=0.5696$ instead of $0.6402$, so a question about "$z$ near 0 or 1" depends on which one is used. Say which you use.
 
-All the vectors have sizes that match. With a 5-dimensional input and a 5-dimensional state, $W_z,W_r,W_h$ and $U_z,U_r,U_h$ are all $5\times5$, the biases have 5 entries, and $z_t$, $r_t$, $\tilde h_t$, $h_t$ all have 5 entries. The output $h_t$ becomes $h_{t-1}$ of the next cell, and the same equations repeat with $t+1$.
+The shapes: $W_z,W_r,W_h$ are $H\times D$, $U_z,U_r,U_h$ are $H\times H$, and the biases, $z_t$, $r_t$, $\tilde h_t$ and $h_t$ all have $H$ entries. With a 5-dimensional input and a 5-dimensional state every matrix happens to be $5\times5$; with $D=10$ and $H=20$ the $W$s are $20\times10$ and the $U$s $20\times20$. The output $h_t$ becomes $h_{t-1}$ of the next cell, and the same equations repeat with $t+1$.
 
 ## Why the gradient survives
 
@@ -74,11 +74,11 @@ Parameter counts, with $D$ inputs and $H$ hidden units and one bias per block: a
 |---|---|---|
 | Gates | 3: forget, input, output | 2: update, reset |
 | Separate cell state $c_t$ | yes | no, only $h_t$ |
-| State blend | $c_t=f\odot c_{t-1}+i\odot\tilde c$, two independent gates | $h_t=z\odot\tilde h+(1-z)\odot h_{t-1}$, one gate, weights sum to 1 |
-| Output gate | yes, $h_t=o\odot\tanh(c_t)$ | none, $h_t$ is exposed fully |
+| State blend | two separate gates, $f$ on the old cell and $i$ on the candidate | one gate, $1-z$ on the old state and $z$ on the candidate, weights add to 1 |
+| Output gate | yes, $o$ scales $\tanh(c_t)$ | none, $h_t$ is exposed fully |
 | Where the past is suppressed | forget gate scales the old cell state directly | reset gate scales the old state only inside the candidate |
 | Weight blocks per step | 4 | 3 |
-| Speed | slower | faster, fewer parameters |
+| Speed per step | slower, four blocks | faster, three blocks |
 | Variant | peephole: gates also see $c$ | none, there is no cell to peek at |
 
 The update gate is roughly the forget and input gates merged: $1-z$ plays the part of forget and $z$ the part of input. Nothing in a GRU matches the output gate. Reset looks like forget, but forget acts on the memory itself, while reset only changes what feeds the candidate.

@@ -15,12 +15,12 @@ The reason to want one at all is that an ordinary network (an MLP) takes a fixed
 > **Key Takeaways**
 > - An RNN uses the same weight matrices at every time step, so its parameter count does not depend on the sequence length $T$.
 > - The hidden state $\mathbf h_t$ is computed from the current input and the previous hidden state, which is how earlier steps influence later ones.
-> - With one-hot inputs, multiplying by $W_{xh}$ simply picks out one column of it.
+> - With one-hot inputs, multiplying by $W_{xh}$ picks out one column of it.
 > - Teacher forcing trains with the true previous output as the next input; at test time the model feeds in its own outputs, which it never practised on.
 
 ## A small RNN, run by hand
 
-Everything below is small enough to compute by hand. The network has three possible inputs, written as one-hot vectors: a list of numbers with a single 1 and the rest 0, so category 1 is $(1,0,0)$, category 2 is $(0,1,0)$ and category 3 is $(0,0,1)$. The hidden state has two numbers, and so does the output. Four weight matrices (and two bias vectors) do all the work:
+Everything below is small enough to compute by hand. The network has three possible inputs, written as one-hot vectors: a list of numbers with a single 1 and the rest 0, so category 1 is $(1,0,0)$, category 2 is $(0,1,0)$ and category 3 is $(0,0,1)$. The hidden state has two numbers, and so does the output. Three weight matrices (and two bias vectors) do all the work:
 
 $$W_{xh}=\begin{pmatrix}0.5&-0.3&0.2\\0.1&0.4&-0.6\end{pmatrix}$$
 
@@ -40,21 +40,39 @@ $$=(0.6,\,0)$$
 
 $$\mathbf h_1=(\tanh0.6,\ \tanh0)=(0.5370,\ 0)$$
 
-Step 2. The input picks out column 2, $(-0.3,\,0.4)$. The previous state now matters: $W_{hh}\mathbf h_1=(0.3\cdot0.5370,\ 0.1\cdot0.5370)=(0.1611,\,0.0537)$ (the second column of $W_{hh}$ multiplies the 0).
+Step 2. The input picks out column 2, $(-0.3,\,0.4)$. The previous state now matters. The second entry of $\mathbf h_1$ is 0, so only the first column of $W_{hh}$ counts:
 
-$$\mathbf z_2=(-0.3+0.1611+0.1,\ \ 0.4+0.0537-0.1)$$
+$$W_{hh}\mathbf h_1=(0.3\cdot0.5370,\ 0.1\cdot0.5370)$$
+
+$$=(0.1611,\ 0.0537)$$
+
+Adding the input part, this and $\mathbf b_h$, entry by entry:
+
+$$-0.3+0.1611+0.1=-0.0389$$
+
+$$0.4+0.0537-0.1=0.3537$$
 
 $$\mathbf z_2=(-0.0389,\ 0.3537)$$
 
-$$\mathbf h_2=(-0.0389,\ 0.3397)$$
+$$\mathbf h_2=\tanh(\mathbf z_2)=(-0.0389,\ 0.3397)$$
 
-Step 3. Column 3 is $(0.2,\,-0.6)$ and $W_{hh}\mathbf h_2=(0.3(-0.0389)-0.2(0.3397),\ 0.1(-0.0389)+0.5(0.3397))=(-0.0796,\ 0.1659)$, keeping full precision from the previous step:
+Step 3. Column 3 is $(0.2,\,-0.6)$. Both entries of $\mathbf h_2$ are nonzero now, so both columns of $W_{hh}$ count. One entry at a time:
 
-$$\mathbf z_3=(0.2-0.0796+0.1,\ \ -0.6+0.1659-0.1)$$
+$$0.3(-0.0389)-0.2(0.3397)=-0.0796$$
+
+$$0.1(-0.0389)+0.5(0.3397)=0.1659$$
+
+$$W_{hh}\mathbf h_2=(-0.0796,\ 0.1659)$$
+
+Adding the input part and $\mathbf b_h$ in the same way:
+
+$$0.2-0.0796+0.1=0.2204$$
+
+$$-0.6+0.1659-0.1=-0.5341$$
 
 $$\mathbf z_3=(0.2204,\ -0.5341)$$
 
-$$\mathbf h_3=(0.2169,\ -0.4885)$$
+$$\mathbf h_3=\tanh(\mathbf z_3)=(0.2169,\ -0.4885)$$
 
 Now the output. $W_{hy}$ times $\mathbf h_3$ gives two scores, and softmax turns the scores into probabilities: it makes each score positive (by taking $e$ to its power) and divides by the total so the results add up to 1.
 

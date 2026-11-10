@@ -28,16 +28,12 @@ The input is connected to every node. The nodes are not connected to each other.
 
 ```mermaid
 flowchart TD
-    X["Input vector x"] --> N1["Node 1,1"]
+    X["Input x"] --> N1["Node 1,1"]
     X --> N2["Node 1,2"]
-    X --> N3["Node 2,1"]
-    X --> N4["Node 2,2"]
-    X --> N5["The other 5 nodes"]
-    N1 --> W["Smallest distance to x wins: the BMU"]
+    X --> N9["... node 3,3"]
+    N1 --> W["Closest to x wins: the BMU"]
     N2 --> W
-    N3 --> W
-    N4 --> W
-    N5 --> W
+    N9 --> W
     W --> U["BMU and grid neighbours move toward x"]
 ```
 
@@ -51,7 +47,7 @@ Here is a 3 by 3 map, with nodes written as (row, column) and weights as (first 
 | row 2 | (0.6, 0.5) | (0.4, 0.2) | (0.7, 0.3) |
 | row 3 | (0.8, 0.6) | (0.5, 0.4) | (0.9, 0.7) |
 
-The input is $\mathbf{x}=(0.45,\ 0.35)$. For this example I'll use learning rate $\eta=0.5$ and update the winner plus every node one grid step away. A question will tell you its own settings.
+The input is $\mathbf{x}=(0.45,\ 0.35)$. For this example I'll use learning rate $\eta=0.5$ and update the winner plus every node one grid step away. If a problem gives its own rate or radius, use those instead.
 
 Step 1: distance from the input to every node. For node (1,2), square each difference and add:
 
@@ -59,11 +55,13 @@ $$(0.45-0.1)^2+(0.35-0.3)^2$$
 
 $$=0.1225+0.0025=0.125$$
 
-I'm leaving out the square root. The node with the smallest squared distance also has the smallest distance, so the square root can wait until the end.
+I'm leaving out the square root. The node with the smallest squared distance also has the smallest distance, so the square root can wait until the end. Here are all nine squared distances, laid out like the map:
 
-| Node | (1,1) | (1,2) | (1,3) | (2,1) | (2,2) | (2,3) | (3,1) | (3,2) | (3,3) |
-|---|---|---|---|---|---|---|---|---|---|
-| Squared distance | 0.025 | 0.125 | 0.025 | 0.045 | 0.025 | 0.065 | 0.185 | 0.005 | 0.325 |
+| | col 1 | col 2 | col 3 |
+|---|---|---|---|
+| row 1 | 0.025 | 0.125 | 0.025 |
+| row 2 | 0.045 | 0.025 | 0.065 |
+| row 3 | 0.185 | 0.005 | 0.325 |
 
 Step 2: the smallest is 0.005, at node (3,2) with weight (0.5, 0.4). That node is the best matching unit, the BMU. Its real distance is $\sqrt{0.005}\approx0.0707$.
 

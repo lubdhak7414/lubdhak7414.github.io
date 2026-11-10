@@ -13,8 +13,8 @@ A dense layer that turns a 225 by 225 grayscale photo into a 225 by 225 map conn
 > **Key Takeaways**
 > - A kernel is a small grid of weights that slides over the input and, at each position, multiplies and adds.
 > - One kernel is reused at every position, so the parameter count depends on the kernel and the channels but not on the image size.
-> - The output of a conv layer has $\lfloor(n+2p-k)/s\rfloor+1$ cells per side and one channel per filter.
-> - A conv layer has $C_{out}(k^2C_{in}+1)$ parameters, and pooling has none.
+> - A conv layer's output has floor((n+2p−k)/s)+1 cells per side and one channel per filter.
+> - A conv layer has C_out(k²·C_in+1) parameters, and pooling has none.
 
 ## Two ideas that remove the weights
 
@@ -62,7 +62,7 @@ $$Y[i,j]=\sum_{u=0}^{k-1}\sum_{v=0}^{k-1}X[si+u,\;sj+v]\,K[u,v]+b$$
 
 For the first cell, $i=j=0$ and $s=1$, so it uses $X[u,v]$ times $K[u,v]$, which is exactly the nine products above. For the second cell, $j=1$, so every column index shifts right by one.
 
-Libraries do not flip the kernel before sliding, so strictly this is cross-correlation, and nearly everyone still calls it convolution. Do not flip unless a question says "mathematical convolution". Flipping only shows up in the backward pass.
+Libraries do not flip the kernel before sliding, so strictly this is cross-correlation, and nearly everyone still calls it convolution. Do not flip unless a question says "mathematical convolution". The flip only shows up in the backward pass, where the gradient with respect to the input slides the flipped kernel.
 
 ## Several channels and several filters
 
@@ -78,7 +78,7 @@ $$n_{out}=\left\lfloor\frac{n+2p-k}{s}\right\rfloor+1$$
 
 On the example, $n=4$, $k=3$, $s=1$, $p=0$ gives $\lfloor1/1\rfloor+1=2$. The floor is there because a window that would hang over the edge is not used. A common mistake is leaving out the $+1$ and getting 1. If the result is below 1 the layer cannot be applied.
 
-With $s=1$, choosing $p=(k-1)/2$ gives $n_{out}=n$, called same padding. A $6\times6$ image with $p=1$ becomes $8\times8$, and a $3\times3$ kernel then brings it back to $6\times6$. The full output tensor is $n_{out}\times n_{out}\times C_{out}$. If the image is not square, apply the formula to width and height separately. The [padding and stride chapter of Dive into Deep Learning](https://d2l.ai/chapter_convolutional-neural-networks/padding-and-strides.html) has more small examples of this formula.
+With $s=1$ and an odd $k$, choosing $p=(k-1)/2$ gives $n_{out}=n$, called same padding. A $6\times6$ image with $p=1$ becomes $8\times8$, and a $3\times3$ kernel then brings it back to $6\times6$. The full output tensor is $n_{out}\times n_{out}\times C_{out}$. If the image is not square, apply the formula to width and height separately. The [padding and stride chapter of Dive into Deep Learning](https://d2l.ai/chapter_convolutional-neural-networks/padding-and-strides.html) has more small examples of this formula.
 
 ## Counting parameters
 
@@ -120,13 +120,13 @@ $$0,\ 0,\ 60,\ 60,\ 0,\ 0$$
 
 The 60s sit where light turns to dark. The opposite kernel, with rows $(-1,\,0,\,1)$, gives $0,\,0,\,-60,\,-60,\,0,\,0$ and after ReLU (which turns negatives to 0) everything is 0, so only the first filter responds to a light-left, dark-right edge. In words, a filter scores how well each patch matches a pattern, and the largest values mark where the pattern sits.
 
-Since the same nine weights are tried at every position, a conv layer is translation equivariant: shift the input and the feature map shifts by the same amount instead of changing completely.
+Since the same nine weights are tried at every position, a conv layer is translation equivariant: with stride 1, shift the input and the feature map shifts by the same amount instead of changing completely (away from the borders, where padding gets in the way).
 
 ## Stating your assumptions
 
 When a question does not state padding or stride, say what you assume. Then write the formula, put your numbers in, floor the division, and if a layer cannot run, say so. For parameters, show $C_{in}$ inside the product and count the bias once per filter.
 
-Questions like these are common. Check what your instructor expects for conventions such as the kernel flip and the pool stride.
+Check what your instructor expects for conventions such as the kernel flip and the pool stride.
 
 ## Sizes and counts to work by hand
 

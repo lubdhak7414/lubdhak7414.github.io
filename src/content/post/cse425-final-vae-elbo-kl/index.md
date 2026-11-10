@@ -13,11 +13,12 @@ A VAE has two goals that pull against each other. It wants to rebuild the image 
 The loss is those two goals added together, with one weight setting the balance between them. The picture to keep in mind is the cloud from [VAE Part 1: Encoder and the Reparameterization Trick](/blog/cse425-final-vae-encoder-reparameterization/): the encoder gives each image a small cloud of codes, and the KL term measures how far that cloud is from the standard one.
 
 > **Key Takeaways**
-> - The loss is $L=L_{recon}+\beta\,KL$, with $\beta=1$ in the plain VAE.
-> - For one latent dimension, $KL=\tfrac12(\mu^2+\sigma^2-1-\ln\sigma^2)$, and with several independent dimensions the values add.
-> - The ELBO is the negative of this loss, and it is a floor under $\ln p_\theta(\mathbf x)$, the log-probability the model gives the image.
-> - The KL in the loss compares the encoder with the prior $N(0,I)$; the KL in the derivation compares it with the true posterior, which cannot be computed.
-> - $\beta=0$ gives a plain autoencoder, and a very large $\beta$ makes every output a blurry average.
+>
+> - The loss is L = L_recon + β·KL, with β = 1 in the plain VAE.
+> - For one latent dimension, the KL to N(0,1) is ½(μ² + σ² − 1 − ln σ²), and with several independent dimensions the values add.
+> - The ELBO is the negative of this loss, and it is a floor under ln p(x), the log-probability the model gives the image.
+> - The KL in the loss compares the encoder with the prior N(0,I); the KL in the derivation compares it with the true posterior, which can't be computed.
+> - β = 0 gives a plain autoencoder, and a very large β makes every output a blurry average.
 
 ## The loss for one image, by hand
 
@@ -43,7 +44,7 @@ $$\text{ELBO}=-0.8675-0.0983=-0.9658$$
 
 $$L=0.9658$$
 
-Equivalently $L=L_{recon}+\beta KL$, where $L_{recon}=0.8675$ is the negative reconstruction score and $\beta=1$. With a Gaussian decoder of fixed variance the reconstruction score reduces to a negative squared error, so you'd use that instead. In practice the sum runs over every pixel, one sampled $z$ stands in for the average over $z$, and the loss gets averaged over a mini-batch.
+Equivalently $L=L_{recon}+\beta KL$, where $L_{recon}=0.8675$ is the negative reconstruction score and $\beta=1$. With a Gaussian decoder of fixed variance the reconstruction score reduces to a negative squared error (up to a scale and a constant), so you'd use that instead. In practice the sum runs over every pixel, one sampled $z$ stands in for the average over $z$, and the loss gets averaged over a mini-batch.
 
 ![Contour plot of per-dimension KL over mu and sigma squared with its zero at (0, 1) and marked points 0.1366, 0.3181, 0.5 and the worked example 0.0983, plus two slices through the minimum](img/vae-elbo-kl-vae-kl-surface.svg)
 

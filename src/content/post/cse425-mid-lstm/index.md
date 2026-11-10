@@ -13,9 +13,9 @@ After 45 steps, a signal that halves at every step is down to $2.8\times10^{-14}
 It does this by adding a second memory line, the cell state $c_t$, which runs through time next to the hidden state $h_t$. The cell state is changed only by an entry-by-entry multiply and an entry-by-entry add. Three gates control that line. A gate is a set of numbers between 0 and 1 that multiply something: 0 keeps none of it, 1 keeps all of it, and 0.65 keeps 65%.
 
 > **Key Takeaways**
-> - The cell state $c_t$ runs through time and is changed only by a multiply with the forget gate and an add of new information.
-> - An LSTM has three gates (forget, input, output) and one candidate layer, all reading the same stacked vector $[h_{t-1},x_t]$.
-> - An LSTM has $4H(H+D+1)$ parameters, four times a plain RNN, against 75% of that for a GRU.
+> - The cell state runs through time and is changed only by a multiply with the forget gate and an add of new information.
+> - An LSTM has three gates (forget, input, output) and one candidate layer, all reading the same stacked vector of the previous hidden state and the current input.
+> - An LSTM has four weight blocks, so four times a plain RNN's parameters; a GRU of the same size has 75% of the LSTM's.
 > - The gradient along the cell state is multiplied by the forget gate once per step, so a forget gate near 1 keeps it alive.
 
 ## The pieces
@@ -36,7 +36,7 @@ This is the same as using two separate matrices: the first two weights times $h_
 
 ## One step by hand
 
-The example uses a single memory slot ($H=D=1$), so every vector is one number. The input is $x=1$, the previous hidden state is $h_{t-1}=0.5$ and the previous cell state is $c_{t-1}=0.4$. Each gate is $\sigma(w_xx+u\,h_{t-1}+b)$, where $\sigma$ is the sigmoid, which squeezes any number into 0 to 1. The weights $(w_x,u,b)$ are $(0.5,0.4,1.0)$ for forget, $(0.6,0.2,0)$ for input, $(0.8,0.6,-0.1)$ for the candidate (a tanh) and $(0.3,0.5,0)$ for output.
+The example uses a single memory slot ($H=D=1$), so every vector is one number. The input is $x=1$, the previous hidden state is $h_{t-1}=0.5$ and the previous cell state is $c_{t-1}=0.4$. Each gate is $\sigma(w\,x+u\,h_{t-1}+b)$, where $\sigma$ is the sigmoid, which squeezes any number into 0 to 1. The weights $(w,u,b)$ are $(0.5,0.4,1.0)$ for forget, $(0.6,0.2,0)$ for input, $(0.8,0.6,-0.1)$ for the candidate (a tanh) and $(0.3,0.5,0)$ for output. The start values are picked for easy arithmetic, not taken from a real previous step: a real cell gives $|h_{t-1}|\le\tanh|c_{t-1}|=0.38$, so $h_{t-1}=0.5$ with $c_{t-1}=0.4$ couldn't happen. The equations don't care, so the step below still works.
 
 The forget and input gates and the candidate:
 
@@ -82,11 +82,11 @@ Check against the numbers: with $H=D=1$ the stacked vector is $(0.5,\,1)$ and th
 
 That makes four small layers reading the same stacked vector: three sigmoid gates and one tanh candidate. It's easy to write "four gates"; the candidate isn't a gate, since it doesn't multiply anything between 0 and 1. In matrix form the four pre-activations are computed in parallel, the first three go through sigmoid and the candidate through tanh, and then the two lines for $c_t$ and $h_t$ are applied.
 
-The candidate uses tanh and not ReLU because tanh is signed and bounded in $(-1,1)$, so a candidate can push a memory up or down. ReLU is non-negative and unbounded, so it could only add and could not shrink a value quickly.
+The candidate uses tanh and not ReLU because tanh is signed and bounded in $(-1,1)$, so a candidate can push a memory up or down by a limited amount. A ReLU candidate is never negative, so the write could only push the memory up, and with no upper bound the cell state could grow without limit.
 
 ## Peephole version
 
-In a peephole LSTM the gates are allowed to look at the cell state. The forget and input gates see the old cell $c_{t-1}$, and the output gate sees the new cell $c_t$, because it is computed after the update. Everything else is unchanged. Two forms are in use, so say which one you write.
+In a peephole LSTM the gates are allowed to look at the cell state. The forget and input gates see the old cell $c_{t-1}$, and the output gate sees the new cell $c_t$, because it is computed after the update. Everything else is unchanged. Two forms are common, so say which one you write.
 
 In the full-matrix form the cell state is stacked in as well:
 
@@ -100,7 +100,7 @@ $$f_t=\sigma(W_f[h_{t-1},x_t]+p_f\odot c_{t-1}+b_f)$$
 
 $$o_t=\sigma(W_o[h_{t-1},x_t]+p_o\odot c_t+b_o)$$
 
-with $i_t$ again like $f_t$. This adds only $3H$ weights. [Wikipedia's page on LSTM](https://en.wikipedia.org/wiki/Long_short-term_memory) writes out this peephole version. Mixing the two forms, or feeding $c_{t-1}$ to the output gate, gives a wrong answer.
+with $i_t$ again like $f_t$. This adds only $3H$ weights. Mixing the two forms gives a wrong answer, and in both of them the output gate reads the new cell $c_t$. Watch out for [Wikipedia's page on LSTM](https://en.wikipedia.org/wiki/Long_short-term_memory): its peephole equations are a third version, where $c_{t-1}$ replaces $h_{t-1}$ in every gate, the output gate included.
 
 Here is the diagonal form on the example, with a peephole weight of 0.5 on every gate. The forget gate sees $c_{t-1}=0.4$:
 
@@ -156,13 +156,13 @@ $$0.6682\cdot(1-0.7616^2)\cdot0.6\cdot0.8556=0.144$$
 
 Together they're at most about 0.19, against 0.8455 for the direct term. So "the other terms are smaller" is true here, by roughly a factor of four, but they aren't zero.
 
-Two special cases: $f\approx1,\ i\approx0$ gives $c_t=c_{t-1}$, so the memory is frozen, and $f\approx0,\ i\approx1$ overwrites it. Gates can saturate and gradients can still explode, which is why gradient clipping is still used. If an answer asks what fixes vanishing gradients, name the additive cell path with its forget gate. Swapping in a different sigmoid or tanh wouldn't do it.
+Two special cases: $f\approx1,\ i\approx0$ gives $c_t=c_{t-1}$, so the memory is frozen, and $f\approx0,\ i\approx1$ overwrites it. Gates can saturate and gradients can still explode, which is why gradient clipping is still used. If a question asks what fixes vanishing gradients, name the additive cell path with its forget gate. Swapping in a different sigmoid or tanh wouldn't do it.
 
 ![Backward paths through three time steps: the LSTM cell state multiplies by f_t at each step, the vanilla RNN by diag(1 - h^2) W_hh; bars compare 0.99^45 = 0.636 with 0.5^45 = 2.8e-14](img/lstm-lstm-gradient-highway.svg)
 
 ## Variants
 
-A bidirectional LSTM runs one LSTM forwards and one backwards over the sequence and concatenates their hidden states, giving $2H$ numbers per step. In a stacked LSTM layer $l+1$ reads layer $l$'s hidden state $h_t$ as its input. The final hidden state $h_T$ for a batch of $B$ sequences has shape $(B,H)$, and the embedding size does not change that. If the gates saturate (stuck near 0 or 1), the loss goes flat because the gradients are near zero.
+A bidirectional LSTM runs one LSTM forwards and one backwards over the sequence and concatenates their hidden states, giving $2H$ numbers per step. In a stacked LSTM layer $l+1$ reads layer $l$'s hidden state $h_t$ as its input. The final hidden state $h_T$ for a batch of $B$ sequences has shape $(B,H)$, and the embedding size does not change that. If the gates saturate (stuck near 0 or 1), the sigmoid slope $f(1-f)$ is near zero, so the gates' own weights get almost no gradient and the loss can go flat.
 
 ## What a full answer shows
 

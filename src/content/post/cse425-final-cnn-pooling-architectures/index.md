@@ -17,7 +17,7 @@ The other reason to care is size. A 28 by 28 digit goes through a 3 by 3 conv wi
 > - Max pooling sends the whole gradient to the cell that won; average pooling splits it equally.
 > - A shape trace stops the moment a layer's window no longer fits, and the answer then says so.
 > - A second conv layer has filters as deep as the first layer's filter count, which is why its parameter count is so much larger.
-> - A skip connection adds 1 to the gradient of a block, so the signal cannot shrink to nothing.
+> - A skip connection adds 1 to the gradient of a block, so the gradient has a path back that the block's small derivatives don't multiply.
 
 ## What pooling does
 
@@ -56,7 +56,7 @@ A shape-tracing question is the same procedure every time.
 3. If the result is below 1, stop. The layer cannot run, and saying so is part of the answer.
 4. Apply the formula to the pool. Channels stay the same.
 5. Repeat for each conv and pool pair, checking step 3 each time.
-6. The flatten length is height times width times channels of the last layer that ran. Forgetting the channels gives a wrong flatten count.
+6. The flatten length is height times width times channels of the last layer you keep. Forgetting the channels gives a wrong flatten count.
 7. If the question does not give padding or stride, state what you assumed.
 
 An example with a network that breaks: the input is $100\times100\times1$. Set A is a conv with 6 filters of $5\times5$, stride 2, no padding, then a 2 by 2 pool. Set B is a conv with 12 filters of $5\times5$, stride 2, then a 2 by 2 pool. Set C is the same as B.
@@ -71,7 +71,7 @@ Set B conv: $\lfloor(24-5)/2\rfloor+1=\lfloor9.5\rfloor+1=10$, so $10\times10\ti
 
 Set C conv: $\lfloor(5-5)/2\rfloor+1=1$, so $1\times1\times12$. The 2 by 2 pool needs a window of 2 and the map is 1 wide, so the network breaks here.
 
-Flatten after two sets: $5\times5\times12=300$.
+Set C can't be completed, so keep the two sets that fit. Flatten after them: $5\times5\times12=300$.
 
 Parameters use $C_{out}(k^2C_{in}+1)$ for a conv layer and $K(F+1)$ for a dense layer with $F$ inputs and $K$ outputs. Conv A has $6(25+1)=156$. Conv B takes in the 6 channels from set A, so $12(25\cdot6+1)=1812$. A 10-class dense head on 300 numbers has $10(300+1)=3010$. The total is $156+1812+3010=4978$. Pools have 0.
 
@@ -99,7 +99,7 @@ In symbols, since the output is $y_{ij}=\sum_{u,v}X_{i+u,\,j+v}K_{u,v}$,
 
 $$\frac{\partial L}{\partial K_{u,v}}=\sum_{i,j}\delta_{i,j}\,X_{i+u,\,j+v}$$
 
-In words, the kernel gradient is the input correlated with $\delta$. There is one term per output position because the same kernel was used at each of them. The gradient to the input is $\delta$ convolved with the flipped kernel, using full padding; I'd learn to recognise that form rather than derive it every time.
+In words, the kernel gradient is the input correlated with $\delta$. There is one term per output position because the same kernel was used at each of them. The gradient to the input is $\delta$, fully padded, slid against the kernel rotated by 180 degrees (a true convolution of $\delta$ with $K$); I'd learn to recognise that form rather than derive it every time.
 
 ## Receptive field
 

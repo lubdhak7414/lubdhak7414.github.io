@@ -50,7 +50,7 @@ $$=-0.67113$$
 
 $$b\leftarrow0.2-0.5(-0.10998)=0.25499$$
 
-The delta is negative, which says that raising $z$ would lower the loss. Both incoming signals are positive, so every weight goes up. Note that $w_2$ was negative and moved up towards zero. The neuron needs a bigger $z$ to reach the target of 1, and the signal on $w_2$ is positive, so a less negative weight helps.
+The delta is negative, which says that raising $z$ would lower the loss. Both incoming signals are positive, so every weight goes up. $w_2$ was negative and moved up towards zero. The neuron needs a bigger $z$ to reach the target of 1, and the signal on $w_2$ is positive, so a less negative weight helps.
 
 Did it work? With the same two incoming signals and the new weights, the loss is $\tfrac12(\widehat{y}-y)^2=0.08921$, down from 0.09912.
 
@@ -98,7 +98,7 @@ which equals $0.55476\times0.44524$, the value used above. No new exponential is
 
 ## Checking the formula against the numbers
 
-The formula says that $\partial L/\partial w_1=\delta\,a_1=-0.10998\times0.64566=-0.07101$. That can be tested without any calculus: raise $w_1$ from 0.6 to 0.61, recompute the neuron and its loss, and compare. The loss falls by 0.000709, and the formula predicts $-0.07101\times0.01=-0.000710$. Close enough, and a smaller nudge would bring them closer still. It costs one extra forward pass, so I'd run it on any derivation where a sign or an index looks doubtful.
+The formula says that $\partial L/\partial w_1=\delta\,a_1$, which is $-0.10998\times0.64566=-0.07101$. That can be tested without any calculus: raise $w_1$ from 0.6 to 0.61, recompute the neuron and its loss, and compare. The loss falls by 0.000709, and the formula predicts $-0.07101\times0.01=-0.000710$. Close enough, and a smaller nudge would bring them closer still. It costs one extra forward pass, so I'd run it on any derivation where a sign or an index looks doubtful.
 
 If the target is already met, $\widehat{y}=y$, so $e=0$ and $\delta=0$, and no weight changes whatever the slope is.
 

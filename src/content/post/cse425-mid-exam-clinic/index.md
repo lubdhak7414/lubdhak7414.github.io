@@ -8,21 +8,21 @@ series: "CSE 425 Mid"
 part: 12
 ---
 
-The function $F = AB' + BA' + BC' + CB'$ looks enough like XOR that it is tempting to draw an XOR network and move on. Without a truth table there's nothing to check the drawing against, and the rows it gets wrong stay hidden. Write the table first. It takes a minute, and then every row is something you can test.
+A function like $F = A \oplus C + BC'$ looks enough like XOR that it's tempting to draw an XOR network and move on. Without a truth table there's nothing to check the drawing against, and the rows it gets wrong stay hidden. Write the table first. It takes a minute, and then every row is something you can test.
 
-This is revision for the whole Mid series: how to read a question, then thirteen worked patterns with fresh numbers, each pointing to the note that teaches the idea. Questions like these are common; check what your own instructor expects.
+This is revision for the whole Mid series: how to read a question, then thirteen worked patterns with fresh numbers, each pointing to the note that teaches the idea. They're practice problems, not copies of past papers, and they don't tell you what a paper will ask. Check what your own instructor expects.
 
 > **Key Takeaways**
 > - The command word of a question (design, compare, derive, explain) sets how much working the answer needs.
 > - The formula comes before the substitution, because a right formula with a wrong number is easy to fix.
 > - For Boolean designs, list all the truth-table rows first and test the finished network on them.
-> - Throughout the series the error is $e=\widehat{y}-y$, the delta is $\delta=\partial L/\partial z$ and the update is $w\leftarrow w-\eta\,\delta\,a$.
+> - Throughout the series the error is e = ŷ − y, the delta is δ = ∂L/∂z and the update is w ← w − η δ a.
 
 ## Reading a question
 
 Spot the command word first, because it decides how much you write. "Design" wants inputs, weights, thresholds and one worked test. For "compare", give one named difference per row. A "derive" answer shows every chain-rule step, with the sum over the next layer where there is one, while "compute" only needs a formula, a substitution and a number. "Draw" means labelled boxes and arrows with the equations beside the parts they describe. "Explain why" is asking for the mechanism in two sentences; a definition won't get there.
 
-The givens hold the small choices that change the answer. Check whether a step unit fires at $z>0$ or $z\ge0$, whether the error is $\widehat{y}-y$ or $y-\widehat{y}$, and which GRU convention is in use. If the question leaves it open, declare your choice and keep to it. Course papers sometimes write $d$, $v$ and $\varphi$ for the target, pre-activation and activation function, and define $\delta$ as $-\partial E/\partial z$. The formulas below use the series notation, and the only visible difference is the sign of every $\delta$.
+The givens hold the small choices that change the answer. Check whether a step unit fires at $z>0$ or $z\ge0$, whether the error is $\widehat{y}-y$ or $y-\widehat{y}$, and which GRU convention is in use. If the question leaves it open, declare your choice and keep to it. Some course notes write $d$, $v$ and $\varphi$ for the target, pre-activation and activation function, and define $\delta$ as $-\partial E/\partial z$. The formulas below use the series notation, and the only visible difference is the sign of every $\delta$.
 
 Then look for the stopping condition. A design question ends with a test, so run the network on a short input and write the outputs. A training question ends when a full pass makes no corrections, so that last clean pass belongs in the answer.
 
@@ -62,7 +62,7 @@ At $z = 0.7$, $\sigma = 0.6682$ and $\sigma' = 0.6682 \times 0.3318 = 0.2217$.
 
 ### 5. Deltas through a 2-2-2 network
 
-Taught in [Backpropagation Part 1: The Output Layer](/blog/cse425-mid-backprop-output-layer/) and [Part 2: Hidden Layers and a Full Example](/blog/cse425-mid-backprop-hidden-layers/). All neurons are sigmoids with no biases, $\mathbf x = (0.5, -1)$ and the targets are $\mathbf y = (1, 0)$. The first-layer weight rows are $(0.4, -0.3)$ and $(0.2, 0.6)$, and the second-layer rows are $(0.7, -0.5)$ and $(0.1, 0.9)$.
+Taught in [Backpropagation Part 1: The Output Layer](/blog/cse425-mid-backprop-output-layer/) and [Part 2: Hidden Layers and a Full Example](/blog/cse425-mid-backprop-hidden-layers/). All neurons are sigmoids with no biases, the loss is $L=\tfrac12\sum_k(\widehat y_k-y_k)^2$, $\mathbf x = (0.5, -1)$ and the targets are $\mathbf y = (1, 0)$. The first-layer weight rows are $(0.4, -0.3)$ and $(0.2, 0.6)$, and the second-layer rows are $(0.7, -0.5)$ and $(0.1, 0.9)$.
 
 Forward: the hidden sums are $0.5$ and $-0.5$, so the hidden outputs are $h = (0.6225, 0.3775)$. The output sums are $0.2470$ and $0.4020$, so $\widehat{\mathbf y} = (0.5614, 0.5992)$.
 
@@ -84,7 +84,13 @@ $$\delta_h = h(1 - h)\textstyle\sum_k\delta_kw_{kh}$$
 
 $$\delta_h=(-0.01438,\ 0.04312)$$
 
-Gradient check: $\partial L/\partial w_{11} = \delta_{h1}\,x_1 = -0.01438 \times 0.5 = -0.007191$, and a finite-difference nudge of that weight gives the same number. With $\eta = 0.5$ the update is
+For the first weight into hidden neuron 1:
+
+$$\frac{\partial L}{\partial w_{11}} = \delta_{h1}\,x_1$$
+
+$$\frac{\partial L}{\partial w_{11}} = -0.01438 \times 0.5 = -0.007191$$
+
+A finite-difference nudge of that weight gives the same number, which is a good check that the deltas are right. With $\eta = 0.5$ the update is
 
 $$w_{11} \leftarrow 0.4 - 0.5(-0.01438)(0.5) = 0.4036$$
 
@@ -96,9 +102,9 @@ $$\frac{\partial f}{\partial y} = x\,e^{y} + t_3\,e^{y}$$
 
 $$\frac{\partial f}{\partial y}=28.385$$
 
-### 7. RNN design, cloth colours
+### 7. RNN design, a colour cycle
 
-The colours are R, G, B, Y, and rainy weather moves to the next colour while dry weather keeps it. The input is a one-hot colour (4 values) and a one-hot weather (2 values). The design uses 8 AND units with threshold 2, one per (colour, weather) pair, each wired to one output colour, and the output colour is fed back as the next state. All 8 pairs need checking. As a test, starting at R with weather rainy, rainy, dry, rainy, rainy, the outputs are G, B, B, Y, R. The design is from [RNN Basics: Unrolling Through Time](/blog/cse425-mid-rnn-basics/).
+The colours are R, G, B, Y, and rainy weather moves to the next colour while dry weather keeps it. The input is a one-hot colour (4 values) and a one-hot weather (2 values). The design uses 8 hidden units $h_{c,w}=\mathrm{ReLU}(x_c+s_w-1)$, one per (colour, weather) pair, which give 1 only when both inputs are 1. Each one is wired to one output colour, and the output colour is fed back as the next input colour. All 8 pairs need checking. As a test, starting at R with weather rainy, rainy, dry, rainy, rainy, the outputs are G, B, B, Y, R. The design is from [RNN Basics: Unrolling Through Time](/blog/cse425-mid-rnn-basics/).
 
 ### 8. RNN size and a forward pass
 
@@ -106,13 +112,15 @@ Also from [RNN Basics](/blog/cse425-mid-rnn-basics/). With input 6, hidden 8 and
 
 $$48 + 64 + 8 + 32 + 4 = 156$$
 
-A scalar RNN with $W_{xh} = 0.5$, $W_{hh} = 0.8$, $b = 0.1$ and inputs $1, -1, 0.5$ starting from $h_0 = 0$ gives $h = 0.5370,\ 0.0296,\ 0.3572$. An output layer $2h_3 - 0.3$ then gives 0.4145.
+A scalar tanh RNN with $W_{xh} = 0.5$, $W_{hh} = 0.8$, $b = 0.1$ and inputs $1, -1, 0.5$ starting from $h_0 = 0$ gives $h = 0.5370,\ 0.0296,\ 0.3572$. An output layer $2h_3 - 0.3$ then gives 0.4145.
 
 ### 9. One LSTM step and its size
 
 Taught in [LSTM](/blog/cse425-mid-lstm/). The step has $x = 1$, $h_{t-1} = 0.5$ and $c_{t-1} = 0.2$. The gate weights are listed as (input, hidden, bias): forget $(0.6, 0.4, 0.1)$, input $(0.5, -0.3, 0)$, output $(0.2, 0.7, -0.1)$ and candidate $(0.9, 0.5, 0.2)$. Then $f = 0.7109$, $i = 0.5866$, $o = 0.6106$ and $\tilde c = 0.8741$. The new cell and hidden state are
 
-$$c_t = f c_{t-1} + i\tilde c = 0.1422 + 0.5127 = 0.6549$$
+$$c_t = f c_{t-1} + i\tilde c$$
+
+$$c_t = 0.1422 + 0.5127 = 0.6549$$
 
 $$h_t = o\tanh c_t = 0.3511$$
 
@@ -128,7 +136,7 @@ $$h_t = 0.0464$$
 
 ### 11. Vanishing and exploding
 
-Taught in [Backpropagation Through Time](/blog/cse425-mid-bptt/) and [LSTM](/blog/cse425-mid-lstm/). Ten sigmoid layers, each passing at most 0.25 of the gradient, leave $0.25^{10} = 9.5 \times 10^{-7}$. A recurrent weight of 0.9 over 20 steps gives 0.1216, and 1.1 gives 6.727. An LSTM forget gate held at 0.95 for 20 steps still carries 0.3585 of the cell gradient, because $\partial c_t / \partial c_{t-1} = f_t$ on the direct path. Clipping fixes exploding only. The [recurrent networks chapter of d2l.ai](https://d2l.ai/chapter_recurrent-neural-networks/) covers BPTT and gradient clipping with code.
+Taught in [Backpropagation Through Time](/blog/cse425-mid-bptt/) and [LSTM](/blog/cse425-mid-lstm/). Ten sigmoid layers with unit weights, each passing at most 0.25 of the gradient, leave $0.25^{10} = 9.5 \times 10^{-7}$. A recurrent weight of 0.9 over 20 steps gives 0.1216, and 1.1 gives 6.727. An LSTM forget gate held at 0.95 for 20 steps still carries 0.3585 of the cell gradient, because $\partial c_t / \partial c_{t-1} = f_t$ on the direct path. Clipping fixes exploding only. The [recurrent networks chapter of d2l.ai](https://d2l.ai/chapter_recurrent-neural-networks/) covers BPTT and gradient clipping with code.
 
 ### 12. Batch normalization
 
@@ -136,14 +144,14 @@ See [Batch Normalization](/blog/cse425-mid-batch-norm/). The batch is $(3, 5, 9,
 
 ### 13. Activation derivatives
 
-Taught in [Multilayer Perceptrons and Activation Functions](/blog/cse425-mid-mlp-activations/). Values at $z = -1.5$ and $z = 2$:
+Taught in [Multilayer Perceptrons and Activation Functions](/blog/cse425-mid-mlp-activations/). Values and derivatives at $z = -1.5$ and $z = 2$, with leaky ReLU using slope 0.1:
 
-| Function | Value at $-1.5$ | Value at 2 | Derivative at $-1.5$ | Derivative at 2 |
+| Function | $f(-1.5)$ | $f(2)$ | $f'(-1.5)$ | $f'(2)$ |
 |---|---|---|---|---|
 | Sigmoid | 0.1824 | 0.8808 | 0.1491 | 0.1050 |
 | Tanh | $-0.9051$ | 0.9640 | 0.1807 | 0.0707 |
 | ReLU | 0 | 2 | 0 | 1 |
-| Leaky ReLU, slope 0.1 | $-0.15$ | 2 | 0.1 | 1 |
+| Leaky ReLU (0.1) | $-0.15$ | 2 | 0.1 | 1 |
 
 ## Last-night checklist
 

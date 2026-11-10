@@ -10,7 +10,7 @@ part: 10
 
 A 128 by 128 image goes through conv and pool stages, and its size runs 128, 62, 31, 14, 7, 2, 1. After that the next conv would need a 5-wide window on a map that's 1 wide. It's easy to write down a negative size and keep going, but what the question wants is one sentence: stage 4 can't run without padding.
 
-Below are the kinds of calculation the Final series covered, each with new numbers, a checked answer and a link back to the note that teaches it. I've assumed you've read those notes. Questions like these are common; check what your own instructor expects.
+Below are the kinds of calculation the Final series covered, each with new numbers, a checked answer and a link back to the note that teaches it. I've assumed you've read those notes. These are practice problems with fresh numbers, not copies of any paper, and they don't tell you what an exam will ask; check what your own instructor expects.
 
 > **Key Takeaways**
 > - A size trace stops at the first layer whose window no longer fits, and a flatten size exists only if every layer before it ran.
@@ -23,7 +23,7 @@ Below are the kinds of calculation the Final series covered, each with new numbe
 
 How much to write depends on the command word ("compute", "compare", "derive", "draw", "explain why"), and the [Mid Exam Clinic](/blog/cse425-mid-exam-clinic/) goes through what each one asks for. In the Final topics most arithmetic goes wrong in the givens instead. Check whether padding is stated, whether the stride applies to the pool as well as the conv, whether biases are counted, and which convention a gated cell uses. When two conventions exist, say which you use. For example, the GRU's update gate can multiply the candidate or the old state, and the two versions are mirror images.
 
-A "repeat until" question also expects you to notice when a stage becomes impossible, which is easy to miss. Writing the formula before substituting helps, and so does flooring every division in the size formula:
+If a question says "repeat until", it also wants you to notice when a stage becomes impossible, and that's easy to miss. Writing the formula before substituting helps, and so does flooring every division in the size formula:
 
 $$n_{out}=\left\lfloor\frac{n+2p-k}{s}\right\rfloor+1$$
 
@@ -69,7 +69,7 @@ Suppose a 1-D conv, then a linear layer, then a logistic output must separate ev
 
 ### 6. Why sharing helps ([CNN Basics: Kernels, Stride, Padding](/blog/cse425-final-cnn-basics/))
 
-A $32\times32$ input to a fully connected layer of 1024 units has $1024(1024+1)=1{,}049{,}600$ parameters. One $3\times3$ filter with bias has 10, and sixteen have 160. That's about 6,560 times fewer weights, and each filter still gets applied at every position.
+A $32\times32$ input to a fully connected layer of 1024 units has $1024(1024+1)=1{,}049{,}600$ parameters. One $3\times3$ filter with bias has 10, and sixteen have 160. That's 6,560 times fewer weights, and each filter still gets applied at every position.
 
 ### 7. Gated cells ([LSTM](/blog/cse425-mid-lstm/) and [GRU and LSTM vs GRU](/blog/cse425-mid-gru/))
 
@@ -77,15 +77,15 @@ Input size 10, hidden size 20. An LSTM has four weight blocks, each with $20(10+
 
 ### 8. One GRU step ([GRU and LSTM vs GRU](/blog/cse425-mid-gru/))
 
-The convention is $h_t=(1-z_t)\,h_{t-1}+z_t\,\widetilde{h}_t$, where $z_t$ is the update gate, $r_t$ the reset gate and $\widetilde{h}_t$ the candidate state. Input $x=1$, previous state $h_{t-1}=0.5$. The weights, on the input, on the previous state and the bias, are $(0.8,\,0.4,\,0)$ for the update gate, $(-0.5,\,0.6,\,0.1)$ for the reset gate and $(1.2,\,0.9,\,-0.2)$ for the candidate.
+The convention is $h_t=(1-z_t)\,h_{t-1}+z_t\,\tilde h_t$, where $z_t$ is the update gate, $r_t$ the reset gate and $\tilde h_t$ the candidate state. Input $x=1$, previous state $h_{t-1}=0.5$. The weights, on the input, on the previous state and the bias, are $(0.8,\,0.4,\,0)$ for the update gate, $(-0.5,\,0.6,\,0.1)$ for the reset gate and $(1.2,\,0.9,\,-0.2)$ for the candidate.
 
 $$z_t=\sigma(0.8+0.2)=0.7311$$
 
 $$r_t=\sigma(-0.5+0.3+0.1)=0.4750$$
 
-$$\widetilde{h}_t=\tanh(1.2+0.9\cdot0.4750\cdot0.5-0.2)$$
+$$\tilde h_t=\tanh(1.2+0.9\cdot0.4750\cdot0.5-0.2)$$
 
-$$\widetilde{h}_t=0.8378$$
+$$\tilde h_t=0.8378$$
 
 $$h_t=0.2689\cdot0.5+0.7311\cdot0.8378$$
 
@@ -119,7 +119,7 @@ $\mu=-0.3$, $s=\ln\sigma^2=0.6$, $\varepsilon=-1.2$. Then $\sigma=e^{0.3}=1.3499
 
 ### 12. Weighted VAE loss ([VAE Part 2: ELBO and KL Divergence](/blog/cse425-final-vae-elbo-kl/))
 
-Reconstruction 12.5, KL 0.9, weight $\beta=4$: the total is $12.5+4\cdot0.9=16.1$. Set $\beta=0$ and you have a plain autoencoder; make it very large and the posterior collapses onto the prior, so the output turns blurry.
+Reconstruction 12.5, KL 0.9, weight $\beta=4$: the total is $12.5+4\cdot0.9=16.1$. Set $\beta=0$ and you have a plain autoencoder; make it very large and the codes get pushed onto the prior, so the reconstructions turn blurry.
 
 ### 13. Attention ([Attention: Q, K, V](/blog/cse425-final-attention/))
 
@@ -163,9 +163,9 @@ $$z_t=\sigma(W_zx_t+U_zh_{t-1}+b_z)$$
 
 $$r_t=\sigma(W_rx_t+U_rh_{t-1}+b_r)$$
 
-$$\widetilde{h}_t=\tanh\big(W_hx_t+U_h(r_t\odot h_{t-1})+b_h\big)$$
+$$\tilde h_t=\tanh\big(W_hx_t+U_h(r_t\odot h_{t-1})+b_h\big)$$
 
-$$h_t=(1-z_t)\odot h_{t-1}+z_t\odot\widetilde{h}_t$$
+$$h_t=(1-z_t)\odot h_{t-1}+z_t\odot\tilde h_t$$
 
 Backprop deltas, with $e=\widehat{y}-y$: output $\delta_j=e_jf'(z_j)$, hidden $\delta_m=f'(z_m)\sum_p\delta_pw_{pm}$.
 

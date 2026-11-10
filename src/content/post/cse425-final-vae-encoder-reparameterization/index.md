@@ -11,10 +11,11 @@ part: 4
 A variational autoencoder (VAE) is an autoencoder whose encoder describes a small cloud of possible codes instead of a single point, and whose decoder is trained on random draws from that cloud. The draw is what makes generation possible, and it is also what makes training awkward, because a random draw has no derivative. The reparameterization trick gets around this by moving the randomness into a separate noise variable.
 
 > **Key Takeaways**
-> - The encoder outputs a mean $\boldsymbol\mu$ and a log-variance $\mathbf s=\ln\boldsymbol\sigma^2$ for each of the $K$ latent dimensions, so $2K$ numbers per input.
-> - The spread is $\sigma=e^{s/2}$, which is positive for every real $s$, and $s=0$ means $\sigma=1$.
-> - The sample is $\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon$ with noise $\boldsymbol\varepsilon\sim N(0,I)$, and gradients reach $\boldsymbol\mu$ and $\mathbf s$ but not $\boldsymbol\varepsilon$.
-> - After training, generation needs only the decoder, fed with draws from $N(0,I)$.
+>
+> - The encoder outputs a mean μ and a log-variance s = ln σ² for each of the K latent dimensions, so 2K numbers per input.
+> - The spread is σ = e^(s/2), which is positive for every real s, and s = 0 means σ = 1.
+> - The sample is z = μ + σ ⊙ ε with noise ε ~ N(0,I), and gradients reach μ and s but not ε.
+> - After training, generation needs only the decoder, fed with draws from N(0,I).
 
 ## From a point to a cloud
 
@@ -22,7 +23,7 @@ A plain [autoencoder](/blog/cse425-final-autoencoders/) hands back one exact poi
 
 A VAE makes the encoder describe a cloud. For each input it outputs a centre $\boldsymbol\mu$ and a spread, and the code passed to the decoder is a random draw from that cloud. Train on enough clouds that overlap and the gaps fill in. You can then drop the encoder, draw $\mathbf z$ from a standard normal, and the decoder generates something new.
 
-In symbols, the encoder is written $q_\phi(\mathbf z|\mathbf x)$: the distribution over codes $\mathbf z$ for an input $\mathbf x$, where $\phi$ stands for the encoder's weights. The decoder is $p_\theta(\mathbf x|\mathbf z)$, the distribution over images for a code, with weights $\theta$. The prior $p(\mathbf z)=N(0,I)$ is the standard bell curve in every dimension, where $I$ is the identity matrix and says the dimensions are independent.
+In symbols, the encoder is written $q_\phi(\mathbf z|\mathbf x)$: the distribution over codes $\mathbf z$ for an input $\mathbf x$, where $\phi$ stands for the encoder's weights. The decoder is $p_\theta(\mathbf x|\mathbf z)$, the distribution over images for a code, with weights $\theta$. The prior $p(\mathbf z)=N(0,I)$ is the standard bell curve in every dimension, where $I$ is the identity matrix: every dimension has variance 1 and the dimensions are independent.
 
 ![VAE forward pass: x into the encoder, heads mu and s, sigma = exp(s/2), noise epsilon entering z = mu + sigma times epsilon by a dashed edge, then decoder, x hat and the loss, with a KL box fed by mu and s](img/vae-encoder-reparameterization-vae-sampling.svg)
 
@@ -34,7 +35,7 @@ Why predict the log of the variance and not the variance? A variance must be pos
 
 $$\sigma=e^{s/2}$$
 
-is positive whatever $s$ is. Keep the half in the exponent: $\sigma^2=e^{s}$, so $\sigma=e^{s/2}$. An output of $s=0$ means $\sigma=1$, exactly the prior's spread, so an encoder that has just been initialised starts with a sensible cloud. As a number, $s=-0.5$ gives $\sigma^2=e^{-0.5}=0.6065$ and $\sigma=e^{-0.25}=0.7788$.
+is positive whatever $s$ is. Keep the half in the exponent: $\sigma^2=e^{s}$, so $\sigma=e^{s/2}$. An output of $s=0$ means $\sigma=1$, exactly the prior's spread, so an encoder whose log-variance layer starts out giving values near 0 starts with clouds about as wide as the prior. As a number, $s=-0.5$ gives $\sigma^2=e^{-0.5}=0.6065$ and $\sigma=e^{-0.25}=0.7788$.
 
 ## One sample, with gradients
 

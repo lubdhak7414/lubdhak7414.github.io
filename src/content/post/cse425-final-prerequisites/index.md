@@ -13,11 +13,11 @@ The later Final notes lean on five small pieces of maths: the Gaussian and its a
 The note assumes you know $z=\mathbf w\cdot\mathbf x+b$, a sigmoid and a loss from the [Mid series](/blog/cse425-mid-prerequisites/).
 
 > **Key Takeaways**
-> - A Gaussian is fixed by its mean and variance, and for it $\mathbb{E}[z^2]=\sigma^2+\mu^2$.
-> - KL divergence is the extra surprise from using the wrong distribution; it is never negative, is zero only when the two match, and changes if you swap them.
-> - For a Gaussian against $N(0,1)$, $KL=\tfrac12(\mu^2+\sigma^2-1-\ln\sigma^2)$ per dimension.
-> - A convolution output has $\lfloor(n+2p-k)/s\rfloor+1$ cells per side, and a conv layer has $C_{out}(k^2C_{in}+1)$ parameters.
-> - A product of an $a\times b$ and a $b\times c$ matrix is legal and gives $a\times c$.
+> - A Gaussian is fixed by its mean μ and variance σ², and for it E[z²] = σ² + μ².
+> - KL divergence is the extra surprise from using the wrong distribution; it is never negative, is zero only when the two match, and usually changes if you swap them.
+> - For a Gaussian against N(0,1), KL = ½(μ² + σ² − 1 − ln σ²) per dimension, and the dimensions add.
+> - A convolution output has ⌊(n + 2p − k)/s⌋ + 1 cells per side, and each filter of a conv layer has k² weights per input channel plus one bias.
+> - A product of an a × b and a b × c matrix is legal and gives a × c.
 
 ## Notation used in this series
 
@@ -39,7 +39,7 @@ $$\mathbb{E}[(z-\mu)^2]=\sigma^2$$
 
 $$\mathbb{E}[z^2]=\sigma^2+\mu^2$$
 
-The third follows from the second, because $\mathbb{E}[z^2]=\mathbb{E}[(z-\mu)^2]+\mu^2$. The numbers above fit: $1+4=5$.
+The third follows from the first two, because $\mathbb{E}[z^2]=\mathbb{E}[(z-\mu)^2]+\mu^2$. The numbers above fit: $1+4=5$.
 
 A Gaussian (normal) distribution is the bell curve with a given mean $\mu$ and variance $\sigma^2$. Its density is
 
@@ -49,7 +49,7 @@ At the centre, $z=\mu$, the exponent is 0, so the height is $1/\sqrt{2\pi\sigma^
 
 ## Logs, surprise and entropy
 
-Probabilities multiply along a sequence, and a product of a few hundred probabilities near 0.1 is too small for a computer to store, so it rounds to 0. Logs turn that product into a sum, which stays a sensible size. That is why every loss in the Final is written with $\log$.
+Probabilities multiply along a sequence, and a product of a few hundred probabilities near 0.1 is too small for a computer to store, so it rounds to 0. Logs turn that product into a sum, which stays a sensible size. That is why every loss in these notes is written with $\log$.
 
 The surprise of an event is $-\log P$, so rarer events surprise more. Rain with a 10 percent chance gives $\log_2 10=3.32$ bits when it happens; a fair coin landing heads gives exactly 1 bit.
 
@@ -75,7 +75,7 @@ $$=H(P,Q)-H(P)$$
 
 Check with the numbers: $1.75-1.5=0.25$.
 
-KL is never negative and is zero only when $P=Q$. It is not symmetric. With $P=(0.7,\,0.2,\,0.1)$ and $Q=(0.5,\,0.3,\,0.2)$, in nats, the three terms of $KL(P\|Q)$ are $0.2355$, $-0.0811$ and $-0.0693$, which add to $0.0852$. Swapping the roles gives $KL(Q\|P)=0.0920$. A different number, so write which distribution goes first.
+KL is never negative and is zero only when $P=Q$. It is not symmetric. With $P=(0.7,\,0.2,\,0.1)$ and $Q=(0.5,\,0.3,\,0.2)$, in nats, the three terms of $KL(P\|Q)$ are $0.2355$, $-0.0811$ and $-0.0693$, which add to $0.0851$. Swapping the roles gives $KL(Q\|P)=0.0920$. A different number, so write which distribution goes first.
 
 Classification loss is a special case. With a one-hot target, every term of $H(P,Q)$ is multiplied by 0 except the true class, so the loss is $-\ln$ of the probability the network gave the correct class.
 
@@ -93,7 +93,7 @@ Exponentials are positive and dividing by the total makes the outputs sum to 1, 
 
 ## The Gaussian KL formula
 
-The VAE compares the encoder's Gaussian $N(\mu,\sigma^2)$ with the standard $N(0,1)$. The meaning is the same as in the discrete case (see the [KL divergence article](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) for more): how much extra surprise you pay for describing the data with the standard curve instead. For one latent dimension it works out to
+The VAE compares the encoder's Gaussian $N(\mu,\sigma^2)$ with the standard $N(0,1)$. The meaning is the same as in the discrete case (see the [KL divergence article](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) for more): how much extra surprise you pay for describing the encoder's codes with the standard curve instead. For one latent dimension it works out to
 
 $$KL=\tfrac12\left(\mu^2+\sigma^2-1-\ln\sigma^2\right)$$
 
