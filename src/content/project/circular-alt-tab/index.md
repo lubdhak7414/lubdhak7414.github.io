@@ -13,6 +13,7 @@ links:
   - { label: 'GitHub', url: 'https://github.com/lubdhak7414/CircularAltTab-KWin', kind: 'code' }
   - { label: 'KDE Store', url: 'https://www.opendesktop.org/p/2362960/', kind: 'store' }
 facts:
+  status: 'Published on the KDE Store'
   license: 'GPLv3'
   stack: ['QML', 'KWin', 'KDE Plasma 6']
 shot:

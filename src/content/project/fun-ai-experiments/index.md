@@ -25,6 +25,7 @@ links:
       kind: 'code'
     }
 facts:
+  status: 'Open source on GitHub'
   license: 'MIT'
   stack: ['PyTorch']
 glance:

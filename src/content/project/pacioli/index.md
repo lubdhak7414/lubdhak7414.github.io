@@ -12,6 +12,7 @@ homePageIdx: 1
 links:
   - { label: 'GitHub', url: 'https://github.com/lubdhak7414/pacioli', kind: 'code' }
 facts:
+  status: 'Open source on GitHub'
   stack:
     [
       'FastAPI',

@@ -12,6 +12,7 @@ links:
   - { label: 'GitHub', url: 'https://github.com/lubdhak7414/KDoit', kind: 'code' }
   - { label: 'KDE Store', url: 'https://www.opendesktop.org/p/2364121/', kind: 'store' }
 facts:
+  status: 'Published on the KDE Store'
   stack: ['QML', 'Qt 6', 'KDE Plasma 6', 'Kirigami', 'Plasma Components 3.0']
 shot:
   src: './preview2.png'

@@ -14,6 +14,7 @@ links:
   - { label: 'ShelfAware', url: 'https://github.com/lubdhak7414/ShelfAware', kind: 'code' }
   - { label: 'RepBase', url: 'https://github.com/lubdhak7414/RepBase', kind: 'code' }
 facts:
+  status: 'Open source on GitHub'
   stack: ['PHP 8.2', 'MySQL']
 shot:
   src: './repbase-roster.png'

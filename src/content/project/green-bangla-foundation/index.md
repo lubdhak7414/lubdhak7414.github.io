@@ -10,6 +10,7 @@ coverImage:
   alt: 'Green Bangla Foundation website'
 tags: ['Web Development', 'WordPress', 'Page Speed Optimization']
 facts:
+  status: 'Delivered to the client'
   client: 'Green Bangla Foundation'
   stack: ['WordPress', 'Gutenberg FSE']
 shot:

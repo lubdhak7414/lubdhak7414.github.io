@@ -11,6 +11,7 @@ tags: ['Python', 'PyTorch', 'Machine Learning', 'Game Dev', 'Audio', 'Project']
 links:
   - { label: 'GitHub', url: 'https://github.com/lubdhak7414/chiptune-sfx-maestro', kind: 'code' }
 facts:
+  status: 'Open source on GitHub'
   stack: ['Python', 'PyTorch']
 shot:
   src: './screenshot.png'
