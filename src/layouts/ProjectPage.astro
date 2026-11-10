@@ -4,10 +4,10 @@ import { render } from 'astro:content'
 
 import CoverFigure from '@/components/CoverFigure.astro'
 import TOC from '@/components/blog/TOC.astro'
-import Gist from '@/components/doc/Gist.astro'
+import Spec from '@/components/doc/Spec.astro'
+import type { SpecRow } from '@/components/doc/Spec.astro'
 import Skills from '@/components/doc/Skills.astro'
 import UpNext from '@/components/doc/UpNext.astro'
-import type { DetailRow } from '@/components/doc/Details.astro'
 import ProjectDirectory from '@/components/project/ProjectDirectory.astro'
 import {
 	PERSON_ID,
@@ -31,7 +31,7 @@ interface Props {
 const { project, prev, next } = Astro.props
 const { data } = project
 const { headings, remarkPluginFrontmatter: brief } = await render(project)
-const { description, facts, links, publishDate, shot, title, updatedDate } = data
+const { description, facts, glance, links, publishDate, shot, title, updatedDate } = data
 const takeaways = (brief.takeaways ?? []) as string[]
 const skills = (brief.skills ?? []) as BriefSkill[]
 
@@ -45,16 +45,18 @@ const place = (id: string) => `${all.findIndex((p) => p.id === id) + 1} / ${all.
 const around = prev && next && next.id !== project.id ? { prev, next } : null
 const short = (p: CollectionEntry<'project'>) => p.data.name ?? p.data.title
 
-// The first screen: a button per link, then the gist (the write-up's own Key Takeaways, then
-// only the facts it actually has).
-const kindLabel = { code: 'code', live: 'live', store: 'store' } as const
-const details: DetailRow[] = [
-	{ key: 'client', text: facts.client },
-	{ key: 'role', text: facts.role },
-	{ key: 'timeline', text: facts.timeline },
-	{ key: 'status', text: facts.status },
-	{ key: 'stack', text: facts.stack?.join(' · ') },
-	{ key: 'license', text: facts.license }
+// The first screen: the spec sheet (only the keys this page states), then the write-up's own
+// Key Takeaways as "In brief".
+const spec: SpecRow[] = [
+	{ key: 'Does', text: glance.does },
+	{ key: 'Role', text: glance.did ?? facts.role },
+	// No-break spaces keep a two-word item ("SQLite (WAL)") on one line when the row wraps.
+	{ key: 'Stack', text: facts.stack?.map((item) => item.replace(/ /g, '\u00a0')).join(' · ') },
+	{ key: 'Status', text: facts.status },
+	{ key: 'Timeline', text: facts.timeline },
+	{ key: 'License', text: facts.license },
+	{ key: 'Client', text: facts.client },
+	{ key: 'Links', links }
 ]
 
 const sections = generateToc(headings)
@@ -118,23 +120,9 @@ const diveNote = `The write-up · ${sections.length} ${sections.length === 1 ? '
 				</p>
 			</div>
 			<h1 class='doc-title'>{title}</h1>
-			<p class='doc-lede'>{description}</p>
-			{
-				links.length > 0 && (
-					<ul class='doc-actions' aria-label='Links'>
-						{links.map((link) => (
-							<li>
-								<a class='btn' href={link.url} target='_blank' rel='noopener noreferrer'>
-									<span class='btn-kind' set:text={kindLabel[link.kind]} />
-									<span set:text={`${link.label} ↗`} />
-								</a>
-							</li>
-						))}
-					</ul>
-				)
-			}
+			{!glance.does && <p class='doc-lede'>{description}</p>}
 		</header>
-		<Gist takeaways={takeaways} rows={details} />
+		<Spec rows={spec} takeaways={takeaways} />
 		{/* The screenshot, once; the write-up's other images stay where they are in the text. */}
 		{
 			shot && (

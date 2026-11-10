@@ -16,6 +16,9 @@ facts:
 shot:
   src: './preview2.png'
   alt: 'KDoit settings dialog next to the to-do widget on a KDE Plasma desktop'
+glance:
+  does: 'A to-do widget for the KDE Plasma 6 desktop, with priorities, due dates, drag-and-drop, Markdown export and live file sync.'
+  did: 'Built it for my own desktop in pure QML, with no build step, and published it on the KDE Store.'
 ---
 
 KDoit is a to-do list widget (a plasmoid) for the KDE Plasma 6 desktop, for anyone who wants their tasks on the desktop or panel instead of in a separate app. I built it because I wanted one that just worked: pure QML, no build steps, no dependencies. It's published on the KDE Store.

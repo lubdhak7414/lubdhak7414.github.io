@@ -27,6 +27,9 @@ links:
 facts:
   license: 'MIT'
   stack: ['PyTorch']
+glance:
+  does: 'Three small text generators on one shared engine: roguelike ASCII maps, a judgmental cat, and English rewritten as pseudo-assembly.'
+  did: 'Built all three from scratch in PyTorch, each with its own tokenizer, training data and validators.'
 ---
 
 I built three small text generators to test one idea: can the same architecture code do completely unrelated jobs? One draws ASCII roguelike maps, one answers questions as a judgmental cat, and one rewrites English as pseudo-8086 assembly. They share every line of architecture code.

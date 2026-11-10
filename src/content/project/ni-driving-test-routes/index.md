@@ -12,10 +12,14 @@ links:
   - { label: 'Live site', url: 'https://testroutesni.co.uk/', kind: 'live' }
 tags: ['WordPress', 'SEO']
 facts:
+  status: 'Live, looked after since launch'
   stack: ['WordPress', 'Elementor']
 shot:
   src: './homepage.png'
   alt: 'NI Driving Test Routes homepage: headline, call-to-action buttons and a road-sign photo'
+glance:
+  does: 'A shop selling driving test route guides for the test centres in Northern Ireland.'
+  did: 'Built the site on WordPress and Elementor, and have kept it running since launch: updates, payments and a bonus guide with each purchase.'
 ---
 
 I built a site about Northern Ireland driving test routes. The audience: people nervous about their test who want to know exactly where they'll be driving. Many of them look on a phone, so the pages have to load fast on one.

@@ -1,0 +1,73 @@
+---
+export interface SpecLink {
+	label: string
+	url: string
+	kind: 'code' | 'live' | 'store'
+}
+export interface SpecRow {
+	key: string
+	text?: string | undefined
+	links?: SpecLink[]
+}
+
+interface Props {
+	/** Key/value rows in print order; rows without a value drop out. */
+	rows: SpecRow[]
+	/** The write-up's own Key Takeaways bullets (inline HTML from remarkBrief). */
+	takeaways: string[]
+}
+
+const { rows, takeaways } = Astro.props
+const shown = rows.filter(({ text, links }) => text || (links && links.length > 0))
+---
+
+{
+	/* A project's spec sheet: one ruled table of what the page states (what it does, the owner's
+part, stack, status, links), then the write-up's Key Takeaways as "In brief". Keys the page
+doesn't state are dropped, never filled. */
+}
+{
+	shown.length > 0 && (
+		<section class='spec' aria-labelledby='spec-h'>
+			<h2 id='spec-h' class='spec-label'>
+				At a glance
+			</h2>
+			<dl class='spec-table'>
+				{shown.map(({ key, text, links }) => (
+					<div class:list={['spec-row', `spec-row--${key.toLowerCase()}`]}>
+						<dt set:text={key} />
+						<dd>
+							{text}
+							{links && (
+								<ul class='spec-links'>
+									{links.map(({ label, url, kind }) => (
+										<li>
+											<a href={url} target='_blank' rel='noopener noreferrer'>
+												<span class='spec-kind' set:text={kind} />
+												<span class='spec-name' set:text={`${label} ↗`} />
+											</a>
+										</li>
+									))}
+								</ul>
+							)}
+						</dd>
+					</div>
+				))}
+			</dl>
+		</section>
+	)
+}
+{
+	takeaways.length > 0 && (
+		<section class='spec-brief' aria-labelledby='brief-h'>
+			<h2 id='brief-h' class='spec-label'>
+				In brief
+			</h2>
+			<ul class='gist-list'>
+				{takeaways.map((html) => (
+					<li set:html={html} />
+				))}
+			</ul>
+		</section>
+	)
+}
