@@ -15,6 +15,9 @@ facts:
 shot:
   src: './screenshot.png'
   alt: 'Chiptune SFX Maestro interface: prompt box, temperature slider, generate button and quick categories'
+glance:
+  does: 'Turns a text prompt like "retro coin pickup" into a playable 8-bit sound effect.'
+  did: 'Built the dataset, the tokenizer, the model, the synthesizer and the retro interface, in raw PyTorch and Python.'
 ---
 
 I built a system that turns text like "retro coin pickup" into playable 8-bit sound effects. No pre-recorded samples, no external APIs. Just a small text-to-parameter tool.

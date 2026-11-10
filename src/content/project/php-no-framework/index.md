@@ -18,6 +18,9 @@ facts:
 shot:
   src: './repbase-roster.png'
   alt: 'RepBase class roster with colour-coded full and near-full capacity rows'
+glance:
+  does: 'Three management systems, for a café, a library and a gym, in plain PHP and MySQL.'
+  did: 'Built all three with hand-written SQL, no framework and no ORM, with multi-table writes in transactions.'
 ---
 
 ## Why no framework?

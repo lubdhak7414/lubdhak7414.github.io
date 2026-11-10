@@ -27,6 +27,9 @@ links:
 facts:
   license: 'MIT'
   stack: ['PyTorch']
+glance:
+  does: 'Three small text generators on one shared engine: roguelike ASCII maps, a judgmental cat, and English rewritten as pseudo-assembly.'
+  did: 'Built all three from scratch in PyTorch, each with its own tokenizer, training data and validators.'
 ---
 
 I built three small text generators last month. They share every line of architecture code, yet they do completely unrelated things. That was the point.

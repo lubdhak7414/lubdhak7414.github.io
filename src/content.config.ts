@@ -77,6 +77,14 @@ const project = defineCollection({
 					license: z.string().optional(),
 					stack: z.array(z.string()).optional()
 				})
+				.default({}),
+			// The spec sheet at the top of a project page: what it does and the owner's part, in
+			// one plain sentence each, taken from the write-up. Leave a key out rather than guess.
+			glance: z
+				.object({
+					does: z.string().optional(),
+					did: z.string().optional()
+				})
 				.default({})
 		})
 })

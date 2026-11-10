@@ -18,6 +18,9 @@ facts:
 shot:
   src: './cover.png'
   alt: 'Circular Alt+Tab switcher open on a KDE Plasma desktop, windows arranged as pie slices around the cursor'
+glance:
+  does: 'A KWin window switcher for KDE Plasma 6 that lays your windows out as pie slices around the cursor.'
+  did: 'Wrote the plugin in pure QML, with no build step, and published it on the KDE Store.'
 ---
 
 ## The idea

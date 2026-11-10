@@ -14,6 +14,9 @@ facts:
 shot:
   src: './homepage.png'
   alt: 'Green Bangla Foundation homepage: navigation, headline and hero image'
+glance:
+  does: 'A new website for a socio-economic development nonprofit in Bangladesh.'
+  did: 'Built the site in WordPress''s block editor with custom CSS and few plugins, so staff can edit pages without a developer.'
 ---
 
 Green Bangla Foundation is a socio-economic development nonprofit in Bangladesh. It runs programmes in housing, farming, fish farming, eco-parks, restaurants and hotels. It needed a new website quickly and on a small budget.

@@ -26,6 +26,9 @@ facts:
 shot:
   src: './shot.webp'
   alt: 'Pacioli in a browser: the chat on the left, the proposals and ledger tabs on the right'
+glance:
+  does: 'A double-entry bookkeeping engine: a language model proposes the entries, and Python computes every number and gates every write.'
+  did: 'Designed and built the engine: the model boundary, the human approval gate and one-click undo.'
 ---
 
 ## The premise
