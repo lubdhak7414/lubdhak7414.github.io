@@ -7,7 +7,8 @@ import { getAllPosts } from '@/utils'
 const parser = new MarkdownIt()
 
 export const GET = async () => {
-	const posts = await getAllPosts()
+	// Series parts are reached from their series page, not pushed to feed readers 24 at a time.
+	const posts = (await getAllPosts()).filter((post) => !post.data.series)
 	const sortedPosts = posts.toSorted(
 		(a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()
 	)

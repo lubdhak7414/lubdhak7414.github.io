@@ -5,7 +5,7 @@ publishDate: '23 October 2026'
 tags: ['email', 'dns', 'wordpress', 'cloudflare', 'migration']
 coverImage:
   src: ./cover.webp
-  alt: 'A terminal window showing dig queries for example.com: a null MX record, an SPF record ending in -all and a DMARC record with p=reject'
+  alt: 'Four steps in order: copy every mailbox with imapsync before any DNS change, switch the nameservers while the old host keeps getting mail for a while, copy again to pick up what arrived since, then tighten SPF and DMARC from p=none to quarantine to reject'
 draft: true
 ---
 
@@ -17,10 +17,10 @@ Moving the websites is the easy half. You can test a restored site before anyone
 
 > **Key Takeaways**
 >
-> - Mail rarely bounces during a move. It gets delivered, just to the old server you're about to cancel. Plan around that.
-> - Copy every mailbox before you touch DNS, keep the old mailboxes running, and copy again once the overlap is over.
-> - Mail records in Cloudflare are always DNS-only. Point MX at the mail host's own hostnames, not a name of yours.
-> - Publish SPF with `-all` only after you've listed everything that sends as the domain. Start DMARC at `p=none` and tighten it in steps.
+> - In a move, mail rarely bounces. It reaches the old server you're about to cancel, so plan for that.
+> - Copy every mailbox before you touch DNS, keep the old mailboxes running, and copy again after the overlap.
+> - Mail records in Cloudflare are always DNS-only. Point MX at the mail host's own hostnames, not yours.
+> - Use SPF `-all` only once every sender is listed. Start DMARC at `p=none` and tighten it in steps.
 
 ## Why mail goes missing in a move
 

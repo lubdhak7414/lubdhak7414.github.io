@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro'
 import { Image } from 'astro:assets'
+import { typeset } from '@/utils/typeset'
 
 interface Props {
 	/** "Next case study", "Read next". */
@@ -31,24 +32,22 @@ is one link (the title's link stretches over it). */
 		<span set:text={label} />
 		{count && <span class='upnext-count' set:text={count} />}
 	</p>
-	<div class='upnext-card'>
-		<span class:list={['upnext-media', !image && 'upnext-media--none']} aria-hidden='true'>
-			{
-				image ? (
+	<div class:list={['upnext-card', !image && 'upnext-card--text']}>
+		{
+			image && (
+				<span class='upnext-media' aria-hidden='true'>
 					<Image
 						src={image.src}
 						alt=''
 						widths={[320, 480, 640]}
 						sizes='(min-width: 640px) 18rem, 100vw'
 					/>
-				) : (
-					<span set:text={title} />
-				)
-			}
-		</span>
+				</span>
+			)
+		}
 		<span class='upnext-body'>
-			<a class='upnext-title' href={href} set:text={title} />
-			<span class='upnext-text'>{text}</span>
+			<a class='upnext-title' href={href} set:text={typeset(title)} />
+			<span class='upnext-text' set:text={typeset(text)} />
 			{meta && <span class='upnext-meta'>{meta}</span>}
 			<span class='upnext-go' aria-hidden='true'>
 				<span set:text={go} />

@@ -1,54 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
-<defs>
-<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#565c66"/></marker>
-<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"IBM Plex Mono";}</style>
-</defs>
-<rect width="1600" height="900" fill="#f5f6f7"/>
-<text class="m" x="200" y="158" font-size="22" fill="#2451b8" letter-spacing="2">LEGACY API  ·  FIX THE BEHAVIOUR, KEEP THE SHAPE</text>
-
-<!-- installed app -->
-<rect x="200" y="210" width="290" height="500" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
-<rect x="283" y="268" width="124" height="230" rx="16" fill="none" stroke="#15171a" stroke-width="3"/>
-<rect x="321" y="282" width="48" height="6" rx="3" fill="#c9cdd2"/>
-<rect x="299" y="304" width="92" height="12" rx="3" fill="#e4e6e9"/>
-<rect x="299" y="326" width="70" height="12" rx="3" fill="#e4e6e9"/>
-<rect x="299" y="348" width="84" height="12" rx="3" fill="#e4e6e9"/>
-<rect x="299" y="430" width="92" height="40" rx="4" fill="#e4e6e9"/>
-<text class="s" x="345" y="566" font-size="30" font-weight="600" fill="#15171a" text-anchor="middle">Installed app</text>
-<text class="m" x="345" y="606" font-size="21" fill="#565c66" text-anchor="middle">no forced update</text>
-<text class="m" x="345" y="640" font-size="21" fill="#565c66" text-anchor="middle">reads today's JSON</text>
-
-<line x1="496" y1="460" x2="552" y2="460" stroke="#565c66" stroke-width="3" marker-end="url(#ah)"/>
-
-<!-- contract -->
-<rect x="560" y="210" width="420" height="500" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
-<rect x="560" y="210" width="6" height="500" fill="#2451b8"/>
-<text class="s" x="600" y="276" font-size="30" font-weight="600" fill="#15171a">API contract</text>
-<text class="m" x="600" y="312" font-size="21" fill="#6b717b">frozen</text>
-<line x1="600" y1="340" x2="940" y2="340" stroke="#e4e6e9" stroke-width="2"/>
-<text class="m" x="600" y="392" font-size="25" fill="#15171a">same keys</text>
-<text class="m" x="600" y="448" font-size="25" fill="#15171a">same types</text>
-<text class="m" x="600" y="504" font-size="25" fill="#15171a">same status codes</text>
-<line x1="600" y1="540" x2="940" y2="540" stroke="#e4e6e9" stroke-width="2"/>
-<text class="m" x="600" y="592" font-size="25" fill="#2451b8">new fields:</text>
-<text class="m" x="600" y="628" font-size="25" fill="#2451b8">additive only</text>
-
-<line x1="986" y1="460" x2="1102" y2="460" stroke="#565c66" stroke-width="3" marker-end="url(#ah)"/>
-<text class="m" x="1044" y="496" font-size="18" fill="#6b717b" text-anchor="middle">behind it</text>
-
-<!-- server -->
-<rect x="1110" y="210" width="290" height="500" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
-<text class="s" x="1140" y="276" font-size="30" font-weight="600" fill="#15171a">On the server</text>
-<line x1="1140" y1="304" x2="1370" y2="304" stroke="#e4e6e9" stroke-width="2"/>
-<g class="s" font-size="25" fill="#15171a">
-<path d="M1142 358 l9 9 l17 -19" fill="none" stroke="#2451b8" stroke-width="4"/>
-<text x="1182" y="368">Session login</text>
-<path d="M1142 438 l9 9 l17 -19" fill="none" stroke="#2451b8" stroke-width="4"/>
-<text x="1182" y="448">Upload checks</text>
-<path d="M1142 518 l9 9 l17 -19" fill="none" stroke="#2451b8" stroke-width="4"/>
-<text x="1182" y="528">SMTP mail</text>
-<path d="M1142 598 l9 9 l17 -19" fill="none" stroke="#2451b8" stroke-width="4"/>
-<text x="1182" y="608">CodeIgniter</text>
-<text class="m" x="1182" y="644" font-size="22" fill="#565c66">3.1.13</text>
-</g>
+<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"JetBrains Mono";}</style>
+<rect width="1600" height="900" fill="#ffffff"/>
+<text class="m" x="72" y="118" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" letter-spacing="2">FIX THE BEHAVIOUR, KEEP THE SHAPE</text>
+<rect x="72" y="160" width="380" height="668" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="s" x="108" y="242" font-size="52" font-weight="600" fill="#15171a" text-anchor="start" >Installed app</text>
+<line x1="108" y1="280" x2="416" y2="280" stroke="#e4e6e9" stroke-width="2"/>
+<text class="s" x="108" y="360" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >can't be forced</text>
+<text class="s" x="108" y="422" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >to update</text>
+<text class="s" x="108" y="546" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >reads today's</text>
+<text class="s" x="108" y="608" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >JSON</text>
+<path d="M462 494.0 H516 M502 480.0 L516 494.0 L502 508.0" stroke="#565c66" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="526" y="160" width="500" height="668" rx="6" fill="#f5f6f7" stroke="#2451b8" stroke-width="3"/>
+<text class="s" x="562" y="242" font-size="52" font-weight="600" fill="#15171a" text-anchor="start" >API contract</text>
+<text class="m" x="562" y="300" font-size="45" font-weight="500" fill="#2451b8" text-anchor="start" >frozen</text>
+<line x1="562" y1="336" x2="990" y2="336" stroke="#c9cdd2" stroke-width="2"/>
+<text class="s" x="562" y="414" font-size="45" font-weight="500" fill="#15171a" text-anchor="start" >same keys</text>
+<text class="s" x="562" y="486" font-size="45" font-weight="500" fill="#15171a" text-anchor="start" >same types</text>
+<text class="s" x="562" y="558" font-size="45" font-weight="500" fill="#15171a" text-anchor="start" >same status codes</text>
+<text class="s" x="562" y="680" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" >new fields:</text>
+<text class="s" x="562" y="740" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" >additive only</text>
+<path d="M1036 494.0 H1090 M1076 480.0 L1090 494.0 L1076 508.0" stroke="#565c66" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1100" y="160" width="428" height="668" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="s" x="1136" y="242" font-size="52" font-weight="600" fill="#15171a" text-anchor="start" >On the server</text>
+<line x1="1136" y1="280" x2="1492" y2="280" stroke="#e4e6e9" stroke-width="2"/>
+<path d="M1138 356 l11 11 l21 -23" fill="none" stroke="#2451b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="s" x="1188" y="370" font-size="46" font-weight="500" fill="#15171a" text-anchor="start" >Session login</text>
+<path d="M1138 456 l11 11 l21 -23" fill="none" stroke="#2451b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="s" x="1188" y="470" font-size="46" font-weight="500" fill="#15171a" text-anchor="start" >Upload checks</text>
+<path d="M1138 556 l11 11 l21 -23" fill="none" stroke="#2451b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="s" x="1188" y="570" font-size="46" font-weight="500" fill="#15171a" text-anchor="start" >SMTP mail</text>
+<path d="M1138 656 l11 11 l21 -23" fill="none" stroke="#2451b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="s" x="1188" y="670" font-size="46" font-weight="500" fill="#15171a" text-anchor="start" >CodeIgniter</text>
+<text class="m" x="1188" y="720" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >3.1.13</text>
 </svg>

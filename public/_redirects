@@ -19,6 +19,10 @@
 /tags/page%20speed%20optimization/* /tags/page-speed-optimization/:splat 301
 /tags/web%20development/* /tags/web-development/:splat 301
 
+# kde-plasma was merged into kde (2026-11-11).
+/tags/kde-plasma/ /tags/kde/ 301
+/tags/kde-plasma/* /tags/kde/:splat 301
+
 # Project write-ups moved out of the blog into the `project` collection: same slug,
 # new home under /projects/. Mirrored in astro.config.mjs `redirects` so the GitHub
 # Pages backup (which ignores this file) still forwards them via meta refresh.

@@ -1,10 +1,11 @@
 ---
-title: "Attention: Q, K, V"
-description: "Scaled dot-product attention worked by hand on two keys, why scores are divided by the square root of d_k, then heads, word order, masking and cross-attention."
+title: "Scaled dot-product attention: Q, K and V by hand"
+description: "Scaled dot-product attention worked by hand with two keys, why scores are divided by the square root of the key size, then heads, masks and cross-attention."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, attention, transformer]
-series: "CSE 425 Final"
+series: "CSE 425"
+section: "Final"
 part: 6
 ---
 
@@ -13,10 +14,10 @@ In "The animal didn't cross the street because it was too tired", the word "it" 
 Attention skips the squeeze. Each word scores every other word in a single matrix product, turns the scores into percentages, and builds its new vector as a weighted average of the others. "it" can put most of its weight on "animal" and only a little elsewhere. Nothing waits for the previous step, so all words are processed at once.
 
 > **Key Takeaways**
-> - Each token makes a query (what it is looking for), a key (what it offers for matching) and a value (the content that gets mixed in).
-> - Attention weights are a softmax over query-key dot products divided by $\sqrt{d_k}$, and the output is the weighted sum of the value rows.
-> - Dividing by $\sqrt{d_k}$ keeps the scores at a size where softmax can still spread its weight.
-> - Position has to be added separately, a causal mask hides future tokens, and cross-attention takes its queries from one sequence and its keys and values from another.
+> - Each token makes a query (what it looks for), a key (what it offers) and a value (what gets mixed in).
+> - The output is $\mathrm{softmax}(QK^\top/\sqrt{d_k})\,V$, a weighted sum of the value rows.
+> - Dividing by $\sqrt{d_k}$ keeps the scores small enough for softmax to spread its weight.
+> - Position is added separately, a causal mask hides future tokens, and cross-attention takes its keys and values from another sequence.
 
 ## One query, two keys
 
@@ -48,7 +49,7 @@ $$0.1070\,[2,1]+0.8930\,[0,3]$$
 
 $$\text{output}=[0.2141,\ 2.7859]$$
 
-Almost 90 percent of the weight went to key 2, so the output lands close to $v_2=[0,3]$.
+Almost 90% of the weight went to key 2, so the output lands close to $v_2=[0,3]$.
 
 ![Three heatmaps of attention weights: the worked example row 0.1070, 0.8930; the Q = K = V = I matrix 0.6698, 0.3302 / 0.3302, 0.6698; and the masked example 1, masked / 0.8044, 0.1956](img/attention-attention-heatmap.svg)
 
@@ -78,14 +79,14 @@ Keep track of the shapes. $Q$ is $T_q\times d_k$ and $K$ is $T_k\times d_k$, so 
 
 ```mermaid
 flowchart TD
-    X["X: T x d_model"] --> Q["Q = X W_Q"]
-    X --> K["K = X W_K"]
-    X --> V["V = X W_V"]
-    Q --> S["scores Q K^T: T x T"]
+    X["X: T × d<sub>model</sub>"] --> Q["Q = XW<sup>Q</sup>"]
+    X --> K["K = XW<sup>K</sup>"]
+    X --> V["V = XW<sup>V</sup>"]
+    Q --> S["scores QK<sup>⊤</sup><br/>T × T"]
     K --> S
-    S --> D["divide by sqrt d_k"]
-    D --> P["softmax on each row"]
-    P --> Z["weights times V: T x d_v"]
+    S --> D["divide by √(d<sub>k</sub>)"]
+    D --> P["softmax<br/>on each row"]
+    P --> Z["weights times V<br/>T × d<sub>v</sub>"]
     V --> Z
 ```
 
@@ -105,9 +106,11 @@ $$V=\begin{bmatrix}1&2\\3&4\end{bmatrix}$$
 
 the output of each row is
 
-$$0.8044[1,2]+0.1956[3,4]=[1.3911,\ 2.3911]$$
+$$0.8044[1,2]+0.1956[3,4]$$
 
-## Why divide by the square root of d_k
+$$=[1.3911,\ 2.3911]$$
+
+## Why divide by the square root of the key size
 
 Each score is a sum of $d_k$ products, so a longer vector gives a bigger sum. With 64 dimensions the scores get so large that softmax gives one word everything and the rest nothing, and training stalls. A concrete case: scores $[8,0,0,0]$ give weights $[0.9990,\ 0.0003,\ 0.0003,\ 0.0003]$. The weights barely respond to a small change in any score, so there is almost nothing for training to learn from.
 
@@ -141,7 +144,7 @@ For $d_{model}=4$, position $pos$ and channels 0 to 3, the values to four places
 |---|---|---|---|---|
 | 0 | 0 | 1 | 0 | 1 |
 | 1 | 0.8415 | 0.5403 | 0.0100 | 1.0000 |
-| 2 | 0.9093 | -0.4161 | 0.0200 | 0.9998 |
+| 2 | 0.9093 | −0.4161 | 0.0200 | 0.9998 |
 
 Channels 0 and 1 use divisor $10000^0=1$, and channels 2 and 3 use $10000^{2/4}=100$, so those change slowly. The encoding is added, not concatenated, so $X$ keeps width $d_{model}$ and no extra parameters are needed. The sine and cosine form can also produce encodings for positions longer than any seen in training.
 
@@ -167,15 +170,15 @@ $$\mathrm{CrossAttn}(Y,X_{enc})=\mathrm{softmax}(S)\,X_{enc}W^V$$
 
 The score matrix is $T_q\times T_k$, so source and target lengths can differ. Only the decoder's self-attention gets the causal mask; encoder self-attention and cross-attention see every position.
 
-![Left: a 4 by 4 causal mask with 0 on and below the diagonal and minus infinity above. Right: cross-attention with 3 decoder tokens giving Q and 4 encoder outputs giving K and V, a 3 by 4 score grid and a 3 by d_v output](img/attention-masked-cross-attention.svg)
+![Left: a 4 × 4 causal mask with 0 on and below the diagonal and minus infinity above. Right: cross-attention with 3 decoder tokens giving Q and 4 encoder outputs giving K and V, a 3 × 4 score grid and a 3 by d_v output](img/attention-masked-cross-attention.svg)
 
-Where all this sits inside a full model is in [The Transformer, Block by Block](/blog/cse425-final-transformer-architecture/). For a step-by-step visual version, see [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/), the original paper [Attention Is All You Need](https://arxiv.org/abs/1706.03762), and the [d2l.ai chapter](https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html), which has code for each piece.
+Where all this sits inside a full model is in [Transformer encoder and decoder blocks, step by step](/blog/cse425-final-transformer-architecture/). For a step-by-step visual version, see [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/), the original paper [Attention Is All You Need](https://arxiv.org/abs/1706.03762), and the [d2l.ai chapter](https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html), which has code for each piece.
 
-## Laying out an attention answer
+## In the exam: laying out an attention answer
 
 A full answer writes the formula with $\sqrt{d_k}$, shows the scores before and after scaling, gives the softmax weights for each row, then the weighted sum of the value rows. Shapes are worth stating: $(T_q\times d_k)(d_k\times T_k)\to T_q\times T_k$, then times $T_k\times d_v$. For a masking question, show the mask matrix and say it is added before softmax. Softmax runs across rows and not down columns.
 
-## Weights, a mask and head shapes
+## Practice: weights, a mask and head shapes
 
 Let $Q=K=V=I_2$ (the $2\times2$ identity matrix) and $d_k=2$. What is the attention weight matrix?
 

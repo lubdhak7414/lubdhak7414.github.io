@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"JetBrains Mono";}</style>
+<rect width="1600" height="900" fill="#ffffff"/>
+<text class="m" x="72" y="118" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" letter-spacing="2">THE USERS SCREEN, AND WHAT HID THE THIRD ROW</text>
+<rect x="72" y="160" width="600" height="668" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="s" x="112" y="248" font-size="52" font-weight="600" fill="#15171a" text-anchor="start" >Administrator (3)</text>
+<line x1="112" y1="290" x2="632" y2="290" stroke="#e4e6e9" stroke-width="2"/>
+<rect x="112" y="330" width="520" height="112" rx="4" fill="#f5f6f7"/>
+<rect x="144" y="360" width="220" height="22" rx="4" fill="#c9cdd2"/>
+<text class="s" x="144" y="424" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >Administrator</text>
+<rect x="112" y="470" width="520" height="112" rx="4" fill="#f5f6f7"/>
+<rect x="144" y="500" width="220" height="22" rx="4" fill="#c9cdd2"/>
+<text class="s" x="144" y="564" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >Administrator</text>
+<rect x="112" y="610" width="520" height="112" rx="4" fill="#ffffff" stroke="#2451b8" stroke-width="3" stroke-dasharray="12 9"/>
+<text class="m" x="144" y="682" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" >user-1087: hidden</text>
+<text class="s" x="112" y="794" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >only two rows shown</text>
+<rect x="704" y="160" width="824" height="668" rx="6" fill="#f5f6f7" stroke="#2451b8" stroke-width="3"/>
+<text class="m" x="748" y="248" font-size="52" font-weight="600" fill="#15171a" text-anchor="start" >functions.php</text>
+<line x1="748" y1="290" x2="1484" y2="290" stroke="#c9cdd2" stroke-width="2"/>
+<text class="m" x="748" y="380" font-size="45" font-weight="500" fill="#15171a" text-anchor="start" xml:space="preserve">add_action('admin_head',</text>
+<text class="m" x="748" y="456" font-size="45" font-weight="500" fill="#15171a" text-anchor="start" xml:space="preserve">  'my_custom_css_do');</text>
+<text class="m" x="748" y="608" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" xml:space="preserve">.users-php .users</text>
+<text class="m" x="748" y="684" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" xml:space="preserve">  tr[id="user-1087"]</text>
+<text class="m" x="748" y="760" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" xml:space="preserve">  { display:none; }</text>
+</svg>

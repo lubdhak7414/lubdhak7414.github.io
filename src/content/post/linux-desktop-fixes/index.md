@@ -5,7 +5,7 @@ publishDate: '23 October 2026'
 tags: ['linux', 'arch-linux', 'troubleshooting']
 coverImage:
   src: ./cover.webp
-  alt: 'An Easy Effects equalizer with the five low bands at -2 dB and the five high bands at +2 dB, beside a kitty terminal showing a Ctrl+Backspace mapping, a paccache dry run that would free 8.01 GiB and a 52G AUR cache folder'
+  alt: 'Four cards, each a problem and its fix: quiet laptop speakers, an Easy Effects preset with a limiter at the end; Brave keyring prompt, --password-store=basic; Ctrl+Backspace in kitty, send_text all \x17; 52G AUR cache, paccache -r and paru -Sc'
 draft: true
 ---
 
@@ -15,10 +15,10 @@ Each one has the symptom, the cause, the fix, and the catch I didn't write down 
 
 > **Key Takeaways**
 >
-> - Easy Effects can make thin laptop speakers usable. A preset made for your model beats a hand-made EQ, and a limiter belongs at the end of the chain.
-> - `--password-store=basic` stops Brave's keyring prompt by keeping saved passwords and the cookie key unencrypted on disk. Unlocking the keyring at login is the better fix.
-> - In kitty, Ctrl+Backspace sends `^H`, which bash treats as a one-letter delete. Mapping it to send `^W` turns it into a word delete.
-> - pacman and AUR helpers don't clean their caches unless you tell them to. On my desktop the AUR helper's clone folder alone was 52G.
+> - For thin laptop speakers, an Easy Effects preset for your model beats a hand-made EQ. End the chain with a limiter.
+> - `--password-store=basic` stops Brave's keyring prompt but stores passwords unencrypted. Unlocking the keyring at login is better.
+> - kitty sends `^H` for Ctrl+Backspace. Mapping it to `^W` makes bash delete a word instead of a letter.
+> - pacman and AUR helpers don't clean their caches on their own. My AUR helper's clone folder was 52G.
 
 ## Thin, quiet laptop speakers
 

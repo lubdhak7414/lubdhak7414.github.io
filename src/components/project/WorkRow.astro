@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 
 import ProjectIcon from './ProjectIcon.astro'
 import ProjectLinks from './ProjectLinks.astro'
+import { shorten, typeset } from '@/utils/typeset'
 
 interface Props {
 	project: CollectionEntry<'project'>
@@ -10,12 +11,14 @@ interface Props {
 
 const { project } = Astro.props
 const { data } = project
-const name = `${data.draft ? '(Draft) ' : ''}${data.name ?? data.title}`
-// Who it was for, on client work only. A client whose name is the project's own name would
-// print twice.
-const { client } = data.facts
-const context = client && (client === data.name ? 'Client project' : client)
+const name = `${data.draft ? '(Draft) ' : ''}${typeset(data.name ?? data.title)}`
+// Client work says so, the same way on every row; the client's name is on the project page.
+const context = data.facts.client ? 'Client project' : undefined
 const stack = (data.facts.stack ?? []).slice(0, 4).join(' · ')
+// Phones show three lines at most: a summary cut in code at a sentence, clause or word, never
+// mid-word with a doubled stop ("edits....") as a CSS clamp would.
+const text = typeset(data.description)
+const short = typeset(shorten(data.description))
 ---
 
 {
@@ -28,9 +31,14 @@ sit above it, so nothing nests. */
 	<div class='prow-body'>
 		<p class='prow-head'>
 			<a class='prow-name' href={`/projects/${project.id}/`} set:text={name} />
+			{/* Phones: the arrow sits on the name's line (the foot row is hidden there). */}
+			<span class='prow-go prow-go--head' aria-hidden='true'>→</span>
 			{context && <span class='prow-ctx' set:text={context} />}
 		</p>
-		<p class='prow-text'>{data.description}</p>
+		<p class='prow-text'>
+			<span class:list={[{ 'prow-full': short !== text }]} set:text={text} />
+			{short !== text && <span class='prow-short' set:text={short} />}
+		</p>
 		<p class='prow-foot'>
 			{stack && <span class='prow-stack'>{stack}</span>}
 			<ProjectLinks project={project} />

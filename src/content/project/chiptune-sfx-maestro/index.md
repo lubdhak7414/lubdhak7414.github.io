@@ -1,5 +1,5 @@
 ---
-title: 'Chiptune SFX Maestro: Text to 8-Bit Sound Effects'
+title: 'Chiptune SFX Maestro: text to 8-bit sound effects'
 name: 'Chiptune SFX Maestro'
 description: 'A small text-to-sound tool for retro games: type a prompt, get sfxr parameters rendered to a playable WAV. About 11M parameters, trained from scratch.'
 publishDate: '08 July 2026'
@@ -7,9 +7,13 @@ homePageIdx: 7
 coverImage:
   src: './cover.webp'
   alt: 'Chiptune SFX Maestro retro arcade interface with neon colors and CRT scanline effect'
-tags: ['Python', 'PyTorch', 'Machine Learning', 'Game Dev', 'Audio', 'Project']
+tags: ['python', 'pytorch', 'machine-learning', 'game-dev', 'audio', 'project']
 links:
-  - { label: 'GitHub', url: 'https://github.com/lubdhak7414/chiptune-sfx-maestro', kind: 'code' }
+  - {
+      label: 'Source on GitHub',
+      url: 'https://github.com/lubdhak7414/chiptune-sfx-maestro',
+      kind: 'code'
+    }
 facts:
   status: 'Open source on GitHub'
   stack: ['Python', 'PyTorch']
@@ -18,16 +22,16 @@ shot:
   alt: 'Chiptune SFX Maestro interface: prompt box, temperature slider, generate button and quick categories'
 glance:
   does: 'Turns a text prompt like "retro coin pickup" into a playable 8-bit sound effect.'
-  did: 'Built the dataset, the tokenizer, the model, the synthesizer and the retro interface, in raw PyTorch and Python.'
+  did: 'Built the dataset, the tokenizer, the model, the synthesizer and the retro interface.'
 ---
 
 I built a tool for retro game developers that turns text like "retro coin pickup" into a playable 8-bit sound effect. It writes sfxr parameters, not audio, and a built-in synthesizer renders them to WAV. No pre-recorded samples, no external APIs.
 
 > **Key Takeaways**
 >
-> - A system of about 11 million parameters, trained from scratch, converts prompts into sfxr parameter strings
-> - A built-in jsfxr-compatible synthesizer renders those params to 16-bit WAV audio at 44100 Hz
-> - The whole pipeline runs locally in Python with zero third-party audio dependencies
+> - A system of about 11 million parameters, trained from scratch, converts prompts into sfxr parameter strings.
+> - A built-in jsfxr-compatible synthesizer renders those params to 16-bit WAV audio at 44100 Hz.
+> - The whole pipeline runs locally in Python with zero third-party audio dependencies.
 
 ## The core idea
 

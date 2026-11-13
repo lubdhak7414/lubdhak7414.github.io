@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
 
@@ -13,14 +14,9 @@ import SideNext from '@/components/doc/SideNext.astro'
 import UpNext from '@/components/doc/UpNext.astro'
 
 import type { Series } from '@/utils'
-import {
-	PERSON_ID,
-	displayTags,
-	generateToc,
-	getEntrySocialImage,
-	isoDate,
-	jsonLdScript
-} from '@/utils'
+import { PERSON_ID, displayTags, getEntrySocialImage, isoDate, jsonLdScript } from '@/utils'
+import { noteLabel, seriesPlace, tidyTitle } from '@/utils/series'
+import { keepCode, typeset } from '@/utils/typeset'
 import { siteConfig } from '@/site-config'
 
 import ShellLayout from './ShellLayout.astro'
@@ -47,7 +43,6 @@ const modifiedIso = updated?.toISOString()
 const { headings, remarkPluginFrontmatter } = await render(post)
 const minutesRead = parseInt(remarkPluginFrontmatter.minutesRead, 10) || 1
 const takeaways = (remarkPluginFrontmatter.takeaways ?? []) as string[]
-const sections = generateToc(headings)
 // Topics stay out of sight: only the head (article:tag) and the JSON-LD (keywords) carry them.
 const tags = displayTags(post)
 // One meta line under the title: when and how long.
@@ -58,7 +53,82 @@ const when = [
 ]
 	.filter(Boolean)
 	.join(' · ')
-const diveNote = `The article · ${sections.length} ${sections.length === 1 ? 'section' : 'sections'} · ${remarkPluginFrontmatter.minutesRead}`
+// A note in a series: its half and number, for the kicker and the card at the end.
+const place = series && seriesPlace(series, post.id)
+const crossing = place && !place.next && place.nextHalf
+// The card at the end names the note it points to, not the one being read.
+const nextPlace = series && next ? seriesPlace(series, next.id) : undefined
+
+// Series figures: each one links to its full-size file, and a figure that has a narrow
+// "<name>-phone.svg" beside it shows that one on phones, where the wide drawing's labels would
+// shrink to a few pixels.
+const phoneUrls = import.meta.glob<string>('/src/content/post/*/img/*-phone.svg', {
+	query: '?url',
+	import: 'default',
+	eager: true
+})
+const phoneSvgs = import.meta.glob<string>('/src/content/post/*/img/*-phone.svg', {
+	query: '?raw',
+	import: 'default',
+	eager: true
+})
+const phoneByName = new Map(
+	Object.entries(phoneUrls).map(([path, url]) => {
+		const svg = phoneSvgs[path] ?? ''
+		const box = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(svg)
+		return [path.split('/').pop()!, { url, width: box?.[1], height: box?.[2] }]
+	})
+)
+const unescape = (value: string) => value.replaceAll('&amp;', '&')
+const escape = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;')
+function figure(img: string) {
+	const src = /\ssrc="([^"]+)"/.exec(img)?.[1]
+	if (!src) return img
+	const name = /([\w.-]+)\.svg/.exec(decodeURIComponent(unescape(src)))?.[1]
+	if (!name) return img
+	const phone = phoneByName.get(`${name}-phone.svg`)
+	const picture = phone
+		? `<picture><source media="(max-width: 639px)" srcset="${escape(phone.url)}"${phone.width ? ` width="${phone.width}" height="${phone.height}"` : ''}>${img}</picture>`
+		: img
+	return `<figure class="fig"><a class="fig-link" href="${src}" data-astro-reload data-astro-prefetch="false">${picture}</a><figcaption class="fig-hint" aria-hidden="true"><span class="fig-tap">Tap to enlarge</span><span class="fig-click">Click to enlarge</span></figcaption></figure>`
+}
+// Any other article: a body image "<name>.webp" with a "<name>-phone.webp" beside it (a drawing
+// restacked for a narrow screen) shows the phone one below 640px.
+const phoneWebps = import.meta.glob<string>('/src/content/post/*/*-phone.webp', {
+	query: '?url',
+	import: 'default',
+	eager: true
+})
+const phoneHere = Object.entries(phoneWebps)
+	.filter(([path]) => path.startsWith(`/src/content/post/${post.id}/`))
+	.map(([path, url]) => ({
+		name: path
+			.split('/')
+			.pop()!
+			.replace(/-phone\.webp$/, ''),
+		url
+	}))
+function phonePicture(img: string) {
+	const src = decodeURIComponent(unescape(/\ssrc="([^"]+)"/.exec(img)?.[1] ?? ''))
+	const phone = phoneHere.find(({ name }) => src.includes(`/${name}.`))
+	return phone
+		? `<picture><source media="(max-width: 639px)" srcset="${escape(phone.url)}">${img}</picture>`
+		: img
+}
+// A cover with a "cover-phone.webp" beside it (the same drawing restacked) shows that on phones.
+const coverPhones = import.meta.glob<ImageMetadata>('/src/content/post/*/cover-phone.webp', {
+	import: 'default',
+	eager: true
+})
+const coverPhone = coverPhones[`/src/content/post/${post.id}/cover-phone.webp`]
+const body = await Astro.slots.render('default')
+const content = keepCode(
+	series
+		? body.replace(/<img\b[^>]*>/g, figure)
+		: phoneHere.length
+			? body.replace(/<img\b[^>]*>/g, phonePicture)
+			: body
+)
 
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).toString()
 const blogUrl = new URL('/blog/', Astro.site).toString()
@@ -115,11 +185,13 @@ const blogPostingSchema = {
 	</Fragment>
 	<Fragment slot='side'>
 		<TOC headings={headings} variant='sidebar' />
-		<WritingDirectory current={post.id} />
+		<WritingDirectory current={post.id} series={series} />
 		{
 			next && next.id !== post.id && (
 				<SideNext
-					label={series ? 'Next part' : 'Read next'}
+					label={
+						series ? (crossing ? `On to the ${crossing.section.label}` : 'Next note') : 'Read next'
+					}
 					href={`/blog/${next.id}/`}
 					title={next.data.title}
 				/>
@@ -130,47 +202,73 @@ const blogPostingSchema = {
 	<article class='doc doc--post'>
 		<header class='doc-head'>
 			<div class='doc-kicker'>
-				<p class='label'>{draft && 'Draft · '}<a href='/blog/'>Writing</a></p>
+				<p class='label'>
+					<a href='/blog/'>Writing</a>
+					{
+						series && (
+							<>
+								{' · '}
+								<a href={`/series/${series.slug}/`} set:text={series.name} />
+								{place?.section.label && ` · ${place.section.label}`}
+							</>
+						)
+					}
+					{draft && ' · Draft'}
+				</p>
 			</div>
-			<h1 class='doc-title'>{title}</h1>
-			<p class='doc-lede'>{description}</p>
+			<h1 class='doc-title' set:text={typeset(tidyTitle(title))} />
+			<p class='doc-lede' set:text={typeset(description)} />
 			<p class='doc-meta'>
 				<time datetime={isoDate(publishDate)} set:text={when} />
 			</p>
 		</header>
-		<Gist takeaways={takeaways} />
 		{series && <SeriesBlock series={series} current={post.id} />}
+		<Gist takeaways={takeaways} />
 		{
 			coverImage && (
 				<div class='doc-cover'>
 					<CoverFigure
 						src={coverImage.src}
 						alt={coverImage.alt}
-						sizes='(min-width: 960px) 704px, 100vw'
+						sizes='(min-width: 640px) 544px, 100vw'
+						phone={coverPhone}
 					/>
 				</div>
 			)
 		}
-		<p class='dive label' set:text={diveNote} />
 		<TOC headings={headings} variant='drawer' />
-		<div class='prose'>
-			<slot />
-		</div>
+		<div class='prose' set:html={content} />
 		<AuthorBox />
 	</article>
 	{
-		series ? (
+		series && place ? (
 			<UpNext
-				label={next ? 'Next part' : 'Series complete'}
-				count={`${series.parts.findIndex((p) => p.id === post.id) + 1} / ${series.parts.length}`}
+				label={
+					next ? (crossing ? `On to the ${crossing.section.label}` : 'Next note') : 'Last note'
+				}
+				count={
+					nextPlace &&
+					(crossing
+						? `Note ${nextPlace.index + 1} of ${nextPlace.section.parts.length}`
+						: noteLabel(nextPlace))
+				}
 				href={next ? `/blog/${next.id}/` : `/series/${series.slug}/`}
-				title={next ? next.data.title : series.name}
+				title={next ? next.data.title : series.title}
 				text={next ? next.data.description : series.about}
-				go={next ? 'Read the next part' : 'See all parts'}
+				go={
+					next
+						? crossing
+							? `Start the ${crossing.section.label}`
+							: 'Read the next note'
+						: 'See all notes'
+				}
 				back={
 					prev
-						? { href: `/blog/${prev.id}/`, label: `← Previous part: ${prev.data.title}` }
-						: { href: `/series/${series.slug}/`, label: `← All parts of ${series.name}` }
+						? {
+								href: `/blog/${prev.id}/`,
+								label: `← ${place.prev ? 'Previous note' : `Back to the ${place.prevHalf?.section.label ?? 'previous'}`}: ${prev.data.title}`
+							}
+						: { href: `/series/${series.slug}/`, label: `← All notes in ${series.name}` }
 				}
 			/>
 		) : (

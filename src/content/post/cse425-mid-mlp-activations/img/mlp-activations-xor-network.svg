@@ -1,86 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 470" width="1200" height="470" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 412" width="900" height="412" role="img" aria-labelledby="t d"><style id="fig-fonts">@font-face{font-family:'IBM Plex Sans';font-weight:400;unicode-range:U+20,U+28,U+29,U+2C,U+2E,U+30,U+31,U+32,U+35,U+3A,U+3D,U+3E,U+41,U+44,U+49,U+4E,U+4F,U+52,U+54,U+61,U+62,U+64,U+65,U+66,U+68,U+69,U+6B,U+6C,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+77,U+78,U+79,U+7A,U+200B,U+2212;src:url(data:font/woff2;base64,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) format('woff2')}@font-face{font-family:'IBM Plex Sans';font-weight:700;unicode-range:U+20,U+28,U+29,U+2C,U+2E,U+30,U+31,U+32,U+35,U+3A,U+3D,U+3E,U+41,U+44,U+49,U+4E,U+4F,U+52,U+54,U+61,U+62,U+64,U+65,U+66,U+68,U+69,U+6B,U+6C,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+77,U+78,U+79,U+7A,U+200B,U+2212;src:url(data:font/woff2;base64,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) format('woff2')}</style>
 <title id="t">XOR with a 2-2-1 step network</title>
 <desc id="d">Left: inputs x1 and x2 feed hidden units h1 and h2 with weights 1, -1 and -1, 1, both with bias -0.5; the output adds h1 and h2 with weights 1, 1 and bias -0.5. Middle: truth table. Right: the unit square split by the lines x1 - x2 = 0.5 and x2 - x1 = 0.5; the two corner regions outside the band give output 1, the band between the lines gives output 0.</desc>
-<defs>
-<style>
-text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size:15px}
-.s{font-size:13px}.m{fill:#57606a}.bl{fill:#1d4ed8}.rd{fill:#b91c1c}.bo{font-weight:bold}
-.lab{paint-order:stroke;stroke:#fafaf7;stroke-width:6px;stroke-linejoin:round}
-.node{fill:#ffffff;stroke:#1f2328;stroke-width:2}
-.edge{stroke:#57606a;stroke-width:2;fill:none}
-</style>
-<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker>
-</defs>
-<rect x="0" y="0" width="1200" height="470" rx="16" fill="#fafaf7"/>
-<text x="24" y="36" class="bo" style="font-size:17px">Network (step units: output 1 if z &gt; 0)</text>
-
-<!-- edges into hidden -->
-<line class="edge" x1="114" y1="140" x2="296" y2="140" marker-end="url(#ar)"/>
-<line class="edge" x1="108" y1="320" x2="302" y2="160" marker-end="url(#ar)"/>
-<line class="edge" x1="108" y1="160" x2="302" y2="320" marker-end="url(#ar)"/>
-<line class="edge" x1="114" y1="340" x2="296" y2="340" marker-end="url(#ar)"/>
-<!-- edges into output -->
-<line class="edge" x1="364" y1="150" x2="532" y2="226" marker-end="url(#ar)"/>
-<line class="edge" x1="364" y1="330" x2="532" y2="254" marker-end="url(#ar)"/>
-
-<text x="250" y="130" class="lab bl bo" text-anchor="middle">1</text>
-<text x="262" y="198" class="lab bl bo" text-anchor="middle">-1</text>
-<text x="262" y="292" class="lab bl bo" text-anchor="middle">-1</text>
-<text x="250" y="330" class="lab bl bo" text-anchor="middle">1</text>
-<text x="452" y="180" class="lab bl bo" text-anchor="middle">1</text>
-<text x="452" y="314" class="lab bl bo" text-anchor="middle">1</text>
-
-<circle class="node" cx="80" cy="140" r="34"/><text x="80" y="146" text-anchor="middle">x1</text>
-<circle class="node" cx="80" cy="340" r="34"/><text x="80" y="346" text-anchor="middle">x2</text>
-<circle class="node" cx="330" cy="140" r="34"/><text x="330" y="146" text-anchor="middle">h1</text>
-<circle class="node" cx="330" cy="340" r="34"/><text x="330" y="346" text-anchor="middle">h2</text>
-<circle class="node" cx="566" cy="240" r="34"/><text x="566" y="246" text-anchor="middle">y</text>
-
-<text x="330" y="92" text-anchor="middle" class="s">b = -0.5</text>
-<text x="330" y="398" text-anchor="middle" class="s">b = -0.5</text>
-<text x="566" y="192" text-anchor="middle" class="s">b = -0.5</text>
-<text x="330" y="420" text-anchor="middle" class="s m">h2: x2 AND NOT x1</text>
-<text x="330" y="70" text-anchor="middle" class="s m">h1: x1 AND NOT x2</text>
-<text x="566" y="300" text-anchor="middle" class="s m">y = h1 OR h2</text>
-
-<!-- truth table -->
-<g transform="translate(660,110)">
-<text x="0" y="0" class="bo s">x1</text><text x="34" y="0" class="bo s">x2</text>
-<text x="80" y="0" class="bo s">h1</text><text x="114" y="0" class="bo s">h2</text>
-<text x="160" y="0" class="bo s">y</text>
-<line x1="0" y1="10" x2="176" y2="10" stroke="#57606a" stroke-width="1.5"/>
-<line x1="66" y1="-16" x2="66" y2="160" stroke="#57606a" stroke-width="1.5"/>
-<line x1="146" y1="-16" x2="146" y2="160" stroke="#57606a" stroke-width="1.5"/>
-<g class="s">
-<text x="4" y="40">0</text><text x="38" y="40">0</text><text x="84" y="40">0</text><text x="118" y="40">0</text><text x="162" y="40" class="bo">0</text>
-<text x="4" y="76">0</text><text x="38" y="76">1</text><text x="84" y="76">0</text><text x="118" y="76">1</text><text x="162" y="76" class="bo rd">1</text>
-<text x="4" y="112">1</text><text x="38" y="112">0</text><text x="84" y="112">1</text><text x="118" y="112">0</text><text x="162" y="112" class="bo rd">1</text>
-<text x="4" y="148">1</text><text x="38" y="148">1</text><text x="84" y="148">0</text><text x="118" y="148">0</text><text x="162" y="148" class="bo">0</text>
-</g>
-</g>
-
-<!-- unit square: data -0.25..1.25 maps to px 880..1160 (x) and 380..100 (y), 186.67 px per unit -->
-<text x="1020" y="36" class="bo" text-anchor="middle" style="font-size:17px">Input plane</text>
-<rect x="880" y="100" width="280" height="280" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
-<!-- h1 = 1 region: x1 - x2 > 0.5 -->
-<polygon points="973.3,380 1160,380 1160,193.3" fill="#b91c1c" fill-opacity="0.13"/>
-<!-- h2 = 1 region: x2 - x1 > 0.5 -->
-<polygon points="880,286.7 880,100 1066.7,100" fill="#b91c1c" fill-opacity="0.13"/>
-<line x1="973.3" y1="380" x2="1160" y2="193.3" stroke="#1d4ed8" stroke-width="2.5"/>
-<line x1="880" y1="286.7" x2="1066.7" y2="100" stroke="#1d4ed8" stroke-width="2.5"/>
-<!-- points: (0,0) (1,0) (0,1) (1,1) -->
-<circle cx="926.7" cy="333.3" r="9" fill="#ffffff" stroke="#1f2328" stroke-width="2.5"/>
-<circle cx="1113.3" cy="146.7" r="9" fill="#ffffff" stroke="#1f2328" stroke-width="2.5"/>
-<circle cx="1113.3" cy="333.3" r="9" fill="#1f2328"/>
-<circle cx="926.7" cy="146.7" r="9" fill="#1f2328"/>
-<text x="1150" y="370" class="s rd bo" text-anchor="end">h1 = 1, y = 1</text>
-<text x="890" y="120" class="s rd bo">h2 = 1, y = 1</text>
-<text x="1020" y="246" class="s bo" text-anchor="middle" transform="rotate(-45 1020 240)">band: h1 = h2 = 0, y = 0</text>
-<text x="926.7" y="404" class="s" text-anchor="middle">0</text>
-<text x="1113.3" y="404" class="s" text-anchor="middle">1</text>
-<text x="1020" y="430" class="s" text-anchor="middle">x1</text>
-<text x="868" y="338" class="s" text-anchor="end">0</text>
-<text x="868" y="151" class="s" text-anchor="end">1</text>
-<text x="862" y="244" class="s" text-anchor="middle">x2</text>
-<text x="1020" y="456" class="s bl" text-anchor="middle">lines: x1 - x2 = 0.5 (h1) and x2 - x1 = 0.5 (h2)</text>
+<defs><style>text{font-family:'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}.lab{paint-order:stroke;stroke:#ffffff;stroke-width:5px;stroke-linejoin:round}</style><marker id="m-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15171a"/></marker><marker id="m-mut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#565c66"/></marker><marker id="m-bl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2451b8"/></marker><marker id="m-rd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="m-gr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="m-or" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker><marker id="m-pu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker><marker id="m-te" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker></defs>
+<rect x="0" y="0" width="900" height="412" fill="#ffffff"/>
+<text x="24" y="36" text-anchor="start" font-size="17" fill="#15171a" font-weight="bold">Network (step units: output 1 if z &gt; 0)</text>
+<line x1="90" y1="136" x2="204" y2="136" stroke="#565c66" stroke-width="2" marker-end="url(#m-mut)"/>
+<line x1="80.9735" y1="294.55" x2="213.628" y2="158.88" stroke="#565c66" stroke-width="2" marker-end="url(#m-mut)"/>
+<line x1="80.9735" y1="157.45" x2="213.628" y2="293.12" stroke="#565c66" stroke-width="2" marker-end="url(#m-mut)"/>
+<line x1="90" y1="316" x2="204" y2="316" stroke="#565c66" stroke-width="2" marker-end="url(#m-mut)"/>
+<line x1="261.128" y1="152.388" x2="347.196" y2="208.519" stroke="#565c66" stroke-width="2" marker-end="url(#m-mut)"/>
+<line x1="261.128" y1="299.612" x2="347.196" y2="243.481" stroke="#565c66" stroke-width="2" marker-end="url(#m-mut)"/>
+<text x="148" y="128" text-anchor="middle" font-size="15" fill="#2451b8" font-weight="bold" class="lab">1</text>
+<text x="148" y="329" text-anchor="middle" font-size="15" fill="#2451b8" font-weight="bold" class="lab">1</text>
+<text x="156" y="195" text-anchor="middle" font-size="15" fill="#2451b8" font-weight="bold" class="lab">−1</text>
+<text x="156" y="267" text-anchor="middle" font-size="15" fill="#2451b8" font-weight="bold" class="lab">−1</text>
+<text x="312" y="166" text-anchor="middle" font-size="15" fill="#2451b8" font-weight="bold" class="lab">1</text>
+<text x="312" y="298" text-anchor="middle" font-size="15" fill="#2451b8" font-weight="bold" class="lab">1</text>
+<circle cx="60" cy="136" r="30" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="60" y="142.3" text-anchor="middle" font-size="18" fill="#15171a">x<tspan dy="5.04" font-size="14.5">1</tspan><tspan dy="-5.04">​</tspan></text>
+<circle cx="60" cy="316" r="30" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="60" y="322.3" text-anchor="middle" font-size="18" fill="#15171a">x<tspan dy="5.04" font-size="14.5">2</tspan><tspan dy="-5.04">​</tspan></text>
+<circle cx="236" cy="136" r="30" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="236" y="142.3" text-anchor="middle" font-size="18" fill="#15171a">h<tspan dy="5.04" font-size="14.5">1</tspan><tspan dy="-5.04">​</tspan></text>
+<circle cx="236" cy="316" r="30" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="236" y="322.3" text-anchor="middle" font-size="18" fill="#15171a">h<tspan dy="5.04" font-size="14.5">2</tspan><tspan dy="-5.04">​</tspan></text>
+<circle cx="374" cy="226" r="30" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="374" y="232.3" text-anchor="middle" font-size="18" fill="#15171a">y</text>
+<text x="236" y="94" text-anchor="middle" font-size="15" fill="#15171a">b = −0.5</text>
+<text x="236" y="72" text-anchor="middle" font-size="15" fill="#565c66">h<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan>: x<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan> AND NOT x<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="236" y="370" text-anchor="middle" font-size="15" fill="#15171a">b = −0.5</text>
+<text x="236" y="392" text-anchor="middle" font-size="15" fill="#565c66">h<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan>: x<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan> AND NOT x<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="374" y="184" text-anchor="middle" font-size="15" fill="#15171a">b = −0.5</text>
+<text x="374" y="280" text-anchor="middle" font-size="15" fill="#565c66">y = h<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan> OR h<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="440" y="168" text-anchor="middle" font-size="15" fill="#15171a" font-weight="bold">x<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="472" y="168" text-anchor="middle" font-size="15" fill="#15171a" font-weight="bold">x<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="516" y="168" text-anchor="middle" font-size="15" fill="#15171a" font-weight="bold">h<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="548" y="168" text-anchor="middle" font-size="15" fill="#15171a" font-weight="bold">h<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="592" y="168" text-anchor="middle" font-size="15" fill="#15171a" font-weight="bold">y</text>
+<line x1="424" y1="178" x2="608" y2="178" stroke="#565c66" stroke-width="1.5"/>
+<line x1="494" y1="151" x2="494" y2="303" stroke="#565c66" stroke-width="1.5"/>
+<line x1="570" y1="151" x2="570" y2="303" stroke="#565c66" stroke-width="1.5"/>
+<text x="440" y="202.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="472" y="202.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="516" y="202.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="548" y="202.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="592" y="202.25" text-anchor="middle" font-size="15" fill="#15171a" font-weight="bold">0</text>
+<text x="440" y="236.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="472" y="236.25" text-anchor="middle" font-size="15" fill="#15171a">1</text>
+<text x="516" y="236.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="548" y="236.25" text-anchor="middle" font-size="15" fill="#15171a">1</text>
+<text x="592" y="236.25" text-anchor="middle" font-size="15" fill="#b8322a" font-weight="bold">1</text>
+<text x="440" y="270.25" text-anchor="middle" font-size="15" fill="#15171a">1</text>
+<text x="472" y="270.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="516" y="270.25" text-anchor="middle" font-size="15" fill="#15171a">1</text>
+<text x="548" y="270.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="592" y="270.25" text-anchor="middle" font-size="15" fill="#b8322a" font-weight="bold">1</text>
+<text x="440" y="304.25" text-anchor="middle" font-size="15" fill="#15171a">1</text>
+<text x="472" y="304.25" text-anchor="middle" font-size="15" fill="#15171a">1</text>
+<text x="516" y="304.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="548" y="304.25" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="592" y="304.25" text-anchor="middle" font-size="15" fill="#15171a" font-weight="bold">0</text>
+<text x="771" y="36" text-anchor="middle" font-size="17" fill="#15171a" font-weight="bold">Input plane</text>
+<rect x="666" y="66" width="210" height="210" rx="0" fill="#ffffff" stroke="#565c66" stroke-width="1.5"/>
+<polygon points="736.0,276.0 876.0,276.0 876.0,136.0" fill="#b8322a" fill-opacity="0.13"/>
+<polygon points="666.0,206.0 666.0,66.0 806.0,66.0" fill="#b8322a" fill-opacity="0.13"/>
+<line x1="736" y1="276" x2="876" y2="136" stroke="#2451b8" stroke-width="2.5"/>
+<line x1="666" y1="206" x2="806" y2="66" stroke="#2451b8" stroke-width="2.5"/>
+<circle cx="701" cy="241" r="8" fill="#ffffff" stroke="#15171a" stroke-width="2.5"/>
+<circle cx="841" cy="101" r="8" fill="#ffffff" stroke="#15171a" stroke-width="2.5"/>
+<circle cx="841" cy="241" r="8" fill="#15171a" stroke="#15171a" stroke-width="0"/>
+<circle cx="701" cy="101" r="8" fill="#15171a" stroke="#15171a" stroke-width="0"/>
+<text x="868" y="266" text-anchor="end" font-size="15" fill="#b8322a" font-weight="bold">h<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan> = 1, y = 1</text>
+<text x="674" y="87" text-anchor="start" font-size="15" fill="#b8322a" font-weight="bold">h<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan> = 1, y = 1</text>
+<text x="771" y="176.25" text-anchor="middle" font-size="15" fill="#15171a" font-weight="bold" transform="rotate(-45 771 176.25)">band: h<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan> = h<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan> = 0, y = 0</text>
+<text x="701" y="297" text-anchor="middle" font-size="15" fill="#15171a">0</text>
+<text x="656" y="246.25" text-anchor="end" font-size="15" fill="#15171a">0</text>
+<text x="841" y="297" text-anchor="middle" font-size="15" fill="#15171a">1</text>
+<text x="656" y="106.25" text-anchor="end" font-size="15" fill="#15171a">1</text>
+<text x="771" y="320" text-anchor="middle" font-size="15" fill="#15171a">x<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="630" y="176.25" text-anchor="middle" font-size="15" fill="#15171a">x<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan></text>
+<text x="771" y="348" text-anchor="middle" font-size="15" fill="#2451b8">lines: x<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan> − x<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan> = 0.5 (h<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan>)</text>
+<text x="771" y="368" text-anchor="middle" font-size="15" fill="#2451b8">and x<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan> − x<tspan dy="4.20" font-size="14.5">1</tspan><tspan dy="-4.20">​</tspan> = 0.5 (h<tspan dy="4.20" font-size="14.5">2</tspan><tspan dy="-4.20">​</tspan>)</text>
 </svg>

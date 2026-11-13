@@ -1,5 +1,6 @@
 ---
 import { getAllProjects } from '@/utils'
+import { typeset } from '@/utils/typeset'
 
 interface Props {
 	/** The project being read; it takes the accent and aria-current. */
@@ -23,7 +24,7 @@ const label = variant === 'side' ? 'Projects' : 'All projects'
 					<a
 						href={`/projects/${project.id}/`}
 						aria-current={project.id === current ? 'page' : undefined}
-						set:text={project.data.name ?? project.data.title}
+						set:text={typeset(project.data.name ?? project.data.title)}
 					/>
 				</li>
 			))

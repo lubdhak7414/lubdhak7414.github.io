@@ -1,28 +1,53 @@
 ---
 import type { ImageMetadata } from 'astro'
-import { Image } from 'astro:assets'
+import { Image, getImage } from 'astro:assets'
 
 interface Props {
 	src: ImageMetadata
 	alt: string
 	sizes: string
 	caption?: string | undefined
+	/** A narrower drawing of the same cover for phones, where the wide one's text would shrink. */
+	phone?: ImageMetadata | undefined
 }
 
-const { src, alt, sizes, caption } = Astro.props
+const { src, alt, sizes, caption, phone } = Astro.props
+const narrow = phone && (await getImage({ src: phone, widths: [640, 1080], format: 'webp' }))
 ---
 
 {/* The image keeps its own aspect ratio, in a rounded hairline frame. */}
 <figure class='figure'>
 	<div class='cover-frame'>
-		<Image
-			src={src}
-			alt={alt}
-			widths={[640, 960, 1280, 1600]}
-			sizes={sizes}
-			loading='eager'
-			fetchpriority='high'
-		/>
+		{
+			narrow && phone ? (
+				<picture>
+					<source
+						media='(max-width: 639px)'
+						srcset={narrow.srcSet.attribute}
+						sizes='100vw'
+						width={phone.width}
+						height={phone.height}
+					/>
+					<Image
+						src={src}
+						alt={alt}
+						widths={[640, 960, 1280, 1600]}
+						sizes={sizes}
+						loading='eager'
+						fetchpriority='high'
+					/>
+				</picture>
+			) : (
+				<Image
+					src={src}
+					alt={alt}
+					widths={[640, 960, 1280, 1600]}
+					sizes={sizes}
+					loading='eager'
+					fetchpriority='high'
+				/>
+			)
+		}
 	</div>
 	{caption && <figcaption>{caption}</figcaption>}
 </figure>

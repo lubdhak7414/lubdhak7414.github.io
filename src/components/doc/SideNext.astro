@@ -1,4 +1,6 @@
 ---
+import { typeset } from '@/utils/typeset'
+
 interface Props {
 	label: string
 	href: string
@@ -12,7 +14,7 @@ const { label, href, title } = Astro.props
 <a class='side-next' href={href}>
 	<span class='side-next-label' set:text={label} />
 	<span class='side-next-title'>
-		<span set:text={title} />
+		<span set:text={typeset(title)} />
 		<span class='side-next-arrow' aria-hidden='true'>→</span>
 	</span>
 </a>

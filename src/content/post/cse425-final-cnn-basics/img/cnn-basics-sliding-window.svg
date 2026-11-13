@@ -1,116 +1,116 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" width="900" height="640" role="img" aria-labelledby="t d" font-family="DejaVu Sans, Helvetica, Arial, sans-serif"><title id="t">Two positions of a 3x3 kernel on a 4x4 input</title><desc id="d">Kernel rows 1 0 -1, 2 0 -2, 1 0 -1. Position 1 covers columns 1 to 3 and gives 1 - 6 + 1 = -4. Position 2 slides one column right and gives 1 - 2 + 0 = -1. The 2x2 output is -4, -1 on top and 0, 0 below.</desc><defs><marker id="ah-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d232b"/></marker><marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563c9"/></marker><marker id="ah-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b85f08"/></marker><marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="ah-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="ah-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#56606c"/></marker><marker id="ah-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker></defs><rect x="1" y="1" width="898" height="638" rx="16" fill="#f8f7f3" stroke="#d3cfc6" stroke-width="1.5"/><text x="30" y="34" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Kernel (stride 1, no padding)</text>
-<rect x="300" y="16" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="317.0" y="34.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="334" y="16" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="351.0" y="34.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="368" y="16" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="385.0" y="34.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-1</text>
-<rect x="300" y="50" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="317.0" y="68.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="334" y="50" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="351.0" y="68.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="368" y="50" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="385.0" y="68.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-2</text>
-<rect x="300" y="84" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="317.0" y="102.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="334" y="84" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="351.0" y="102.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="368" y="84" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="385.0" y="102.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-1</text>
-<text x="430" y="50" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">The same 9 weights are used at every position.</text>
-<text x="30" y="136" font-size="15" text-anchor="start" font-weight="bold" fill="#2563c9" dominant-baseline="middle">Position 1: columns 1 to 3</text>
-<rect x="30" y="150" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="52.0" y="173.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="74" y="150" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="96.0" y="173.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="118" y="150" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="140.0" y="173.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="162" y="150" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="184.0" y="173.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="30" y="194" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="52.0" y="217.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="74" y="194" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="96.0" y="217.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="118" y="194" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="140.0" y="217.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">3</text>
-<rect x="162" y="194" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="184.0" y="217.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="30" y="238" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="52.0" y="261.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="74" y="238" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="96.0" y="261.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="118" y="238" width="44" height="44" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="140.0" y="261.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="162" y="238" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="184.0" y="261.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="30" y="282" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="52.0" y="305.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="74" y="282" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="96.0" y="305.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">3</text>
-<rect x="118" y="282" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="140.0" y="305.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="162" y="282" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="184.0" y="305.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="30" y="150" width="132" height="132" rx="3" fill="none" stroke="#2563c9" stroke-width="3.2"/>
-<text x="250" y="178" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">row 1:  1x1 + 2x0 + 0x(-1) = 1</text>
-<text x="250" y="214" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">row 2:  0x2 + 1x0 + 3x(-2) = -6</text>
-<text x="250" y="250" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">row 3:  2x1 + 0x0 + 1x(-1) = 1</text>
-<line x1="250" y1="274" x2="560" y2="274" stroke="#56606c" stroke-width="1.2"/>
-<text x="250" y="300" font-size="16" text-anchor="start" font-weight="bold" fill="#2563c9" dominant-baseline="middle">total = 1 - 6 + 1 = -4</text>
-<text x="740" y="152" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Output 2 x 2</text>
-<rect x="690" y="170" width="50" height="50" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="715.0" y="196.0" font-size="16" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-4</text>
-<rect x="740" y="170" width="50" height="50" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="690" y="220" width="50" height="50" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="740" y="220" width="50" height="50" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="690" y="170" width="50" height="50" rx="3" fill="none" stroke="#2563c9" stroke-width="3.2"/>
-<path d="M 545 300 C 620 300, 630 195, 686 195" fill="none" stroke="#2563c9" stroke-width="1.8" marker-end="url(#ah-blue)"/>
-<text x="30" y="396" font-size="15" text-anchor="start" font-weight="bold" fill="#b85f08" dominant-baseline="middle">Position 2: slide right by 1</text>
-<rect x="30" y="410" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="52.0" y="433.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="74" y="410" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="96.0" y="433.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="118" y="410" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="140.0" y="433.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="162" y="410" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="184.0" y="433.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="30" y="454" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="52.0" y="477.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="74" y="454" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="96.0" y="477.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="118" y="454" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="140.0" y="477.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">3</text>
-<rect x="162" y="454" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="184.0" y="477.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="30" y="498" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="52.0" y="521.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="74" y="498" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="96.0" y="521.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="118" y="498" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="140.0" y="521.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="162" y="498" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="184.0" y="521.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="30" y="542" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="52.0" y="565.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="74" y="542" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="96.0" y="565.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">3</text>
-<rect x="118" y="542" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="140.0" y="565.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="162" y="542" width="44" height="44" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="184.0" y="565.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">2</text>
-<rect x="74" y="410" width="132" height="132" rx="3" fill="none" stroke="#b85f08" stroke-width="3.2"/>
-<text x="250" y="438" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">row 1:  2x1 + 0x0 + 1x(-1) = 1</text>
-<text x="250" y="474" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">row 2:  1x2 + 3x0 + 2x(-2) = -2</text>
-<text x="250" y="510" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">row 3:  0x1 + 1x0 + 0x(-1) = 0</text>
-<line x1="250" y1="534" x2="560" y2="534" stroke="#56606c" stroke-width="1.2"/>
-<text x="250" y="560" font-size="16" text-anchor="start" font-weight="bold" fill="#b85f08" dominant-baseline="middle">total = 1 - 2 + 0 = -1</text>
-<text x="740" y="412" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Output 2 x 2</text>
-<rect x="690" y="430" width="50" height="50" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="715.0" y="456.0" font-size="16" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-4</text>
-<rect x="740" y="430" width="50" height="50" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="765.0" y="456.0" font-size="16" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-1</text>
-<rect x="690" y="480" width="50" height="50" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="740" y="480" width="50" height="50" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="740" y="430" width="50" height="50" rx="3" fill="none" stroke="#b85f08" stroke-width="3.2"/>
-<path d="M 545 560 C 860 560, 850 455, 794 455" fill="none" stroke="#b85f08" stroke-width="1.8" marker-end="url(#ah-orange)"/>
-<text x="450" y="612" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Sliding down one row gives the bottom two cells, 0 and 0, for the final output [[-4, -1], [0, 0]].</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" width="900" height="640" role="img" aria-labelledby="t d" font-family="'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"><style id="fig-fonts">@font-face{font-family:'IBM Plex Sans';font-weight:400;unicode-range:U+20,U+28,U+29,U+2B,U+2C,U+2E,U+30,U+31,U+32,U+33,U+34,U+36,U+39,U+3A,U+3D,U+4B,U+4F,U+50,U+53,U+54,U+5B,U+5D,U+61,U+62,U+63,U+64,U+65,U+66,U+67,U+68,U+69,U+6C,U+6D,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+76,U+77,U+79,U+B7,U+D7,U+2212;src:url(data:font/woff2;base64,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) format('woff2')}@font-face{font-family:'IBM Plex Sans';font-weight:700;unicode-range:U+20,U+28,U+29,U+2B,U+2C,U+2E,U+30,U+31,U+32,U+33,U+34,U+36,U+39,U+3A,U+3D,U+4B,U+4F,U+50,U+53,U+54,U+5B,U+5D,U+61,U+62,U+63,U+64,U+65,U+66,U+67,U+68,U+69,U+6C,U+6D,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+76,U+77,U+79,U+B7,U+D7,U+2212;src:url(data:font/woff2;base64,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) format('woff2')}</style><title id="t">Two positions of a 3×3 kernel on a 4×4 input</title><desc id="d">Kernel rows 1 0 -1, 2 0 -2, 1 0 -1. Position 1 covers columns 1 to 3 and gives 1 - 6 + 1 = -4. Position 2 slides one column right and gives 1 - 2 + 0 = -1. The 2×2 output is -4, -1 on top and 0, 0 below.</desc><defs><marker id="ah-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15171a"/></marker><marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2451b8"/></marker><marker id="ah-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker><marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="ah-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="ah-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#565c66"/></marker><marker id="ah-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker></defs><rect x="1" y="1" width="898" height="638" fill="#ffffff"/><text x="30" y="34" font-size="15" text-anchor="start" font-weight="bold" fill="#15171a" dominant-baseline="middle">Kernel (stride 1, no padding)</text>
+<rect x="300" y="16" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="317.0" y="34.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="334" y="16" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="351.0" y="34.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="368" y="16" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="385.0" y="34.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−1</text>
+<rect x="300" y="50" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="317.0" y="68.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="334" y="50" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="351.0" y="68.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="368" y="50" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="385.0" y="68.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−2</text>
+<rect x="300" y="84" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="317.0" y="102.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="334" y="84" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="351.0" y="102.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="368" y="84" width="34" height="34" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="385.0" y="102.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−1</text>
+<text x="430" y="50" font-size="14" text-anchor="start" font-weight="normal" fill="#565c66" dominant-baseline="middle">The same 9 weights are used at every position.</text>
+<text x="30" y="136" font-size="15" text-anchor="start" font-weight="bold" fill="#2451b8" dominant-baseline="middle">Position 1: columns 1 to 3</text>
+<rect x="30" y="150" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="52.0" y="173.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="74" y="150" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="96.0" y="173.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="118" y="150" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="140.0" y="173.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="162" y="150" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="184.0" y="173.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="30" y="194" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="52.0" y="217.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="74" y="194" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="96.0" y="217.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="118" y="194" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="140.0" y="217.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">3</text>
+<rect x="162" y="194" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="184.0" y="217.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="30" y="238" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="52.0" y="261.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="74" y="238" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="96.0" y="261.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="118" y="238" width="44" height="44" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="140.0" y="261.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="162" y="238" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="184.0" y="261.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="30" y="282" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="52.0" y="305.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="74" y="282" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="96.0" y="305.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">3</text>
+<rect x="118" y="282" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="140.0" y="305.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="162" y="282" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="184.0" y="305.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="30" y="150" width="132" height="132" rx="3" fill="none" stroke="#2451b8" stroke-width="3.2"/>
+<text x="250" y="178" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">row 1:  1·1 + 2·0 + 0·(−1) = 1</text>
+<text x="250" y="214" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">row 2:  0·2 + 1·0 + 3·(−2) = −6</text>
+<text x="250" y="250" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">row 3:  2·1 + 0·0 + 1·(−1) = 1</text>
+<line x1="250" y1="274" x2="560" y2="274" stroke="#565c66" stroke-width="1.2"/>
+<text x="250" y="300" font-size="16" text-anchor="start" font-weight="bold" fill="#2451b8" dominant-baseline="middle">total = 1 − 6 + 1 = −4</text>
+<text x="740" y="152" font-size="15" text-anchor="middle" font-weight="bold" fill="#15171a" dominant-baseline="middle">Output 2×2</text>
+<rect x="690" y="170" width="50" height="50" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="715.0" y="196.0" font-size="16" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−4</text>
+<rect x="740" y="170" width="50" height="50" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="690" y="220" width="50" height="50" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="740" y="220" width="50" height="50" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="690" y="170" width="50" height="50" rx="3" fill="none" stroke="#2451b8" stroke-width="3.2"/>
+<path d="M 545 300 C 620 300, 630 195, 686 195" fill="none" stroke="#2451b8" stroke-width="1.8" marker-end="url(#ah-blue)"/>
+<text x="30" y="396" font-size="15" text-anchor="start" font-weight="bold" fill="#b45309" dominant-baseline="middle">Position 2: slide right by 1</text>
+<rect x="30" y="410" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="52.0" y="433.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="74" y="410" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="96.0" y="433.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="118" y="410" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="140.0" y="433.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="162" y="410" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="184.0" y="433.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="30" y="454" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="52.0" y="477.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="74" y="454" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="96.0" y="477.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="118" y="454" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="140.0" y="477.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">3</text>
+<rect x="162" y="454" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="184.0" y="477.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="30" y="498" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="52.0" y="521.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="74" y="498" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="96.0" y="521.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="118" y="498" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="140.0" y="521.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="162" y="498" width="44" height="44" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="184.0" y="521.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="30" y="542" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="52.0" y="565.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="74" y="542" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="96.0" y="565.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">3</text>
+<rect x="118" y="542" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="140.0" y="565.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="162" y="542" width="44" height="44" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="184.0" y="565.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">2</text>
+<rect x="74" y="410" width="132" height="132" rx="3" fill="none" stroke="#b45309" stroke-width="3.2"/>
+<text x="250" y="438" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">row 1:  2·1 + 0·0 + 1·(−1) = 1</text>
+<text x="250" y="474" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">row 2:  1·2 + 3·0 + 2·(−2) = −2</text>
+<text x="250" y="510" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">row 3:  0·1 + 1·0 + 0·(−1) = 0</text>
+<line x1="250" y1="534" x2="560" y2="534" stroke="#565c66" stroke-width="1.2"/>
+<text x="250" y="560" font-size="16" text-anchor="start" font-weight="bold" fill="#b45309" dominant-baseline="middle">total = 1 − 2 + 0 = −1</text>
+<text x="740" y="412" font-size="15" text-anchor="middle" font-weight="bold" fill="#15171a" dominant-baseline="middle">Output 2×2</text>
+<rect x="690" y="430" width="50" height="50" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="715.0" y="456.0" font-size="16" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−4</text>
+<rect x="740" y="430" width="50" height="50" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="765.0" y="456.0" font-size="16" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−1</text>
+<rect x="690" y="480" width="50" height="50" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="740" y="480" width="50" height="50" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="740" y="430" width="50" height="50" rx="3" fill="none" stroke="#b45309" stroke-width="3.2"/>
+<path d="M 545 560 C 860 560, 850 455, 794 455" fill="none" stroke="#b45309" stroke-width="1.8" marker-end="url(#ah-orange)"/>
+<text x="450" y="612" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">Sliding down one row gives the bottom two cells, 0 and 0, for the final output [[−4, −1], [0, 0]].</text></svg>

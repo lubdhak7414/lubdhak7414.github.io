@@ -4,8 +4,8 @@ description: 'Auditing an old PHP and CodeIgniter 3 backend behind a mobile app 
 publishDate: '29 May 2026'
 coverImage:
   src: './cover.webp'
-  alt: 'Diagram: an installed app talks to a frozen API contract with the same keys, types and status codes, and behind it the server gets session login, upload checks, SMTP mail and CodeIgniter 3.1.13.'
-tags: ['PHP', 'Security', 'CodeIgniter', 'Incident Response', 'Legacy Code']
+  alt: 'Three panels: the installed app can''t be forced to update, the frozen API contract keeps the same keys, types and status codes with new fields additive only, and the server gets session login, upload checks, SMTP mail and CodeIgniter 3.1.13'
+tags: ['php', 'security', 'codeigniter', 'incident-response', 'legacy-code']
 ---
 
 A client asked me to look at the PHP backend behind their mobile app and make it safe. The catch was the app itself. Copies already installed on people's phones can't be forced to update, so whatever the API returns today, it has to keep returning.
@@ -14,9 +14,9 @@ That changes the job. I wasn't securing a system I could reshape. I was securing
 
 > **Key Takeaways**
 >
-> - When old app versions can't be forced to update, the API's response shape is a frozen contract. Fix what happens behind it, add fields if you must, and never rename or remove any.
-> - Start with the fixes no app ever sees: the admin login, file uploads, outgoing mail and the framework itself. They close real holes with no risk to the contract.
-> - md5 passwords don't need a mass reset. Check the old hash once, replace it with `password_hash()` on the next successful login, and let `password_needs_rehash()` handle later changes.
+> - Old app versions can't be forced to update, so the API's response shape is frozen. Add fields, never rename or remove.
+> - Start with fixes no app sees: the admin login, file uploads, outgoing mail and the framework itself.
+> - md5 passwords need no mass reset. Replace each one with `password_hash()` on the user's next successful login.
 
 ## What the backend looked like
 

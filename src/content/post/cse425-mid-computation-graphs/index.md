@@ -1,10 +1,11 @@
 ---
-title: "Computation Graphs"
-description: "A formula drawn as a graph of small operations, with every value filled in going forward and every gradient read off going backward."
+title: "Computation graph backpropagation, worked by hand"
+description: "A neuron drawn as a graph of small operations: every value filled in going forward and every gradient read off going backward, on a ReLU and a logistic neuron."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, backprop, computation-graph]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 5
 ---
 
@@ -13,9 +14,9 @@ With $x=2$, $w=3$, $b=-1$ and a target of $y=5$, a ReLU neuron outputs $\max(0,\
 A computation graph is a formula drawn so that every single operation gets its own box. Backprop on a big network is the chain rule applied hundreds of times, and the graph turns that into a routine with one small derivative per arrow. PyTorch and TensorFlow compute your gradients the same way.
 
 > **Key Takeaways**
-> - Going forward you fill in a value at every node and keep it. Going backward you start at the loss with gradient 1 and multiply by a local derivative along each arrow.
+> - Forward, store a value at every node. Backward, start at the loss with gradient 1 and multiply by each arrow's local derivative.
 > - If a value feeds two later nodes, the gradients arriving from both routes add.
-> - An add node passes the gradient on unchanged, a multiply node swaps the two inputs, and a ReLU node passes it only if $z>0$.
+> - An add node copies the gradient, a multiply node swaps its two inputs, and a ReLU passes it only if $z>0$.
 > - One backward sweep gives the gradient of the loss with respect to every input at once.
 
 ## One neuron as a graph
@@ -33,8 +34,8 @@ flowchart TD
   x["x = 2"] --> m["multiply: p = 6"]
   w["w = 3"] --> m
   m --> s["add: z = 5"]
-  b["b = -1"] --> s
-  s --> r["ReLU: y-hat = 5"]
+  b["b = −1"] --> s
+  s --> r["ReLU: ŷ = 5"]
   r --> l["loss: L = 8"]
   y["y = 1"] --> l
 ```
@@ -102,7 +103,7 @@ PyTorch builds a fresh graph on every forward pass, so loops and if-statements j
 
 A harder case is $f=x^2y\sin x+2y^2\cos x$, with $f$ standing in for the loss. It breaks into nine nodes: $t_1=\sin x$, $t_2=xy$, $t_3=x\,t_2$, $t_4=t_3t_1$, $t_5=\cos x$, $t_6=2t_5$, $t_7=y\,y$, $t_8=t_7t_6$ and $t_9=t_4+t_8=f$. The figure shows every forward value (blue) and every backward gradient (red) at $x=1$, $y=2$.
 
-![Nine-node computation graph for f = x^2 y sin x + 2 y^2 cos x at x = 1, y = 2, with forward values and backward gradients on every node](img/computation-graphs-board-graph-9-node.svg)
+![Nine-node computation graph for f = x² y sin x + 2 y² cos x at x = 1, y = 2, with forward values and backward gradients on every node](img/computation-graphs-board-graph-9-node.svg)
 
 The red numbers fill in from right to left. The add node $t_9$ passes 1 to both $t_4$ and $t_8$. The multiply node $t_4=t_3t_1$ swaps: $t_3$ receives $t_1=0.84147$ and $t_1$ receives $t_3=2$. The rest follow the same two rules.
 
@@ -119,7 +120,7 @@ $$+1.68294-6.73177=-2.28528$$
 
 The node $y$ feeds $t_2$ and both inputs of $t_7$, giving $0.84147\cdot1=0.84147$ from $t_2$ and $1.08060\cdot2\cdot2=4.32242$ from $t_7$, which add to 5.16389.
 
-## Gradients to work out by hand
+## Practice: gradients by hand
 
 Take $L=(y-\widehat{y})^2$ with $\widehat{y}=wx$, $w=3$, $x=2$ and $y=5$. What is $\partial L/\partial w$?
 

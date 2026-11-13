@@ -1,26 +1,29 @@
 ---
-title: 'Three Tiny Generators That Do One Thing Each'
-name: 'Three Tiny Generators'
+title: 'Three tiny generators that do one thing each'
+name: 'Three tiny generators'
 description: 'Three small text generators trained from scratch in PyTorch on one shared architecture: ASCII roguelike maps, cat monologues and pseudo-assembly.'
 publishDate: '08 July 2026'
 homePageIdx: 8
 coverImage:
   src: './cover.webp'
   alt: 'Three terminal windows showing ASCII art, cat dialogue, and assembly code'
-tags: ['Python', 'PyTorch', 'Machine Learning', 'NLP', 'Project']
+tags: ['python', 'pytorch', 'machine-learning', 'nlp', 'project']
 links:
   - {
-      label: 'ASCII Cartographer',
+      label: 'ASCII Cartographer source',
+      short: 'maps',
       url: 'https://github.com/lubdhak7414/ascii-cartographer',
       kind: 'code'
     }
   - {
-      label: 'Feline Monologue',
+      label: 'Feline Monologue source',
+      short: 'cat',
       url: 'https://github.com/lubdhak7414/feline-monologue',
       kind: 'code'
     }
   - {
-      label: 'Hardware Whisperer',
+      label: 'Hardware Whisperer source',
+      short: 'assembly',
       url: 'https://github.com/lubdhak7414/hardware-whisperer',
       kind: 'code'
     }
@@ -30,16 +33,15 @@ facts:
   stack: ['PyTorch']
 glance:
   does: 'Three small text generators on one shared engine: roguelike ASCII maps, a judgmental cat, and English rewritten as pseudo-assembly.'
-  did: 'Built all three from scratch in PyTorch, each with its own tokenizer, training data and validators.'
+  did: 'Built and trained all three from scratch in PyTorch.'
 ---
 
 I built three small text generators to test one idea: can the same architecture code do completely unrelated jobs? One draws ASCII roguelike maps, one answers questions as a judgmental cat, and one rewrites English as pseudo-8086 assembly. They share every line of architecture code.
 
 > **Key Takeaways**
 >
-> - Three projects, one decoder-only sequence engine (6 layers, 6 heads, 384 dimensions), trained from scratch in PyTorch
-> - ASCII Cartographer generates roguelike maps, Feline Monologue answers as a judgmental cat, Hardware Whisperer rewrites English as pseudo-8086 assembly
-> - With the architecture fixed, the tokenizer, training data and validators are what make each project work
+> - Three projects, one decoder-only sequence engine (6 layers, 6 heads, 384 dimensions).
+> - With the architecture fixed, the tokenizer, training data and validators are what make each project work.
 
 ## Why three instead of one
 

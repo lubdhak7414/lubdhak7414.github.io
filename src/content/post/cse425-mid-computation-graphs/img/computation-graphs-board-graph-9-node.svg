@@ -1,80 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 740" width="1300" height="740" role="img" aria-labelledby="t d">
-<title id="t">Computation graph for f = x^2 y sin x + 2 y^2 cos x</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 870 638" width="870" height="638" role="img" aria-labelledby="t d" font-family="'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" fill="#15171a"><style id="fig-fonts">@font-face{font-family:'IBM Plex Sans';font-weight:400;unicode-range:U+20,U+28,U+29,U+2B,U+2C,U+2E,U+2F,U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+39,U+3A,U+3D,U+45,U+61,U+62,U+63,U+64,U+65,U+66,U+67,U+68,U+69,U+6C,U+6D,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+76,U+77,U+78,U+79,U+B2,U+B7,U+200B,U+2202,U+2212;src:url(data:font/woff2;base64,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) format('woff2')}@font-face{font-family:'IBM Plex Sans';font-weight:700;unicode-range:U+20,U+28,U+29,U+2B,U+2C,U+2E,U+2F,U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+39,U+3A,U+3D,U+45,U+61,U+62,U+63,U+64,U+65,U+66,U+67,U+68,U+69,U+6C,U+6D,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+76,U+77,U+78,U+79,U+B2,U+B7,U+200B,U+2202,U+2212;src:url(data:font/woff2;base64,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) format('woff2')}</style>
+<title id="t">Computation graph for f = x² y sin x + 2 y² cos x</title>
 <desc id="d">Nine nodes with forward values in blue and backward gradients in red at x = 1, y = 2; the four paths out of x add to -2.28528 and the two paths out of y add to 5.16389.</desc>
-<defs><style>
-text{font-family:'DejaVu Sans',Arial,Helvetica,sans-serif;fill:#1f2328;font-size:15px}
-.s{font-size:13px}.l{font-size:17px}.m{fill:#57606a}.bl{fill:#1d4ed8}.rd{fill:#b91c1c}
-.gr{fill:#15803d}.or{fill:#c2410c}.pu{fill:#7e22ce}.bo{font-weight:bold}
-.lab{paint-order:stroke;stroke:#fafaf7;stroke-width:6px;stroke-linejoin:round}
-.mono{font-family:'DejaVu Sans Mono',Consolas,monospace}
-</style><marker id="a1f2328" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f2328"/></marker><marker id="a57606a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker><marker id="a1d4ed8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker><marker id="ab91c1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="a15803d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker><marker id="ac2410c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker><marker id="a7e22ce" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker></defs>
-<rect x="0" y="0" width="1300" height="740" rx="16" fill="#fafaf7"/>
-<text x="24.0" y="36.0" class="l bo" text-anchor="start">f = x² y sin x + 2 y² cos x  at  x = 1, y = 2</text>
-<line x1="185.0" y1="240.0" x2="343.0" y2="120.0" stroke="#7e22ce" stroke-width="2.4" marker-end="url(#a7e22ce)"/>
-<text x="251.6" y="178.8" class="s bo pu lab" text-anchor="middle" transform="rotate(-36.87 251.6 178.8)">+1.08060</text>
-<line x1="185.0" y1="260.0" x2="343.0" y2="288.0" stroke="#7e22ce" stroke-width="2.4" marker-end="url(#a7e22ce)"/>
-<text x="266.6" y="265.1" class="s bo pu lab" text-anchor="middle" transform="rotate(9.93 266.6 265.1)">+1.68294</text>
-<line x1="185.0" y1="500.0" x2="343.0" y2="312.0" stroke="#15803d" stroke-width="2.4" marker-end="url(#a15803d)"/>
-<text x="248.2" y="456.6" class="s bo gr lab" text-anchor="middle" transform="rotate(-49.60 248.2 456.6)">+0.84147</text>
-<line x1="185.0" y1="280.0" x2="343.0" y2="418.0" stroke="#7e22ce" stroke-width="2.4" marker-end="url(#a7e22ce)"/>
-<text x="270.9" y="342.2" class="s bo pu lab" text-anchor="middle" transform="rotate(40.78 270.9 342.2)">-6.73177</text>
-<line x1="185.0" y1="540.0" x2="343.0" y2="590.0" stroke="#15803d" stroke-width="2.4" marker-end="url(#a15803d)"/>
-<text x="267.7" y="556.4" class="s bo gr lab" text-anchor="middle" transform="rotate(17.35 267.7 556.4)">+4.32242</text>
-<line x1="515.0" y1="300.0" x2="613.0" y2="310.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
-<line x1="515.0" y1="110.0" x2="873.0" y2="188.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
-<line x1="785.0" y1="300.0" x2="873.0" y2="212.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
-<line x1="515.0" y1="430.0" x2="613.0" y2="430.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
-<line x1="785.0" y1="430.0" x2="873.0" y2="498.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
-<line x1="515.0" y1="590.0" x2="873.0" y2="522.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
-<line x1="1045.0" y1="200.0" x2="1108.0" y2="343.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
-<line x1="1045.0" y1="510.0" x2="1108.0" y2="367.0" stroke="#57606a" stroke-width="2" marker-end="url(#a57606a)"/>
-<path d="M185.0,250 C305.0,190 475.0,190 613.0,288" stroke="#7e22ce" stroke-width="2.4" fill="none" marker-end="url(#a7e22ce)"/>
-<text x="430.0" y="204.0" class="s bo pu lab" text-anchor="middle">+1.68294</text>
-<rect x="345.0" y="71.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="430.0" y="96.0" class="bo" text-anchor="middle">t1 = sin x</text>
-<text x="430.0" y="118.0" class="bl" text-anchor="middle">= 0.84147</text>
-<text x="430.0" y="138.0" class="rd" text-anchor="middle">g = 2</text>
-<rect x="345.0" y="261.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="430.0" y="286.0" class="bo" text-anchor="middle">t2 = x · y</text>
-<text x="430.0" y="308.0" class="bl" text-anchor="middle">= 2</text>
-<text x="430.0" y="328.0" class="rd" text-anchor="middle">g = 0.84147</text>
-<rect x="615.0" y="261.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="700.0" y="286.0" class="bo" text-anchor="middle">t3 = x · t2</text>
-<text x="700.0" y="308.0" class="bl" text-anchor="middle">= 2</text>
-<text x="700.0" y="328.0" class="rd" text-anchor="middle">g = 0.84147</text>
-<rect x="875.0" y="161.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="960.0" y="186.0" class="bo" text-anchor="middle">t4 = t3 · t1</text>
-<text x="960.0" y="208.0" class="bl" text-anchor="middle">= 1.68294</text>
-<text x="960.0" y="228.0" class="rd" text-anchor="middle">g = 1</text>
-<rect x="345.0" y="391.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="430.0" y="416.0" class="bo" text-anchor="middle">t5 = cos x</text>
-<text x="430.0" y="438.0" class="bl" text-anchor="middle">= 0.54030</text>
-<text x="430.0" y="458.0" class="rd" text-anchor="middle">g = 8</text>
-<rect x="615.0" y="391.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="700.0" y="416.0" class="bo" text-anchor="middle">t6 = 2 · t5</text>
-<text x="700.0" y="438.0" class="bl" text-anchor="middle">= 1.08060</text>
-<text x="700.0" y="458.0" class="rd" text-anchor="middle">g = 4</text>
-<rect x="345.0" y="551.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="430.0" y="576.0" class="bo" text-anchor="middle">t7 = y · y</text>
-<text x="430.0" y="598.0" class="bl" text-anchor="middle">= 4</text>
-<text x="430.0" y="618.0" class="rd" text-anchor="middle">g = 1.08060</text>
-<rect x="875.0" y="471.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="960.0" y="496.0" class="bo" text-anchor="middle">t8 = t7 · t6</text>
-<text x="960.0" y="518.0" class="bl" text-anchor="middle">= 4.32242</text>
-<text x="960.0" y="538.0" class="rd" text-anchor="middle">g = 1</text>
-<rect x="1110.0" y="316.0" width="170" height="78" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2" />
-<text x="1195.0" y="341.0" class="bo" text-anchor="middle">t9 = t4 + t8 = f</text>
-<text x="1195.0" y="363.0" class="bl" text-anchor="middle">= 6.00536</text>
-<text x="1195.0" y="383.0" class="rd" text-anchor="middle">g = 1</text>
-<rect x="15.0" y="221.0" width="170" height="78" rx="10" fill="#f5f3ff" stroke="#7e22ce" stroke-width="2" />
-<text x="100.0" y="246.0" class="bo" text-anchor="middle">x = 1</text>
-<text x="100.0" y="268.0" class="s m" text-anchor="middle">sum of paths:</text>
-<text x="100.0" y="288.0" class="rd bo" text-anchor="middle">g = -2.28528</text>
-<rect x="15.0" y="481.0" width="170" height="78" rx="10" fill="#f0fdf4" stroke="#15803d" stroke-width="2" />
-<text x="100.0" y="506.0" class="bo" text-anchor="middle">y = 2</text>
-<text x="100.0" y="528.0" class="s m" text-anchor="middle">sum of paths:</text>
-<text x="100.0" y="548.0" class="rd bo" text-anchor="middle">g = 5.16389</text>
-<text x="24.0" y="668.0" class="bo pu" text-anchor="start">∂f/∂x = 1.08060 + 1.68294 + 1.68294 - 6.73177 = -2.28528</text>
-<text x="24.0" y="694.0" class="bo gr" text-anchor="start">∂f/∂y = 0.84147 + 4.32242 = 5.16389</text>
-<text x="24.0" y="720.0" class="s m" text-anchor="start">blue: forward value.  red: g = ∂f/∂(node), filled right to left.  Edge numbers: what each path out of x (purple) or y (green) contributes.</text>
+<defs><marker id="m15171a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15171a"/></marker><marker id="m565c66" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#565c66"/></marker><marker id="m2451b8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2451b8"/></marker><marker id="mb8322a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="m18794a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="mb45309" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker><marker id="m6b3fb3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker><marker id="m0f766e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker><marker id="mc9cdd2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c9cdd2"/></marker><marker id="m6b717b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b717b"/></marker></defs>
+<rect x="0" y="0" width="870" height="638" fill="#ffffff"/>
+<text x="24" y="34" font-size="18" font-weight="700">f = x² y sin x + 2 y² cos x  at  x = 1, y = 2</text>
+<line x1="442" y1="105" x2="705" y2="124" stroke="#565c66" stroke-width="2" marker-end="url(#m565c66)"/>
+<line x1="442" y1="243" x2="513" y2="243" stroke="#565c66" stroke-width="2" marker-end="url(#m565c66)"/>
+<line x1="646" y1="231" x2="705" y2="156" stroke="#565c66" stroke-width="2" marker-end="url(#m565c66)"/>
+<line x1="442" y1="339" x2="513" y2="339" stroke="#565c66" stroke-width="2" marker-end="url(#m565c66)"/>
+<line x1="646" y1="339" x2="705" y2="418" stroke="#565c66" stroke-width="2" marker-end="url(#m565c66)"/>
+<line x1="442" y1="447" x2="705" y2="450" stroke="#565c66" stroke-width="2" marker-end="url(#m565c66)"/>
+<line x1="776" y1="178" x2="776" y2="246" stroke="#565c66" stroke-width="2" marker-end="url(#m565c66)"/>
+<line x1="776" y1="394" x2="776" y2="326" stroke="#565c66" stroke-width="2" marker-end="url(#m565c66)"/>
+<line x1="160" y1="196" x2="309" y2="105" stroke="#6b3fb3" stroke-width="2.4" marker-end="url(#m6b3fb3)"/>
+<g transform="translate(217.9,150.1) rotate(-31.4)">
+<text x="0" y="0" font-size="15" text-anchor="middle" fill="#6b3fb3" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">+1.08060</text>
+</g>
+<line x1="160" y1="231" x2="309" y2="223" stroke="#6b3fb3" stroke-width="2.4" marker-end="url(#m6b3fb3)"/>
+<g transform="translate(234.0,218.0) rotate(-3.1)">
+<text x="0" y="0" font-size="15" text-anchor="middle" fill="#6b3fb3" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">+1.68294</text>
+</g>
+<line x1="160" y1="258" x2="309" y2="339" stroke="#6b3fb3" stroke-width="2.4" marker-end="url(#m6b3fb3)"/>
+<g transform="translate(226.9,284.1) rotate(28.5)">
+<text x="0" y="0" font-size="15" text-anchor="middle" fill="#6b3fb3" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">−6.73177</text>
+</g>
+<line x1="160" y1="416" x2="309" y2="258" stroke="#18794a" stroke-width="2.4" marker-end="url(#m18794a)"/>
+<g transform="translate(189.2,371.9) rotate(-46.7)">
+<text x="0" y="0" font-size="15" text-anchor="middle" fill="#18794a" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">+0.84147</text>
+</g>
+<line x1="160" y1="457" x2="309" y2="447" stroke="#18794a" stroke-width="2.4" marker-end="url(#m18794a)"/>
+<g transform="translate(233.9,443.0) rotate(-3.8)">
+<text x="0" y="0" font-size="15" text-anchor="middle" fill="#18794a" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">+4.32242</text>
+</g>
+<path d="M160,208 C220,192 240,170 300,170 H448 C482,170 480,213.0 513,213.0" fill="none" stroke="#6b3fb3" stroke-width="2.4" marker-end="url(#m6b3fb3)"/>
+<text x="376" y="163" font-size="15" text-anchor="middle" fill="#6b3fb3" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">+1.68294</text>
+<rect x="310" y="66" width="132" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="376" y="88.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">1</tspan><tspan dy="-5.1">​</tspan> = sin x</text>
+<text x="376" y="110.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 0.84147</text>
+<text x="376" y="133.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 2</text>
+<rect x="310" y="192" width="132" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="376" y="214.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">2</tspan><tspan dy="-5.1">​</tspan> = x · y</text>
+<text x="376" y="236.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 2</text>
+<text x="376" y="259.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 0.84147</text>
+<rect x="514" y="192" width="132" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="580" y="214.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">3</tspan><tspan dy="-5.1">​</tspan> = x · t<tspan dy="5.1" font-size="14.5">2</tspan><tspan dy="-5.1">​</tspan></text>
+<text x="580" y="236.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 2</text>
+<text x="580" y="259.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 0.84147</text>
+<rect x="706" y="100" width="140" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="776" y="122.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">4</tspan><tspan dy="-5.1">​</tspan> = t<tspan dy="5.1" font-size="14.5">3</tspan><tspan dy="-5.1">​</tspan> · t<tspan dy="5.1" font-size="14.5">1</tspan><tspan dy="-5.1">​</tspan></text>
+<text x="776" y="144.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 1.68294</text>
+<text x="776" y="167.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 1</text>
+<rect x="310" y="300" width="132" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="376" y="322.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">5</tspan><tspan dy="-5.1">​</tspan> = cos x</text>
+<text x="376" y="344.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 0.54030</text>
+<text x="376" y="367.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 8</text>
+<rect x="514" y="300" width="132" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="580" y="322.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">6</tspan><tspan dy="-5.1">​</tspan> = 2 · t<tspan dy="5.1" font-size="14.5">5</tspan><tspan dy="-5.1">​</tspan></text>
+<text x="580" y="344.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 1.08060</text>
+<text x="580" y="367.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 4</text>
+<rect x="310" y="408" width="132" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="376" y="430.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">7</tspan><tspan dy="-5.1">​</tspan> = y · y</text>
+<text x="376" y="452.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 4</text>
+<text x="376" y="475.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 1.08060</text>
+<rect x="706" y="394" width="140" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="776" y="416.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">8</tspan><tspan dy="-5.1">​</tspan> = t<tspan dy="5.1" font-size="14.5">7</tspan><tspan dy="-5.1">​</tspan> · t<tspan dy="5.1" font-size="14.5">6</tspan><tspan dy="-5.1">​</tspan></text>
+<text x="776" y="438.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 4.32242</text>
+<text x="776" y="461.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 1</text>
+<rect x="706" y="247" width="140" height="78" rx="6" fill="#ffffff" stroke="#15171a" stroke-width="2"/>
+<text x="776" y="269.35" font-size="17" text-anchor="middle" font-weight="700">t<tspan dy="5.1" font-size="14.5">9</tspan><tspan dy="-5.1">​</tspan> = t<tspan dy="5.1" font-size="14.5">4</tspan><tspan dy="-5.1">​</tspan> + t<tspan dy="5.1" font-size="14.5">8</tspan><tspan dy="-5.1">​</tspan> = f</text>
+<text x="776" y="291.94" font-size="16.5" text-anchor="middle" fill="#2451b8">= 6.00536</text>
+<text x="776" y="314.71" font-size="16.5" text-anchor="middle" fill="#b8322a">g = 1</text>
+<rect x="24" y="182" width="136" height="90" rx="6" fill="#ffffff" stroke="#6b3fb3" stroke-width="2"/>
+<text x="92" y="211.04" font-size="17" text-anchor="middle" font-weight="700">x = 1</text>
+<text x="92" y="231.89" font-size="15.5" text-anchor="middle" fill="#565c66">sum of paths:</text>
+<text x="92" y="255.02" font-size="16.5" text-anchor="middle" fill="#b8322a" font-weight="700">g = −2.28528</text>
+<rect x="24" y="402" width="136" height="90" rx="6" fill="#ffffff" stroke="#18794a" stroke-width="2"/>
+<text x="92" y="431.04" font-size="17" text-anchor="middle" font-weight="700">y = 2</text>
+<text x="92" y="451.89" font-size="15.5" text-anchor="middle" fill="#565c66">sum of paths:</text>
+<text x="92" y="475.02" font-size="16.5" text-anchor="middle" fill="#b8322a" font-weight="700">g = 5.16389</text>
+<text x="24" y="534" font-size="17" fill="#6b3fb3" font-weight="700">∂f/∂x = 1.08060 + 1.68294 + 1.68294 − 6.73177 = −2.28528</text>
+<text x="24" y="562" font-size="17" fill="#18794a" font-weight="700">∂f/∂y = 0.84147 + 4.32242 = 5.16389</text>
+<text x="24" y="594" font-size="15.5" fill="#565c66">blue: forward value. red: g = ∂f/∂(node), filled right to left. Edge numbers: what each path out of x (purple) or y (green)</text>
+<text x="24" y="616" font-size="15.5" fill="#565c66">contributes.</text>
 </svg>

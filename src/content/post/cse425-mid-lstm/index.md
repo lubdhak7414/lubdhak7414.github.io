@@ -1,22 +1,23 @@
 ---
-title: "LSTM"
-description: "The LSTM gate equations, one step traced by hand with numbers, the peephole variant, parameter counts, and why the cell state keeps the gradient alive."
+title: "LSTM gates worked example: one step by hand"
+description: "The forget, input and output gate equations, one LSTM step traced with numbers, peephole LSTMs, parameter counts, and why the cell state keeps gradients alive."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, rnn, lstm]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 10
 ---
 
-After 45 steps, a signal that halves at every step is down to $2.8\times10^{-14}$ of its size, while one that loses 1 percent per step still has 64 percent. Suppose the network has to carry one token from step 5 to step 50. A plain RNN passes the error back through 45 steps, and if each step halves it, nothing gets learned. The LSTM adds a path where each step shrinks it only a little.
+After 45 steps, a signal that halves at every step is down to $2.8\times10^{-14}$ of its size, while one that loses 1% per step still has 64%. Suppose the network has to carry one token from step 5 to step 50. A plain RNN passes the error back through 45 steps, and if each step halves it, nothing gets learned. The LSTM adds a path where each step shrinks it only a little.
 
 It does this by adding a second memory line, the cell state $c_t$, which runs through time next to the hidden state $h_t$. The cell state is changed only by an entry-by-entry multiply and an entry-by-entry add. Three gates control that line. A gate is a set of numbers between 0 and 1 that multiply something: 0 keeps none of it, 1 keeps all of it, and 0.65 keeps 65%.
 
 > **Key Takeaways**
-> - The cell state runs through time and is changed only by a multiply with the forget gate and an add of new information.
-> - An LSTM has three gates (forget, input, output) and one candidate layer, all reading the same stacked vector of the previous hidden state and the current input.
-> - An LSTM has four weight blocks, so four times a plain RNN's parameters; a GRU of the same size has 75% of the LSTM's.
-> - The gradient along the cell state is multiplied by the forget gate once per step, so a forget gate near 1 keeps it alive.
+> - The cell state changes only by $c_t=f_t\odot c_{t-1}+i_t\odot\tilde c_t$: one multiply and one add.
+> - Three sigmoid gates (forget, input, output) and one tanh candidate all read $[h_{t-1},x_t]$.
+> - Four weight blocks give $4H(H+D+1)$ parameters; a GRU of the same size has 75% of that.
+> - Along the cell state the gradient is multiplied by $f_t$ once per step, so $f_t$ near 1 keeps it alive.
 
 ## The pieces
 
@@ -108,7 +109,9 @@ $$f_t=\sigma(1.7+0.5\cdot0.4)=0.8699$$
 
 $$i_t=\sigma(0.7+0.2)=0.7109$$
 
-$$c_t=0.8699(0.4)+0.7109(0.7616)=0.8894$$
+$$c_t=0.8699(0.4)+0.7109(0.7616)$$
+
+$$=0.8894$$
 
 The output gate uses the new cell:
 
@@ -126,7 +129,7 @@ For $D=10$ and $H=20$ a block has $20\cdot31=620$ parameters, so a plain RNN has
 
 ## Why the gradient survives
 
-Look at one memory slot. At each step it keeps a fraction $f$ of its old value and adds something new. If $f$ is 0.99, then 45 steps later about 64 percent of the old value is still there, since $0.99^{45}=0.636$. In a plain RNN the same trip costs a matrix multiplication and a tanh slope at every step, so the signal dies. For the LSTM to keep a long memory, it has to learn to hold $f$ near 1.
+Look at one memory slot. At each step it keeps a fraction $f$ of its old value and adds something new. If $f$ is 0.99, then 45 steps later about 64% of the old value is still there, since $0.99^{45}=0.636$. In a plain RNN the same trip costs a matrix multiplication and a tanh slope at every step, so the signal dies. For the LSTM to keep a long memory, it has to learn to hold $f$ near 1.
 
 The same fact in symbols. For a plain RNN, $h_t=\tanh(W_{hh}h_{t-1}+\dots)$ gives one step back a factor
 
@@ -148,11 +151,17 @@ $$+\tilde c_t\frac{\partial i_t}{\partial c_{t-1}}+i_t\frac{\partial\tilde c_t}{
 
 Each extra term has a gate slope ($f(1-f)$ for a sigmoid, $1-\tilde c^2$ for tanh), a recurrent weight $u$ and the factor $\partial h_{t-1}/\partial c_{t-1}$. Put in the example's numbers, taking $o_{t-1}\le1$ and $1-\tanh^2(0.4)=0.8556$:
 
-$$0.4\cdot(0.8455\cdot0.1545)\cdot0.4\cdot0.8556=0.018$$
+$$0.4\cdot(0.8455\cdot0.1545)\cdot0.4\cdot0.8556$$
 
-$$0.7616\cdot(0.6682\cdot0.3318)\cdot0.2\cdot0.8556=0.029$$
+$$=0.018$$
 
-$$0.6682\cdot(1-0.7616^2)\cdot0.6\cdot0.8556=0.144$$
+$$0.7616\cdot(0.6682\cdot0.3318)\cdot0.2\cdot0.8556$$
+
+$$=0.029$$
+
+$$0.6682\cdot(1-0.7616^2)\cdot0.6\cdot0.8556$$
+
+$$=0.144$$
 
 Together they're at most about 0.19, against 0.8455 for the direct term. So "the other terms are smaller" is true here, by roughly a factor of four, but they aren't zero.
 
@@ -164,11 +173,11 @@ Two special cases: $f\approx1,\ i\approx0$ gives $c_t=c_{t-1}$, so the memory is
 
 A bidirectional LSTM runs one LSTM forwards and one backwards over the sequence and concatenates their hidden states, giving $2H$ numbers per step. In a stacked LSTM layer $l+1$ reads layer $l$'s hidden state $h_t$ as its input. The final hidden state $h_T$ for a batch of $B$ sequences has shape $(B,H)$, and the embedding size does not change that. If the gates saturate (stuck near 0 or 1), the sigmoid slope $f(1-f)$ is near zero, so the gates' own weights get almost no gradient and the loss can go flat.
 
-## What a full answer shows
+## In the exam: a full LSTM answer
 
 A full answer gives the equations for all three gates and the candidate using $[h_{t-1},x_t]$, the $c_t$ update and $h_t$, and a labelled diagram with the multiply on $c_{t-1}$. For the vanishing-gradient question, add one sentence tying the additive $c_t$ to the gradient. The output gate is $o_t$, not $r_t$, since $r_t$ is the GRU's reset gate.
 
-## Frozen memory, counts and the 45-step copy
+## Practice: frozen memory, counts and the 45-step copy
 
 With $f=1$, $i=0$ and $c_{t-1}=3$, what is $c_t$, and what is the memory doing?
 

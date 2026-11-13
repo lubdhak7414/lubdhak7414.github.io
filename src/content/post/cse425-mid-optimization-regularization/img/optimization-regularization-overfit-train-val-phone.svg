@@ -1,0 +1,430 @@
+<svg role="img" aria-label="Training and validation loss with early stopping" xmlns:xlink="http://www.w3.org/1999/xlink" width="360" height="510" viewBox="0 0 360 510" xmlns="http://www.w3.org/2000/svg" version="1.1"><style id="fig-fonts">@font-face{font-family:'IBM Plex Sans';font-weight:400;unicode-range:U+20,U+28,U+29,U+2C,U+2E,U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+38,U+3A,U+3D,U+54,U+61,U+62,U+63,U+64,U+65,U+66,U+67,U+68,U+69,U+6B,U+6C,U+6D,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+76,U+77,U+79;src:url(data:font/woff2;base64,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) format('woff2')}</style>
+ <title>Training and validation loss with early stopping</title>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 510 
+L 360 510 
+L 360 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 54 453.9 
+L 345.6 453.9 
+L 345.6 91.8 
+L 54 91.8 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="mb79d82036f" d="M 0 0 
+L 0 3.5 
+" style="stroke: #565c66; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#mb79d82036f" x="54" y="453.9" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: middle; fill: #15171a" x="54" y="471.04" transform="rotate(-0 54 471.04)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#mb79d82036f" x="125.121951" y="453.9" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: middle; fill: #15171a" x="125.121951" y="471.04" transform="rotate(-0 125.121951 471.04)">20</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#mb79d82036f" x="196.243902" y="453.9" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: middle; fill: #15171a" x="196.243902" y="471.04" transform="rotate(-0 196.243902 471.04)">40</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#mb79d82036f" x="267.365854" y="453.9" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: middle; fill: #15171a" x="267.365854" y="471.04" transform="rotate(-0 267.365854 471.04)">60</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#mb79d82036f" x="338.487805" y="453.9" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: middle; fill: #15171a" x="338.487805" y="471.04" transform="rotate(-0 338.487805 471.04)">80</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 15px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: middle; fill: #15171a" x="199.8" y="489.6" transform="rotate(-0 199.8 489.6)">epoch</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_6">
+      <defs>
+       <path id="m0795547049" d="M 0 0 
+L -3.5 0 
+" style="stroke: #565c66; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m0795547049" x="54" y="453.9" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: end; fill: #15171a" x="47" y="458.97" transform="rotate(-0 47 458.97)">0.0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m0795547049" x="54" y="403.955172" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: end; fill: #15171a" x="47" y="409.025172" transform="rotate(-0 47 409.025172)">0.2</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m0795547049" x="54" y="354.010345" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: end; fill: #15171a" x="47" y="359.080345" transform="rotate(-0 47 359.080345)">0.4</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m0795547049" x="54" y="304.065517" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: end; fill: #15171a" x="47" y="309.135517" transform="rotate(-0 47 309.135517)">0.6</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m0795547049" x="54" y="254.12069" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: end; fill: #15171a" x="47" y="259.19069" transform="rotate(-0 47 259.19069)">0.8</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_11">
+      <g>
+       <use xlink:href="#m0795547049" x="54" y="204.175862" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: end; fill: #15171a" x="47" y="209.245862" transform="rotate(-0 47 209.245862)">1.0</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m0795547049" x="54" y="154.231034" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: end; fill: #15171a" x="47" y="159.301034" transform="rotate(-0 47 159.301034)">1.2</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_13">
+      <g>
+       <use xlink:href="#m0795547049" x="54" y="104.286207" style="fill: #565c66; stroke: #565c66; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font-size: 13px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: end; fill: #15171a" x="47" y="109.356207" transform="rotate(-0 47 109.356207)">1.4</text>
+     </g>
+    </g>
+    <g id="text_15">
+     <text style="font-size: 15px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: middle; fill: #15171a" x="20.563594" y="272.85" transform="rotate(-90 20.563594 272.85)">loss</text>
+    </g>
+   </g>
+   <g id="line2d_14">
+    <path d="M 178.463415 453.9 
+L 178.463415 91.8 
+" clip-path="url(#p913a061ba5)" style="fill: none; stroke-dasharray: 7.4,3.2; stroke-dashoffset: 0; stroke: #18794a; stroke-width: 2"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 54 453.9 
+L 54 91.8 
+" style="fill: none; stroke: #565c66; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 54 453.9 
+L 345.6 453.9 
+" style="fill: none; stroke: #565c66; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_15">
+    <path d="M 57.556098 146.724327 
+L 61.112195 169.688959 
+L 64.668293 190.815621 
+L 68.22439 210.254148 
+L 71.780488 228.136893 
+L 75.336585 244.591217 
+L 78.892683 259.729494 
+L 82.44878 273.656609 
+L 86.004878 286.469954 
+L 89.560976 298.259431 
+L 93.117073 309.107448 
+L 96.673171 319.086424 
+L 100.229268 328.268781 
+L 103.785366 336.716948 
+L 107.341463 344.488363 
+L 110.897561 351.637966 
+L 114.453659 358.218197 
+L 118.009756 364.27151 
+L 121.565854 369.840358 
+L 125.121951 374.964697 
+L 128.678049 379.676992 
+L 132.234146 384.0147 
+L 135.790244 388.005292 
+L 139.346341 391.676237 
+L 142.902439 395.055004 
+L 146.458537 398.161572 
+L 150.014634 401.020914 
+L 153.570732 403.653006 
+L 157.126829 406.072833 
+L 160.682927 408.297875 
+L 164.239024 410.34811 
+L 167.795122 412.233528 
+L 171.35122 413.966613 
+L 174.907317 415.56235 
+L 178.463415 417.030728 
+L 182.019512 418.381736 
+L 185.57561 419.622865 
+L 189.131707 420.766601 
+L 192.687805 421.81794 
+L 196.243902 422.78687 
+L 199.8 423.675888 
+L 203.356098 424.494983 
+L 206.912195 425.24915 
+L 210.468293 425.943383 
+L 214.02439 426.580179 
+L 217.580488 427.167031 
+L 221.136585 427.708932 
+L 224.692683 428.205883 
+L 228.24878 428.662879 
+L 231.804878 429.082415 
+L 235.360976 429.469488 
+L 238.917073 429.826593 
+L 242.473171 430.153732 
+L 246.029268 430.453401 
+L 249.585366 430.730594 
+L 253.141463 430.98781 
+L 256.697561 431.222551 
+L 260.253659 431.437314 
+L 263.809756 431.637093 
+L 267.365854 431.819392 
+L 270.921951 431.986707 
+L 274.478049 432.141536 
+L 278.034146 432.283879 
+L 281.590244 432.416232 
+L 285.146341 432.5361 
+L 288.702439 432.645979 
+L 292.258537 432.748366 
+L 295.814634 432.843261 
+L 299.370732 432.928167 
+L 302.926829 433.008079 
+L 306.482927 433.080499 
+L 310.039024 433.147924 
+L 313.595122 433.210355 
+L 317.15122 433.267792 
+L 320.707317 433.320234 
+L 324.263415 433.367681 
+L 327.819512 433.412632 
+L 331.37561 433.452588 
+L 334.931707 433.490046 
+L 338.487805 433.525008 
+" clip-path="url(#p913a061ba5)" style="fill: none; stroke: #2451b8; stroke-width: 2.4; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_16">
+    <path d="M 57.556098 130.42733 
+L 61.112195 154.0812 
+L 64.668293 175.482559 
+L 68.22439 194.848666 
+L 71.780488 212.371808 
+L 75.336585 228.226794 
+L 78.892683 242.573446 
+L 82.44878 255.554106 
+L 86.004878 267.298632 
+L 89.560976 277.926892 
+L 93.117073 287.543768 
+L 96.673171 296.246654 
+L 100.229268 303.650975 
+L 103.785366 310.203737 
+L 107.341463 316.032298 
+L 110.897561 321.216571 
+L 114.453659 325.818987 
+L 118.009756 329.899479 
+L 121.565854 333.507993 
+L 125.121951 336.689479 
+L 128.678049 339.486389 
+L 132.234146 341.931188 
+L 135.790244 344.061335 
+L 139.346341 345.906797 
+L 142.902439 347.490048 
+L 146.458537 348.841055 
+L 150.014634 349.979797 
+L 153.570732 350.923754 
+L 157.126829 351.692905 
+L 160.682927 352.304729 
+L 164.239024 352.771713 
+L 167.795122 353.108841 
+L 171.35122 353.326101 
+L 174.907317 353.438477 
+L 178.463415 353.450963 
+L 182.019512 353.376046 
+L 185.57561 353.221217 
+L 189.131707 352.99147 
+L 192.687805 352.696796 
+L 196.243902 352.33969 
+L 199.8 351.927646 
+L 203.356098 351.468153 
+L 206.912195 350.958716 
+L 210.468293 350.41182 
+L 214.02439 349.824968 
+L 217.580488 349.203155 
+L 221.136585 348.548878 
+L 224.692683 347.867131 
+L 228.24878 347.160412 
+L 231.804878 346.426223 
+L 235.360976 345.672056 
+L 238.917073 344.895414 
+L 242.473171 344.101291 
+L 246.029268 343.292185 
+L 249.585366 342.465598 
+L 253.141463 341.624028 
+L 256.697561 340.767474 
+L 260.253659 339.900931 
+L 263.809756 339.021902 
+L 267.365854 338.132884 
+L 270.921951 337.233877 
+L 274.478049 336.324881 
+L 278.034146 335.408394 
+L 281.590244 334.484414 
+L 285.146341 333.552943 
+L 288.702439 332.613981 
+L 292.258537 331.667526 
+L 295.814634 330.716077 
+L 299.370732 329.759634 
+L 302.926829 328.798196 
+L 306.482927 327.829266 
+L 310.039024 326.857839 
+L 313.595122 325.881418 
+L 317.15122 324.900002 
+L 320.707317 323.913592 
+L 324.263415 322.924684 
+L 327.819512 321.933279 
+L 331.37561 320.93688 
+L 334.931707 319.935486 
+L 338.487805 318.931595 
+" clip-path="url(#p913a061ba5)" style="fill: none; stroke: #b8322a; stroke-width: 2.4; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 331.37561 324.503979 
+Q 331.37561 377.195679 331.37561 429.887379 
+" style="fill: none; stroke: #15171a; stroke-width: 1.4; stroke-linecap: round"/>
+    <path d="M 329.37561 328.503979 
+L 331.37561 324.503979 
+L 333.37561 328.503979 
+" style="fill: none; stroke: #15171a; stroke-width: 1.4; stroke-linecap: round"/>
+    <path d="M 333.37561 425.887379 
+L 331.37561 429.887379 
+L 329.37561 425.887379 
+" style="fill: none; stroke: #15171a; stroke-width: 1.4; stroke-linecap: round"/>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #15171a" transform="translate(238.384276 364.70801)">gap = variance</text>
+    <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #15171a" transform="translate(255.071542 382.25801)">(overfitting)</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #18794a" transform="translate(183.797561 156.918358)">early stopping:</text>
+    <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #18794a" transform="translate(183.797561 175.143358)">keep weights from</text>
+    <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #18794a" transform="translate(183.797561 193.584569)">the best epoch (35)</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #565c66" transform="translate(68.22439 386.473966)">both falling:</text>
+    <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #565c66" transform="translate(68.22439 404.023966)">still learning</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 15px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #15171a" transform="translate(111.305859 32.3)">Training loss keeps falling,</text>
+    <text style="font-size: 15px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #15171a" transform="translate(121.958203 51.8)">validation loss turns up</text>
+   </g>
+   <g id="PathCollection_1">
+    <defs>
+     <path id="m896f937c73" d="M 0 3.535534 
+C 0.937635 3.535534 1.836992 3.163008 2.5 2.5 
+C 3.163008 1.836992 3.535534 0.937635 3.535534 0 
+C 3.535534 -0.937635 3.163008 -1.836992 2.5 -2.5 
+C 1.836992 -3.163008 0.937635 -3.535534 0 -3.535534 
+C -0.937635 -3.535534 -1.836992 -3.163008 -2.5 -2.5 
+C -3.163008 -1.836992 -3.535534 -0.937635 -3.535534 0 
+C -3.535534 0.937635 -3.163008 1.836992 -2.5 2.5 
+C -1.836992 3.163008 -0.937635 3.535534 0 3.535534 
+z
+" style="stroke: #18794a"/>
+    </defs>
+    <g clip-path="url(#p913a061ba5)">
+     <use xlink:href="#m896f937c73" x="178.463414" y="353.451152" style="fill: #18794a; stroke: #18794a"/>
+    </g>
+   </g>
+   <g id="legend_1">
+    <g id="line2d_17">
+     <path d="M 56.268 76.005 
+L 67.068 76.005 
+L 77.868 76.005 
+" style="fill: none; stroke: #2451b8; stroke-width: 2.4; stroke-linecap: round"/>
+    </g>
+    <g id="text_20">
+     <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: start; fill: #15171a" x="88.668" y="80.73" transform="rotate(-0 88.668 80.73)">training loss</text>
+    </g>
+    <g id="line2d_18">
+     <path d="M 178.415578 76.005 
+L 189.215578 76.005 
+L 200.015578 76.005 
+" style="fill: none; stroke: #b8322a; stroke-width: 2.4; stroke-linecap: round"/>
+    </g>
+    <g id="text_21">
+     <text style="font-size: 13.5px; font-family: 'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-anchor: start; fill: #15171a" x="210.815578" y="80.73" transform="rotate(-0 210.815578 80.73)">validation loss</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p913a061ba5">
+   <rect x="54" y="91.8" width="291.6" height="362.1"/>
+  </clipPath>
+ </defs>
+</svg>

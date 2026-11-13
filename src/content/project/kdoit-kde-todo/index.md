@@ -1,16 +1,16 @@
 ---
-title: 'KDoit: A To-Do Widget for KDE Plasma 6'
+title: 'KDoit: a to-do widget for KDE Plasma 6'
 name: 'KDoit'
 description: 'A to-do list widget for the KDE Plasma 6 desktop in pure QML: priorities, due dates, drag-and-drop, Markdown and iCalendar export, live file sync.'
 publishDate: '08 July 2026'
 coverImage:
   src: './cover.png'
   alt: 'KDoit to-do widget on a KDE Plasma 6 desktop with tasks organized by priority'
-tags: ['QML', 'KDE', 'Linux', 'Open Source', 'Productivity', 'Project']
+tags: ['qml', 'kde', 'linux', 'open-source', 'productivity', 'project']
 homePageIdx: 6
 links:
-  - { label: 'GitHub', url: 'https://github.com/lubdhak7414/KDoit', kind: 'code' }
-  - { label: 'KDE Store', url: 'https://www.opendesktop.org/p/2364121/', kind: 'store' }
+  - { label: 'Source on GitHub', url: 'https://github.com/lubdhak7414/KDoit', kind: 'code' }
+  - { label: 'KDE Store page', url: 'https://www.opendesktop.org/p/2364121/', kind: 'store' }
 facts:
   status: 'Published on the KDE Store'
   license: 'GPLv3 or later'
@@ -19,17 +19,17 @@ shot:
   src: './preview2.png'
   alt: 'KDoit settings dialog next to the to-do widget on a KDE Plasma desktop'
 glance:
-  does: 'A to-do widget for the KDE Plasma 6 desktop, with priorities, due dates, drag-and-drop, Markdown export and live file sync.'
-  did: 'Built it for my own desktop in pure QML, with no build step, and published it on the KDE Store.'
+  does: 'A to-do list widget for the KDE Plasma 6 desktop.'
+  did: 'Built it for my own desktop and published it on the KDE Store.'
 ---
 
 KDoit is a to-do list widget (a plasmoid) for the KDE Plasma 6 desktop, for anyone who wants their tasks on the desktop or panel instead of in a separate app. I built it because I wanted one that just worked: pure QML, no build steps, no dependencies. It's published on the KDE Store.
 
 > **Key Takeaways**
 >
-> - Pure QML, zero build steps, no cmake or npm required
-> - Priorities, due dates, categories, drag-and-drop, and multi-select out of the box
-> - Markdown and iCalendar export with live file sync for external editors
+> - Pure QML, zero build steps, no cmake or npm required.
+> - Priorities, due dates, categories, drag-and-drop, and multi-select out of the box.
+> - Markdown and iCalendar export with live file sync for external editors.
 
 ![KDoit widget showing tasks with priorities and categories](./preview2.png)
 

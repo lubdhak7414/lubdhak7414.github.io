@@ -9,7 +9,7 @@ export const siteConfig: SiteConfig = {
 	// Shown under the name in the identity rail (home + about).
 	role: 'Full stack developer',
 	location: 'Bangladesh',
-	bio: 'Full stack developer at Metaora. Builds web applications and open-source Linux desktop tools.',
+	bio: 'Builds web applications at Metaora and open-source Linux desktop tools.',
 	socials: {
 		github: 'https://github.com/lubdhak7414',
 		linkedin: 'https://www.linkedin.com/in/lubdhak7414/',

@@ -1,10 +1,11 @@
 ---
-title: "Backpropagation Through Time"
-description: "How the gradient of an unrolled RNN is computed by hand, why it vanishes or explodes over long sequences, and what clipping and truncation do."
+title: "Backpropagation through time: a worked RNN example"
+description: "BPTT worked by hand on a three-step RNN, why the weight gradient is a sum over time steps, why it vanishes or explodes, and what clipping and truncation do."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, rnn, bptt]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 9
 ---
 
@@ -13,14 +14,14 @@ Say a network reads three words in a row and only the last one gets graded. The 
 Backpropagation through time (BPTT) is ordinary backprop applied to the [unrolled RNN](/blog/cse425-mid-rnn-basics/). The only new facts are that one weight is used many times, and that the error passes through that weight again and again on its way back.
 
 > **Key Takeaways**
-> - In a tiny RNN you can get every forward value, every step's error and both shared-weight gradients by hand.
+> - On a one-unit, three-step RNN, every forward value, delta and shared-weight gradient fits on paper.
 > - A shared weight's gradient is a sum of one term per step, while the error travelling back is multiplied once per step.
-> - A per-step factor below 1 makes the signal vanish and one above 1 makes it explode: $0.9^{20}\approx0.12$ against $1.1^{20}\approx6.7$.
+> - A per-step factor below 1 vanishes and one above 1 explodes: $0.9^{20}\approx0.12$ against $1.1^{20}\approx6.7$.
 > - Clipping shortens a gradient that is too long, and truncation stops the error from travelling past a fixed window.
 
 ## One tiny RNN, three steps
 
-The smallest RNN that shows everything has one hidden unit, one input per step and no output layer. At each step it adds the new input and its own previous value, each times a weight, and passes the sum through tanh, which keeps the result between -1 and 1. In symbols, the hidden value at step $t$ is
+The smallest RNN that shows everything has one hidden unit, one input per step and no output layer. At each step it adds the new input and its own previous value, each times a weight, and passes the sum through tanh, which keeps the result between −1 and 1. In symbols, the hidden value at step $t$ is
 
 $$h_t=\tanh(w\,x_t+u\,h_{t-1})$$
 
@@ -116,7 +117,7 @@ In the scalar case it is the factor $u\cdot\text{slope}$ you met above. To go ba
 
 $$\Big\|\frac{\partial \mathbf h_t}{\partial \mathbf h_i}\Big\|\le(\sigma_{\max})^{\,t-i}$$
 
-where a $\sigma_{\max}$ below 1 pulls the bound toward 0 and one above 1 lets it grow. In the scalar case, leaving out the slopes, the factor is just $u^k$ after $k$ steps:
+where a $\sigma_{\max}$ below 1 pulls the bound towards 0 and one above 1 lets it grow. In the scalar case, leaving out the slopes, the factor is just $u^k$ after $k$ steps:
 
 | $k$ | $0.9^k$ | $1.1^k$ |
 |---|---|---|
@@ -145,11 +146,11 @@ $$\frac{\partial L}{\partial w}=0.6569-0.1830=0.4739$$
 
 The full answer was 0.2436, so dropping step 1 here nearly doubles the gradient for $w$. The gradient for $u$ stays at $-0.5310$ because its step-1 term was already zero.
 
-## Writing it out by hand
+## In the exam: writing out a BPTT answer
 
 When I work a numeric BPTT problem, I show the forward values, the slopes and each $\delta$ before I get to the shared weights, and write each weight's sum out term by term. To explain vanishing gradients, draw the unrolled network, write the product of one-step Jacobians, and finish with a number such as $0.9^{20}\approx0.12$ against $1.1^{20}\approx6.7$.
 
-## Sum or product, clipping, truncation
+## Practice: sum or product, clipping, truncation
 
 Why is the gradient for $W_{hh}$ a sum over time, but the signal from step $t$ back to step $i$ a product?
 

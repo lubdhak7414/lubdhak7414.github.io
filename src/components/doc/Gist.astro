@@ -1,6 +1,7 @@
 ---
 import Details from './Details.astro'
 import type { DetailRow } from './Details.astro'
+import { keepCode } from '@/utils/typeset'
 
 interface Props {
 	/** The write-up's own Key Takeaways bullets (inline HTML from remarkBrief). */
@@ -26,7 +27,7 @@ write-up's own "Key Takeaways", lifted from the body; the facts are frontmatter.
 			{takeaways.length > 0 && (
 				<ul class='gist-list'>
 					{takeaways.map((html) => (
-						<li set:html={html} />
+						<li set:html={keepCode(html)} />
 					))}
 				</ul>
 			)}

@@ -5,7 +5,7 @@ publishDate: '23 October 2026'
 tags: ['compilers', 'cpp', 'flex', 'bison', 'university']
 coverImage:
   src: ./cover.webp
-  alt: 'A short C program with the line x = a + b * c highlighted, next to the three-address code my compiler printed for it'
+  alt: 'A line of C, x = a + b * c, beside the three-address code my compiler printed for it, t3 = a down to x = t7, with the multiply t6 = t4 * t5 highlighted'
 draft: true
 ---
 
@@ -15,9 +15,9 @@ For this post I rebuilt all three from my final lab code and ran them again. Two
 
 > **Key Takeaways**
 >
-> - A symbol table for nested scopes is a stack of small hash tables: look a name up in the innermost one first, then walk outwards.
-> - Semantic checks ride on the parser. Each expression carries a type up the tree, and an "error" type stops one mistake from producing a cascade of messages.
-> - Caching which temporary holds a variable makes the three-address code shorter, but it breaks loops: my compiler reads a stale temporary at the top of a `while` loop.
+> - A symbol table for nested scopes is a stack of hash tables, searched from the innermost scope outwards.
+> - Each expression carries a type up the parse tree, and an "error" type stops one mistake causing a cascade of messages.
+> - Caching temporaries shortens the three-address code but breaks loops: my `while` test reads a stale temporary.
 
 ![The pipeline: source goes through the Flex lexer and Bison parser; the parser's grammar actions use the Lab 2 symbol table and run the Lab 3 semantic checks, which write error.txt; the parser also builds the Lab 4 syntax tree, and generate_code() walks it to write three-address code to code.txt](./pipeline.webp)
 

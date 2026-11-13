@@ -1,6 +1,8 @@
 ---
 import { Icon } from 'astro-icon/components'
 
+import { typeset } from '@/utils/typeset'
+
 interface Props {
 	title: string
 	tools: {
@@ -36,7 +38,7 @@ const headingId = `tools-${slugify(title)}`
 					>
 						<Icon name={tool.iconPath} class='row-icon' aria-hidden='true' />
 						<span class='row-title'>{tool.name}</span>
-						<span class='row-aside'>{tool.description}</span>
+						<span class='row-aside' set:text={typeset(tool.description)} />
 					</a>
 				</li>
 			))

@@ -1,120 +1,122 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 330" width="1040" height="330" role="img" aria-labelledby="t d" font-family="DejaVu Sans, Helvetica, Arial, sans-serif"><title id="t">Which positions each token may attend to</title><desc id="d">Four 5 by 5 grids, rows are query tokens and columns are key tokens, filled cells mean allowed. BERT: all 25 cells filled. GPT: lower triangle including the diagonal. Original Transformer: encoder full square, decoder self-attention lower triangle.</desc><defs><marker id="ah-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d232b"/></marker><marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563c9"/></marker><marker id="ah-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b85f08"/></marker><marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="ah-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="ah-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#56606c"/></marker><marker id="ah-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker></defs><rect x="1" y="1" width="1038" height="328" rx="16" fill="#f8f7f3" stroke="#d3cfc6" stroke-width="1.5"/><text x="125" y="62" font-size="15" text-anchor="middle" font-weight="bold" fill="#2563c9" dominant-baseline="middle">BERT</text>
-<text x="125" y="84" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">encoder only, both ways</text>
-<rect x="50" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="80" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="110" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="140" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="170" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="50" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="80" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="110" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="140" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="170" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="50" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="80" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="110" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="140" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="170" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="50" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="80" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="110" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="140" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="170" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="50" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="80" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="110" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="140" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="170" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="125" y="278" font-size="12.5" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">key position</text>
-<text x="40" y="185" font-size="12.5" fill="#56606c" text-anchor="middle" transform="rotate(-90 40 185)">query position</text>
-<text x="365" y="62" font-size="15" text-anchor="middle" font-weight="bold" fill="#18794a" dominant-baseline="middle">GPT</text>
-<text x="365" y="84" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">decoder only, causal</text>
-<rect x="290" y="110" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="320" y="110" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="350" y="110" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="380" y="110" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="410" y="110" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="290" y="140" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="320" y="140" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="350" y="140" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="380" y="140" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="410" y="140" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="290" y="170" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="320" y="170" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="350" y="170" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="380" y="170" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="410" y="170" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="290" y="200" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="320" y="200" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="350" y="200" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="380" y="200" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="410" y="200" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="290" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="320" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="350" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="380" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="410" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="365" y="278" font-size="12.5" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">key position</text>
-<text x="280" y="185" font-size="12.5" fill="#56606c" text-anchor="middle" transform="rotate(-90 280 185)">query position</text>
-<text x="685" y="62" font-size="15" text-anchor="middle" font-weight="bold" fill="#2563c9" dominant-baseline="middle">Encoder</text>
-<text x="685" y="84" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">sees the whole source</text>
-<rect x="610" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="640" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="670" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="700" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="730" y="110" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="610" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="640" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="670" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="700" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="730" y="140" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="610" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="640" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="670" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="700" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="730" y="170" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="610" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="640" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="670" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="700" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="730" y="200" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="610" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="640" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="670" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="700" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<rect x="730" y="230" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="685" y="278" font-size="12.5" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">key position</text>
-<text x="600" y="185" font-size="12.5" fill="#56606c" text-anchor="middle" transform="rotate(-90 600 185)">query position</text>
-<text x="915" y="62" font-size="15" text-anchor="middle" font-weight="bold" fill="#18794a" dominant-baseline="middle">Decoder self-attn</text>
-<text x="915" y="84" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">sees tokens 1 to i</text>
-<rect x="840" y="110" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="870" y="110" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="900" y="110" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="930" y="110" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="960" y="110" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="840" y="140" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="870" y="140" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="900" y="140" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="930" y="140" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="960" y="140" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="840" y="170" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="870" y="170" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="900" y="170" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="930" y="170" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="960" y="170" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="840" y="200" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="870" y="200" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="900" y="200" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="930" y="200" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="960" y="200" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<rect x="840" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="870" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="900" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="930" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<rect x="960" y="230" width="30" height="30" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="915" y="278" font-size="12.5" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">key position</text>
-<text x="830" y="185" font-size="12.5" fill="#56606c" text-anchor="middle" transform="rotate(-90 830 185)">query position</text>
-<line x1="520" y1="30" x2="520" y2="300" stroke="#d3cfc6" stroke-width="1.5"/>
-<text x="800" y="30" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Original Transformer</text>
-<text x="800" y="306" font-size="13.5" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Cross-attention between the two is unmasked</text>
-<text x="270" y="306" font-size="13.5" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">Filled cell = query row may attend to that key column</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 812 324" width="812" height="324" role="img" aria-labelledby="t d" font-family="'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"><style id="fig-fonts">@font-face{font-family:'IBM Plex Sans';font-weight:400;unicode-range:U+20,U+2C,U+2D,U+31,U+3D,U+42,U+43,U+44,U+45,U+46,U+47,U+4F,U+50,U+52,U+54,U+61,U+62,U+63,U+64,U+65,U+66,U+67,U+68,U+69,U+6B,U+6C,U+6D,U+6E,U+6F,U+70,U+71,U+72,U+73,U+74,U+75,U+77,U+79;src:url(data:font/woff2;base64,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) format('woff2')}@font-face{font-family:'IBM Plex Sans';font-weight:700;unicode-range:U+20,U+2C,U+2D,U+31,U+3D,U+42,U+43,U+44,U+45,U+46,U+47,U+4F,U+50,U+52,U+54,U+61,U+62,U+63,U+64,U+65,U+66,U+67,U+68,U+69,U+6B,U+6C,U+6D,U+6E,U+6F,U+70,U+71,U+72,U+73,U+74,U+75,U+77,U+79;src:url(data:font/woff2;base64,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) format('woff2')}</style><title id="t">Which positions each token may attend to</title><desc id="d">Four 5 by 5 grids, rows are query tokens and columns are key tokens, filled cells mean allowed. BERT: all 25 cells filled. GPT: lower triangle including the diagonal. Original Transformer: encoder full square, decoder self-attention lower triangle.</desc><defs><marker id="ah-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15171a"/></marker></defs><rect x="0" y="0" width="812" height="324" fill="#ffffff"/>
+<text x="124.0" y="62" font-size="16" text-anchor="middle" fill="#2451b8" dominant-baseline="middle" font-weight="bold">BERT</text>
+<text x="124.0" y="86" font-size="14.5" text-anchor="middle" fill="#565c66" dominant-baseline="middle">encoder only, both ways</text>
+<rect x="54" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="82" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="110" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="138" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="166" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="54" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="82" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="110" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="138" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="166" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="54" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="82" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="110" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="138" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="166" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="54" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="82" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="110" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="138" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="166" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="54" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="82" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="110" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="138" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="166" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="124.0" y="270" font-size="13.5" text-anchor="middle" fill="#565c66" dominant-baseline="middle">key position</text>
+<text x="40" y="180.0" font-size="13.5" fill="#565c66" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 40 180.0)">query position</text>
+<text x="314.0" y="62" font-size="16" text-anchor="middle" fill="#18794a" dominant-baseline="middle" font-weight="bold">GPT</text>
+<text x="314.0" y="86" font-size="14.5" text-anchor="middle" fill="#565c66" dominant-baseline="middle">decoder only, causal</text>
+<rect x="244" y="110" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="272" y="110" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="300" y="110" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="328" y="110" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="356" y="110" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="244" y="138" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="272" y="138" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="300" y="138" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="328" y="138" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="356" y="138" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="244" y="166" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="272" y="166" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="300" y="166" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="328" y="166" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="356" y="166" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="244" y="194" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="272" y="194" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="300" y="194" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="328" y="194" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="356" y="194" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="244" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="272" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="300" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="328" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="356" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="314.0" y="270" font-size="13.5" text-anchor="middle" fill="#565c66" dominant-baseline="middle">key position</text>
+<text x="230" y="180.0" font-size="13.5" fill="#565c66" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 230 180.0)">query position</text>
+<text x="532.0" y="62" font-size="16" text-anchor="middle" fill="#2451b8" dominant-baseline="middle" font-weight="bold">Encoder</text>
+<text x="532.0" y="86" font-size="14.5" text-anchor="middle" fill="#565c66" dominant-baseline="middle">sees the whole source</text>
+<rect x="462" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="490" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="518" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="546" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="574" y="110" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="462" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="490" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="518" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="546" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="574" y="138" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="462" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="490" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="518" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="546" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="574" y="166" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="462" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="490" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="518" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="546" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="574" y="194" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="462" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="490" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="518" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="546" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="574" y="222" width="28" height="28" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="532.0" y="270" font-size="13.5" text-anchor="middle" fill="#565c66" dominant-baseline="middle">key position</text>
+<text x="448" y="180.0" font-size="13.5" fill="#565c66" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 448 180.0)">query position</text>
+<text x="722.0" y="62" font-size="16" text-anchor="middle" fill="#18794a" dominant-baseline="middle" font-weight="bold">Decoder self-attn</text>
+<text x="722.0" y="86" font-size="14.5" text-anchor="middle" fill="#565c66" dominant-baseline="middle">sees tokens 1 to i</text>
+<rect x="652" y="110" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="680" y="110" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="708" y="110" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="736" y="110" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="764" y="110" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="652" y="138" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="680" y="138" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="708" y="138" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="736" y="138" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="764" y="138" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="652" y="166" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="680" y="166" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="708" y="166" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="736" y="166" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="764" y="166" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="652" y="194" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="680" y="194" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="708" y="194" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="736" y="194" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="764" y="194" width="28" height="28" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="652" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="680" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="708" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="736" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<rect x="764" y="222" width="28" height="28" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="722.0" y="270" font-size="13.5" text-anchor="middle" fill="#565c66" dominant-baseline="middle">key position</text>
+<text x="638" y="180.0" font-size="13.5" fill="#565c66" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 638 180.0)">query position</text>
+<line x1="416" y1="24" x2="416" y2="284" stroke="#c9cdd2" stroke-width="1.5"/>
+<text x="627" y="28" font-size="16" text-anchor="middle" fill="#15171a" dominant-baseline="middle" font-weight="bold">Original Transformer</text>
+<text x="219" y="304" font-size="14.5" text-anchor="middle" fill="#15171a" dominant-baseline="middle">Filled cell = query row may attend to that key column</text>
+<text x="627" y="304" font-size="14.5" text-anchor="middle" fill="#15171a" dominant-baseline="middle">Cross-attention between the two is unmasked</text>
+</svg>

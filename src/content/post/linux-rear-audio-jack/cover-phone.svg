@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="790" viewBox="0 0 960 790">
+<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"JetBrains Mono";}</style>
+<rect width="960" height="790" fill="#ffffff"/>
+<text class="m" x="36" y="86" font-size="32" font-weight="600" fill="#2451b8" text-anchor="start" letter-spacing="2">REAR LINE OUT · PIN 0x14 · REALTEK ALC887</text>
+<rect x="36" y="128" width="888" height="300" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="s" x="72" y="200" font-size="46" font-weight="600" fill="#15171a" text-anchor="start">Part 1: jack detection off</text>
+<text class="s" x="72" y="254" font-size="38" font-weight="400" fill="#565c66" text-anchor="start">still silent</text>
+<text class="m" x="72" y="330" font-size="32" font-weight="500" fill="#15171a" text-anchor="start">hdajackretask: Jack detection: Not present</text>
+<text class="m" x="72" y="388" font-size="32" font-weight="500" fill="#565c66" text-anchor="start">pin config 0x01014010 <tspan font-family="IBM Plex Sans">→</tspan> 0x01014110</text>
+<rect x="36" y="452" width="888" height="300" rx="6" fill="#f5f6f7" stroke="#2451b8" stroke-width="3"/>
+<text class="s" x="72" y="524" font-size="46" font-weight="600" fill="#15171a" text-anchor="start">Part 2: Auto-Mute off</text>
+<text class="s" x="72" y="578" font-size="38" font-weight="600" fill="#2451b8" text-anchor="start">rear port plays</text>
+<text class="m" x="72" y="654" font-size="32" font-weight="500" fill="#15171a" text-anchor="start">sset 'Auto-Mute Mode' Disabled</text>
+<text class="m" x="72" y="712" font-size="32" font-weight="500" fill="#565c66" text-anchor="start">Pin-ctls 0x00 <tspan font-family="IBM Plex Sans">→</tspan> 0x40: OUT</text>
+</svg>

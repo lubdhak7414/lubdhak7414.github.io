@@ -1,11 +1,11 @@
 ---
-title: 'Self-Hosting a Private SearXNG Search Engine'
+title: 'Running a private SearXNG search engine with Docker'
 description: 'How I put a private, single-user SearXNG metasearch engine behind a Caddy reverse proxy with Docker Compose, with only the proxy exposed to the host.'
 publishDate: '21 June 2026'
 coverImage:
   src: './cover.webp'
-  alt: 'Architecture diagram: a browser reaches Caddy on port 80, the only host-exposed service, which proxies to the internal SearXNG core and Valkey cache inside the Docker network, with the core querying upstream engines.'
-tags: ['Docker', 'Self-Hosting', 'Linux', 'Privacy', 'DevOps']
+  alt: 'Diagram: the browser reaches Caddy on port 80, the only port on the host; inside the Docker network Caddy proxies to SearXNG on 8080, which uses a Valkey cache and queries upstream engines'
+tags: ['docker', 'self-hosting', 'linux', 'privacy', 'devops']
 ---
 
 SearXNG is a metasearch engine: it takes your query, forwards it to dozens of
@@ -22,10 +22,10 @@ reverse proxy is ever exposed to the host.
 
 > **Key Takeaways**
 >
-> - SearXNG aggregates results from many engines without profiling you; self-hosting means no stranger's server handles your queries.
-> - The whole thing is three containers (Caddy, the SearXNG core, Valkey), and only the Caddy reverse proxy is bound to the host.
-> - The secret key has to be identical in `.env` and `settings.yml`, and it should never be committed or shared.
-> - A handful of config choices (`limiter: false`, `public_instance: false`, a privacy-friendly favicon resolver) turn a public-instance template into a sane single-user setup.
+> - SearXNG combines results from many search engines without profiling you. Self-hosted, no stranger's server handles your queries.
+> - It's three containers (Caddy, SearXNG and Valkey), and only Caddy is bound to the host.
+> - The secret key must match in `.env` and `settings.yml`. Never commit or share it.
+> - `limiter: false`, `public_instance: false` and a privacy-friendly favicon resolver suit a single-user setup.
 
 ## The shape of it
 

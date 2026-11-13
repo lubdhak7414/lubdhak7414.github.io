@@ -1,10 +1,11 @@
 ---
-title: "Multilayer Perceptrons and Activation Functions"
-description: "How stacked layers of neurons solve XOR, a sigmoid forward pass in matrix form with its parameter count, and why ReLU keeps its slope."
+title: "MLP forward pass by hand: XOR and activation functions"
+description: "How two hidden neurons solve XOR, a sigmoid forward pass in matrix form with its parameter count, and why ReLU keeps a slope of 1 where sigmoid and tanh fade."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, mlp, activations]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 2
 ---
 
@@ -16,22 +17,22 @@ A multilayer perceptron (MLP) is that idea made general. It's layers of neurons 
 > - A layer is a matrix multiply plus a bias, followed by an activation function applied to each number separately.
 > - Without a nonlinear activation, any stack of layers collapses into a single layer.
 > - A layer with $n_l$ neurons fed by $n_{l-1}$ numbers has $n_l(n_{l-1}+1)$ parameters.
-> - A sigmoid slope is never above 0.25, a tanh slope never above 1, and a ReLU slope is exactly 1 for every positive input.
+> - A sigmoid slope is at most 0.25, a tanh slope at most 1, and a ReLU slope is 1 for every positive input.
 
 ## Two lines instead of one
 
 Let the first hidden neuron fire when $x_1-x_2-0.5>0$, which is true only for the input $(1,0)$, and the second when $-x_1+x_2-0.5>0$, true only for $(0,1)$. The output neuron fires when $h_1+h_2-0.5>0$, that is, when at least one of the two hidden neurons fired. Tracing the four inputs:
 
-| $x_1x_2$ | $h_1$ | $h_2$ | output |
-|---|---|---|---|
-| 00 | 0 | 0 | 0 |
-| 01 | 0 | 1 | 1 |
-| 10 | 1 | 0 | 1 |
-| 11 | 0 | 0 | 0 |
+| $x_1$ | $x_2$ | $h_1$ | $h_2$ | output |
+|---|---|---|---|---|
+| 0 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 0 | 1 | 1 |
+| 1 | 0 | 1 | 0 | 1 |
+| 1 | 1 | 0 | 0 | 0 |
 
 That is XOR. Each hidden neuron cuts off one corner of the input square, and the output fires in either corner and stays 0 in the band between the two lines. The layer between the inputs and the output is called a hidden layer, because you never see its values in the data.
 
-![The 2-2-1 step network for XOR with weights 1 and -1 into the hidden units, biases -0.5, output weights 1 and 1, beside the input square cut by two parallel lines](img/mlp-activations-xor-network.svg)
+![The 2-2-1 step network for XOR with weights 1 and −1 into the hidden units, biases −0.5, output weights 1 and 1, beside the input square cut by two parallel lines](img/mlp-activations-xor-network.svg)
 
 For XNOR (1 when the inputs match) use $h_1=\mathrm{AND}$ with $\mathbf w=(1,1)$, $b=-1.5$, $h_2=\mathrm{NOR}$ with $\mathbf w=(-1,-1)$, $b=0.5$, and the same OR output.
 
@@ -97,11 +98,15 @@ Stack a hundred of them and you still get one matrix. The XOR network above only
 
 Training adjusts the weights using slopes, so you need to know each activation's slope as well as its shape. The three common choices are below, and the [d2l.ai chapter on multilayer perceptrons](https://d2l.ai/chapter_multilayer-perceptrons/mlp.html) plots each of them with its slope.
 
-| | formula | range | slope | notes |
-|---|---|---|---|---|
-| sigmoid | $\sigma(z)=\dfrac1{1+e^{-z}}$ | $(0,1)$ | $\sigma(1-\sigma)\le0.25$ | flat tails, not zero-centred |
-| tanh | $\dfrac{e^z-e^{-z}}{e^z+e^{-z}}$ | $(-1,1)$ | $1-\tanh^2\le1$ | zero-centred, still flat tails |
-| ReLU | $\max(0,z)$ | $[0,\infty)$ | 1 if $z>0$, 0 if $z<0$ | slope at 0 undefined, choose 0 or 1 |
+| | formula | range | slope |
+|---|---|---|---|
+| sigmoid | $\sigma(z)=\dfrac1{1+e^{-z}}$ | $(0,1)$ | $\sigma(1-\sigma)\le0.25$ |
+| tanh | $\dfrac{e^z-e^{-z}}{e^z+e^{-z}}$ | $(-1,1)$ | $1-\tanh^2z\le1$ |
+| ReLU | $\max(0,z)$ | $[0,\infty)$ | 1 if $z>0$, 0 if $z<0$ |
+
+- Sigmoid: flat tails, not zero-centred.
+- Tanh: zero-centred, still flat tails.
+- ReLU: slope at 0 undefined, choose 0 or 1.
 
 Sigmoid and tanh squash every input into a fixed range, which is why they are called squashing functions. "Zero-centred" means the outputs are balanced around 0 instead of all being positive. Tanh is a rescaled sigmoid: $\tanh z=2\sigma(2z)-1$, and at $z=1.3$ both sides give 0.8617. The [prerequisites note](/blog/cse425-mid-prerequisites/) proves the sigmoid slope. For tanh the quotient rule gives
 
@@ -111,7 +116,7 @@ $$\tanh'(z)=1-\tanh^2(z)$$
 
 Some lecture versions give the sigmoid a steepness $a$, as $\varphi(v)=1/(1+e^{-av})$ with slope $a\varphi(1-\varphi)$. As $a$ grows it turns into a step.
 
-![Sigmoid, tanh and ReLU on -6 to 6 with their derivatives underneath; the sigmoid slope peaks at 0.25 at z = 0 and both sigmoid and tanh slopes are flat in the tails](img/mlp-activations-activation-plots.svg)
+![Sigmoid, tanh and ReLU on −6 to 6 with their derivatives underneath; the sigmoid slope peaks at 0.25 at z = 0 and both sigmoid and tanh slopes are flat in the tails](img/mlp-activations-activation-plots.svg)
 
 Values at three inputs:
 
@@ -131,7 +136,7 @@ Its weakness is the dead unit: if the input to a ReLU is negative for every exam
 
 One hidden layer with enough neurons and a non-polynomial activation can approximate any continuous function on a closed, bounded region (the [universal approximation theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem)). The intuition is that two sigmoids subtract to a bump, and bumps of different heights add up to a curve. For $x=0,\dots,5$, the bump $\sigma(10(x-1.5))-\sigma(10(x-3.5))$ gives $0,\ 0.0067,\ 0.9933,\ 0.9933,\ 0.0067,\ 0$. The theorem is only an existence statement. It gives no bound on how many neurons are needed and no promise that training finds the weights.
 
-## Practice on counts, linear stacks and slopes
+## Practice: counts, linear stacks and slopes
 
 How many parameters does a $5\to4\to2$ network have?
 

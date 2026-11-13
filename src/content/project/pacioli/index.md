@@ -7,10 +7,10 @@ updatedDate: '13 June 2026'
 coverImage:
   src: './cover.webp'
   alt: 'Pacioli proposal-review dashboard'
-tags: ['Python', 'FastAPI', 'LLM', 'System Design', 'Project']
+tags: ['python', 'fastapi', 'llm', 'system-design', 'project']
 homePageIdx: 1
 links:
-  - { label: 'GitHub', url: 'https://github.com/lubdhak7414/pacioli', kind: 'code' }
+  - { label: 'Source on GitHub', url: 'https://github.com/lubdhak7414/pacioli', kind: 'code' }
 facts:
   status: 'Open source on GitHub'
   license: 'MIT'
@@ -29,8 +29,8 @@ shot:
   src: './shot.webp'
   alt: 'Pacioli in a browser: the chat on the left, the proposals and ledger tabs on the right'
 glance:
-  does: 'A double-entry bookkeeping engine: a language model proposes the entries, and Python computes every number and gates every write.'
-  did: 'Designed and built the engine: the model boundary, the human approval gate and one-click undo.'
+  does: 'A double-entry bookkeeping engine you drive by chat.'
+  did: 'Designed and built the engine.'
 ---
 
 ## The premise
@@ -122,14 +122,3 @@ and Google Gemini 2.5 Flash for intent parsing. Lint and tests (ruff + pytest) r
 
 The whole point is that you could swap the model out, or have it fail entirely, and the ledger's
 correctness guarantees would not move an inch.
-
----
-
-### Skills & Deliverables:
-
-- **Backend system design**: async FastAPI service with a lifespan-managed lifecycle, a strict
-  proposal/approval state machine, and an audit trail.
-- **LLM integration with guardrails**: timeout/retry transport, schema-validated structured
-  output, and a self-correcting validation feedback loop.
-- **Data integrity & concurrency**: atomic SQL transitions, cross-process file locking, atomic
-  file swaps, and full-snapshot reversibility.

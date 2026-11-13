@@ -111,6 +111,15 @@
 		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
 		U+A720-A7FF;
 }
+/* Math (MathML from KaTeX): Noto Sans Math 3.000 (OFL), subset to Latin, Greek and the math
+   symbol blocks. Only pages with math load it. */
+@font-face {
+	font-family: 'Noto Sans Math';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 400;
+	src: url('/fonts/noto-sans-math-subset.woff2') format('woff2');
+}
 
 @layer base {
 	*,
@@ -144,6 +153,18 @@
 	a {
 		color: inherit;
 		text-decoration: none;
+	}
+	/* No stranded last words: paragraphs wrap for an even last line, headings balance. */
+	p,
+	li,
+	dd {
+		text-wrap: pretty;
+	}
+	h1,
+	h2,
+	h3,
+	h4 {
+		text-wrap: balance;
 	}
 	img {
 		display: block;
@@ -278,6 +299,24 @@
 		line-height: 1.4;
 		color: var(--faint);
 	}
+	/* Role · location on one line where it fits; when the location wraps, its dot would start the
+	   new line, so the dot sits in the gap before it and a clip hides it at a line's start. */
+	.id-role {
+		display: flex;
+		flex-wrap: wrap;
+		margin-left: -1em;
+		clip-path: inset(0 0 0 1em);
+	}
+	.id-role > span {
+		margin-left: 1em;
+	}
+	.id-role > span + span::before {
+		content: '·';
+		display: inline-block;
+		width: 1em;
+		margin-left: -1em;
+		text-align: center;
+	}
 	.nav {
 		margin-top: 2rem;
 	}
@@ -353,12 +392,20 @@
 	.crumb-sep {
 		color: var(--faint);
 	}
-	/* A way home from a case study or article: under the path line, above the contents. */
-	.side > .pdir-home {
+	/* A way home from a case study or article, and a quiet Contact beside it: under the path
+	   line, above the contents. */
+	.side > .side-home {
 		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0 1.25rem;
+		margin-top: 1rem;
+	}
+	.side-home .pdir-home {
+		display: inline-flex;
 		align-items: baseline;
 		gap: 0.5rem;
-		margin-top: 1.25rem;
+		padding-block: 0.25rem;
 		font-size: 0.9375rem;
 		font-weight: 500;
 		line-height: 1.4;
@@ -371,6 +418,23 @@
 	}
 	.pdir-home:hover {
 		color: var(--accent);
+	}
+	.side-home .side-contact {
+		display: inline-block;
+		padding-block: 0.25rem;
+		font-size: 0.9375rem;
+		line-height: 1.4;
+		color: var(--muted);
+		text-decoration: underline;
+		text-decoration-color: var(--line-strong);
+		text-underline-offset: 3px;
+		transition:
+			color 0.15s ease,
+			text-decoration-color 0.15s ease;
+	}
+	.side-contact:hover {
+		color: var(--accent);
+		text-decoration-color: currentColor;
 	}
 	.pdir ul {
 		list-style: none;
@@ -397,7 +461,7 @@
 	/* Articles: the month on its own mono line over each title. */
 	.pdir-date {
 		display: block;
-		font: 400 0.6875rem/1.5 var(--mono);
+		font: 400 0.75rem/1.5 var(--mono);
 		color: var(--faint);
 	}
 	.pdir--writing li + li {
@@ -541,6 +605,9 @@
 		color: var(--faint);
 		white-space: nowrap;
 		transition: color 0.15s ease;
+	}
+	a.sec-note {
+		padding-block: 0.25rem;
 	}
 	a.sec-note:hover {
 		color: var(--accent);
@@ -747,7 +814,7 @@
 		padding: 3px;
 		border: 1px solid var(--line);
 		border-radius: 6px;
-		background: #fff;
+		background: var(--bg);
 	}
 	.prow:not(:has(.picon)) {
 		grid-template-columns: minmax(0, 1fr);
@@ -833,26 +900,57 @@
 		outline-offset: 4px;
 		border-radius: 4px;
 	}
-	/* Phones: name, summary and the arrow; the whole row still opens the case study. */
+	.prow-go--head {
+		display: none;
+	}
+	/* Phones: a compact row, the name with the arrow at the right edge of its line, then two
+	   lines of the summary (the project page has it in full); the stack and the links wait for
+	   the project page. The whole row still opens it. */
 	@media (max-width: 639px) {
 		.picon {
 			width: 2rem;
 			height: 2rem;
+			margin-top: 0.1rem;
 		}
 		.prow {
 			column-gap: 0.75rem;
+			padding: 0.75rem 0 0.8rem;
 		}
-		.prow-stack,
-		.prow .plinks {
-			display: none;
+		.prow-head {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			gap: 0 0.75rem;
 		}
-		.prow-foot {
-			margin-top: 0.25rem;
+		.prow-ctx {
+			grid-row: 2;
+			font-size: 0.8125rem;
+			line-height: 1.4;
 		}
-		.prow .prow-foot .prow-go {
-			margin-left: auto;
+		.prow-go--head {
+			display: inline-block;
+			grid-row: 1;
+			grid-column: 2;
 			font-size: 1.125rem;
 			color: var(--muted);
+		}
+		.prow-foot {
+			display: none;
+		}
+		.prow-text {
+			display: -webkit-box;
+			margin-top: 0.15rem;
+			overflow: hidden;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 3;
+			line-clamp: 3;
+		}
+		.prow-full {
+			display: none;
+		}
+	}
+	@media (min-width: 640px) {
+		.prow-short {
+			display: none;
 		}
 	}
 
@@ -981,7 +1079,7 @@
 			transform 0.1s ease-out;
 	}
 	.btn-kind {
-		font: 400 0.6875rem/1 var(--mono);
+		font: 400 0.75rem/1 var(--mono);
 		color: var(--faint);
 		transition: color 0.15s ease;
 	}
@@ -1061,9 +1159,9 @@
 	}
 
 	/* Projects: the spec sheet. One ruled table, mono keys on the left, the page's own facts on
-	   the right; the takeaways follow as "In brief". */
+	   the right; the takeaways follow in the gist box. */
 	.spec {
-		margin-top: 1.5rem;
+		margin-top: 2rem;
 	}
 	.spec-label {
 		margin-bottom: 0.5rem;
@@ -1101,8 +1199,28 @@
 		font-weight: 500;
 	}
 	.spec-row--stack dd {
+		overflow: hidden;
 		font: 400 0.875rem/1.7 var(--mono);
 		color: var(--text-body);
+	}
+	/* The stack wraps as a list. Each item carries its separator in the gap before it; the list
+	   is pulled left by one gap and the row clips, so the first item on every line shows none. */
+	.spec-items {
+		display: flex;
+		flex-wrap: wrap;
+		margin-left: -1.5rem;
+		list-style: none;
+	}
+	.spec-items li {
+		position: relative;
+		padding-left: 1.5rem;
+		white-space: nowrap;
+	}
+	.spec-items li::before {
+		content: '·';
+		position: absolute;
+		left: 0.5rem;
+		color: var(--faint);
 	}
 	.spec-links {
 		display: flex;
@@ -1129,19 +1247,6 @@
 	}
 	.spec-links a:hover .spec-name {
 		text-decoration-color: currentColor;
-	}
-	.spec-kind {
-		display: inline-block;
-		font: 400 0.75rem/1 var(--mono);
-		color: var(--faint);
-	}
-	.spec-brief {
-		margin-top: 1.5rem;
-	}
-	.spec-brief .gist-list {
-		gap: 0.5rem;
-		font-size: 0.9375rem;
-		color: var(--text-body);
 	}
 	@media (max-width: 639px) {
 		.spec-row {
@@ -1255,14 +1360,13 @@
 		box-shadow: 0 0 0 1px var(--accent);
 	}
 
-	/* The rule between the brief and the write-up. */
-	.dive {
-		margin: 2.75rem 0 1.75rem;
-		padding-top: 0.7rem;
-		border-top: 1px solid var(--line-strong);
-	}
 	.doc-cover {
 		margin-top: 1.75rem;
+	}
+	/* An article's cover is a drawn card whose words are sized for 1600px: at the full column
+	   they printed larger than the section headings. Capped, its text lands at about 15 to 20px. */
+	.doc-cover:not(.doc-cover--shot) .figure {
+		max-width: 34rem;
 	}
 	.figure {
 		margin: 0;
@@ -1275,6 +1379,9 @@
 	}
 	.cover-frame img {
 		width: 100%;
+	}
+	.cover-frame picture {
+		display: block;
 	}
 	.figure figcaption {
 		margin-top: 0.6rem;
@@ -1309,8 +1416,8 @@
 	.toc-mobile a::before {
 		content: counter(toc, decimal-leading-zero);
 		content: counter(toc, decimal-leading-zero) / '';
-		padding-top: 0.1em;
-		font: 400 0.6875rem/1.4 var(--mono);
+		padding-top: 0.05em;
+		font: 400 0.75rem/1.4 var(--mono);
 		color: var(--faint);
 		transition: color 0.2s ease;
 	}
@@ -1319,7 +1426,7 @@
 		color: var(--text);
 	}
 	.toc a.active {
-		color: var(--text);
+		color: var(--accent);
 		border-left: 2px solid var(--accent);
 		padding-left: calc(0.75rem - 1px);
 		font-weight: 600;
@@ -1343,7 +1450,7 @@
 	.toc-mobile {
 		display: none;
 		margin-bottom: 2rem;
-		padding: 0.7rem 1rem;
+		padding: 0 1rem;
 		border: 1px solid var(--line);
 		border-radius: 6px;
 	}
@@ -1351,6 +1458,7 @@
 		display: flex;
 		justify-content: space-between;
 		gap: 1rem;
+		padding-block: 0.7rem;
 		cursor: pointer;
 		list-style: none;
 		font: 500 0.8125rem/1.5 var(--mono);
@@ -1363,7 +1471,10 @@
 		content: '+';
 	}
 	.toc-mobile[open] summary {
-		margin-bottom: 0.6rem;
+		margin-bottom: 0.1rem;
+	}
+	.toc-mobile[open] ol {
+		padding-bottom: 0.7rem;
 	}
 	.toc-mobile[open] summary::after {
 		content: '−';
@@ -1378,7 +1489,7 @@
 	}
 	.side-next-label {
 		display: block;
-		font: 400 0.6875rem/1.5 var(--mono);
+		font: 400 0.75rem/1.5 var(--mono);
 		color: var(--faint);
 	}
 	.side-next-title {
@@ -1408,35 +1519,7 @@
 		transform: translateX(3px);
 	}
 
-	/* The ending: skills (case studies) or the author (articles), then what to read next. */
-	.skills-tab {
-		margin-top: 2.25rem;
-	}
-	.skill-table {
-		margin-top: 0.7rem;
-	}
-	.skill-table > div {
-		display: grid;
-		grid-template-columns: 11rem minmax(0, 1fr);
-		gap: 0.2rem 1.5rem;
-		padding: 0.75rem 0;
-		border-top: 1px solid var(--line);
-	}
-	.skill-table dt {
-		font: 600 0.9375rem/1.5 var(--sans);
-		color: var(--text);
-	}
-	.skill-table dd {
-		font-size: 0.9375rem;
-		line-height: 1.55;
-		color: var(--muted);
-		text-wrap: pretty;
-	}
-	.skill-table code {
-		font: 400 0.85em var(--mono);
-		color: var(--text);
-		overflow-wrap: anywhere;
-	}
+	/* The ending: the author (articles), then what to read next. */
 
 	.author {
 		display: flex;
@@ -1456,6 +1539,10 @@
 	.author-name {
 		font-size: 1rem;
 		font-weight: 600;
+	}
+	.author-links a {
+		display: inline-block;
+		padding-block: 0.25rem;
 	}
 	.author-name a,
 	.author-links a {
@@ -1551,14 +1638,9 @@
 	.upnext-card:hover .upnext-media img {
 		transform: scale(1.035);
 	}
-	.upnext-media--none {
-		display: grid;
-		place-items: center;
-		padding: 1rem;
-		background: var(--bg);
-		font: 400 0.875rem/1.4 var(--mono);
-		color: var(--faint);
-		text-align: center;
+	/* No picture to show: the text alone, no empty box beside it. */
+	.upnext-card--text {
+		grid-template-columns: minmax(0, 1fr);
 	}
 	.upnext-body {
 		display: flex;
@@ -1615,39 +1697,95 @@
 	.upnext-card:hover .upnext-arrow {
 		transform: translateX(4px);
 	}
-	/* TEMPORARY series preview: the in-article series block, hub numbering, display math */
+	/* TEMPORARY series preview: the in-article series row, the sidebar's notes, the course page,
+	   math */
+	/* One row under the title: course · half, note n of m, the list toggle, previous and next.
+	   The list of the half opens under it. */
 	.series {
-		margin: 1.5rem 0;
-		padding: 0.75rem 0;
+		position: relative;
+		margin-top: 1.5rem;
 		border-block: 1px solid var(--line);
-		font-size: 0.875rem;
+		font: 400 0.8125rem/1.5 var(--mono);
+		color: var(--muted);
 	}
 	.series summary {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: baseline;
-		gap: 0.25rem 0.75rem;
+		align-items: center;
+		gap: 0 0.75rem;
+		min-height: 2.75rem;
+		padding: 0.35rem 9rem 0.35rem 0;
+		list-style: none;
 		cursor: pointer;
 	}
-	.series summary a {
+	.series summary::-webkit-details-marker {
+		display: none;
+	}
+	.series-where a {
 		font-weight: 600;
 		color: var(--text);
+		text-decoration: underline;
+		text-decoration-color: var(--line-strong);
+		text-underline-offset: 3px;
+		transition: color 0.15s ease;
 	}
-	.series-pos {
-		margin-left: auto;
-		font: 400 0.75rem/1.5 var(--mono);
+	.series-where a:hover {
+		color: var(--accent);
+	}
+	.series-toggle {
 		color: var(--faint);
+		transition: color 0.15s ease;
+	}
+	.series-toggle::after {
+		content: ' +';
+	}
+	.series-list[open] .series-toggle::after {
+		content: ' \2212';
+	}
+	.series summary:hover .series-toggle {
+		color: var(--accent);
+	}
+	.series-step {
+		position: absolute;
+		top: 0;
+		right: 0;
+		display: flex;
+		height: 2.75rem;
+	}
+	.series-step > * {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		min-width: 2.75rem;
+		padding: 0 0.5rem;
+	}
+	.series-step > :last-child {
+		padding-right: 0;
+	}
+	.series-step a {
+		color: var(--text);
+		transition: color 0.15s ease;
+	}
+	.series-step a:hover {
+		color: var(--accent);
+	}
+	.series-off {
+		color: var(--line-strong);
 	}
 	.series ol {
 		list-style: none;
-		margin-top: 0.6rem;
+		padding-bottom: 0.6rem;
+		font-family: var(--sans);
+		font-size: 0.875rem;
 	}
 	.series ol a {
 		display: flex;
+		align-items: baseline;
 		gap: 0.75rem;
-		padding: 0.15rem 0 0.15rem 0.6rem;
+		padding: 0.25rem 0 0.25rem 0.6rem;
 		border-left: 2px solid transparent;
 		color: var(--muted);
+		text-wrap: balance;
 	}
 	.series ol a:hover {
 		color: var(--accent);
@@ -1665,14 +1803,210 @@
 	.series ol a[aria-current] .series-n {
 		color: var(--accent);
 	}
-	.series-count {
+	@media (max-width: 959px) {
+		.series ol a {
+			min-height: 2.75rem;
+			align-items: center;
+			padding-block: 0.4rem;
+		}
+	}
+	/* Phones: the row keeps to one line; the toggle and the arrows lose their words (screen
+	   readers keep them). */
+	@media (max-width: 639px) {
+		.series {
+			font-size: 0.75rem;
+		}
+		.series summary {
+			gap: 0 0.5rem;
+			padding-right: 5.75rem;
+		}
+		.series:has(.series-x) summary {
+			padding-right: 7rem;
+		}
+		.series-step > .series-x {
+			padding-left: 0.5rem;
+		}
+		.series-where {
+			white-space: nowrap;
+		}
+		.series-hide {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+			white-space: nowrap;
+		}
+		.series-step > * {
+			justify-content: center;
+			padding: 0;
+		}
+	}
+	/* The sidebar's directory label links to the course; keep it a plain inline link. */
+	.pdir > .label a {
+		display: inline;
+		padding: 0;
+		border: 0;
+		font: inherit;
+		color: inherit;
+	}
+	.pdir > .label a:hover {
+		color: var(--accent);
+	}
+	/* The phone Contents drawer sits clear of the cover above it. */
+	.doc .toc-mobile {
+		margin-top: 1.25rem;
+	}
+	/* Projects and articles: room between the summary box (or cover) and the text; neither has a
+	   signpost line any more. */
+	.doc > .prose {
+		margin-top: 2.25rem;
+	}
+	/* The sidebar's notes of the half: numbered rows, then the other half and all writing. */
+	.pdir--series ol {
+		position: relative;
+		list-style: none;
+	}
+	.pdir--series ol a {
+		display: flex;
+		gap: 0.6rem;
+		text-wrap: balance;
+	}
+	.pdir-n {
+		flex: none;
+		font: 400 0.75rem/1.75 var(--mono);
+		color: var(--faint);
+	}
+	.pdir a[aria-current] .pdir-n {
+		color: var(--accent);
+	}
+	.pdir--writing li > .pdir-date {
+		padding-left: calc(0.75rem + 2px);
+	}
+	.pdir--writing li > a > span {
+		text-wrap: balance;
+	}
+	.pdir-note {
 		display: block;
-		margin-top: 0.35rem;
 		font: 400 0.75rem/1.5 var(--mono);
 		color: var(--faint);
 	}
+	.pdir ul.pdir-more {
+		margin-top: 0.85rem;
+		border-top: 1px solid var(--line);
+	}
+	.pdir-more li + li {
+		border-top: 1px solid var(--line);
+	}
+	.pdir .pdir-more a {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		padding: 0.45rem 0;
+		border-left: 0;
+		font-weight: 500;
+	}
+	.pdir-count {
+		font: 400 0.75rem var(--mono);
+		color: var(--faint);
+	}
+	/* A long sidebar scrolls inside itself: a fade at its foot so no row is cut mid-line, and a
+	   visible scrollbar. */
+	@media (min-width: 960px) and (min-height: 600px) {
+		.side {
+			scrollbar-color: var(--faint) transparent;
+			scrollbar-gutter: stable;
+		}
+		.side::after {
+			content: '';
+			position: sticky;
+			bottom: 0;
+			display: block;
+			height: 3rem;
+			background: linear-gradient(to top, var(--bg) 20%, transparent);
+			pointer-events: none;
+		}
+		/* A note in a series: the path line, Home, Contents and the list's label stay put; only
+		   the list of notes scrolls, inside the room left under them. If even that room is too
+		   short (a long Contents on a short window) the sidebar scrolls as a whole, under its fade. */
+		.side:has(> .pdir--series) {
+			display: flex;
+			flex-direction: column;
+		}
+		.side:has(> .pdir--series) > * {
+			flex: none;
+		}
+		/* At least the label, about three notes and the two rows under them. */
+		.side > .pdir--series {
+			display: flex;
+			flex: 1 1 auto;
+			flex-direction: column;
+			min-height: 15rem;
+		}
+		.pdir--series > ol {
+			flex: 1 1 auto;
+			min-height: 0;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			scrollbar-width: thin;
+			scrollbar-color: var(--faint) transparent;
+		}
+		.pdir--series > ol::before {
+			content: '';
+			position: sticky;
+			top: 0;
+			z-index: 1;
+			display: block;
+			height: 1.5rem;
+			margin-bottom: -1.5rem;
+			background: linear-gradient(to bottom, var(--bg) 15%, transparent);
+			pointer-events: none;
+			opacity: 0;
+		}
+		.pdir--series > ol.is-scrolled::before {
+			opacity: 1;
+		}
+		.pdir--series > ol::after {
+			content: '';
+			position: sticky;
+			bottom: 0;
+			display: block;
+			height: 1.5rem;
+			background: linear-gradient(to top, var(--bg) 15%, transparent);
+			pointer-events: none;
+		}
+	}
+	/* The course page: the lists of notes come straight after the head. */
+	.series-head .doc-lede {
+		margin-top: 0.75rem;
+	}
+	.series-count {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.25rem;
+		margin-top: 1rem;
+		font: 400 0.8125rem/1.5 var(--mono);
+		color: var(--faint);
+	}
+	.series-jump {
+		display: flex;
+		gap: 1rem;
+	}
+	.series-jump a {
+		color: var(--accent);
+		text-decoration: underline;
+		text-decoration-color: var(--accent-line);
+		text-underline-offset: 3px;
+	}
 	.series-rows {
 		list-style: none;
+	}
+	.series-rows .row-title {
+		text-wrap: balance;
+	}
+	/* Room between the lists of notes and the course prose under them. */
+	.series-intro {
+		margin-top: 3.5rem;
 	}
 	/* Display math scrolls sideways instead of widening the page. */
 	.prose .katex:has(> math[display='block']) {
@@ -1682,12 +2016,84 @@
 		overflow-x: auto;
 		overflow-y: hidden;
 	}
-	.prose math {
-		font-size: 1.1em;
+	/* Inline and display math: one math font (Noto Sans Math, a sans like Plex) for letters,
+	   digits, operators and brackets; words inside math stay in Plex. */
+	.katex math {
+		font-family: 'Noto Sans Math', math;
+		font-size: 1.05em;
+	}
+	/* Words and function names (tanh, softmax) in Plex at the size of the text around them: the
+	   1.05em above is for the math font only. Scripts are sized by the rule below. */
+	.katex math :is(mtext, mi.op) {
+		font-family: var(--sans);
+		font-size: calc(1em / 1.05);
+	}
+	/* Sub- and superscripts: the font's 60% scale left W^Q at 11px and second-level scripts at 9px.
+	   Use TeX's 71%, and never less than 11px. Accents (hats, bars) keep the base size. */
+	.katex math :is(msub, msup, msubsup, munderover) > :not(:first-child),
+	.katex math munder:not([accentunder='true']) > :last-child,
+	.katex math mover:not([accent='true']) > :last-child {
+		font-size: max(0.71em, 11px);
+	}
+	/* Two Chromium-only fixes; Firefox already draws both right, so it is excluded, and the
+	   math-depth test is meant to leave out WebKit too (not checked: no WebKit here).
+	   A radical in Noto Sans Math is set a third of an em wider than its contents, which left a
+	   gap after every square root. A superscript starts right at the end of its base with no
+	   italic correction, so the Q of W^Q ran into the slanted W. */
+	@supports (math-depth: auto-add) and (not (-moz-appearance: none)) {
+		.katex math msqrt {
+			margin-inline-end: -0.33em;
+		}
+		.katex math :is(msup, msubsup) > :last-child:not(mo) {
+			padding-inline-start: 0.12em;
+		}
+	}
+	/* Primes: KaTeX writes f' as a superscript prime, but the font's prime already sits high, so
+	   Chromium raised it twice and shrank it. Draw it at the base size, back on its letter. */
+	.katex :is(msup, msubsup) > mo[lspace='0em'][rspace='0em']:not([form='prefix']):last-child {
+		math-depth: 0;
+		font-size: inherit;
+		position: relative;
+		top: 0.35em;
+		margin-left: 0.05em;
+	}
+	/* Operators inside sub- and superscripts (t - 1): script spacing, as in print. Brackets and
+	   commas carry their own spacing (lspace, from rehypeMathSpacing) and are left alone, or the
+	   bracket of W^(l) ran into the W. */
+	.katex :is(msub, msup, msubsup) > :not(:first-child) mo:not([form='prefix'], [lspace]) {
+		margin-inline: -0.15em;
+	}
+	/* A script inside a script (q_phi under E): one script size, not a smaller second one. */
+	.katex math :is(msub, msup, msubsup) > .script2 {
+		font-size: inherit;
+	}
+	/* \underbrace, drawn as a bracket under the whole expression (see rehypeMathSpacing). */
+	.katex math .ubrace {
+		padding: 0 0.1em 0.3em;
+		margin-bottom: 0.15em;
+		border-bottom: 1px solid currentColor;
+		background:
+			linear-gradient(currentColor, currentColor) left bottom / 1px 0.3em no-repeat,
+			linear-gradient(currentColor, currentColor) right bottom / 1px 0.3em no-repeat;
+	}
+	/* Inline maths and the punctuation right after it stay on one line. */
+	.math-tie {
+		white-space: nowrap;
+	}
+	/* Maths in a table header is as heavy as the words beside it. */
+	.prose th math {
+		font-weight: 600;
 	}
 	/* Native MathML matrices: the reset zeroes cell padding, so columns collide. */
 	.prose math mtd {
 		padding: 0.15em 0.35em;
+	}
+	/* Chromium ignores rowspacing and sizes digits by their ink, so matrix rows touched and the
+	   brackets, which stretch to the table, ended at the digits. Give each row TeX's strut. */
+	@supports (math-depth: auto-add) and (not (-moz-appearance: none)) {
+		.prose math mtd {
+			padding-block: 0.3em;
+		}
 	}
 	/* Mermaid diagrams (static SVG): fit the column, scroll if wider */
 	.prose pre.mermaid,
@@ -1699,6 +2105,27 @@
 		max-width: 100%;
 		height: auto;
 	}
+	/* Mermaid names its label groups 'label', which the site's mono .label rule shrank to 12px
+	   inside boxes measured for 16px, so every label sat small and off-centre. Undo it there. */
+	.prose svg[id^='mermaid'] .label {
+		font: inherit;
+		margin: 0;
+	}
+	.prose svg[id^='mermaid'] .node rect {
+		rx: 4px;
+	}
+	/* Centred like display math, with the same room above and below as a figure (the svg's own
+	   em is Mermaid's 16px, so the gaps are set on its neighbours in the text's em). */
+	.prose > svg[id^='mermaid'] {
+		display: block;
+		margin-inline: auto;
+	}
+	.prose > :has(+ svg[id^='mermaid']) {
+		margin-bottom: 1.6em;
+	}
+	.prose > svg[id^='mermaid'] + * {
+		margin-top: 1.6em;
+	}
 
 	.upnext-foot {
 		display: flex;
@@ -1709,6 +2136,8 @@
 		font-size: 0.875rem;
 	}
 	.upnext-foot a {
+		display: inline-block;
+		padding-block: 0.25rem;
 		color: var(--muted);
 		font-weight: 500;
 		transition: color 0.15s ease;
@@ -1844,16 +2273,26 @@
 		margin-top: 0.5em;
 	}
 	.prose :not(pre) > code {
-		font: 400 0.85em var(--mono);
+		font: 400 max(0.85em, 0.75rem) var(--mono);
 		background: var(--soft);
 		border-radius: 3px;
 		padding: 0.1em 0.3em;
 		color: var(--text);
-		overflow-wrap: anywhere; /* long env vars and paths must not widen the column */
+		overflow-wrap: anywhere; /* a piece over 28 characters may still break anywhere */
 	}
-	.prose > * + :is(.expressive-code, blockquote, img, table, hr, figure),
-	.prose > :is(.expressive-code, blockquote, img, table, hr, figure) + * {
+	/* keepCode() (utils/typeset.ts): short code never breaks, longer code only at a space or / */
+	code.nb,
+	code .nb {
+		white-space: nowrap;
+	}
+	.prose > * + :is(.expressive-code, blockquote, img, picture, table, hr, figure),
+	.prose > :is(.expressive-code, blockquote, img, picture, table, hr, figure) + * {
 		margin-top: 1.6em;
+	}
+	/* A body image with a phone drawing beside it arrives as a <picture> (BlogPost.astro): a block,
+	   so it takes the same room above and below as a plain image. */
+	.prose > picture {
+		display: block;
 	}
 	/* Other blockquotes: a tinted rule, the bold first line printed as a mono label. */
 	.prose blockquote {
@@ -1876,6 +2315,40 @@
 		border: 1px solid var(--line);
 		border-radius: 6px;
 	}
+	/* Series figures: the drawing links to its full-size file; a quiet hint under it. */
+	.fig-link {
+		display: block;
+		border-radius: 6px;
+	}
+	.fig-link img {
+		width: 100%;
+		height: auto;
+		background: var(--bg);
+		transition: border-color 0.15s ease;
+	}
+	.fig-link:hover img {
+		border-color: var(--line-strong);
+	}
+	.fig-link:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 3px;
+	}
+	.fig-hint {
+		margin-top: 0.5rem;
+		font: 400 0.75rem/1.5 var(--mono);
+		color: var(--faint);
+	}
+	.fig-tap {
+		display: none;
+	}
+	@media (hover: none) {
+		.fig-tap {
+			display: inline;
+		}
+		.fig-click {
+			display: none;
+		}
+	}
 	.prose hr {
 		border: 0;
 		border-top: 1px solid var(--line);
@@ -1895,22 +2368,28 @@
 		padding: 0.5rem 1rem 0.5rem 0;
 		border-bottom: 1px solid var(--line);
 	}
+	/* Headers share one baseline: top-aligned, a header with a raised prime (tanh′) sat lower than
+	   its neighbours, its line box being taller. */
 	.prose th {
+		vertical-align: baseline;
 		font-weight: 600;
 		color: var(--text);
 		border-bottom-color: var(--line-strong);
 	}
-	/* Phones: let a table wrap inside the column instead of clipping it behind a scroll. */
+	/* Phones: a table wraps inside the column at whole words. 'overflow-wrap: anywhere' let the
+	   auto layout squeeze a column until words split mid-word (suppress/ed, sig/moid). Only a
+	   table whose formulas and longest words cannot fit scrolls sideways, as on desktop. */
 	@media (max-width: 640px) {
 		.prose table {
-			display: table;
-			width: 100%;
 			font-size: 0.8125em;
 		}
 		.prose th,
 		.prose td {
 			padding-right: 0.5rem;
-			overflow-wrap: anywhere;
+			overflow-wrap: break-word;
+		}
+		.prose :is(th, td):last-child {
+			padding-right: 0;
 		}
 	}
 
@@ -2015,9 +2494,6 @@
 		}
 		.toc-mobile {
 			display: block;
-		}
-		.skill-table > div {
-			grid-template-columns: minmax(0, 1fr);
 		}
 		.main-foot {
 			display: block;

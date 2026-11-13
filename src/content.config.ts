@@ -41,8 +41,10 @@ const post = defineCollection({
 	loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/post' }),
 	schema: (context) =>
 		entrySchema(context).extend({
-			// TEMPORARY series preview: posts sharing `series` read as ordered parts.
+			// A course series: posts sharing `series` are listed on one hub page, grouped by
+			// `section` and ordered by `part` within it.
 			series: z.string().optional(),
+			section: z.string().optional(),
 			part: z.number().int().optional()
 		})
 })
@@ -68,6 +70,9 @@ const project = defineCollection({
 				.array(
 					z.object({
 						label: z.string(),
+						// What this link is in two or three words, for the project lists when one
+						// project has several links of a kind (three repos, say).
+						short: z.string().max(16).optional(),
 						url: z.url(),
 						kind: z.enum(['code', 'live', 'store']).default('code')
 					})

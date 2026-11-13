@@ -1,10 +1,11 @@
 ---
-title: "Autoencoders and LSTM Autoencoders"
-description: "An autoencoder run by hand, its parameter count, why its code space has gaps, and an LSTM autoencoder followed shape by shape."
+title: "Autoencoder worked example and LSTM autoencoder shapes"
+description: "An autoencoder run by hand, its parameter count, why its latent space has gaps a VAE closes, denoising, and an LSTM autoencoder traced shape by shape."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, autoencoder, lstm]
-series: "CSE 425 Final"
+series: "CSE 425"
+section: "Final"
 part: 3
 ---
 
@@ -13,11 +14,10 @@ If a network has to rebuild a 784-pixel digit from only 2 numbers, those 2 numbe
 There are no labels anywhere, so this is unsupervised learning: the input is its own target.
 
 > **Key Takeaways**
-> - An autoencoder is an encoder that compresses to a narrow code and a decoder that rebuilds the input from it, trained to make the rebuilt copy match the original.
-> - A dense layer with $m$ inputs and $n$ outputs has $mn+n$ parameters, and an LSTM layer with input size $m$ and hidden size $H$ has $4(mH+H^2+H)$.
+> - An autoencoder squeezes the input to a narrow code and rebuilds it; a denoising one is scored against the clean input.
+> - A dense layer has $mn+n$ parameters, and an LSTM layer with input size $m$ and hidden size $H$ has $4(mH+H^2+H)$.
 > - After training you usually keep the encoder, whose code works as a feature vector, and drop the decoder.
 > - A plain autoencoder's code space has gaps where a random code decodes to junk, which is the problem the VAE addresses.
-> - A denoising autoencoder is fed a corrupted input but scored against the clean one.
 
 ## One autoencoder, run by hand
 
@@ -55,12 +55,12 @@ The parameter count below uses this 784-300-100-2-100-300-784 network:
 
 ```mermaid
 flowchart TD
-  A["x: 784"] --> B["300"]
+  A["<b>x</b>: 784"] --> B["300"]
   B --> C["100"]
-  C --> D["z: 2"]
+  C --> D["<b>z</b>: 2"]
   D --> E["100"]
   E --> F["300"]
-  F --> G["x hat: 784"]
+  F --> G["<b>x̂</b>: 784"]
 ```
 
 The encoder runs from $\mathbf x$ down to $\mathbf z$ and the decoder from $\mathbf z$ back up to $\widehat{\mathbf x}$. The narrow box in the middle, shared by both, is the bottleneck $\mathbf z$.
@@ -133,7 +133,7 @@ The code $\mathbf z$ has a fixed size, so it can only hold a short description o
 
 The forget gate helps too. If a one-off spike enters the cell state and the forget gate stays at about the same value $f$, its contribution after $k$ steps is about $f^k$. That is a simplification, since the real update also involves the input gate, but with $f=0.1$ the spike is $10^{-1},\,10^{-2},\,10^{-3},\,10^{-4},\,10^{-5}$ of its size after 1 to 5 steps.
 
-## Two counts and one design choice
+## Practice: two counts and one design choice
 
 A dense layer has 64 inputs and 10 outputs. How many parameters?
 

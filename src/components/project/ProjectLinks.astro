@@ -10,7 +10,10 @@ const { links, name, title } = project.data
 const short = name ?? title
 
 // One group per kind. A single link prints as its kind ("code ↗"); several links of one kind
-// print under the kind by their own labels (three repos, say).
+// print under the kind by short names (three repos, say: "code BrewQuery ↗ ..."): the link's
+// `short`, else its label without the trailing "source" the kind already says.
+const named = (link: { label: string; short?: string | undefined }) =>
+	link.short ?? link.label.replace(/\s+source$/i, '')
 const groups = (['code', 'live', 'store'] as const)
 	.map((kind) => ({ kind, links: links.filter((link) => link.kind === kind) }))
 	.filter((group) => group.links.length > 0)
@@ -36,7 +39,8 @@ const groups = (['code', 'live', 'store'] as const)
 								href={link.url}
 								target='_blank'
 								rel='noopener noreferrer'
-								set:text={`${link.label} ↗`}
+								aria-label={`${kind}: ${short}, ${link.label} (opens in a new tab)`}
+								set:text={`${named(link)} ↗`}
 							/>
 						))}
 					</span>

@@ -1,11 +1,11 @@
 ---
-title: 'Anatomy of a WordPress Hack (EtherHiding)'
-description: 'A WooCommerce site hid blockchain-loaded malware, ghost admins, casino spam posts and database backdoors. How we found it all and how to prevent it.'
+title: 'A WordPress hack that loaded its code from a blockchain'
+description: 'An EtherHiding infection on a WooCommerce site: blockchain-loaded malware, rogue admins, casino spam and database backdoors, and how we cleaned it up.'
 publishDate: '17 October 2026'
 coverImage:
   src: './cover.webp'
-  alt: 'Page source with a script tag added to the head by wp-config.php, and the decoded loader that calls eth_call on a blockchain node and passes the result to eval()'
-tags: ['WordPress', 'Security', 'Malware', 'Incident Response', 'WooCommerce']
+  alt: 'Four steps of the EtherHiding loader: wp-config.php adds a base64 script to every page, the visitor''s browser makes an eth_call to a BNB Chain testnet node, a smart contract hands back the payload, and eval() runs whatever came back'
+tags: ['wordpress', 'security', 'malware', 'incident-response', 'woocommerce']
 ---
 
 _The client's name, the site's subject and location, and a few other details have been changed to keep the client anonymous. The malware and the cleanup are described as we found them._
@@ -16,10 +16,10 @@ The cleanup was straightforward in the end. The interesting part was how many se
 
 > **Key Takeaways**
 >
-> - WordPress core and all eleven wordpress.org plugins matched the official checksums, apart from one readme file. The infection lived entirely in added files, one edited config file and the database.
-> - The attacker came back repeatedly: rogue administrator accounts had been created on different dates. Cleaning only the files would not have held.
-> - The database held casino spam posts the owner never wrote. Hidden spam widgets inside the homepage layout crashed the site after the files were clean, and other pages carried invisible link blocks.
-> - Most of this is preventable with updates, fewer plugins, file-integrity checks and an alert whenever a new administrator appears.
+> - Core and the eleven wordpress.org plugins passed their checksums. The infection was mostly in added files, `wp-config.php` and the database.
+> - Rogue admin accounts created on different dates showed the attacker kept coming back, so cleaning files alone wouldn't hold.
+> - The database held casino spam posts, and hidden spam widgets in the homepage layout crashed the site after the file cleanup.
+> - Updates, fewer plugins, file-integrity checks and a new-admin alert would have prevented most of it.
 
 ## Step one: trust nothing, verify against the source
 

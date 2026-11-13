@@ -1,11 +1,12 @@
-import { getAllPosts, getAllProjects, sortMDByDate } from '@/utils'
+import { getAllPosts, getAllProjects, getSeries, sortMDByDate } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 export const prerender = true
 
 export async function GET() {
 	const posts = await getAllPosts()
-	const latestPosts = sortMDByDate(posts).slice(0, 10)
+	const latestPosts = sortMDByDate(posts.filter((post) => !post.data.series)).slice(0, 10)
+	const series = getSeries(posts)
 	const projects = await getAllProjects()
 
 	// Escape Markdown link-text metacharacters in a title.
@@ -44,6 +45,15 @@ export async function GET() {
 					)
 				]
 			: []),
+		...series.flatMap((s) => [
+			'',
+			`## ${escapeTitle(s.title)}`,
+			`- [${escapeTitle(s.title)}](${new URL(`/series/${s.slug}/`, siteConfig.url).href})`,
+			...s.parts.map(
+				(part) =>
+					`- [${escapeTitle(part.data.title)}](${new URL(`/blog/${part.id}/`, siteConfig.url).href})`
+			)
+		]),
 		'',
 		'## Resources',
 		`- Blog: ${new URL('/blog/', siteConfig.url).href}`,

@@ -1,10 +1,11 @@
 ---
-title: "RNN Basics: Unrolling Through Time"
-description: "How a recurrent network carries a hidden state from step to step, worked by hand with shapes, a parameter count, teacher forcing and a small hand-built design."
+title: "RNN forward pass by hand: unrolling and parameter count"
+description: "A recurrent network run by hand step by step: hidden state, shapes, a parameter count that ignores sequence length, input-output patterns and teacher forcing."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, rnn]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 8
 ---
 
@@ -13,10 +14,10 @@ An RNN that reads 50 words has exactly as many weights as one that reads 5. Its 
 The reason to want one at all is that an ordinary network (an MLP) takes a fixed-size input and has no memory. Show it the numbers 5, 10, 15, 20 one at a time and ask for the next number: when it sees 20, it has no idea what came before. A sentence like "I moved to France years ago, so I need to speak ___" has the same problem, because the answer depends on a word far back. A recurrent network fixes this by feeding its own previous hidden state back in as an extra input at the next step. The hidden state is the network's memory of everything so far, squeezed into $H$ numbers.
 
 > **Key Takeaways**
-> - An RNN uses the same weight matrices at every time step, so its parameter count does not depend on the sequence length $T$.
-> - The hidden state $\mathbf h_t$ is computed from the current input and the previous hidden state, which is how earlier steps influence later ones.
+> - An RNN reuses the same weight matrices at every step, so its parameter count does not depend on the sequence length $T$.
+> - The hidden state $\mathbf h_t$ comes from the current input and $\mathbf h_{t-1}$, which is how earlier steps reach later ones.
 > - With one-hot inputs, multiplying by $W_{xh}$ picks out one column of it.
-> - Teacher forcing trains with the true previous output as the next input; at test time the model feeds in its own outputs, which it never practised on.
+> - Teacher forcing feeds the true previous output in training; at test time the model must use its own.
 
 ## A small RNN, run by hand
 
@@ -86,7 +87,7 @@ $$\widehat{\mathbf y}_3=\mathrm{softmax}(\mathbf o_3)=(0.6987,\ 0.3013)$$
 
 Parameters: $W_{xh}$ has 6 entries, $W_{hh}$ has 4, $\mathbf b_h$ has 2, $W_{hy}$ has 4 and $\mathbf b_y$ has 2, so $6+4+2+4+2=18$. The loop on the left of the figure is the real network. The chain on the right draws one copy per time step, which is what unrolling means, and every copy uses the same 18 numbers.
 
-![A rolled RNN cell with a W_hh self-loop beside three unrolled copies; every copy uses the same W_xh (2 x 3), W_hh (2 x 2) and W_hy (2 x 2), with the hidden states from the worked example](img/rnn-basics-rnn-unrolled-shapes.svg)
+![A rolled RNN cell with a W_hh self-loop beside three unrolled copies; every copy uses the same W_xh (2 × 3), W_hh (2 × 2) and W_hy (2 × 2), with the hidden states from the worked example](img/rnn-basics-rnn-unrolled-shapes.svg)
 
 ## The general rule
 
@@ -100,7 +101,7 @@ $$\mathbf o_t=W_{hy}\mathbf h_t+\mathbf b_y$$
 
 $$\widehat{\mathbf y}_t=\mathrm{softmax}(\mathbf o_t)$$
 
-The loss is $L=\sum_{t=1}^{T}L_t$, where $L_t$ compares $\widehat{\mathbf y}_t$ with $\mathbf y_t$ (cross-entropy for classes) and $T$ is the number of steps. How the gradient of this sum flows back through the steps is the subject of [Backpropagation Through Time](/blog/cse425-mid-bptt/). Check the first lines against the example: $W_{xh}\mathbf x_1=(0.5,0.1)$, $W_{hh}\mathbf h_0=\mathbf 0$ and adding $\mathbf b_h$ gave $(0.6,0)$, as above.
+The loss is $L=\sum_{t=1}^{T}L_t$, where $L_t$ compares $\widehat{\mathbf y}_t$ with $\mathbf y_t$ (cross-entropy for classes) and $T$ is the number of steps. How the gradient of this sum flows back through the steps is the subject of [Backpropagation through time](/blog/cse425-mid-bptt/). Check the first lines against the example: $W_{xh}\mathbf x_1=(0.5,0.1)$, $W_{hh}\mathbf h_0=\mathbf 0$ and adding $\mathbf b_h$ gave $(0.6,0)$, as above.
 
 The sizes have to fit, and a mismatch is an easy way to get a wrong answer. $W_{xh}$ is $H\times D$, $W_{hh}$ is $H\times H$, $W_{hy}$ is $V\times H$, $\mathbf b_h$ has $H$ entries and $\mathbf b_y$ has $V$. The addition works because
 
@@ -154,7 +155,7 @@ A second pattern: detect two 1s in a row with $h_t=\mathrm{ReLU}(x_t+x_{t-1}-1)$
 
 For a design question, write down the input and output vectors with their sizes and the weight matrices the right way round, show the hidden activations, then run one test sequence through step by step.
 
-## Sizes, lookups and teacher forcing
+## Practice: sizes, lookups and teacher forcing
 
 With $D=10$, $H=20$, $V=5$ and $T=100$, how many parameters?
 
