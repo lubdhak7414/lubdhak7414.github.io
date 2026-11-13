@@ -1,5 +1,6 @@
 ---
 import type { Series } from '@/utils'
+import { noteLabel, seriesPlace, tidyTitle } from '@/utils/series'
 
 interface Props {
 	series: Series
@@ -7,26 +8,90 @@ interface Props {
 }
 
 const { series, current } = Astro.props
-const at = series.parts.findIndex((part) => part.id === current)
+const place = seriesPlace(series, current)
+const { section } = place
+// Inside a half: the note before and after. At either end: the other half's last or first note.
+const back = place.prev
+	? { href: `/blog/${place.prev.id}/`, text: 'Prev', title: place.prev.data.title, cross: false }
+	: place.prevHalf && {
+			href: `/blog/${place.prevHalf.post.id}/`,
+			text: place.prevHalf.section.label,
+			cross: true,
+			title: place.prevHalf.post.data.title
+		}
+const on = place.next
+	? { href: `/blog/${place.next.id}/`, text: 'Next', title: place.next.data.title, cross: false }
+	: place.nextHalf && {
+			href: `/blog/${place.nextHalf.post.id}/`,
+			text: place.nextHalf.section.label,
+			cross: true,
+			title: place.nextHalf.post.data.title
+		}
 ---
 
-{/* On an article in a series: where it sits, and every part in order. Plain details, no script. */}
-<details class='series' open>
-	<summary>
-		<span class='label'>Series</span>
-		<a href={`/series/${series.slug}/`} set:text={series.name} />
-		<span class='series-pos' set:text={`Part ${at + 1} of ${series.parts.length}`} />
-	</summary>
-	<ol>
+{
+	/* On a note in a series: one row (the course, the note's place, previous and next); the notes
+of its half sit in a closed list under it. Plain details, no script. */
+}
+<nav class='series' aria-label={`${series.name} notes`}>
+	<details class='series-list'>
+		<summary>
+			<span class='series-where'>
+				<a href={`/series/${series.slug}/`} set:text={series.name} />
+				<span aria-hidden='true'>·</span>
+				<span set:text={noteLabel(place)} />
+			</span>
+			<span class='series-toggle'><span class='series-hide'>All notes</span></span>
+		</summary>
+		<ol>
+			{
+				section.parts.map((part, i) => (
+					<li>
+						<a href={`/blog/${part.id}/`} aria-current={part.id === current ? 'page' : undefined}>
+							<span class='series-n' set:text={String(i + 1).padStart(2, '0')} />
+							<span set:text={tidyTitle(part.data.title)} />
+						</a>
+					</li>
+				))
+			}
+		</ol>
+	</details>
+	<p class='series-step'>
 		{
-			series.parts.map((part, i) => (
-				<li>
-					<a href={`/blog/${part.id}/`} aria-current={part.id === current ? 'page' : undefined}>
-						<span class='series-n' set:text={String(i + 1).padStart(2, '0')} />
-						<span set:text={part.data.title} />
-					</a>
-				</li>
-			))
+			back ? (
+				<a
+					href={back.href}
+					rel='prev'
+					title={back.title}
+					aria-label={`Previous: ${back.title}`}
+					class:list={[back.cross && 'series-x']}
+				>
+					<span aria-hidden='true'>&larr;</span>
+					<span class:list={[!back.cross && 'series-hide']} set:text={back.text} />
+				</a>
+			) : (
+				<span class='series-off' aria-hidden='true'>
+					&larr;<span class='series-hide'> Prev</span>
+				</span>
+			)
 		}
-	</ol>
-</details>
+		{
+			on ? (
+				<a
+					href={on.href}
+					rel='next'
+					title={on.title}
+					aria-label={`Next: ${on.title}`}
+					class:list={[on.cross && 'series-x']}
+				>
+					<span class:list={[!on.cross && 'series-hide']} set:text={on.text} />
+					<span aria-hidden='true'>&rarr;</span>
+				</a>
+			) : (
+				<span class='series-off' aria-hidden='true'>
+					<span class='series-hide'>Next </span>&rarr;
+				</span>
+			)
+		}
+	</p>
+</nav>

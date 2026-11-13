@@ -1,140 +1,141 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 420" width="930" height="420" role="img" aria-labelledby="t d" font-family="DejaVu Sans, Helvetica, Arial, sans-serif"><title id="t">Sliding a 3x3 edge kernel over a 6x6 image</title><desc id="d">A 6x6 image whose left three columns are 10 and right three are 0. The 3x3 kernel with rows 1, 0, -1 sits on rows 1 to 3, columns 2 to 4. The nine products sum to 30, which fills output cell row 1, column 2 of the 4x4 output. Every output row is 0, 30, 30, 0.</desc><defs><marker id="ah-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d232b"/></marker><marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563c9"/></marker><marker id="ah-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b85f08"/></marker><marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="ah-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="ah-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#56606c"/></marker><marker id="ah-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker></defs><rect x="1" y="1" width="928" height="418" rx="16" fill="#f8f7f3" stroke="#d3cfc6" stroke-width="1.5"/><text x="30" y="36" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Input 6 x 6</text>
-<rect x="30" y="62" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="51.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="72" y="62" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="93.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="114" y="62" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="135.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="156" y="62" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="177.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="198" y="62" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="219.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="240" y="62" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="261.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="30" y="104" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="51.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="72" y="104" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="93.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="114" y="104" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="135.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="156" y="104" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="177.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="198" y="104" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="219.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="240" y="104" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="261.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="30" y="146" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="51.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="72" y="146" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="93.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="114" y="146" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="135.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="156" y="146" width="42" height="42" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="177.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="198" y="146" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="219.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="240" y="146" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="261.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="30" y="188" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="51.0" y="210.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="72" y="188" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="93.0" y="210.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="114" y="188" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="135.0" y="210.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="156" y="188" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="177.0" y="210.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="198" y="188" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="219.0" y="210.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="240" y="188" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="261.0" y="210.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="30" y="230" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="51.0" y="252.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="72" y="230" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="93.0" y="252.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="114" y="230" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="135.0" y="252.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="156" y="230" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="177.0" y="252.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="198" y="230" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="219.0" y="252.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="240" y="230" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="261.0" y="252.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="30" y="272" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="51.0" y="294.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="72" y="272" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="93.0" y="294.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="114" y="272" width="42" height="42" rx="0" fill="#fbe3c8" stroke="#9a958b" stroke-width="1"/>
-<text x="135.0" y="294.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10</text>
-<rect x="156" y="272" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="177.0" y="294.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="198" y="272" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="219.0" y="294.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="240" y="272" width="42" height="42" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="261.0" y="294.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="72" y="62" width="126" height="126" rx="3" fill="none" stroke="#2563c9" stroke-width="3.2"/>
-<text x="156" y="338" font-size="14" text-anchor="middle" font-weight="normal" fill="#2563c9" dominant-baseline="middle">window: rows 1 to 3, columns 2 to 4</text>
-<text x="330" y="36" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Kernel 3 x 3</text>
-<rect x="330" y="62" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="351.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="372" y="62" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="393.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="414" y="62" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="435.0" y="84.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-1</text>
-<rect x="330" y="104" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="351.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="372" y="104" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="393.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="414" y="104" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="435.0" y="126.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-1</text>
-<rect x="330" y="146" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="351.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">1</text>
-<rect x="372" y="146" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="393.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="414" y="146" width="42" height="42" rx="0" fill="#d5efdf" stroke="#9a958b" stroke-width="1"/>
-<text x="435.0" y="168.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">-1</text>
-<text x="393" y="210" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">same weights</text>
-<text x="393" y="228" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">at every position</text>
-<text x="490" y="36" font-size="15" text-anchor="start" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Nine products, row by row</text>
-<text x="490" y="90" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10 x 1 + 10 x 0 + 0 x (-1) = 10</text>
-<text x="490" y="124" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10 x 1 + 10 x 0 + 0 x (-1) = 10</text>
-<text x="490" y="158" font-size="15" text-anchor="start" font-weight="normal" fill="#1d232b" dominant-baseline="middle">10 x 1 + 10 x 0 + 0 x (-1) = 10</text>
-<line x1="490" y1="192" x2="770" y2="192" stroke="#56606c" stroke-width="1.2"/>
-<text x="490" y="216" font-size="16" text-anchor="start" font-weight="bold" fill="#2563c9" dominant-baseline="middle">sum = 10 + 10 + 10 = 30</text>
-<text x="490" y="248" font-size="14" text-anchor="start" font-weight="normal" fill="#56606c" dominant-baseline="middle">bias 0, so the output cell is 30</text>
-<text x="850" y="36" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d232b" dominant-baseline="middle">Output 4 x 4</text>
-<rect x="790" y="62" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="805.0" y="78.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="820" y="62" width="30" height="30" rx="0" fill="#dbe7fb" stroke="#9a958b" stroke-width="1"/>
-<text x="835.0" y="78.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">30</text>
-<rect x="850" y="62" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="865.0" y="78.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">30</text>
-<rect x="880" y="62" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="895.0" y="78.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="790" y="92" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="805.0" y="108.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="820" y="92" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="835.0" y="108.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">30</text>
-<rect x="850" y="92" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="865.0" y="108.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">30</text>
-<rect x="880" y="92" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="895.0" y="108.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="790" y="122" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="805.0" y="138.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="820" y="122" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="835.0" y="138.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">30</text>
-<rect x="850" y="122" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="865.0" y="138.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">30</text>
-<rect x="880" y="122" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="895.0" y="138.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="790" y="152" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="805.0" y="168.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="820" y="152" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="835.0" y="168.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">30</text>
-<rect x="850" y="152" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="865.0" y="168.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">30</text>
-<rect x="880" y="152" width="30" height="30" rx="0" fill="#ffffff" stroke="#9a958b" stroke-width="1"/>
-<text x="895.0" y="168.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">0</text>
-<rect x="820" y="62" width="30" height="30" rx="3" fill="none" stroke="#2563c9" stroke-width="3.2"/>
-<text x="850" y="204" font-size="13" text-anchor="middle" font-weight="normal" fill="#56606c" dominant-baseline="middle">(6 - 3)/1 + 1 = 4</text>
-<path d="M 722 216 C 760 216, 750 77, 786 77" fill="none" stroke="#2563c9" stroke-width="1.8" marker-end="url(#ah-blue)"/>
-<text x="465" y="385" font-size="14" text-anchor="middle" font-weight="normal" fill="#1d232b" dominant-baseline="middle">The nonzero outputs (30) sit exactly where the bright-to-dark step is; windows that see only 10s or only 0s give 0.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 810 384" width="810" height="384" role="img" aria-labelledby="t d" font-family="'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"><style id="fig-fonts">@font-face{font-family:'IBM Plex Sans';font-weight:400;unicode-range:U+20,U+28,U+29,U+2B,U+2C,U+2D,U+2E,U+2F,U+30,U+31,U+32,U+33,U+34,U+36,U+3A,U+3B,U+3D,U+49,U+4B,U+4E,U+4F,U+54,U+61,U+62,U+63,U+64,U+65,U+67,U+68,U+69,U+6B,U+6C,U+6D,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+76,U+77,U+78,U+79,U+7A,U+B7,U+D7,U+2212;src:url(data:font/woff2;base64,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) format('woff2')}@font-face{font-family:'IBM Plex Sans';font-weight:700;unicode-range:U+20,U+28,U+29,U+2B,U+2C,U+2D,U+2E,U+2F,U+30,U+31,U+32,U+33,U+34,U+36,U+3A,U+3B,U+3D,U+49,U+4B,U+4E,U+4F,U+54,U+61,U+62,U+63,U+64,U+65,U+67,U+68,U+69,U+6B,U+6C,U+6D,U+6E,U+6F,U+70,U+72,U+73,U+74,U+75,U+76,U+77,U+78,U+79,U+7A,U+B7,U+D7,U+2212;src:url(data:font/woff2;base64,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) format('woff2')}</style><title id="t">Sliding a 3×3 edge kernel over a 6×6 image</title><desc id="d">A 6×6 image whose left three columns are 10 and right three are 0. The 3×3 kernel with rows 1, 0, -1 sits on rows 1 to 3, columns 2 to 4. The nine products sum to 30, which fills output cell row 1, column 2 of the 4×4 output. Every output row is 0, 30, 30, 0.</desc><defs><marker id="ah-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15171a"/></marker><marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2451b8"/></marker><marker id="ah-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker><marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#18794a"/></marker><marker id="ah-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8322a"/></marker><marker id="ah-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#565c66"/></marker><marker id="ah-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b3fb3"/></marker></defs><rect x="0" y="0" width="810" height="384" fill="#ffffff"/><text x="24" y="36" font-size="15" text-anchor="start" font-weight="bold" fill="#15171a" dominant-baseline="middle">Input 6×6</text>
+<rect x="24" y="62" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="42.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="60" y="62" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="78.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="96" y="62" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="114.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="132" y="62" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="150.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="168" y="62" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="186.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="204" y="62" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="222.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="24" y="98" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="42.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="60" y="98" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="78.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="96" y="98" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="114.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="132" y="98" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="150.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="168" y="98" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="186.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="204" y="98" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="222.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="24" y="134" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="42.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="60" y="134" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="78.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="96" y="134" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="114.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="132" y="134" width="36" height="36" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="150.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="168" y="134" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="186.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="204" y="134" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="222.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="24" y="170" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="42.0" y="188.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="60" y="170" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="78.0" y="188.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="96" y="170" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="114.0" y="188.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="132" y="170" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="150.0" y="188.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="168" y="170" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="186.0" y="188.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="204" y="170" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="222.0" y="188.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="24" y="206" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="42.0" y="224.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="60" y="206" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="78.0" y="224.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="96" y="206" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="114.0" y="224.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="132" y="206" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="150.0" y="224.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="168" y="206" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="186.0" y="224.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="204" y="206" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="222.0" y="224.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="24" y="242" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="42.0" y="260.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="60" y="242" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="78.0" y="260.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="96" y="242" width="36" height="36" rx="0" fill="#fbe3c8" stroke="#9aa0a8" stroke-width="1"/>
+<text x="114.0" y="260.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">10</text>
+<rect x="132" y="242" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="150.0" y="260.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="168" y="242" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="186.0" y="260.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="204" y="242" width="36" height="36" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="222.0" y="260.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="60" y="62" width="108" height="108" rx="3" fill="none" stroke="#2451b8" stroke-width="3.2"/>
+<text x="132" y="300" font-size="14" text-anchor="middle" font-weight="normal" fill="#2451b8" dominant-baseline="middle">window: rows 1 to 3, columns 2 to 4</text>
+<text x="270" y="36" font-size="15" text-anchor="start" font-weight="bold" fill="#15171a" dominant-baseline="middle">Kernel 3×3</text>
+<rect x="270" y="62" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="288.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="306" y="62" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="324.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="342" y="62" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="360.0" y="80.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−1</text>
+<rect x="270" y="98" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="288.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="306" y="98" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="324.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="342" y="98" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="360.0" y="116.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−1</text>
+<rect x="270" y="134" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="288.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">1</text>
+<rect x="306" y="134" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="324.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="342" y="134" width="36" height="36" rx="0" fill="#d5efdf" stroke="#9aa0a8" stroke-width="1"/>
+<text x="360.0" y="152.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">−1</text>
+<text x="324.0" y="192" font-size="13.5" text-anchor="middle" font-weight="normal" fill="#565c66" dominant-baseline="middle">same weights</text>
+<text x="324.0" y="210" font-size="13.5" text-anchor="middle" font-weight="normal" fill="#565c66" dominant-baseline="middle">at every position</text>
+<text x="410" y="36" font-size="15" text-anchor="start" font-weight="bold" fill="#15171a" dominant-baseline="middle">Nine products, row by row</text>
+<text x="410" y="80.0" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">10·1 + 10·0 + 0·(−1) = 10</text>
+<text x="410" y="116.0" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">10·1 + 10·0 + 0·(−1) = 10</text>
+<text x="410" y="152.0" font-size="15" text-anchor="start" font-weight="normal" fill="#15171a" dominant-baseline="middle">10·1 + 10·0 + 0·(−1) = 10</text>
+<line x1="410" y1="178" x2="622" y2="178" stroke="#565c66" stroke-width="1.2"/>
+<text x="410" y="202" font-size="16" text-anchor="start" font-weight="bold" fill="#2451b8" dominant-baseline="middle">sum = 10 + 10 + 10 = 30</text>
+<text x="410" y="232" font-size="13.5" text-anchor="start" font-weight="normal" fill="#565c66" dominant-baseline="middle">bias 0, so the output cell is 30</text>
+<text x="722" y="36" font-size="15" text-anchor="middle" font-weight="bold" fill="#15171a" dominant-baseline="middle">Output 4×4</text>
+<rect x="658" y="62" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="674.0" y="78.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="690" y="62" width="32" height="32" rx="0" fill="#eaf0fb" stroke="#9aa0a8" stroke-width="1"/>
+<text x="706.0" y="78.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">30</text>
+<rect x="722" y="62" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="738.0" y="78.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">30</text>
+<rect x="754" y="62" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="770.0" y="78.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="658" y="94" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="674.0" y="110.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="690" y="94" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="706.0" y="110.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">30</text>
+<rect x="722" y="94" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="738.0" y="110.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">30</text>
+<rect x="754" y="94" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="770.0" y="110.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="658" y="126" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="674.0" y="142.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="690" y="126" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="706.0" y="142.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">30</text>
+<rect x="722" y="126" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="738.0" y="142.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">30</text>
+<rect x="754" y="126" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="770.0" y="142.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="658" y="158" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="674.0" y="174.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="690" y="158" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="706.0" y="174.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">30</text>
+<rect x="722" y="158" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="738.0" y="174.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">30</text>
+<rect x="754" y="158" width="32" height="32" rx="0" fill="#ffffff" stroke="#9aa0a8" stroke-width="1"/>
+<text x="770.0" y="174.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">0</text>
+<rect x="690" y="62" width="32" height="32" rx="3" fill="none" stroke="#2451b8" stroke-width="3.2"/>
+<text x="722" y="212" font-size="13.5" text-anchor="middle" font-weight="normal" fill="#565c66" dominant-baseline="middle">(6 − 3)/1 + 1 = 4</text>
+<path d="M 624 202 C 650 202, 628 78.0, 654 78.0" fill="none" stroke="#2451b8" stroke-width="1.8" marker-end="url(#ah-blue)"/>
+<text x="405.0" y="334" font-size="14.5" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">The nonzero outputs (30) sit exactly where the bright-to-dark step is;</text>
+<text x="405.0" y="356" font-size="14.5" text-anchor="middle" font-weight="normal" fill="#15171a" dominant-baseline="middle">windows that see only 10s or only 0s give 0.</text></svg>

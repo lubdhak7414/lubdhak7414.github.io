@@ -1,21 +1,22 @@
 ---
-title: "VAE Part 1: Encoder and the Reparameterization Trick"
-description: "A VAE encoder outputs a mean and a log-variance, and the reparameterization trick turns them into a sample that gradients can pass through."
+title: "VAE reparameterisation trick, with one sample by hand"
+description: "A VAE encoder outputs a mean and a log-variance per latent dimension, and the reparameterisation trick turns them into a sample that gradients can pass through."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, vae, generative-models]
-series: "CSE 425 Final"
+series: "CSE 425"
+section: "Final"
 part: 4
 ---
 
-A variational autoencoder (VAE) is an autoencoder whose encoder describes a small cloud of possible codes instead of a single point, and whose decoder is trained on random draws from that cloud. The draw is what makes generation possible, and it is also what makes training awkward, because a random draw has no derivative. The reparameterization trick gets around this by moving the randomness into a separate noise variable.
+A variational autoencoder (VAE) is an autoencoder whose encoder describes a small cloud of possible codes instead of a single point, and whose decoder is trained on random draws from that cloud. The draw is what makes generation possible, and it is also what makes training awkward, because a random draw has no derivative. The reparameterisation trick gets around this by moving the randomness into a separate noise variable.
 
 > **Key Takeaways**
 >
-> - The encoder outputs a mean μ and a log-variance s = ln σ² for each of the K latent dimensions, so 2K numbers per input.
-> - The spread is σ = e^(s/2), which is positive for every real s, and s = 0 means σ = 1.
-> - The sample is z = μ + σ ⊙ ε with noise ε ~ N(0,I), and gradients reach μ and s but not ε.
-> - After training, generation needs only the decoder, fed with draws from N(0,I).
+> - The encoder outputs a mean $\mu$ and a log-variance $s=\ln\sigma^2$ per latent dimension, so $2K$ numbers for $K$ dimensions.
+> - The spread is $\sigma=e^{s/2}$, positive for every real $s$, and $s=0$ means $\sigma=1$.
+> - The sample is $\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon$ with $\boldsymbol\varepsilon\sim N(0,I)$; gradients reach $\mu$ and $s$ but not $\varepsilon$.
+> - After training, generation needs only the decoder, fed with draws from $N(0,I)$.
 
 ## From a point to a cloud
 
@@ -57,13 +58,13 @@ Moving $s$ changes $\sigma$, which changes $z$ by $\varepsilon$ times that chang
 
 $$\frac{\partial L}{\partial s}=2.0\times(-0.2)\times0.3894=-0.1558$$
 
-![Two panels. Left: sampling z directly gives z = 0.1442 but the gradient 2.0 stops at the random sampler. Right: z = 0.3 + 0.7788 times -0.2 = 0.1442 and the gradient reaches mu as 2.0 and s as -0.1558](img/vae-encoder-reparameterization-vae-gradient-flow.svg)
+![Two panels. Left: sampling z directly gives z = 0.1442 but the gradient 2.0 stops at the random sampler. Right: z = 0.3 + 0.7788 times −0.2 = 0.1442 and the gradient reaches mu as 2.0 and s as −0.1558](img/vae-encoder-reparameterization-vae-gradient-flow.svg)
 
 ## The rule behind the numbers
 
 The obvious way to get $z$ is "draw $z$ from $N(\mu,\sigma^2)$". But then $z$ comes straight out of a random number generator. Ask for $\partial z/\partial\mu$ and there is no function to differentiate, so no gradient reaches the encoder and it never learns.
 
-The reparameterization trick, from [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114), pulls the randomness out into a variable with no parameters. It draws $\boldsymbol\varepsilon\sim N(0,I)$, a standard normal in every dimension, and computes
+The reparameterisation trick, from [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114), pulls the randomness out into a variable with no parameters. It draws $\boldsymbol\varepsilon\sim N(0,I)$, a standard normal in every dimension, and computes
 
 $$\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon$$
 
@@ -81,9 +82,9 @@ For two latent dimensions, $\boldsymbol\mu=(0.5,\,-0.5)$, $\mathbf s=(0,\,0)$ an
 
 Once trained, the two halves can be used apart. To embed an input you only need the encoder, and $\boldsymbol\mu$ is its code. Generating needs only the decoder, fed with $\mathbf z$ drawn from $N(0,I)$. Rebuilding an input uses both, and so does blending two inputs by decoding points between their codes.
 
-Generation only works because of the prior: the loss ([VAE Part 2: ELBO and KL Divergence](/blog/cse425-final-vae-elbo-kl/)) pulls every cloud toward $N(0,I)$, so a draw from $N(0,I)$ lands somewhere the decoder has seen. [From Autoencoder to Beta-VAE](https://lilianweng.github.io/posts/2018-08-12-vae/) walks through the encoder, the sampling and the loss in one place.
+Generation only works because of the prior: the loss ([VAE loss by hand: ELBO and the Gaussian KL derivation](/blog/cse425-final-vae-elbo-kl/)) pulls every cloud towards $N(0,I)$, so a draw from $N(0,I)$ lands somewhere the decoder has seen. [From Autoencoder to Beta-VAE](https://lilianweng.github.io/posts/2018-08-12-vae/) walks through the encoder, the sampling and the loss in one place.
 
-## Practice on sampling
+## Practice: sampling
 
 $\mu=0.5$, $s=-1.2$, $\varepsilon=1$. What is $z$?
 

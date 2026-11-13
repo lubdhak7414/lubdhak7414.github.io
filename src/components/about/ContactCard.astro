@@ -1,8 +1,8 @@
 ---
 import { siteConfig } from '@/site-config'
 
-/* The contact card on About: two skies on one horizon (Dhaka on the left, the visitor on the
-right), then the email, large, with a copy button, and the two profiles in small text.
+/* The contact card on Contact: the email first, large, with a copy button, and the two profiles
+in small text; then two skies on one horizon (Dhaka on the left, the visitor on the right).
 
 Each sky is a hairline semicircle with a sun dot by day and a moon by night. The sun runs
 between today's real sunrise and sunset (NOAA approximation, computed in the browser, no
@@ -103,7 +103,7 @@ const stars = [
 
 	<div class='reach'>
 		<p class='reach-lead'>
-			Email is the best way to reach me. Send your site's address and what you need, and I'll tell
+			Email is the best way to reach me. Send your site’s address and what you need, and I’ll tell
 			you if I can help.
 		</p>
 		<div class='reach-mail'>
@@ -632,7 +632,8 @@ const stars = [
 	.sky-diff {
 		margin-top: 0.75rem;
 		text-align: center;
-		font: 400 0.8125rem/1.6 var(--mono);
+		font-size: 0.875rem;
+		line-height: 1.6;
 		color: var(--text);
 	}
 
@@ -674,11 +675,6 @@ const stars = [
 	}
 
 	/* ---------- Email ---------- */
-	.reach {
-		margin-top: 1.5rem;
-		padding-top: 1.5rem;
-		border-top: 1px solid var(--line);
-	}
 	.reach-lead {
 		font-size: 1rem;
 		line-height: 1.6;
@@ -767,27 +763,24 @@ const stars = [
 	}
 	.reach-reply {
 		margin-top: 0.75rem;
-		font-family: var(--font-mono);
-		font-size: 0.8125rem;
+		font-size: 0.875rem;
 		color: var(--muted);
 	}
-	/* Phones: the address comes first; the skies follow under a rule. */
-	@media (max-width: 639px) {
-		.card {
-			display: flex;
-			flex-direction: column;
-		}
-		.reach {
-			order: -1;
-			margin-top: 0;
-			padding-top: 0;
-			border-top: 0;
-		}
-		.sky {
-			margin-top: 1.5rem;
-			padding-top: 1.5rem;
-			border-top: 1px solid var(--line);
-		}
+	/* The address comes first at every width; the skies follow under a rule. */
+	.card {
+		display: flex;
+		flex-direction: column;
+	}
+	.reach {
+		order: -1;
+		margin-top: 0;
+		padding-top: 0;
+		border-top: 0;
+	}
+	.sky {
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--line);
 	}
 	.reach-else {
 		display: flex;
@@ -803,6 +796,8 @@ const stars = [
 		color: var(--faint);
 	}
 	.reach-else a {
+		display: inline-block;
+		padding-block: 0.25rem;
 		color: var(--muted);
 		text-decoration: underline;
 		text-decoration-color: var(--line-strong);

@@ -1,10 +1,11 @@
 ---
-title: "Backpropagation Part 2: Hidden Layers and a Full Example"
-description: "Where a hidden neuron's delta comes from, and one full forward, backward and update step on a 2-2-1 network, checked by finite differences."
+title: "Backpropagation worked example: hidden layer deltas"
+description: "One full forward pass, backward pass and weight update on a 2-2-1 sigmoid network, where each hidden delta comes from, and a finite-difference check."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, backprop]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 4
 ---
 
@@ -13,8 +14,8 @@ A hidden neuron gets no target from the training data, so it cannot measure its 
 Below, that report becomes a rule, and then one complete training step runs on a small network. It picks up from [the output layer](/blog/cse425-mid-backprop-output-layer/), which defined the delta and found it for the last layer.
 
 > **Key Takeaways**
-> - A hidden neuron's delta is its own activation slope times the sum of (next-layer delta times connecting weight) over the neurons it feeds.
-> - Deltas are computed from the last layer back to the first, and the weights are updated only after all of them are known.
+> - A hidden neuron's delta is $\delta_j=f'(z_j)\sum_k\delta_k\,w_{kj}$, summed over the neurons it feeds.
+> - Deltas run from the last layer back to the first, and weights update only after all of them are known.
 > - A weight whose incoming signal is 0 does not move in that step.
 > - Comparing backprop's gradient with a finite-difference nudge catches sign and index mistakes.
 
@@ -56,11 +57,11 @@ The delta of a neuron is $\delta=\partial L/\partial z$, the change in loss per 
 
 $$\delta_o\,w_{o1}=-0.10998\times0.6=-0.06599$$
 
-per unit nudge of $a_1$. A numerical test agrees: raising $a_1$ by 0.001 changes the loss by $-0.0000660$. That covers the step from $a_1$ to the loss. The step from $z_1$ to $a_1$ is the neuron's own slope, $f'(z_1)=0.64566(1-0.64566)=0.22878$, so
+per unit nudge of $a_1$. A numerical test agrees: raising $a_1$ by 0.001 changes the loss by $-0.0000660$. That covers the step from $a_1$ to the loss. The step from $z_1$ to $a_1$ is the neuron's own slope, $f'(z_1)=0.64566(1-0.64566)$ $=0.22878$, so
 
 $$\delta_1=0.22878\times(-0.06599)=-0.015096$$
 
-Hidden neuron 2 works the same way through its weight $w_{o2}=-0.7$ and its slope $f'(z_2)=0.52498(1-0.52498)=0.24938$:
+Hidden neuron 2 works the same way through its weight $w_{o2}=-0.7$ and its slope $f'(z_2)=0.52498(1-0.52498)$ $=0.24938$:
 
 $$\delta_2=0.24938\times(-0.10998\times(-0.7))$$
 
@@ -92,15 +93,15 @@ With $\eta=0.5$:
 
 | Update | New value |
 |---|---|
-| $w_{o1}=$ $0.6-0.5(-0.10998)(0.64566)$ | 0.63550 |
-| $w_{o2}=$ $-0.7-0.5(-0.10998)(0.52498)$ | -0.67113 |
-| $b_o=$ $0.2-0.5(-0.10998)$ | 0.25499 |
-| $w_{11}=$ $0.5-0.5(-0.015096)(1)$ | 0.50755 |
-| $w_{12}$: input is 0, so no change | -0.4 |
-| $b_1=$ $0.1-0.5(-0.015096)$ | 0.10755 |
-| $w_{21}=$ $0.3-0.5(0.019198)(1)$ | 0.29040 |
+| $w_{o1}=0.6-0.5(-0.10998)(0.64566)$ | 0.63550 |
+| $w_{o2}=-0.7-0.5(-0.10998)(0.52498)$ | −0.67113 |
+| $b_o=0.2-0.5(-0.10998)$ | 0.25499 |
+| $w_{11}=0.5-0.5(-0.015096)(1)$ | 0.50755 |
+| $w_{12}$: input is 0, so no change | −0.4 |
+| $b_1=0.1-0.5(-0.015096)$ | 0.10755 |
+| $w_{21}=0.3-0.5(0.019198)(1)$ | 0.29040 |
 | $w_{22}$: input is 0, so no change | 0.8 |
-| $b_2=$ $-0.2-0.5(0.019198)$ | -0.20960 |
+| $b_2=-0.2-0.5(0.019198)$ | −0.20960 |
 
 A weight on an input of 0 never moves in this step, because its gradient $\delta\,a$ is multiplied by that 0.
 
@@ -112,7 +113,7 @@ Run the forward pass again with the new weights. The output becomes $\widehat{y}
 
 That shows the step went downhill, but not that the gradients were right. For that, use finite differences: nudge one weight by $\pm10^{-6}$, recompute $L$, and divide the change by $2\times10^{-6}$. This gives $\partial L/\partial w_{o1}=-0.071007$ and $\partial L/\partial w_{11}=-0.015096$. Backprop gives $\delta_o\,a_1=-0.10998(0.64566)=-0.071007$ and $\delta_1\,x_1=-0.015096$. They agree to the digits shown. A flipped sign or a swapped index in the backward pass would make the two numbers differ.
 
-## Questions on hidden deltas
+## Practice: hidden deltas
 
 A hidden neuron feeds two outputs whose deltas are $-0.2$ and $0.1$, through weights $0.5$ and $0.4$. Its own output is $a=0.5$. What is its delta?
 

@@ -1,22 +1,23 @@
 ---
-title: "Batch Normalization"
-description: "Batch norm recentres a layer's numbers over a mini-batch, then lets the network rescale them. Worked by hand on 2, 4, 6, 8, then at test time."
+title: "Batch normalisation by hand: training and test time"
+description: "Batch norm worked by hand on 2, 4, 6, 8: mean, variance, scale and shift, the gradients for gamma and beta, and what changes at test time with running averages."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, batch-norm, normalization]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 6
 ---
 
-Suppose a layer hands the next one numbers like 80 and 90. A sigmoid squeezes both to almost exactly 1, so its slope there is nearly zero, and a slope of zero means the weights below it stop learning. Batch normalization recentres the numbers so that, across a batch, they have mean 0 and spread 1, which is the region where a sigmoid still has a useful slope.
+Suppose a layer hands the next one numbers like 80 and 90. A sigmoid squeezes both to almost exactly 1, so its slope there is nearly zero, and a slope of zero means the weights below it stop learning. Batch normalisation recentres the numbers so that, across a batch, they have mean 0 and spread 1, which is the region where a sigmoid still has a useful slope.
 
 Big numbers are one version of the problem. Another is that the numbers a layer receives keep drifting as the layers before it change during training, so each layer is aiming at a target that moves. The original paper calls this internal covariate shift. Later work ([Santurkar and colleagues](https://arxiv.org/abs/1805.11604)) argues that the smoother loss surface matters more than the drift. Either way, keeping each layer's inputs on a steady scale lets you use larger learning rates.
 
 > **Key Takeaways**
-> - Batch norm takes one feature across a mini-batch, subtracts the batch mean and divides by the batch standard deviation.
+> - Batch norm takes one feature across a mini-batch, subtracts the batch mean and divides by the standard deviation.
 > - It then applies a learnable scale $\gamma$ and shift $\beta$, so the network can undo the normalising if that helps.
-> - $\partial L/\partial\beta$ is the sum of the upstream errors, and $\partial L/\partial\gamma$ is the sum of each error times its normalised value.
-> - In training the mean and variance come from the current batch; at test time they come from running averages stored during training.
+> - $\partial L/\partial\beta=\sum_i\delta_i$ and $\partial L/\partial\gamma=\sum_i\delta_i\bar x_i$, with $\delta_i=\partial L/\partial o_i$.
+> - Training uses the current batch's mean and variance; test time uses running averages stored during training.
 
 ## What goes wrong without it
 
@@ -48,7 +49,9 @@ They add to 0, and their squares add to 4, so the mean is 0 and the variance is 
 
 Forcing every feature to mean 0 and spread 1 would limit what a layer can express, because a sigmoid fed only those values stays on its nearly straight middle part. The layer therefore gets two learned numbers per feature, a scale $\gamma$ and a shift $\beta$, and outputs $o_i=\gamma\bar x_i+\beta$. Let $\gamma=1.2$ and $\beta=0.3$:
 
-$$o=1.2\,[-1.342,\ -0.447,\ 0.447,\ 1.342]+0.3$$
+$$o=1.2\,[-1.342,\ -0.447,\ 0.447,\ 1.342]$$
+
+$$\qquad{}+0.3$$
 
 $$o=[-1.31,\ -0.24,\ 0.84,\ 1.91]$$
 
@@ -88,7 +91,9 @@ $$\frac{\partial L}{\partial\gamma}=0.5(-1.342)-0.5(-0.447)$$
 
 $$+1(0.447)-1(1.342)$$
 
-$$=-0.671+0.224+0.447-1.342=-1.342$$
+$$=-0.671+0.224+0.447-1.342$$
+
+$$=-1.342$$
 
 The $\beta$ gradient is zero only because these errors happen to sum to zero. Then the usual update $w\leftarrow w-\eta\cdot\text{gradient}$:
 
@@ -124,7 +129,7 @@ The original paper puts batch norm after the linear (or convolution) step and be
 
 The [original paper by Ioffe and Szegedy](https://arxiv.org/abs/1502.03167) has the full backward pass down to $x_i$, and the [d2l.ai chapter](https://d2l.ai/chapter_convolutional-modern/batch-norm.html) builds the layer in code.
 
-## Gradients, a new batch, a test input
+## Practice: gradients, a new batch, a test input
 
 If every $\partial L/\partial o_i$ equals $c$ in a batch of $m$, what are $\partial L/\partial\beta$ and $\partial L/\partial\gamma$?
 

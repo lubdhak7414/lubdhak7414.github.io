@@ -1,5 +1,5 @@
 ---
-title: 'A Circular Alt+Tab Switcher for KDE Plasma 6'
+title: 'A circular Alt+Tab switcher for KDE Plasma 6'
 name: 'Circular Alt+Tab'
 description: 'A KWin window switcher that arranges windows as pie slices around the cursor, with live thumbnails, a multi-ring layout and theme integration in pure QML.'
 publishDate: '17 June 2026'
@@ -7,21 +7,25 @@ updatedDate: '17 June 2026'
 coverImage:
   src: './cover.png'
   alt: 'Circular Alt+Tab switcher showing windows as pie slices around the cursor'
-tags: ['QML', 'KDE', 'Linux', 'Open Source', 'Project']
+tags: ['qml', 'kde', 'linux', 'open-source', 'project']
 homePageIdx: 2
 links:
-  - { label: 'GitHub', url: 'https://github.com/lubdhak7414/CircularAltTab-KWin', kind: 'code' }
-  - { label: 'KDE Store', url: 'https://www.opendesktop.org/p/2362960/', kind: 'store' }
+  - {
+      label: 'Source on GitHub',
+      url: 'https://github.com/lubdhak7414/CircularAltTab-KWin',
+      kind: 'code'
+    }
+  - { label: 'KDE Store page', url: 'https://www.opendesktop.org/p/2362960/', kind: 'store' }
 facts:
   status: 'Published on the KDE Store'
   license: 'GPLv3'
   stack: ['QML', 'KWin', 'KDE Plasma 6']
 shot:
-  src: './cover.png'
-  alt: 'Circular Alt+Tab switcher open on a KDE Plasma desktop, windows arranged as pie slices around the cursor'
+  src: './preview2.png'
+  alt: 'Circular Alt+Tab open on a KDE Plasma desktop: the windows as pie slices in two rings with live thumbnails, the selected window named in the middle'
 glance:
-  does: 'A KWin window switcher for KDE Plasma 6 that lays your windows out as pie slices around the cursor.'
-  did: 'Wrote the plugin in pure QML, with no build step, and published it on the KDE Store.'
+  does: 'An Alt+Tab window switcher (a KWin plugin) for KDE Plasma 6.'
+  did: 'Wrote the plugin and published it on the KDE Store.'
 ---
 
 ## The idea
@@ -81,14 +85,3 @@ mixed-DPI setup, not all of them.
 It started as a Plasma 6 port of an older switcher and has since been substantially reworked:
 multi-ring layout, live thumbnails, scroll support, and theme integration. Pure QML, GPLv3,
 installable from a release zip or a one-line script.
-
----
-
-### Skills & Deliverables:
-
-- **QML / Qt Quick**: rotation-based layout, `OpacityMask` sector clipping, and animation driven
-  entirely by Kirigami theme units.
-- **Desktop / compositor integration**: a KWin TabBox plugin working across both Wayland and X11
-  sessions on Plasma 6.
-- **Pragmatic engineering**: hit-testing against static geometry to kill hover jitter, a
-  remainder-based multi-ring distribution, and a documented stance on undocumented APIs.

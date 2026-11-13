@@ -2,9 +2,11 @@
 import ShellLayout from '@/layouts/ShellLayout.astro'
 import { getAllPosts, getAllProjects, getUniqueTagsWithCount, slugifyTag } from '@/utils'
 
-const posts = await getAllPosts()
+const posts = (await getAllPosts()).filter((post) => !post.data.series)
 const projects = await getAllProjects()
-const allTags = getUniqueTagsWithCount([...posts, ...projects])
+// "project" is bookkeeping (it marks project write-ups), not a topic: its page still builds,
+// but the list leaves it out.
+const allTags = getUniqueTagsWithCount([...posts, ...projects]).filter(([tag]) => tag !== 'project')
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
 const countLabel = (tag: string) =>
@@ -18,7 +20,7 @@ const countLabel = (tag: string) =>
 
 const meta = {
 	description: "A list of all the topics I've written about in my posts",
-	title: 'All Tags'
+	title: 'Topics'
 }
 ---
 

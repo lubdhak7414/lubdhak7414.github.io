@@ -1,52 +1,129 @@
 ---
+import type { Series } from '@/utils'
 import { getAllPosts, isoDate, sortByPublishDate, writingItems } from '@/utils'
+import { seriesPlace, tidyTitle } from '@/utils/series'
+import { typeset } from '@/utils/typeset'
 
 interface Props {
 	/** The article being read; it takes the accent and aria-current. */
 	current: string
+	/** On a note in a series: list the notes of its half instead of the other writing. */
+	series?: Series | undefined
 }
 
-const { current } = Astro.props
-const posts = sortByPublishDate(await getAllPosts())
-// A series is one line (to its hub), marked when the article being read is one of its parts.
-const items = writingItems(posts)
-const currentSeries = posts.find((post) => post.id === current)?.data.series
+const { current, series } = Astro.props
+const items = writingItems(sortByPublishDate(await getAllPosts()))
+const total = items.length
+
+// A note in a series: its half, numbered, then the way to the other half.
+const place = series && seriesPlace(series, current)
+const other =
+	series && place
+		? series.sections.filter((section) => section !== place.section && section.parts.length > 0)
+		: []
+
+// Any other article: itself and a few neighbours (newest first), the month printed only where
+// it changes, then a row to the whole list.
+const NEAR = 1
+const at = items.findIndex((item) => item.kind === 'post' && item.entry.id === current)
+const from = Math.max(0, Math.min(at - NEAR, items.length - (2 * NEAR + 1)))
+const near = items.slice(from, from + 2 * NEAR + 1).map((item) => {
+	const entry = item.kind === 'series' ? item.series.parts[0]! : item.entry
+	return {
+		href: item.kind === 'series' ? `/series/${item.series.slug}/` : `/blog/${item.entry.id}/`,
+		title: typeset(item.kind === 'series' ? item.series.title : item.entry.data.title),
+		note: item.kind === 'series' ? `${item.series.parts.length} notes` : undefined,
+		month: isoDate(entry.data.publishDate).slice(0, 7),
+		current: item.kind === 'post' && item.entry.id === current
+	}
+})
 ---
 
 {
-	/* Every article, newest first, the one being read marked: the writing twin of the
-case-study directory. Sidebar only. */
+	/* Sidebar only. On a series note: the notes of its half, the one being read marked. On any
+other article: the article and its neighbours, then all writing. */
 }
-<nav class='pdir pdir--side pdir--writing' aria-label='Writing'>
-	<p class='label'>Writing</p>
-	<ul>
-		{
-			items.map((item) =>
-				item.kind === 'series' ? (
+{
+	series && place ? (
+		<nav class='pdir pdir--side pdir--writing pdir--series' aria-label={`${series.name} notes`}>
+			<p class='label'>
+				<a href={`/series/${series.slug}/`} set:text={series.name} />
+				{place.section.label && ` · ${place.section.label}`}
+			</p>
+			<ol>
+				{place.section.parts.map((part, i) => (
 					<li>
-						<a
-							href={`/series/${item.series.slug}/`}
-							aria-current={item.series.name === currentSeries ? 'page' : undefined}
-						>
-							<span
-								class='pdir-date'
-								set:text={`${isoDate(item.series.parts[0]!.data.publishDate).slice(0, 7)} · ${item.series.parts.length} parts`}
-							/>
-							<span set:text={item.series.name} />
+						<a href={`/blog/${part.id}/`} aria-current={part.id === current ? 'page' : undefined}>
+							<span class='pdir-n' set:text={String(i + 1).padStart(2, '0')} />
+							<span set:text={tidyTitle(part.data.title)} />
 						</a>
 					</li>
-				) : (
+				))}
+			</ol>
+			<ul class='pdir-more'>
+				{other.map((section) => (
 					<li>
-						<a
-							href={`/blog/${item.entry.id}/`}
-							aria-current={item.entry.id === current ? 'page' : undefined}
-						>
-							<span class='pdir-date' set:text={isoDate(item.entry.data.publishDate).slice(0, 7)} />
-							<span set:text={item.entry.data.title} />
+						<a href={`/blog/${section.parts[0]!.id}/`}>
+							<span set:text={`${section.label} notes`} />
+							<span class='pdir-count' set:text={String(section.parts.length)} />
 						</a>
 					</li>
-				)
-			)
+				))}
+				<li>
+					<a href='/blog/'>
+						<span>All writing</span>
+						<span class='pdir-count' set:text={String(total)} />
+					</a>
+				</li>
+			</ul>
+		</nav>
+	) : (
+		<nav class='pdir pdir--side pdir--writing' aria-label='Writing'>
+			<p class='label'>Writing</p>
+			<ul>
+				{near.map((row, i) => (
+					<li>
+						{(i === 0 || row.month !== near[i - 1]!.month) && (
+							<span class='pdir-date' set:text={row.month} />
+						)}
+						<a href={row.href} aria-current={row.current ? 'page' : undefined}>
+							<span set:text={tidyTitle(row.title)} />
+							{row.note && <span class='pdir-note' set:text={row.note} />}
+						</a>
+					</li>
+				))}
+			</ul>
+			<ul class='pdir-more'>
+				<li>
+					<a href='/blog/'>
+						<span>All writing</span>
+						<span class='pdir-count' set:text={String(total)} />
+					</a>
+				</li>
+			</ul>
+		</nav>
+	)
+}
+
+<script>
+	// On a tall enough desktop the list of notes scrolls inside itself (app.css), so a late note's
+	// row would open below the fold or under the fade at the list's foot. Put the row being read
+	// in the middle of the list at once, scrolling the list only (never the page), on every page
+	// load including ClientRouter swaps. The list then starts on a whole row (never mid-glyph),
+	// and a fade at its head shows once it has scrolled, like the one at its foot.
+	document.addEventListener('astro:page-load', () => {
+		const list = document.querySelector<HTMLElement>('.pdir--series > ol')
+		if (!list) return
+		const fade = () => list.classList.toggle('is-scrolled', list.scrollTop > 0)
+		list.addEventListener('scroll', fade, { passive: true })
+		const item = list.querySelector('[aria-current="page"]')?.closest('li')
+		if (item && list.scrollHeight > list.clientHeight) {
+			const max = list.scrollHeight - list.clientHeight
+			const top = item.offsetTop - list.clientHeight / 2 + item.offsetHeight / 2
+			const rows = [...list.children].map((li) => (li as HTMLElement).offsetTop)
+			const snap = rows.filter((y) => y <= Math.max(0, Math.min(top, max))).at(-1) ?? 0
+			list.scrollTop = snap
 		}
-	</ul>
-</nav>
+		fade()
+	})
+</script>

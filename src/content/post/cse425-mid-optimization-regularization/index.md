@@ -1,23 +1,23 @@
 ---
-title: "Optimization, Regularization and Dropout"
+title: "Learning rate, momentum, Adam and dropout by hand"
 description: "Learning rate, momentum and Adam worked on one weight, then weight decay, early stopping and dropout for a network scoring 99% on train and 62% on validation."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, optimization, regularization, dropout]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 7
 ---
 
 Gradient descent on a loss with a single weight, $L=(w-3)^2$, started at $w=0$, ends ten steps later at 2.68 when the learning rate is $\eta=0.1$, at 0 when it is $1.0$, and at $-15.6$ when it is $1.1$. The best weight is 3. Only $\eta$ changed, and the same update rule went from crawling towards the answer to bouncing back and forth to flying off.
 
-Getting to a low training loss quickly and without blowing up is optimization, and it's the first half of this note. The second half starts from a different symptom. A network scores 99% on its training data and 62% on validation data. The code is fine and the network has memorised the training set. Regularization is the set of ways to make a low training loss carry over to data the network has not seen.
+Getting to a low training loss quickly and without blowing up is optimisation, and it's the first half of this note. The second half starts from a different symptom. A network scores 99% on its training data and 62% on validation data. The code is fine and the network has memorised the training set. Regularisation is the set of ways to make a low training loss carry over to data the network has not seen.
 
 > **Key Takeaways**
-> - Gradient descent moves the weight by $\eta$ times the gradient, opposite to its sign; too small an $\eta$ crawls and one above 1 diverges on $L=(w-3)^2$.
-> - Momentum adds up past gradients, so steps in a steady direction grow and zig-zags cancel.
+> - Gradient descent steps by $-\eta\,g$; on $L=(w-3)^2$ a small $\eta$ crawls and one above 1 diverges.
+> - Momentum adds up past gradients, so a steady direction speeds up and steps that flip sign cancel.
 > - Adam divides a smoothed gradient by a smoothed gradient size, and corrects both for starting at zero.
-> - L2 shrinks every weight by the factor $(1-\eta\lambda)$ per step; L1 pulls with a fixed size and can reach exactly zero.
-> - Dropout zeroes random units during training and scales the survivors so test time needs no change.
+> - L2 shrinks each weight by $(1-\eta\lambda)$ per step, L1 can reach exactly zero, and dropout divides survivors by $1-p$.
 
 ## One weight, three learning rates
 
@@ -60,7 +60,9 @@ $$u_3=0.9(-10.2)+2(1.62-3)=-11.94$$
 
 $$w_3=1.62+1.194=2.814$$
 
-$$u_4=0.9(-11.94)+2(2.814-3)=-11.118$$
+$$u_4=0.9(-11.94)+2(2.814-3)$$
+
+$$=-11.118$$
 
 $$w_4=2.814+1.1118=3.926$$
 
@@ -68,7 +70,7 @@ The rule used each time is
 
 $$u_{t+1}=\beta u_t+g_t,\qquad w_{t+1}=w_t-\eta\,u_{t+1}$$
 
-where $\beta$ (often 0.9) is the share of the old velocity that survives. Check it against the first lines: with $u_0=0$ the first velocity is just the first gradient, $-6$. In the lines above the velocity grew in size from 6 to 11.9 because the gradient kept pointing the same way. With many weights, a gradient component that flips sign from step to step partly cancels inside $u$, so zig-zags get damped while the steady direction speeds up.
+where $\beta$ (often 0.9) is the share of the old velocity that survives. Check it against the first lines: with $u_0=0$ the first velocity is just the first gradient, $-6$. In the lines above the velocity grew in size from 6 to 11.9 because the gradient kept pointing the same way. With many weights, a gradient component that flips sign from step to step partly cancels inside $u$, so steps that flip direction get damped while the steady direction speeds up.
 
 The cost is overshoot: at step 4 the weight is 3.926, past the minimum at 3, which plain SGD at $\eta=0.1$ never does. In exchange it had passed 3 after four steps, where plain SGD with the same $\eta$ was only at 2.68 after ten. Some books write $(1-\beta)g_t$ in the velocity line instead, which scales everything differently, so state the form you use.
 
@@ -104,19 +106,21 @@ By $t=2$ the correction has almost nothing left to fix. The new gradient is $g_2
 
 $$m_2=0.9(-0.6)+0.1(-5.8)=-1.12$$
 
-$$v_2=0.999(0.036)+0.001(33.64)=0.0696$$
+$$v_2=0.999(0.036)+0.001(33.64)$$
+
+$$=0.0696$$
 
 $$\bar m_2=\frac{-1.12}{1-0.81}=-5.895$$
 
 $$\bar v_2=\frac{0.0696}{1-0.998001}=34.82$$
 
-The ratio is $-5.895/\sqrt{34.82}=-0.999$ and the step is 0.0999. Dividing by $\sqrt{\bar v}$ means weights with large gradients take smaller steps and rarely updated ones take larger steps, and the first steps have size about $\eta$ whatever the gradient size. Early on the averages are rough, which is one reason learning-rate warmup (a small $\eta$ that grows over the first steps) is common, especially for transformers. The [Adam paper](https://arxiv.org/abs/1412.6980) gives the full algorithm, and the [d2l.ai chapter on optimization algorithms](https://d2l.ai/chapter_optimization/index.html) sets it beside momentum and plain SGD.
+The ratio is $-5.895/\sqrt{34.82}=-0.999$ and the step is 0.0999. Dividing by $\sqrt{\bar v}$ means weights with large gradients take smaller steps and rarely updated ones take larger steps, and the first steps have size about $\eta$ whatever the gradient size. Early on the averages are rough, which is one reason learning-rate warmup (a small $\eta$ that grows over the first steps) is common, especially for transformers. The [Adam paper](https://arxiv.org/abs/1412.6980) gives the full algorithm, and the [d2l.ai chapter on optimisation algorithms](https://d2l.ai/chapter_optimization/index.html) sets it beside momentum and plain SGD.
 
 ## Overfitting and weight decay
 
 The gap between 99% on training data and 62% on validation data is overfitting, also called high variance: the network fits quirks of the training set. If both numbers are poor the problem is the opposite, high bias or underfitting. The methods below all give up a little fit on the training set (more bias) in return for lower variance.
 
-L2 regularization adds a penalty on the squared weights to the loss. The new gradient has an extra $\lambda w$ ($\lambda$ sets how strong the penalty is):
+L2 regularisation adds a penalty on the squared weights to the loss. The new gradient has an extra $\lambda w$ ($\lambda$ sets how strong the penalty is):
 
 $$L_{\text{total}}=L_{\text{data}}+\frac{\lambda}{2}\lVert w\rVert_2^2$$
 
@@ -154,13 +158,13 @@ $$\mathbb{E}[\tilde h_i]=\frac{(1-p)\,h_i}{1-p}=h_i$$
 
 so the layer's average output is unchanged, and at test time you can run the full network with no mask and no rescaling. Dropout stops units from relying on particular partners being present, which is called co-adaptation (the [dropout paper](https://jmlr.org/papers/v15/srivastava14a.html) explains the idea at length). Here "rate" means the drop probability $p$, as in PyTorch's `nn.Dropout(p)` and Keras's `Dropout(rate)`. The dropout paper uses $p$ the other way round, for the keep probability, and scales the weights at test time instead of the survivors during training. At $p=0.5$ the keep and drop probabilities are equal and hide any mix-up.
 
-Label smoothing (the true class gets a little less than 1 and the others share the rest) and max-norm (force $\lVert w\rVert_2$ below a limit after each step) are two other regularizers you may see named.
+Label smoothing (the true class gets a little less than 1 and the others share the rest) and max-norm (force $\lVert w\rVert_2$ below a limit after each step) are two other regularisers you may see named.
 
-## In a written answer
+## In the exam: updates, diagnoses and dropout
 
 Write the update rule with the minus sign and say what each symbol is. If the question describes a train/validation gap, name the diagnosis (high variance or high bias) before any remedy, and give one reason per remedy. Dropout answers need two things stated outright: which probability "rate" means, and whether the rescaling happens at train time or test time.
 
-## Questions on the worked examples
+## Practice: learning rates, L1, dropout and Adam
 
 Gradient descent on $L=(w-3)^2$ from $w_0=0$ sends $w$ back and forth between 0 and 6 forever. What is $\eta$, and why?
 

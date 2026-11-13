@@ -1,19 +1,20 @@
 ---
-title: "The Perceptron"
-description: "A perceptron repairs its own weights on AND, one straight line splits only some Boolean functions, and four lines prove XOR is not one of them."
+title: "Perceptron learning rule: AND by hand, and why not XOR"
+description: "The perceptron learning rule run by hand on AND from zero weights, how many Boolean functions one line can split, and a four-line proof that XOR is not one."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, perceptron]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 1
 ---
 
 Is the point $(1, 3)$ a yes or a no under this rule: add $2x_1 - x_2 - 1$, and say yes if the total is positive? The total is $2 - 3 - 1 = -2$, so the answer is no. That rule is a perceptron: a weighted sum plus a bias, cut into yes or no. It gets a note of its own because it can also fix its weights each time it gets an example wrong.
 
 > **Key Takeaways**
-> - A perceptron outputs 1 if its weighted sum plus bias is positive and 0 otherwise, which draws one straight line through the input plane.
-> - After each example it adds the input to its weights or subtracts it from them, and the update is zero when the answer was right.
-> - AND, OR and NOT are learnable by one perceptron. XOR is not, because its two 1s sit on opposite corners of the square.
+> - A perceptron outputs 1 if its weighted sum plus bias is positive, else 0, so it draws one straight line.
+> - After a wrong answer it adds the input to its weights or subtracts it; a right answer changes nothing.
+> - One perceptron can learn AND, OR and NOT, but not XOR: its two 1s sit on opposite corners.
 > - Of the 16 Boolean functions of two inputs, 14 are linearly separable and 2 (XOR and XNOR) are not.
 
 ## A weighted sum with a hard cut
@@ -112,7 +113,7 @@ XOR can still be computed if you give up on a single plain perceptron. One way i
 
 For a design question, write the truth table first, choose weights and the bias, state whether you fire at $z>0$ or $z\ge0$, and test every row. If one row fails, the weights compute some other function.
 
-## Outputs, updates and separability
+## Practice: outputs, updates and separability
 
 With $\mathbf w=(2,-1)$ and $b=-1$, what does the perceptron output for the input $(1,3)$?
 

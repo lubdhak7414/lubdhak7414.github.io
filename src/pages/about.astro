@@ -1,18 +1,20 @@
 ---
 import ShellLayout from '@/layouts/ShellLayout.astro'
-import { getAllPosts, getAllProjects, jsonLdScript, personSchema } from '@/utils'
+import { getAllPosts, getAllProjects, getSeries, jsonLdScript, personSchema } from '@/utils'
 import { entryHref, type Entry } from '@/utils/post'
+import { typeset } from '@/utils/typeset'
 import { siteConfig } from '@/site-config'
 
 const skills = [
-	{ category: 'Languages', items: ['Python', 'Java', 'C++', 'Dart'] },
+	// Within each group, what the projects and write-ups here show comes first.
+	{ category: 'Languages', items: ['Python', 'QML', 'C++', 'Java', 'Dart'] },
 	{
 		category: 'Frontend',
-		items: ['JavaScript', 'HTML', 'CSS', 'React', 'Tailwind CSS', 'Bootstrap']
+		items: ['JavaScript', 'HTML', 'CSS', 'Tailwind CSS', 'React', 'Bootstrap']
 	},
 	{
 		category: 'Backend',
-		items: ['PHP', 'MySQL', 'Node.js', 'Express.js', 'MongoDB', 'FastAPI']
+		items: ['PHP', 'MySQL', 'FastAPI', 'Node.js', 'Express.js', 'MongoDB']
 	},
 	{
 		category: 'Technologies',
@@ -31,6 +33,20 @@ const freelance = [
 	projects.find((entry) => entry.id === 'ni-driving-test-routes'),
 	posts.find((entry) => entry.id === 'wordpress-css-rootkit')
 ].filter((entry): entry is Entry => Boolean(entry))
+// Course work on the site, shown under the BRAC row: the CSE 425 notes and the write-ups of
+// the CSE420 and CSE437 projects (drafts drop out in production, like the rows above).
+const notes = getSeries(posts).find((series) => series.name === 'CSE 425')
+const courses = [
+	notes && { href: `/series/${notes.slug}/`, text: 'CSE 425 notes' },
+	posts.some((entry) => entry.id === 'compiler-front-end-labs') && {
+		href: '/blog/compiler-front-end-labs/',
+		text: 'CSE420 compiler labs'
+	},
+	posts.some((entry) => entry.id === 'la-liga-match-prediction') && {
+		href: '/blog/la-liga-match-prediction/',
+		text: 'CSE437 La Liga model'
+	}
+].filter((link): link is { href: string; text: string } => Boolean(link))
 const label = (entry: Entry) =>
 	entry.collection === 'project' ? (entry.data.name ?? entry.data.title) : entry.data.title
 
@@ -53,8 +69,8 @@ const aboutPageSchema = {
 		<div class='sec'><h2 id='do-h'>What I do</h2></div>
 		<div class='text'>
 			<p>
-				I'm a software developer in Dhaka. I work on web apps at Metaora, a software company in
-				Atlanta, and since 2019 I've built and fixed WordPress sites for small businesses. Outside
+				I’m a software developer in Dhaka. I work on web apps at Metaora, a software company in
+				Atlanta, and since 2019 I’ve built and fixed WordPress sites for small businesses. Outside
 				work I write small open-source tools for the Linux desktop.
 			</p>
 		</div>
@@ -71,7 +87,7 @@ const aboutPageSchema = {
 						<h3 class='row-title'>Software Engineering Intern</h3>
 						<p class='row-text'>Metaora, Atlanta (remote)</p>
 						<ul class='dots'>
-							<li>Working on features and fixes in the company's web app and website.</li>
+							<li>Working on features and fixes in the company’s web app and website.</li>
 							<li>Testing changes before release and writing clear bug reports.</li>
 							<li>Working through code review with the engineering lead.</li>
 						</ul>
@@ -86,14 +102,14 @@ const aboutPageSchema = {
 						<p class='row-text'>Remote clients</p>
 						<ul class='dots'>
 							<li>
-								WordPress sites for small businesses - hosting, domains, email setup, and redesigns.
+								WordPress sites for small businesses: hosting, domains, email setup, and redesigns.
 							</li>
 							<li>
 								Security work: malware cleanup, patching vulnerabilities, hardening compromised
 								sites.
 							</li>
 							<li>
-								Infrastructure migrations - moving DNS, email routing, and CDN across providers.
+								Infrastructure migrations: moving DNS, email routing, and CDN across providers.
 							</li>
 						</ul>
 						{
@@ -102,7 +118,7 @@ const aboutPageSchema = {
 									<span class='row-see'>see</span>
 									<span class='row-links'>
 										{freelance.map((entry) => (
-											<a href={entryHref(entry)} set:text={label(entry)} />
+											<a href={entryHref(entry)} set:text={typeset(label(entry))} />
 										))}
 									</span>
 								</p>
@@ -116,17 +132,26 @@ const aboutPageSchema = {
 					<span class='row-date'>BSc</span>
 					<div class='row-body'>
 						<h3 class='row-title'>BRAC University</h3>
-						<p class='row-text'>BSc. in Computer Science and Engineering</p>
+						<p class='row-text'>BSc in Computer Science and Engineering</p>
 						<ul class='dots'>
 							<li>
-								Completed core courses including Data Structures, Algorithms, Discrete Mathematics,
-								Digital Logic Design, Data Communications, Operating Systems, and Database Systems.
+								Core: data structures, algorithms, operating systems, databases and computer
+								networks.
 							</li>
-							<li>
-								Advanced coursework in Artificial Intelligence, Neural Networks, Compiler Design,
-								Computer Architecture, Computer Networks, and Software Engineering.
-							</li>
+							<li>Advanced: artificial intelligence, neural networks and compiler design.</li>
 						</ul>
+						{
+							courses.length > 0 && (
+								<p class='row-proof'>
+									<span class='row-see'>see</span>
+									<span class='row-links'>
+										{courses.map(({ href, text }) => (
+											<a href={href} set:text={text} />
+										))}
+									</span>
+								</p>
+							)
+						}
 					</div>
 				</div>
 			</li>
@@ -146,13 +171,13 @@ const aboutPageSchema = {
 		<div class='sec'><h2 id='os-h'>Open source</h2></div>
 		<div class='text'>
 			<p>
-				Most of my projects are public. I write about what I'm working on in the blog here, and the
+				Most of my projects are public. I write about what I’m working on in the blog here, and the
 				source is on <a href={siteConfig.socials.github} target='_blank' rel='noopener noreferrer'
 					>GitHub</a
 				>.
 			</p>
 			<p>
-				Want to see what I've built? See <a href='/projects/'>Projects</a>, or
+				Want to see what I’ve built? See <a href='/projects/'>Projects</a>, or
 				<a href='/blog/'>Writing</a> for the write-ups.
 			</p>
 		</div>
@@ -181,6 +206,8 @@ const aboutPageSchema = {
 		gap: 0.25rem 1rem;
 	}
 	.row-links a {
+		display: inline-block;
+		padding-block: 0.125rem;
 		color: var(--accent);
 		text-decoration: underline;
 		text-decoration-thickness: 1px;

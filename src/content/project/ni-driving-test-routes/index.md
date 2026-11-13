@@ -1,5 +1,5 @@
 ---
-title: 'NI Driving Test Routes'
+title: 'NI Driving Test Routes website'
 name: 'NI Driving Test Routes'
 description: 'A WooCommerce shop selling driving test route guides for Northern Ireland, built on WordPress and Elementor, which I have kept running since launch.'
 publishDate: '03 November 2024'
@@ -10,9 +10,9 @@ coverImage:
   alt: 'NI Driving Test Routes website'
 links:
   - { label: 'Live site', url: 'https://testroutesni.co.uk/', kind: 'live' }
-tags: ['WordPress', 'SEO']
+tags: ['wordpress', 'seo']
 facts:
-  status: 'Live, looked after since launch'
+  status: 'Live'
   client: 'Test Routes NI'
   stack: ['WordPress', 'Elementor']
 shot:
@@ -20,7 +20,7 @@ shot:
   alt: 'NI Driving Test Routes homepage: headline, call-to-action buttons and a road-sign photo'
 glance:
   does: 'A shop selling driving test route guides for the test centres in Northern Ireland.'
-  did: 'Built the site on WordPress and Elementor, and have kept it running since launch: updates, payments and a bonus guide with each purchase.'
+  did: 'Built the site and have looked after it since launch.'
 ---
 
 I built a site about Northern Ireland driving test routes. The audience: people nervous about their test who want to know exactly where they'll be driving. Many of them look on a phone, so the pages have to load fast on one.
@@ -29,7 +29,7 @@ The brief was straightforward. Useful content. Fast pages. A clean mobile experi
 
 > **Key Takeaways**
 >
-> - The site is a shop: each test centre's route guide is a WooCommerce product, paid for by card through Stripe.
+> - Each test centre's route guide is a WooCommerce product, paid for by card through Stripe.
 > - In PageSpeed Insights it scored 97 for performance on desktop and 91 on mobile, with the main content on screen in 0.7 s and 2.6 s.
 > - I've kept the site running since launch: updates, payment checks, a bonus guide with each purchase and a link to the companion app.
 

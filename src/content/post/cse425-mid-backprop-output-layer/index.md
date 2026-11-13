@@ -1,10 +1,11 @@
 ---
-title: "Backpropagation Part 1: The Output Layer"
-description: "The output layer's delta, from error times slope to updated weights and bias, with a nudge test that checks the formula."
+title: "Backpropagation output layer delta, worked example"
+description: "The output neuron's delta as error times sigmoid slope, the weight and bias updates worked with numbers, and a nudge test that checks the formula."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, backprop]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 3
 ---
 
@@ -13,7 +14,7 @@ Predicting 0.55 for a target of 1 leaves a network 0.45 short. That single numbe
 The last layer is the easy case, since its weights touch the error directly. This note does the last layer, and the [next one](/blog/cse425-mid-backprop-hidden-layers/) passes the result back through the hidden layers.
 
 > **Key Takeaways**
-> - The delta of a neuron is $\delta=\partial L/\partial z$, how much the loss changes per unit nudge of that neuron's weighted sum.
+> - A neuron's delta is $\delta=\partial L/\partial z$: how much the loss moves per unit nudge of its weighted sum.
 > - For an output neuron, $\delta=e\,f'(z)$, where $e=\widehat{y}-y$ is the error and $f'$ is the activation's slope.
 > - Each weight changes by $-\eta\,\delta$ times the signal that arrived on it, and the bias by $-\eta\,\delta$.
 > - A sigmoid neuron stuck near 0 or 1 has a slope near 0, so its weights barely move.
@@ -104,7 +105,7 @@ If the target is already met, $\widehat{y}=y$, so $e=0$ and $\delta=0$, and no w
 
 The [3Blue1Brown video on backpropagation](https://www.3blue1brown.com/lessons/backpropagation) shows the same nudging idea with pictures.
 
-## Questions on the output delta
+## Practice: the output delta
 
 The output is $\widehat{y}=0.8$, the target is $y=0$, and the neuron is a sigmoid. What is $\delta$?
 

@@ -5,7 +5,7 @@ publishDate: '23 October 2026'
 tags: ['linux', 'systemd', 'power-management', 'troubleshooting']
 coverImage:
   src: ./cover.webp
-  alt: 'Four steps in order: sleep.target starts, systemd-suspend.service keeps the machine asleep, sleep.target stops on wake, then ExecStop runs tuned-adm profile powersave'
+  alt: 'Four steps in order: sleep.target starts, systemd-suspend.service keeps the machine asleep until you wake it, sleep.target stops on wake, then ExecStop= runs tuned-adm profile powersave'
 draft: true
 ---
 
@@ -15,10 +15,10 @@ Reading both notes again now, the first fix works for suspend but carries two st
 
 > **Key Takeaways**
 >
-> - A unit with `After=suspend.target` and `WantedBy=suspend.target` runs after wake, because `suspend.target` is ordered after `systemd-suspend.service`, which only finishes once the machine is awake again.
-> - The documented pattern is one unit ordered `Before=sleep.target` with the after-wake command in `ExecStop=`. It covers suspend, hibernate, hybrid sleep and suspend-then-hibernate.
-> - A system unit already runs as root, so `sudo` inside it and a `NOPASSWD` rule for `tuned-adm` aren't needed.
-> - The same unit shape, with `ExecStart=` before sleep and `ExecStop=` after wake, logs battery level across each sleep to a CSV file.
+> - A unit hooked to `suspend.target` runs after wake: that target waits for `systemd-suspend.service`, which ends on wake.
+> - The documented pattern is one unit ordered `Before=sleep.target`, with the after-wake command in `ExecStop=`. It also covers hibernate.
+> - A system unit already runs as root, so it needs no `sudo` and no `NOPASSWD` rule.
+> - The same unit shape logs battery level before and after each sleep to a CSV file.
 
 ## The original fix
 

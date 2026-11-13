@@ -1,18 +1,18 @@
 ---
-title: 'Three Apps in Raw PHP: A Lesson in SQL Transactions'
-name: 'Three Apps in Raw PHP'
+title: 'Three apps in raw PHP: a lesson in SQL transactions'
+name: 'Three apps in raw PHP'
 description: 'A café, a library, and a gym: three management systems built in plain PHP and MySQL with no framework, where the real lessons were all about transactions.'
 publishDate: '23 December 2024'
 updatedDate: '4 March 2026'
 coverImage:
   src: './cover.webp'
   alt: 'RepBase gym class schedule showing live seats-left badges'
-tags: ['PHP', 'MySQL', 'Backend', 'Databases', 'Project']
+tags: ['php', 'mysql', 'backend', 'databases', 'project']
 homePageIdx: 12
 links:
-  - { label: 'BrewQuery', url: 'https://github.com/lubdhak7414/BrewQuery', kind: 'code' }
-  - { label: 'ShelfAware', url: 'https://github.com/lubdhak7414/ShelfAware', kind: 'code' }
-  - { label: 'RepBase', url: 'https://github.com/lubdhak7414/RepBase', kind: 'code' }
+  - { label: 'BrewQuery source', url: 'https://github.com/lubdhak7414/BrewQuery', kind: 'code' }
+  - { label: 'ShelfAware source', url: 'https://github.com/lubdhak7414/ShelfAware', kind: 'code' }
+  - { label: 'RepBase source', url: 'https://github.com/lubdhak7414/RepBase', kind: 'code' }
 facts:
   status: 'Open source on GitHub'
   license: 'MIT'
@@ -22,7 +22,7 @@ shot:
   alt: 'RepBase class roster with colour-coded full and near-full capacity rows'
 glance:
   does: 'Three management systems, for a café, a library and a gym, in plain PHP and MySQL.'
-  did: 'Built all three with hand-written SQL, no framework and no ORM, with multi-table writes in transactions.'
+  did: 'Built all three, with hand-written SQL.'
 ---
 
 ## Why no framework?
@@ -35,7 +35,7 @@ actually taught me something was the same: multi-step writes that have to be all
 
 > **Key Takeaways**
 >
-> - Three management systems built in plain PHP 8.2 and MySQL, no framework and no ORM, so the database work stays in the open.
+> - No framework and no ORM, so the database work stays in the open.
 > - The recurring lesson across all three was the transaction: multi-table writes that must either all land or all roll back.
 > - Derived numbers like stock, seats, and fines are computed from the source rows, never cached as a counter that can drift.
 
@@ -87,14 +87,3 @@ where a transaction begins and commits, what happens to a concurrent booking whe
 already full, and how to keep derived numbers (stock, seats, fines) honest by deriving them from
 the source rows instead of caching a count that can drift. Each ships with a Docker Compose
 setup that seeds the database on first boot, so any of them is one command away from running.
-
----
-
-### Skills & Deliverables:
-
-- **Relational data modelling**: recipe/ingredient links, holds queues, and capacity-bounded
-  bookings expressed directly in schema.
-- **SQL transactions & integrity**: multi-table all-or-nothing writes, derived aggregates over
-  cached counters, and concurrency-aware booking logic.
-- **Plain PHP + PDO**: role-based access, the built-in PHP server for local dev, and Docker
-  Compose with automatic seeding.

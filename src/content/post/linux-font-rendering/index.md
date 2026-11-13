@@ -1,11 +1,11 @@
 ---
-title: 'Fixing Font Rendering on Linux After Windows'
+title: 'Fixing thin, blurry fonts on Linux after Windows'
 description: 'How I fixed blurry, thin fonts on KDE CachyOS with a 1080p monitor using lucidglyph stem-darkening instead of ClearType-style subpixel hacks.'
 publishDate: '24 June 2026'
 coverImage:
   src: './cover.webp'
-  alt: 'Illustration of the same letters rendered three ways: Windows ClearType, default Linux with thin stems, and Linux with lucidglyph stem-darkening'
-tags: ['Linux', 'KDE Plasma', 'Fonts', 'CachyOS']
+  alt: 'Two approaches side by side: Windows-style rgba = rgb, lcddefault and hintfull, which gave colour fringing on my BenQ GW2480, and lucidglyph with stem-darkening, grayscale anti-aliasing and slight hinting, plus KDE sub-pixel rendering set to None'
+tags: ['linux', 'kde', 'fonts', 'cachyos']
 ---
 
 When I made the jump from Windows to KDE CachyOS, I expected the usual adjustment
@@ -25,11 +25,10 @@ learned, and what actually fixed it.
 
 > **Key Takeaways**
 >
-> - Linux and Windows use fundamentally different font rendering philosophies; neither is buggy, they just disagree on what "correct" means.
-> - The Windows-style fix (subpixel rendering, aggressive hinting) gets you close to ClearType but can introduce colour fringing on some panels.
-> - The macOS-style fix via **lucidglyph** uses stem-darkening to add weight without distorting letterforms, and works best on low pixel density displays like a 24-inch 1080p monitor.
-> - KDE Plasma can silently override your Fontconfig settings, so set sub-pixel rendering to "None" in System Settings.
-> - Chromium-based browsers no longer render text through FreeType, so among browsers, stem-darkening only shows up in Firefox.
+> - Linux and Windows render fonts differently by design. Neither one is buggy.
+> - Windows-style subpixel rendering and strong hinting come close to ClearType, but gave colour fringing on my BenQ GW2480.
+> - lucidglyph's stem-darkening adds weight without distorting letters, and suits low-density screens like a 24-inch 1080p monitor.
+> - Set KDE's sub-pixel rendering to "None". Expect the change in Firefox only: Chromium no longer uses FreeType.
 
 ## Why do Linux fonts look different from Windows?
 

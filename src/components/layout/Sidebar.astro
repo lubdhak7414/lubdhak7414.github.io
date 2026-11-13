@@ -67,7 +67,11 @@ home page (every other page), then whatever the page adds (slots). */
 					<Image class='id-photo' src={avatar} alt='' width={96} height={96} loading='eager' />
 					<div class='id-text'>
 						<NameTag class='id-name'>{siteConfig.author}</NameTag>
-						<p class='id-role'>{`${siteConfig.role} · ${siteConfig.location}`}</p>
+						{/* Two pieces; the dot between them is drawn in CSS and hidden when the second wraps. */}
+						<p class='id-role'>
+							<span set:text={siteConfig.role} />
+							<span set:text={siteConfig.location} />
+						</p>
 					</div>
 				</a>
 				<p class='side-bio'>{siteConfig.bio}</p>
@@ -105,10 +109,14 @@ home page (every other page), then whatever the page adds (slots). */
 	}
 	{
 		reading && (
-			<a class='pdir-home' href='/'>
-				<span aria-hidden='true'>&larr;</span>
-				<span>Home</span>
-			</a>
+			<p class='side-home'>
+				<a class='pdir-home' href='/'>
+					<span aria-hidden='true'>&larr;</span>
+					<span>Home</span>
+				</a>
+				{/* The path line names no person; this keeps a way to reach me on the first screen. */}
+				<a class='side-contact' href='/contact/' set:text='Contact' />
+			</p>
 		)
 	}
 	<slot />

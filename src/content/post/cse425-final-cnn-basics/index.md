@@ -1,20 +1,21 @@
 ---
-title: "CNN Basics: Kernels, Stride, Padding"
-description: "Why a 3 by 3 kernel can replace 2.6 billion dense weights, with a convolution by hand, output sizes, parameter counts and an edge filter."
+title: "Convolution output size, stride and padding, by hand"
+description: "A convolution worked by hand, the output size formula with stride and padding, parameter counts per layer, and a vertical-edge filter you design yourself."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, cnn, convolution, parameter-counting]
-series: "CSE 425 Final"
+series: "CSE 425"
+section: "Final"
 part: 1
 ---
 
-A dense layer that turns a 225 by 225 grayscale photo into a 225 by 225 map connects every input pixel to every output pixel, so it needs $225^2\times225^2=2{,}562{,}890{,}625$ weights, about 2.6 billion. A convolution layer doing a similar job with a 3 by 3 kernel needs 9 weights and one bias.
+A dense layer that turns a $225\times225$ greyscale photo into a $225\times225$ map connects every input pixel to every output pixel, so it needs $225^2\times225^2=2{,}562{,}890{,}625$ weights, about 2.6 billion. A convolution layer doing a similar job with a $3\times3$ kernel needs 9 weights and one bias.
 
 > **Key Takeaways**
-> - A kernel is a small grid of weights that slides over the input and, at each position, multiplies and adds.
-> - One kernel is reused at every position, so the parameter count depends on the kernel and the channels but not on the image size.
-> - A conv layer's output has floor((n+2p−k)/s)+1 cells per side and one channel per filter.
-> - A conv layer has C_out(k²·C_in+1) parameters, and pooling has none.
+> - A kernel is a small grid of weights that slides over the input, multiplying and adding at each position.
+> - One kernel is reused everywhere, so the parameter count depends on the kernel and channels, not the image size.
+> - A conv layer's output has $\lfloor(n+2p-k)/s\rfloor+1$ cells per side and one channel per filter.
+> - A conv layer has $C_{out}(k^2C_{in}+1)$ parameters, and pooling has none.
 
 ## Two ideas that remove the weights
 
@@ -24,13 +25,13 @@ Those two observations are the design of a convolution layer. Local connectivity
 
 ## A convolution by hand
 
-Here is a 4 by 4 input and a 3 by 3 kernel:
+Here is a $4\times4$ input and a $3\times3$ kernel:
 
 $$X=\begin{bmatrix}1&2&0&1\\0&1&3&2\\2&0&1&0\\1&3&0&2\end{bmatrix}$$
 
 $$K=\begin{bmatrix}1&0&-1\\2&0&-2\\1&0&-1\end{bmatrix}$$
 
-The kernel first sits on the top-left 3 by 3 patch of $X$. Each pair of overlapping cells is multiplied and the nine products are added. The middle kernel column is all zeros, so only the outer two columns count. The patch's left column is $1,0,2$ and meets the weights $1,2,1$:
+The kernel first sits on the top-left $3\times3$ patch of $X$. Each pair of overlapping cells is multiplied and the nine products are added. The middle kernel column is all zeros, so only the outer two columns count. The patch's left column is $1,0,2$ and meets the weights $1,2,1$:
 
 $$1\cdot1+0\cdot2+2\cdot1=3$$
 
@@ -48,7 +49,7 @@ $$1\cdot(-1)+2\cdot(-2)+0\cdot(-1)=-5$$
 
 The cell is $4-5=-1$.
 
-![The 4 by 4 input and Sobel-style kernel from the worked example at two window positions, giving -4 and then -1 with each row of products written out](img/cnn-basics-sliding-window.svg)
+![The 4 × 4 input and Sobel-style kernel from the worked example at two window positions, giving −4 and then −1 with each row of products written out](img/cnn-basics-sliding-window.svg)
 
 Sliding down a row and repeating for the last two windows gives 0 and 0 by the same method. The output is
 
@@ -58,7 +59,9 @@ It is $2\times2$ because the kernel fits in two positions across and two down. T
 
 Now the formula for what you just did. Write $X[r,c]$ for the input cell in row $r$ and column $c$, counting from 0, and $K[u,v]$ for the kernel cell in row $u$ and column $v$. The output cell in row $i$, column $j$ is the sum over every kernel position of input times weight, plus a bias $b$ (a single number added to the result, 0 in the example above):
 
-$$Y[i,j]=\sum_{u=0}^{k-1}\sum_{v=0}^{k-1}X[si+u,\;sj+v]\,K[u,v]+b$$
+$$Y[i,j]$$
+
+$$=\sum_{u=0}^{k-1}\sum_{v=0}^{k-1}X[si+u,\;sj+v]\,K[u,v]+b$$
 
 For the first cell, $i=j=0$ and $s=1$, so it uses $X[u,v]$ times $K[u,v]$, which is exactly the nine products above. For the second cell, $j=1$, so every column index shifts right by one.
 
@@ -76,7 +79,7 @@ The size comes from counting window positions along one side. After padding (add
 
 $$n_{out}=\left\lfloor\frac{n+2p-k}{s}\right\rfloor+1$$
 
-On the example, $n=4$, $k=3$, $s=1$, $p=0$ gives $\lfloor1/1\rfloor+1=2$. The floor is there because a window that would hang over the edge is not used. A common mistake is leaving out the $+1$ and getting 1. If the result is below 1 the layer cannot be applied.
+On the example, $n=4$, $k=3$, $s=1$, $p=0$ gives $\lfloor(4-3)/1\rfloor+1=2$. The floor is there because a window that would hang over the edge is not used. A common mistake is leaving out the $+1$ and getting 1. If the result is below 1 the layer cannot be applied.
 
 With $s=1$ and an odd $k$, choosing $p=(k-1)/2$ gives $n_{out}=n$, called same padding. A $6\times6$ image with $p=1$ becomes $8\times8$, and a $3\times3$ kernel then brings it back to $6\times6$. The full output tensor is $n_{out}\times n_{out}\times C_{out}$. If the image is not square, apply the formula to width and height separately. The [padding and stride chapter of Dive into Deep Learning](https://d2l.ai/chapter_convolutional-neural-networks/padding-and-strides.html) has more small examples of this formula.
 
@@ -94,19 +97,19 @@ A $1\times1$ conv has $C_{out}(C_{in}+1)$ parameters. Pooling has none, because 
 
 ## Tracing a tensor through layers
 
-A $28\times28\times1$ image goes through a conv layer (25 filters, $3\times3$, $s=1$, $p=0$), a $2\times2$ pool, a second conv (50 filters, $3\times3$), another $2\times2$ pool, then flatten. A pool slides a window and keeps one number per window (the largest, in max pooling), stepping by the window size, so a $2\times2$ pool halves each side. [CNN Part 2: Pooling, Architectures, Backprop](/blog/cse425-final-cnn-pooling-architectures/) covers pooling properly.
+A $28\times28\times1$ image goes through a conv layer (25 filters, $3\times3$, $s=1$, $p=0$), a $2\times2$ pool, a second conv (50 filters, $3\times3$), another $2\times2$ pool, then flatten. A pool slides a window and keeps one number per window (the largest, in max pooling), stepping by the window size, so a $2\times2$ pool halves each side. [Pooling gradients, receptive field and skip connections](/blog/cse425-final-cnn-pooling-architectures/) covers pooling properly.
 
 Conv 1: $\lfloor(28-3)/1\rfloor+1=26$, so the tensor is $26\times26\times25$.
 
 Pool 1: $26/2=13$, so $13\times13\times25$.
 
-Conv 2: $13-3+1=11$, so $11\times11\times50$.
+Conv 2: $\lfloor(13-3)/1\rfloor+1=11$, so $11\times11\times50$.
 
 Pool 2: $\lfloor11/2\rfloor=5$, so $5\times5\times50$.
 
 Flatten: $5\cdot5\cdot50=1250$ numbers in one long vector.
 
-![Vertical shape trace from 28x28x1 through 26x26x25, 13x13x25, 11x11x50 and 5x5x50 to a flat vector of 1250, with the size arithmetic and 250 and 11,300 parameters for the two convs](img/cnn-basics-shape-trace.svg)
+![Vertical shape trace from 28 × 28 × 1 through 26 × 26 × 25, 13 × 13 × 25, 11 × 11 × 50 and 5 × 5 × 50 to a flat vector of 1250, with the size arithmetic and 250 and 11,300 parameters for the two convs](img/cnn-basics-shape-trace.svg)
 
 Now the parameters. Conv 1 has $25(3\cdot3\cdot1+1)=250$. Conv 2 has $50(3\cdot3\cdot25+1)=11{,}300$. That 25 is the depth coming out of conv 1, and leaving it out gives a count that is far too small. The pools add nothing, so the conv layers total 11,550.
 
@@ -122,13 +125,13 @@ The 60s sit where light turns to dark. The opposite kernel, with rows $(-1,\,0,\
 
 Since the same nine weights are tried at every position, a conv layer is translation equivariant: with stride 1, shift the input and the feature map shifts by the same amount instead of changing completely (away from the borders, where padding gets in the way).
 
-## Stating your assumptions
+## In the exam: stating your assumptions
 
 When a question does not state padding or stride, say what you assume. Then write the formula, put your numbers in, floor the division, and if a layer cannot run, say so. For parameters, show $C_{in}$ inside the product and count the bias once per filter.
 
 Check what your instructor expects for conventions such as the kernel flip and the pool stride.
 
-## Sizes and counts to work by hand
+## Practice: sizes and counts
 
 A $32\times32$ input goes through a $5\times5$ conv with $p=2$, $s=1$. What is the output size, and what if $p=0$?
 
@@ -136,7 +139,7 @@ A $32\times32$ input goes through a $5\times5$ conv with $p=2$, $s=1$. What is t
 
 $$\lfloor(32+4-5)/1\rfloor+1=32$$
 
-With $p=0$ it is $\lfloor27/1\rfloor+1=28$.
+With $p=0$ it is $\lfloor(32-5)/1\rfloor+1=28$.
 
 </details>
 

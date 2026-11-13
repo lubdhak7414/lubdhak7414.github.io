@@ -5,7 +5,7 @@ publishDate: '23 October 2026'
 tags: ['linux', 'audio', 'alsa', 'troubleshooting']
 coverImage:
   src: ./cover.webp
-  alt: 'Two terminal windows: the codec dump for pin 0x14 with its Front Playback Switch control and Pin-ctls 0x40 OUT highlighted, and the Line Out Phantom Jack control reading on next to the pin override 0x01014110'
+  alt: 'Two parts of the fix for pin 0x14 on a Realtek ALC887: part 1, hdajackretask with Jack detection: Not present changes the pin config from 0x01014010 to 0x01014110 and it''s still silent; part 2, Auto-Mute Mode disabled turns Pin-ctls from 0x00 to 0x40: OUT and the rear port plays'
 draft: true
 ---
 
@@ -16,8 +16,8 @@ The board is an ASUS PRIME B450M-A II with a Realtek ALC887-VD codec, running Ca
 > **Key Takeaways**
 >
 > - The rear jack's plug sensor read "unplugged" with a cable in it, and Auto-Mute kept the port off.
-> - `hdajackretask` with "Jack detection: Not present" makes the port always count as connected, but on its own it leaves the pin's output switched off.
-> - Turning Auto-Mute off switches the pin on for good. After that, the rear port plays whenever the Line Out port is selected in the sound settings.
+> - `hdajackretask` set to "Jack detection: Not present" makes the port count as connected, but leaves the pin's output off.
+> - Turning Auto-Mute off switches the pin on for good. Then the rear port plays when Line Out is selected.
 
 ![Before: the jack sense says unplugged and Auto-Mute keeps the pin off. After: the jack is set to not present, Auto-Mute is off, and the pin's output is on](./jack-flow.webp)
 

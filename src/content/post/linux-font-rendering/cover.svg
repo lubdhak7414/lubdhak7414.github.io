@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<style>.s{font-family:"IBM Plex Sans";}.m{font-family:"JetBrains Mono";}</style>
+<rect width="1600" height="900" fill="#ffffff"/>
+<text class="m" x="72" y="118" font-size="45" font-weight="600" fill="#2451b8" text-anchor="start" letter-spacing="2">TWO FIXES FOR THIN FONTS ON A 1080P SCREEN</text>
+<rect x="72.0" y="160" width="712.0" height="668" rx="6" fill="#ffffff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="s" x="116.0" y="250" font-size="58" font-weight="600" fill="#15171a" text-anchor="start" >Windows-style</text>
+<line x1="116.0" y1="292" x2="740.0" y2="292" stroke="#e4e6e9" stroke-width="2"/>
+<text class="m" x="116.0" y="384" font-size="48" font-weight="500" fill="#15171a" text-anchor="start" >rgba = rgb</text>
+<text class="m" x="116.0" y="466" font-size="48" font-weight="500" fill="#15171a" text-anchor="start" >lcddefault</text>
+<text class="m" x="116.0" y="548" font-size="48" font-weight="500" fill="#15171a" text-anchor="start" >hintfull</text>
+<text class="s" x="116.0" y="698" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >colour fringing on</text>
+<text class="s" x="116.0" y="760" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >my BenQ GW2480</text>
+<rect x="816.0" y="160" width="712.0" height="668" rx="6" fill="#f5f6f7" stroke="#2451b8" stroke-width="3"/>
+<text class="s" x="860.0" y="250" font-size="58" font-weight="600" fill="#15171a" text-anchor="start" >lucidglyph</text>
+<line x1="860.0" y1="292" x2="1484.0" y2="292" stroke="#c9cdd2" stroke-width="2"/>
+<text class="m" x="860.0" y="384" font-size="48" font-weight="500" fill="#2451b8" text-anchor="start" >stem-darkening</text>
+<text class="m" x="860.0" y="466" font-size="48" font-weight="500" fill="#2451b8" text-anchor="start" >grayscale AA</text>
+<text class="m" x="860.0" y="548" font-size="48" font-weight="500" fill="#2451b8" text-anchor="start" >hinting: slight</text>
+<text class="s" x="860.0" y="698" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >plus KDE sub-pixel</text>
+<text class="s" x="860.0" y="760" font-size="45" font-weight="400" fill="#565c66" text-anchor="start" >rendering: None</text>
+</svg>

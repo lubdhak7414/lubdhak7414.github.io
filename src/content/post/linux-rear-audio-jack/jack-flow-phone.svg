@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="1140" viewBox="0 0 620 1140"><rect width="620" height="1140" fill="#fff"/>
+<style>.k{font:600 24px "IBM Plex Sans";letter-spacing:3px}.t{font:600 33px "IBM Plex Sans";fill:#15171a}.s{font:400 27px "IBM Plex Mono";fill:#565c66}</style>
+<text class="k" x="60" y="60" fill="#b3261e">BEFORE</text>
+<rect x="60" y="84" width="500" height="124" rx="8" fill="#fff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="t" x="90" y="136">Cable in the rear jack</text>
+<text class="s" x="90" y="180">Its audio path still works.</text>
+<line x1="310" y1="214" x2="310" y2="240" stroke="#565c66" stroke-width="3"/><path d="M300 233 L310 247 L320 233" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="252" width="500" height="124" rx="8" fill="#fff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="t" x="90" y="304">Jack sense says unplugged</text>
+<text class="s" x="90" y="348">Line Out Jack: off</text>
+<line x1="310" y1="382" x2="310" y2="408" stroke="#565c66" stroke-width="3"/><path d="M300 401 L310 415 L320 401" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="420" width="500" height="124" rx="8" fill="#f5f6f7" stroke="#b3261e" stroke-width="3"/>
+<text class="t" x="90" y="472">Auto-Mute keeps the pin off</text>
+<text class="s" x="90" y="516">Pin-ctls 0x00: silence</text>
+<text class="k" x="60" y="620" fill="#2451b8">AFTER</text>
+<rect x="60" y="644" width="500" height="124" rx="8" fill="#fff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="t" x="90" y="696">Jack detection: Not present</text>
+<text class="s" x="90" y="740">Line Out Phantom Jack</text>
+<line x1="310" y1="774" x2="310" y2="800" stroke="#565c66" stroke-width="3"/><path d="M300 793 L310 807 L320 793" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="812" width="500" height="124" rx="8" fill="#fff" stroke="#c9cdd2" stroke-width="2"/>
+<text class="t" x="90" y="864">Auto-Mute disabled</text>
+<text class="s" x="90" y="908">and Front unmuted at 100%</text>
+<line x1="310" y1="942" x2="310" y2="968" stroke="#565c66" stroke-width="3"/><path d="M300 961 L310 975 L320 961" fill="none" stroke="#565c66" stroke-width="3" stroke-linejoin="round"/>
+<rect x="60" y="980" width="500" height="124" rx="8" fill="#f5f6f7" stroke="#2451b8" stroke-width="3"/>
+<text class="t" x="90" y="1032">Pin output switched on</text>
+<text class="s" x="90" y="1076">Pin-ctls 0x40: OUT, sound</text>
+</svg>

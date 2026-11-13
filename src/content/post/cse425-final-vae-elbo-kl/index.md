@@ -1,24 +1,24 @@
 ---
-title: "VAE Part 2: ELBO and KL Divergence"
-description: "The two goals inside a VAE loss, one image's loss computed by hand, where the Gaussian KL formula comes from, and what the ELBO bounds."
+title: "VAE loss by hand: ELBO and the Gaussian KL derivation"
+description: "One image's VAE loss computed by hand, where the closed-form Gaussian KL comes from, what the ELBO bounds, and what the weight on the KL term changes."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, vae, kl-divergence, elbo]
-series: "CSE 425 Final"
+series: "CSE 425"
+section: "Final"
 part: 5
 ---
 
 A VAE has two goals that pull against each other. It wants to rebuild the image well, and it wants every code to look like it came from a standard bell curve. Drop the second goal and every image gets its own tiny private spot, with useless space in between. Push it too hard and every image gets the same blurry code and the decoder stops listening.
 
-The loss is those two goals added together, with one weight setting the balance between them. The picture to keep in mind is the cloud from [VAE Part 1: Encoder and the Reparameterization Trick](/blog/cse425-final-vae-encoder-reparameterization/): the encoder gives each image a small cloud of codes, and the KL term measures how far that cloud is from the standard one.
+The loss is those two goals added together, with one weight setting the balance between them. The picture to keep in mind is the cloud from [the note on the reparameterisation trick](/blog/cse425-final-vae-encoder-reparameterization/): the encoder gives each image a small cloud of codes, and the KL term measures how far that cloud is from the standard one.
 
 > **Key Takeaways**
 >
-> - The loss is L = L_recon + β·KL, with β = 1 in the plain VAE.
-> - For one latent dimension, the KL to N(0,1) is ½(μ² + σ² − 1 − ln σ²), and with several independent dimensions the values add.
-> - The ELBO is the negative of this loss, and it is a floor under ln p(x), the log-probability the model gives the image.
-> - The KL in the loss compares the encoder with the prior N(0,I); the KL in the derivation compares it with the true posterior, which can't be computed.
-> - β = 0 gives a plain autoencoder, and a very large β makes every output a blurry average.
+> - The loss is $L=L_{recon}+\beta\,KL$: $\beta=1$ is the plain VAE, $\beta=0$ a plain autoencoder, and a huge $\beta$ blurs every output.
+> - Per latent dimension, the KL to $N(0,1)$ is $\tfrac12(\mu^2+\sigma^2-1-\ln\sigma^2)$, and independent dimensions add.
+> - The ELBO is the negative of this loss, and it is a floor under $\ln p(\mathbf x)$.
+> - The loss's KL compares the encoder with the prior $N(0,I)$; the derivation's compares it with the true posterior, which can't be computed.
 
 ## The loss for one image, by hand
 
@@ -70,7 +70,7 @@ Check against the numbers: with $\mu=0.3$ and $\sigma^2=0.6065$ this is the 0.09
 
 For a diagonal Gaussian the dimensions are independent, so there are no cross terms and you add the formula over the $K$ dimensions. If the encoder gives $s=\ln\sigma^2$, each dimension is $\tfrac12(\mu^2+e^{s}-1-s)$. Don't take the log of $s$; it's already a log. Two shortcuts save time: with $\sigma=1$ the formula drops to $KL=\tfrac12\sum\mu_i^2$, and with $\mu=0$ it's $KL=\tfrac12\sum(\sigma_i^2-1-\ln\sigma_i^2)$. Both at once ($\mu=0$, $\sigma=1$) gives exactly 0.
 
-A two-dimensional case: $\boldsymbol\mu=(0,\,1)$ and $\boldsymbol\sigma=(1,\,2)$. The first dimension is the prior itself and contributes 0. The second gives $\tfrac12(1+4-1-\ln4)=\tfrac12(4-1.3863)=1.3069$. Total $KL=1.3069$.
+A two-dimensional case: $\boldsymbol\mu=(0,\,1)$ and $\boldsymbol\sigma=(1,\,2)$. The first dimension is the prior itself and contributes 0. The second gives $\tfrac12(1+4-1-\ln4)$ $=\tfrac12(4-1.3863)=1.3069$. Total $KL=1.3069$.
 
 A three-dimensional case, $\boldsymbol\mu=(0.5,\,-1,\,0.2)$ and $\boldsymbol\sigma=(1.2,\,0.5,\,0.8)$, has terms $0.1627$, $0.8181$ and $0.0631$, total $1.0440$. The middle dimension dominates because a narrow $\sigma=0.5$ and a shifted $\mu=-1$ both cost.
 
@@ -114,7 +114,7 @@ Raise $\beta$ far enough and the cheapest move is to make the KL zero, which hap
 
 [From Autoencoder to Beta-VAE](https://lilianweng.github.io/posts/2018-08-12-vae/) shows how changing $\beta$ changes the code space, and the [evidence lower bound article](https://en.wikipedia.org/wiki/Evidence_lower_bound) gives the derivation by a second route.
 
-## Practice on the KL and reconstruction terms
+## Practice: the KL and reconstruction terms
 
 $\boldsymbol\mu=(3,\,-1)$, $\boldsymbol\sigma=(1,\,1)$. What is the KL to $N(0,I)$?
 

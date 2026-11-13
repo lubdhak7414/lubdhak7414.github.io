@@ -5,7 +5,7 @@ publishDate: '23 October 2026'
 tags: ['machine-learning', 'python', 'data-science', 'football']
 coverImage:
   src: ./cover.webp
-  alt: 'A window showing log loss on 3,800 La Liga matches: bookmaker odds 0.967, random forest with odds 0.980, random forest 0.990, LightGBM 0.998, base rate 1.067'
+  alt: 'Log loss on 3,800 La Liga matches, lower is better: bookmaker odds 0.967, random forest with odds 0.980, random forest without odds 0.990, LightGBM without odds 0.998, base rate 1.067'
 draft: true
 ---
 
@@ -15,9 +15,9 @@ My notes from the project cover the design in detail but don't record a single r
 
 > **Key Takeaways**
 >
-> - Tested season by season on 3,800 matches (2016-17 to 2025-26), the best model reached a log loss of 0.980 and 53.4% accuracy. The bookmakers' own odds scored 0.967 and 53.8%.
-> - Without odds as an input, the random forest scored 0.990. Picking a home win every time is right 45.5% of the time.
-> - Filling missing odds with 0 at prediction time made every model worse than leaving odds out entirely. LightGBM scored worse than the base rate.
+> - On 3,800 test matches (2016-17 to 2025-26), the best model scored a log loss of 0.980 and 53.4% accuracy.
+> - The bookmakers' odds did better: 0.967 and 53.8%. Without odds as an input, the random forest scored 0.990.
+> - Filling missing odds with 0 at prediction time was worse than leaving odds out. LightGBM scored worse than the base rate.
 
 ![Log loss for eight forecasts on 3,800 La Liga matches: bookmaker odds 0.967, random forest with odds 0.980, calibrated random forest with odds 0.985, LightGBM with odds 0.987, random forest 0.990, calibrated random forest 0.998, LightGBM 0.998, base rate 1.067](./log-loss.webp)
 

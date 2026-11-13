@@ -1,10 +1,11 @@
 ---
-title: "Graph Neural Networks"
-description: "One graph convolution layer worked by hand on a 3-node graph, why node order must not matter, and how GCN, GraphSAGE-mean and GAT differ."
+title: "GNN message passing: a GCN layer worked by hand"
+description: "One graph convolution layer worked by hand on a 3-node graph, why node order must not matter, and how GCN, GraphSAGE-mean and GAT differ in their equations."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, gnn, graph-convolution]
-series: "CSE 425 Final"
+series: "CSE 425"
+section: "Final"
 part: 8
 ---
 
@@ -13,10 +14,10 @@ Nine atoms can be written down in 9! = 362,880 different orders, and a molecule 
 Graph neural networks (GNNs) are built so the order cannot matter. A graph is a set of nodes joined by edges, like atoms and bonds, or people and friendships. There's no first node and no fixed number of neighbours, so a plain dense layer or a fixed-size kernel does not fit. GNNs borrow the idea of a convolution. Each node looks at its neighbours, combines what it sees with an order-free operation such as a sum or a mean, and updates its own vector.
 
 > **Key Takeaways**
-> - A GNN layer gathers neighbour vectors, combines them with an order-free function, and updates each node with weights and a nonlinearity.
-> - Relabelling the nodes only relabels the output rows, a property called permutation equivariance, and a mean, sum or max readout over all nodes is unaffected by order.
-> - GCN adds self-loops and normalises by the degree at both ends of an edge, GraphSAGE-mean averages neighbours and gives the node's own vector a separate weight, and GAT learns a weight for each neighbour.
-> - Too many layers pull all node vectors toward one value, called oversmoothing, so two or three layers are typical.
+> - A GNN layer gathers neighbour vectors, combines them with an order-free function, then applies weights and a nonlinearity.
+> - Relabelling the nodes only relabels the output rows (equivariance), and a mean, sum or max readout ignores order.
+> - GCN normalises with $\tilde D^{-1/2}\tilde A\,\tilde D^{-1/2}$, GraphSAGE-mean weights the node's own vector separately, and GAT learns a weight per neighbour.
+> - Too many layers pull all node vectors towards one value (oversmoothing), so two or three layers are typical.
 
 ## A tiny graph and its matrix
 
@@ -94,7 +95,9 @@ Step 3, aggregate with $\bar A\mathbf x$:
 
 $$0.5\cdot1+0.4082\cdot2=1.3165$$
 
-$$0.4082\cdot1+0.3333\cdot2+0.4082\cdot3=2.2997$$
+$$0.4082\cdot1+0.3333\cdot2+0.4082\cdot3$$
+
+$$=2.2997$$
 
 $$0.4082\cdot2+0.5\cdot3=2.3165$$
 
@@ -112,17 +115,17 @@ A sum readout would give 11.865 and a max readout 4.633. For comparison, GraphSA
 
 For one label per graph, pool the final node vectors, for example $\mathbf g=\frac1{|V|}\sum_i\mathbf h_i^{(L)}$ over all nodes, then classify with $\widehat y=f(W\mathbf g+b)$. Don't mix the two up: aggregation runs over one node's neighbours, readout over every node in the graph.
 
-After $k$ layers a node has seen its $k$-hop neighbourhood, everything reachable in $k$ steps, and entry $(A^k)_{ij}$ counts the walks of length $k$ between $i$ and $j$. Go too deep and every node has averaged over most of the graph, until all node vectors drift toward the same value. That's oversmoothing, and it's why two or three layers is typical.
+After $k$ layers a node has seen its $k$-hop neighbourhood, everything reachable in $k$ steps, and entry $(A^k)_{ij}$ counts the walks of length $k$ between $i$ and $j$. Go too deep and every node has averaged over most of the graph, until all node vectors drift towards the same value. That's oversmoothing, and it's why two or three layers is typical.
 
 The weights are shared across nodes, so a layer from 16 to 8 features has $16\cdot8+8=136$ parameters (the weight matrix plus a bias) whether the graph has 4 nodes or $10^6$. Compute still grows with the number of edges.
 
-## Answering a GNN question
+## In the exam: answering a GNN question
 
 For a written answer, the pieces I'd want to be able to produce cold are the three steps (gather, aggregate, update), the normalised equation with every symbol defined, and how GCN differs from GAT. For a numeric layer, show $\bar AH$ first and then times $W$, and do not drop the self-loops: $\tilde A$ is $A+I$, and the symmetric form $\tilde D^{-1/2}\tilde A\tilde D^{-1/2}$ is not the row normalisation $\tilde D^{-1}\tilde A$.
 
 The [Distill introduction to graph neural networks](https://distill.pub/2021/gnn-intro/) is an illustrated walk through graphs, message passing and readout, and [Kipf's explainer](https://tkipf.github.io/graph-convolutional-networks/) comes from the GCN author.
 
-## Questions on order and degree
+## Practice: order and degree
 
 Why does a GNN layer use a sum, mean or max instead of a concatenation of neighbours?
 

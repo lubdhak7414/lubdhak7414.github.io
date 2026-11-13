@@ -1,23 +1,23 @@
 ---
-title: "The Transformer, Block by Block"
-description: "How data moves through an encoder block and a decoder block, the Add and Norm update, a parameter count, a decoder step by hand, and how BERT and GPT differ."
+title: "Transformer encoder and decoder blocks, step by step"
+description: "How data moves through an encoder and a decoder block, the Add and Norm update, a parameter count, one decoder step by hand, and how BERT and GPT differ."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, transformer, bert, gpt]
-series: "CSE 425 Final"
+series: "CSE 425"
+section: "Final"
 part: 7
 ---
 
 A common first picture of a Transformer is a tall stack of attention layers and nothing else. Attention on its own only averages: each token's output is a weighted average of value vectors. The only ReLU in a block sits in a small feed-forward layer that works on each token's own vector, and the rest of the block (residual connections and normalisation) is there to make deep stacks trainable.
 
-The original model uses 6 blocks as an encoder and 6 as a decoder. Most of this note is the inside of one block; BERT and GPT come at the end, since each keeps only one half. It assumes [Attention: Q, K, V](/blog/cse425-final-attention/), where queries, keys and values and the mask were built up from numbers. To keep symbols few, $T_k$ is the number of source tokens and $T_q$ the number of target tokens, the same names as in cross-attention, and $n_h$ is the number of heads.
+The original model uses 6 blocks as an encoder and 6 as a decoder. Most of this note is the inside of one block; BERT and GPT come at the end, since each keeps only one half. It assumes [Scaled dot-product attention: Q, K and V by hand](/blog/cse425-final-attention/), where queries, keys and values and the mask were built up from numbers. To keep symbols few, $T_k$ is the number of source tokens and $T_q$ the number of target tokens, the same names as in cross-attention, and $n_h$ is the number of heads.
 
 > **Key Takeaways**
-> - An encoder block has two sublayers (self-attention, feed-forward) and a decoder block has three (masked self-attention, cross-attention, feed-forward).
-> - Every sublayer is wrapped as LN(x + sublayer(x)), so its output must have the same width as its input.
-> - Attention moves information between tokens, and the feed-forward layer transforms each token on its own with the same weights at every position.
+> - Attention mixes tokens and the feed-forward layer works on each token alone. An encoder block has two sublayers, a decoder block three.
+> - Every sublayer is wrapped as $\mathrm{LN}(x+\mathrm{sublayer}(x))$, so its output must have the same width as its input.
 > - Heads add no parameters: 8 heads of width 64 use as many weights as one head of width 512.
-> - BERT keeps the encoder and looks both ways, GPT keeps the decoder and looks only left.
+> - BERT keeps the encoder and looks both ways; GPT keeps the decoder and looks only left.
 
 ## The shape of a block
 
@@ -27,15 +27,15 @@ The encoder block has two sublayers and the decoder block has three. The decoder
 
 ```mermaid
 flowchart TD
-    A["Token embedding + positional encoding"] --> B["Encoder block x 6"]
-    B --> C["Encoder output X_enc"]
-    D["Previous target tokens, shifted right, + PE"] --> E["Decoder block x 6"]
+    A["Token embedding<br/>+ positional encoding"] --> B["Encoder block × 6"]
+    B --> C["Encoder output<br/>X<sub>enc</sub>"]
+    D["Previous target tokens,<br/>shifted right, + PE"] --> E["Decoder block × 6"]
     C --> E
     E --> F["Linear layer"]
     F --> G["Softmax over vocabulary"]
 ```
 
-![Encoder layer with self-attention, Add and Norm, feed-forward, Add and Norm, and decoder layer with masked self-attention, cross-attention fed K and V from X_enc, and feed-forward, each sublayer wrapped by a residual skip, shapes T_k x 512 and T_q x 512](img/transformer-architecture-transformer-block.svg)
+![Encoder layer with self-attention, Add and Norm, feed-forward, Add and Norm, and decoder layer with masked self-attention, cross-attention fed K and V from X_enc, and feed-forward, each sublayer wrapped by a residual skip, shapes T_k × 512 and T_q × 512](img/transformer-architecture-transformer-block.svg)
 
 ## The feed-forward layer, with numbers
 
@@ -43,7 +43,9 @@ The feed-forward layer is a small two-layer network applied to each token's vect
 
 $$W_1=\begin{bmatrix}1&0&-1\\1&1&0\end{bmatrix}$$
 
-$$xW_1=[1+2,\ 0+2,\ -1+0]=[3,\ 2,\ -1]$$
+$$xW_1=[1+2,\ 0+2,\ -1+0]$$
+
+$$=[3,\ 2,\ -1]$$
 
 ReLU, which turns any negative number into 0, gives $[3,2,0]$. Then
 
@@ -69,7 +71,9 @@ $$\sigma^2=\frac{1.125^2+1.625^2+0.575^2+2.175^2}{4}$$
 
 $$=2.2419$$
 
-$$\frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}=[-0.751,\ -1.085,\ 0.384,\ 1.453]$$
+$$\frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}$$
+
+$$=[-0.751,\ -1.085,\ 0.384,\ 1.453]$$
 
 The general form, with learned scale $\gamma$ and shift $\beta$ and $\odot$ for entry-by-entry multiplication:
 
@@ -167,17 +171,17 @@ Embedding tables and the output layer come on top. A vocabulary of 50,000 at wid
 | BERT | Encoder | Both ways | Predict masked tokens, plus next-sentence prediction |
 | GPT | Decoder | Causal, left only | Predict the next token |
 
-BERT base has 12 layers, 12 heads and about 110 million parameters. It learns its position embeddings instead of using fixed sinusoids. In its masked-token task, 15 percent of tokens are picked, and of those 80 percent become a mask symbol, 10 percent a random word and 10 percent stay unchanged. For fine-tuning on a classification task, the final state of the first token (a special [CLS] token) feeds one extra output layer. BERT is used for understanding tasks such as classification; GPT is used for generation. GPT reads only leftwards, so for a task that needs the whole sentence at once it sees less of the context than BERT does.
+BERT base has 12 layers, 12 heads and about 110 million parameters. It learns its position embeddings instead of using fixed sinusoids. In its masked-token task, 15% of tokens are picked, and of those 80% become a mask symbol, 10% a random word and 10% stay unchanged. For fine-tuning on a classification task, the final state of the first token (a special [CLS] token) feeds one extra output layer. BERT is used for understanding tasks such as classification; GPT is used for generation. GPT reads only leftwards, so for a task that needs the whole sentence at once it sees less of the context than BERT does.
 
-![Four 5 by 5 grids: BERT fully filled, GPT lower triangle, and for the original Transformer a full encoder grid beside a lower-triangle decoder grid](img/transformer-architecture-attention-direction.svg)
+![Four 5 × 5 grids: BERT fully filled, GPT lower triangle, and for the original Transformer a full encoder grid beside a lower-triangle decoder grid](img/transformer-architecture-attention-direction.svg)
 
 For a visual walk-through see [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/), and for the original design [Attention Is All You Need](https://arxiv.org/abs/1706.03762). The [BERT paper](https://arxiv.org/abs/1810.04805) has the masked-token objective and the encoder-only design.
 
-## Writing the answer
+## In the exam: writing a Transformer answer
 
 A good answer lists each block's sublayers in order, writes $\mathrm{LN}(x+\mathrm{sublayer}(x))$, and shows shapes at each step. For parameter counts, write the formula before the arithmetic. Other things worth being able to explain: the benefit of residuals and of layer norm, parallelism against recurrence, the $T^2$ cost of attention, and head-width arithmetic such as $d_{model}=768$ with $n_h=12$ giving $d_k=64$.
 
-## Questions on the block
+## Practice: the Transformer block
 
 Why must every sublayer output have the same width as its input?
 

@@ -2,25 +2,20 @@ import type { Root, RootContent, PhrasingContent, ListItem } from 'mdast'
 import type { VFile } from 'vfile'
 import { toString } from 'mdast-util-to-string'
 import katex from 'katex'
+import { mathHtml, TIE } from './rehypeMathSpacing'
 
 /**
  * Lifts a write-up's summary pieces out of the body so the layout can print them where a
- * skimmer looks first (the "gist" under the title) and last (the skills before "Next"):
+ * skimmer looks first (the "gist" under the title):
  *
  * - `takeaways`: the "Key Takeaways" blockquote's bullets, as inline HTML.
- * - `skills`: the "Skills & Deliverables" list ({ term, html }), with its heading and the
- *   rule before it.
  * - `figures`: every image in the body ({ url, alt, section }), left in place. The one image a
  *   project names as its `shot` leaves the body: the layout prints it under the gist.
  *
  * The text is the author's own; this only moves it. The RSS feed renders the raw Markdown, so
- * it keeps both blocks where they were written.
+ * it keeps the takeaways where they were written.
  */
 
-export interface BriefSkill {
-	term: string
-	html: string
-}
 export interface BriefFigure {
 	url: string
 	alt: string
@@ -31,16 +26,24 @@ const escape = (s: string) =>
 	s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
 function inline(nodes: PhrasingContent[]): string {
+	// Characters already printed with the maths before them (see rehypeMathTie).
+	const tied = new Set<PhrasingContent>()
 	return nodes
-		.map((node) => {
+		.map((node, i) => {
 			// remark-math's inline node: keep the maths (native MathML), not the raw LaTeX.
 			if ((node.type as string) === 'inlineMath') {
 				const { value } = node as unknown as { value: string }
-				return katex.renderToString(value, { output: 'mathml', throwOnError: false })
+				const math = mathHtml(
+					katex.renderToString(value, { output: 'mathml', throwOnError: false })
+				)
+				const next = nodes[i + 1]
+				if (next?.type !== 'text' || !TIE.test(next.value)) return math
+				tied.add(next)
+				return `<span class="math-tie">${math}${escape(next.value[0])}</span>`
 			}
 			switch (node.type) {
 				case 'text':
-					return escape(node.value)
+					return escape(tied.has(node) ? node.value.slice(1) : node.value)
 				case 'strong':
 					return `<strong>${inline(node.children)}</strong>`
 				case 'emphasis':
@@ -78,13 +81,9 @@ const isTakeaways = (node: RootContent) =>
 	node.children[0]?.type === 'paragraph' &&
 	/^key takeaways:?$/i.test(toString(node.children[0]).trim())
 
-const isSkillsHeading = (node: RootContent) =>
-	node.type === 'heading' && /^skills\s*(&|and)\s*deliverables/i.test(toString(node).trim())
-
 export function remarkBrief() {
 	return function (tree: Root, file: VFile) {
 		let takeaways: string[] = []
-		let skills: BriefSkill[] = []
 		const figures: BriefFigure[] = []
 
 		const kids = tree.children
@@ -96,25 +95,6 @@ export function remarkBrief() {
 				takeaways = list.children.map((item) => inline(itemPhrasing(item)))
 				kids.splice(qi, 1)
 			}
-		}
-
-		const si = kids.findIndex(isSkillsHeading)
-		const list = si !== -1 ? kids[si + 1] : undefined
-		if (list && list.type === 'list') {
-			skills = list.children.map((item) => {
-				const phr = itemPhrasing(item)
-				const [first, ...rest] = phr
-				if (first?.type !== 'strong') return { term: '', html: inline(phr) }
-				const term = toString(first)
-					.replace(/[:.]\s*$/, '')
-					.trim()
-				// "**Term**: what it covered" -> drop the separator left at the start of the rest.
-				const head = rest[0]
-				if (head?.type === 'text') head.value = head.value.replace(/^\s*[:.\-–]\s*/, '')
-				return { term, html: inline(rest) }
-			})
-			const start = kids[si - 1]?.type === 'thematicBreak' ? si - 1 : si
-			kids.splice(start, si + 2 - start)
 		}
 
 		const fm = (file.data as { astro: { frontmatter: Record<string, unknown> } }).astro.frontmatter
@@ -142,7 +122,6 @@ export function remarkBrief() {
 		}
 
 		fm.takeaways = takeaways
-		fm.skills = skills
 		fm.figures = figures
 	}
 }

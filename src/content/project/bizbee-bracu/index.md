@@ -12,14 +12,14 @@ links:
 tags: ['web-development', 'wordpress', 'elementor']
 facts:
   status: 'Live'
-  client: 'BRAC University Business Club (BIZ BEE)'
+  client: 'BIZ BEE'
   stack: ['WordPress', 'Elementor']
 shot:
   src: './shot.webp'
   alt: 'BIZ BEE homepage: the club name on a blue gradient hero, with Explore Events and Learn More buttons'
 glance:
   does: 'The website of BIZ BEE, the business club at BRAC University in Dhaka.'
-  did: 'Designed and built the site in WordPress and Elementor, with a hand-coded recruitment page for BEE HUNT.'
+  did: 'Designed and built the site.'
 draft: true
 ---
 

@@ -8,7 +8,7 @@ updatedDate: '06 December 2024'
 coverImage:
   src: './cover.jpg'
   alt: 'Green Bangla Foundation website'
-tags: ['Web Development', 'WordPress', 'Page Speed Optimization']
+tags: ['web-development', 'wordpress', 'page-speed-optimization']
 facts:
   status: 'Delivered to the client'
   client: 'Green Bangla Foundation'
@@ -18,7 +18,7 @@ shot:
   alt: 'Green Bangla Foundation homepage: navigation, headline and hero image'
 glance:
   does: 'A new website for a socio-economic development nonprofit in Bangladesh.'
-  did: 'Built the site in WordPress''s block editor with custom CSS and few plugins, so staff can edit pages without a developer.'
+  did: 'Built the site.'
 ---
 
 Green Bangla Foundation is a socio-economic development nonprofit in Bangladesh. It runs programmes in housing, farming, fish farming, eco-parks, restaurants and hotels. I built its new website on WordPress.

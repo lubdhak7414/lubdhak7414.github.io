@@ -1,10 +1,11 @@
 ---
-title: "GRU and How It Compares with the LSTM"
-description: "The GRU folds the LSTM's cell state into the hidden state and uses two gates, not three. One step by hand, then a gate-by-gate comparison with the LSTM."
+title: "GRU by hand: update and reset gates, LSTM vs GRU"
+description: "One GRU step by hand with the update and reset gates, the general equations, why the gradient survives, and a gate-by-gate LSTM vs GRU comparison."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, rnn, gru, lstm]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 11
 ---
 
@@ -13,9 +14,9 @@ A GRU is an LSTM with the cell state folded into the hidden state and the three 
 The reset gate is the part that gets mixed up with the LSTM's forget gate, though the two act in different places. This note assumes the [LSTM](/blog/cse425-mid-lstm/) note, in particular what a gate is: a set of numbers between 0 and 1 that multiply something, where 0 keeps none of it and 1 keeps all of it.
 
 > **Key Takeaways**
-> - A GRU has no separate cell state, only the hidden state, and two gates: the update gate z and the reset gate r.
-> - The new state is a blend of the candidate and the old state, weighted by z and 1 minus z, so the two weights add to 1.
-> - The reset gate scales only the old state inside the candidate, never the input.
+> - A GRU has no cell state, only $h_t$, and two gates: the update gate $z_t$ and the reset gate $r_t$.
+> - The new state is $h_t=z_t\odot\tilde h_t+(1-z_t)\odot h_{t-1}$, a blend whose two weights add to 1.
+> - The reset gate scales only $h_{t-1}$ inside the candidate, never the input.
 > - A GRU has three weight blocks to the LSTM's four, so 75% of the LSTM's parameters at the same sizes.
 
 ## One step by hand
@@ -28,7 +29,9 @@ The update gate and the reset gate first:
 
 $$z=\sigma(0.5+0.4\cdot0.5)=\sigma(0.7)=0.6682$$
 
-$$r=\sigma(0.3+0.2\cdot0.5+0.1)=\sigma(0.5)=0.6225$$
+$$r=\sigma(0.3+0.2\cdot0.5+0.1)$$
+
+$$=\sigma(0.5)=0.6225$$
 
 The candidate is a plain RNN step with one change: the old state is first multiplied by the reset gate, so $h_{t-1}$ contributes $0.6\cdot(0.6225\cdot0.5)$ and not $0.6\cdot0.5$.
 
@@ -89,7 +92,7 @@ For a "compare" question I'd write the equations for $z_t$, $r_t$ and the blend,
 
 The [GRU chapter of Dive into Deep Learning](https://d2l.ai/chapter_recurrent-modern/gru.html) builds one from scratch in code, and an [empirical comparison by Chung and colleagues](https://arxiv.org/abs/1412.3555) found the GRU about as good as the LSTM on the sequence tasks they tried.
 
-## Questions on the blend and the gates
+## Practice: the blend and the gates
 
 With $H=1$, $z=0.5$, $h_{t-1}=2$ and $\tilde h=0$, what is $h_t$?
 

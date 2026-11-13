@@ -1,11 +1,11 @@
 ---
-title: 'Dissecting a WordPress Hack: A Ghost Admin Hidden by CSS'
+title: 'Finding a WordPress admin account hidden with CSS'
 description: 'We debugged a WordPress slot spam infection and found an attacker hiding a rogue admin account and backdoor plugins with a CSS override in functions.php.'
 publishDate: '2 April 2026'
 coverImage:
   src: './cover.webp'
-  alt: 'The real users screen counting three administrators but listing two, above the diff of functions.php where line 573 hides the row of user 1087'
-tags: ['WordPress', 'Security', 'PHP', 'Incident Response', 'Project']
+  alt: 'The WordPress users screen counts Administrator (3) but shows two rows, the third, user-1087, hidden; beside it the code from functions.php: add_action(''admin_head'', ''my_custom_css_do'') and the rule .users-php .users tr[id="user-1087"] { display:none; }'
+tags: ['wordpress', 'security', 'php', 'incident-response', 'project']
 homePageIdx: 3
 ---
 
@@ -17,9 +17,9 @@ We assumed the usual entry point: a vulnerable plugin allowing unauthenticated p
 
 > **Key Takeaways**
 >
-> - Application UIs are unreliable during incident response; always verify user privileges and counts directly against `wp_users` and `wp_usermeta` database tables.
-> - An attacker can use an ordinary theme file to inject CSS that hides security warnings, backdoor plugins and admin accounts from the dashboard.
-> - Relying entirely on standard security plugins is insufficient if an attacker gains enough privilege to apply `display: none` to the plugin's own dashboard interface.
+> - During incident response, don't trust the dashboard. Check users and roles in `wp_users` and `wp_usermeta` directly.
+> - Seven CSS rules in the theme's `functions.php` hid an admin account, two backdoor plugins and the iThemes Security menu.
+> - A security plugin can't warn you once the attacker hides its dashboard with `display: none`.
 
 ## The discrepancy: a ghost admin in the UI
 

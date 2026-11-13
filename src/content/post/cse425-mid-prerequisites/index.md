@@ -1,10 +1,11 @@
 ---
-title: "Before the Mid: the maths you need"
-description: "One sigmoid neuron worked by hand, with the dot products, matrix shapes and chain rule it needs, and the symbols every later note uses."
+title: "Neural network maths: chain rule and sigmoid derivative"
+description: "One sigmoid neuron worked by hand: dot products, matrix shapes, the chain rule, the sigmoid derivative and one gradient descent step, plus the notation."
 publishDate: '2026-11-02'
 draft: true
 tags: [neural-networks, cse425, prerequisites, notation]
-series: "CSE 425 Mid"
+series: "CSE 425"
+section: "Mid"
 part: 0
 ---
 
@@ -36,9 +37,9 @@ Bold letters are lists of numbers (vectors), and the dot between $\mathbf w$ and
 
 ```mermaid
 flowchart TD
-  x1["x1"] -->|"w1"| S["sum: z = w.x + b"]
-  x2["x2"] -->|"w2"| S
-  x3["x3"] -->|"w3"| S
+  x1["x<sub>1</sub>"] -->|"w<sub>1</sub>"| S["sum: z = <b>w</b> · <b>x</b> + b"]
+  x2["x<sub>2</sub>"] -->|"w<sub>2</sub>"| S
+  x3["x<sub>3</sub>"] -->|"w<sub>3</sub>"| S
   S --> F["activation f"]
   F --> A["output a"]
 ```
@@ -141,11 +142,11 @@ A second case shows the step rule on its own. Minimise $L=(w-3)^2$ from $w=0$ wi
 | 2 | $-4.8$ | 1.08 |
 | 3 | $-3.84$ | 1.464 |
 
-Each step closes 20 percent of the remaining gap to 3. Nobody shrinks the step size here; it shrinks because the slope gets flatter near the minimum.
+Each step closes 20% of the remaining gap to 3. Nobody shrinks the step size here; it shrinks because the slope gets flatter near the minimum.
 
 ## Bias and variance
 
-Bias here means the error from a model too simple to capture the pattern, such as a straight line through a curve. Variance is the error from a model so flexible that it chases the noise in one particular training set. Simple models have high bias and low variance, and they underfit. Flexible models have low bias and high variance, and they overfit. For squared-error loss, the expected error splits into bias squared, variance and irreducible noise (see [the Wikipedia article](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff) for the derivation). The sign of overfitting is training loss still falling while validation loss rises. Regularization, dropout and early stopping, all in the [optimization note](/blog/cse425-mid-optimization-regularization/), add a little bias in exchange for lower variance.
+Bias here means the error from a model too simple to capture the pattern, such as a straight line through a curve. Variance is the error from a model so flexible that it chases the noise in one particular training set. Simple models have high bias and low variance, and they underfit. Flexible models have low bias and high variance, and they overfit. For squared-error loss, the expected error splits into bias squared, variance and irreducible noise (see [the Wikipedia article](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff) for the derivation). The sign of overfitting is training loss still falling while validation loss rises. Regularisation, dropout and early stopping, all in the [optimisation note](/blog/cse425-mid-optimization-regularization/), add a little bias in exchange for lower variance.
 
 ## The notation every note uses
 
@@ -157,11 +158,11 @@ Course papers often use other letters for the same things: $d$ for the target, $
 
 ## Reading order
 
-The notes assume the ones before them. [The perceptron](/blog/cse425-mid-perceptron/) and [layers with activations](/blog/cse425-mid-mlp-activations/) come first, then backprop in two parts ([output layer](/blog/cse425-mid-backprop-output-layer/) and [hidden layers](/blog/cse425-mid-backprop-hidden-layers/)) and [computation graphs](/blog/cse425-mid-computation-graphs/). After those come [batch normalization](/blog/cse425-mid-batch-norm/) and [optimization and regularization](/blog/cse425-mid-optimization-regularization/), then recurrent networks in two parts ([unrolling](/blog/cse425-mid-rnn-basics/) and [BPTT](/blog/cse425-mid-bptt/)), the [LSTM](/blog/cse425-mid-lstm/) and the [GRU](/blog/cse425-mid-gru/). The [exam clinic](/blog/cse425-mid-exam-clinic/) collects worked patterns for revision. The Final series starts at [its own prerequisites note](/blog/cse425-final-prerequisites/).
+The notes assume the ones before them. [The perceptron](/blog/cse425-mid-perceptron/) and [layers with activations](/blog/cse425-mid-mlp-activations/) come first, then backprop in two parts ([output layer](/blog/cse425-mid-backprop-output-layer/) and [hidden layers](/blog/cse425-mid-backprop-hidden-layers/)) and [computation graphs](/blog/cse425-mid-computation-graphs/). After those come [batch normalisation](/blog/cse425-mid-batch-norm/) and [optimisation and regularisation](/blog/cse425-mid-optimization-regularization/), then recurrent networks in two parts ([unrolling](/blog/cse425-mid-rnn-basics/) and [BPTT](/blog/cse425-mid-bptt/)), the [LSTM](/blog/cse425-mid-lstm/) and the [GRU](/blog/cse425-mid-gru/). The [Mid practice problems](/blog/cse425-mid-exam-clinic/) collect worked patterns for revision. The Final series starts at [its own prerequisites note](/blog/cse425-final-prerequisites/).
 
 Following a worked example and doing one are different skills. Redo each one on paper with a changed input or target, then compare your working with the note. For a visual version of the neuron picture, [3Blue1Brown](https://www.3blue1brown.com/lessons/neural-networks) is hard to beat, and the [d2l.ai chapter on multilayer perceptrons](https://d2l.ai/chapter_multilayer-perceptrons/mlp.html) rewards a second read after the layers note.
 
-## Dot product and gradient practice
+## Practice: dot products and gradients
 
 Compute $\mathbf w\cdot\mathbf x+b$ for $\mathbf w=(1,-2,0.5)$, $\mathbf x=(4,1,2)$ and $b=-1$.
 
