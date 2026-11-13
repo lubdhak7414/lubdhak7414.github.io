@@ -2111,6 +2111,20 @@
 		font: inherit;
 		margin: 0;
 	}
+	/* The build machine measures labels in a fallback font, so on a reader's screen (IBM Plex,
+	   a little wider) a box can be a few pixels short: never wrap and never clip, centre on
+	   the box instead. */
+	.prose svg[id^='mermaid'] foreignObject {
+		overflow: visible;
+	}
+	.prose svg[id^='mermaid'] foreignObject > div {
+		display: flex !important;
+		justify-content: center;
+		align-items: center;
+		white-space: nowrap !important;
+		width: 100%;
+		height: 100%;
+	}
 	.prose svg[id^='mermaid'] .node rect {
 		rx: 4px;
 	}

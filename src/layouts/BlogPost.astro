@@ -86,7 +86,10 @@ function figure(img: string) {
 	if (!src) return img
 	const name = /([\w.-]+)\.svg/.exec(decodeURIComponent(unescape(src)))?.[1]
 	if (!name) return img
-	const phone = phoneByName.get(`${name}-phone.svg`)
+	// Built files carry a content hash ("name.HASH.svg"); the dev server does not.
+	const phone =
+		phoneByName.get(`${name}-phone.svg`) ??
+		phoneByName.get(`${name.replace(/\.[\w-]+$/, '')}-phone.svg`)
 	const picture = phone
 		? `<picture><source media="(max-width: 639px)" srcset="${escape(phone.url)}"${phone.width ? ` width="${phone.width}" height="${phone.height}"` : ''}>${img}</picture>`
 		: img

@@ -1,0 +1,7 @@
+[{"name":"p5-ec","path":"/blog/cse425-mid-exam-clinic/","width":1280,"find":"for elementwise product"},
+ {"name":"p7-mlp","path":"/blog/cse425-mid-mlp-activations/","width":1280,"find":"acts on each entry","nth":0,"pad":4,"h":260},
+ {"name":"p7-ecth","path":"/blog/cse425-mid-exam-clinic/","width":1280,"find":"Function","closest":"table"},
+ {"name":"p13-takef","path":"/blog/cse425-mid-exam-clinic/","width":1280,"find":"Take"},
+ {"name":"p13-y","path":"/blog/cse425-final-cnn-pooling-architectures/","width":1280,"find":"A residual block computes"},
+ {"name":"p13-mha","path":"/blog/cse425-final-attention/","width":1280,"find":"MHA","nth":0}
+]

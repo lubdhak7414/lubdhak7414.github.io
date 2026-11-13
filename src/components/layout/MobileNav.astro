@@ -1,6 +1,6 @@
 ---
 import type { Section } from '@/components/layout/Sidebar.astro'
-import { getAllPosts, getAllProjects } from '@/utils'
+import { getAllPosts, getAllProjects, sortByPublishDate, writingItems } from '@/utils'
 import { siteConfig } from '@/site-config'
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 
 const { page } = Astro.props
 const here = Astro.url.pathname
-const counts = { work: (await getAllProjects()).length, writing: (await getAllPosts()).length }
+const counts = { work: (await getAllProjects()).length, writing: writingItems(sortByPublishDate(await getAllPosts())).length }
 const links = [
 	{ href: '/', label: 'Home', on: page === 'home' },
 	{ href: '/projects/', label: 'Projects', n: counts.work, on: page === 'work' },
