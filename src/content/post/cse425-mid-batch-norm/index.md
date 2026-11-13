@@ -2,7 +2,6 @@
 title: "Batch normalisation by hand: training and test time"
 description: "Batch norm worked by hand on 2, 4, 6, 8: mean, variance, scale and shift, the gradients for gamma and beta, and what changes at test time with running averages."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, batch-norm, normalization]
 series: "CSE 425"
 section: "Mid"

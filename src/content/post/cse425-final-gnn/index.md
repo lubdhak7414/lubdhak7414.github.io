@@ -2,7 +2,6 @@
 title: "GNN message passing: a GCN layer worked by hand"
 description: "One graph convolution layer worked by hand on a 3-node graph, why node order must not matter, and how GCN, GraphSAGE-mean and GAT differ in their equations."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, gnn, graph-convolution]
 series: "CSE 425"
 section: "Final"

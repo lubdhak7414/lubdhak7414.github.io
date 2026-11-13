@@ -2,7 +2,6 @@
 title: "Pooling gradients, receptive field and skip connections"
 description: "Max and average pooling by hand, where their gradients go, a shape trace until a layer won't fit, receptive field sizes, conv backprop and skip connections."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, cnn, pooling, resnet]
 series: "CSE 425"
 section: "Final"

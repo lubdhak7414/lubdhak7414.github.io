@@ -2,7 +2,6 @@
 title: "Learning rate, momentum, Adam and dropout by hand"
 description: "Learning rate, momentum and Adam worked on one weight, then weight decay, early stopping and dropout for a network scoring 99% on train and 62% on validation."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, optimization, regularization, dropout]
 series: "CSE 425"
 section: "Mid"

@@ -2,7 +2,6 @@
 title: "CSE 425 Final practice: CNN, VAE and attention problems"
 description: "Revision for the CSE 425 Final: a conv-pool size trace that breaks, then fifteen worked problems on CNNs, gated RNNs, VAEs and attention, answers checked."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, exam-prep, cnn, vae, attention]
 series: "CSE 425"
 section: "Final"

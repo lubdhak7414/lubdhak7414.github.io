@@ -2,7 +2,6 @@
 title: "Autoencoder worked example and LSTM autoencoder shapes"
 description: "An autoencoder run by hand, its parameter count, why its latent space has gaps a VAE closes, denoising, and an LSTM autoencoder traced shape by shape."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, autoencoder, lstm]
 series: "CSE 425"
 section: "Final"

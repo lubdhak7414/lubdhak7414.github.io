@@ -2,7 +2,6 @@
 title: "Backpropagation output layer delta, worked example"
 description: "The output neuron's delta as error times sigmoid slope, the weight and bias updates worked with numbers, and a nudge test that checks the formula."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, backprop]
 series: "CSE 425"
 section: "Mid"

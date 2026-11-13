@@ -2,7 +2,6 @@
 title: "Convolution output size, stride and padding, by hand"
 description: "A convolution worked by hand, the output size formula with stride and padding, parameter counts per layer, and a vertical-edge filter you design yourself."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, cnn, convolution, parameter-counting]
 series: "CSE 425"
 section: "Final"

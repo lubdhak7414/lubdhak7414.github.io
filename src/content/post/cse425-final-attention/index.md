@@ -2,7 +2,6 @@
 title: "Scaled dot-product attention: Q, K and V by hand"
 description: "Scaled dot-product attention worked by hand with two keys, why scores are divided by the square root of the key size, then heads, masks and cross-attention."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, attention, transformer]
 series: "CSE 425"
 section: "Final"

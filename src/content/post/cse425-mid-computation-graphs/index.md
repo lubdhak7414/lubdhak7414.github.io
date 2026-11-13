@@ -2,7 +2,6 @@
 title: "Computation graph backpropagation, worked by hand"
 description: "A neuron drawn as a graph of small operations: every value filled in going forward and every gradient read off going backward, on a ReLU and a logistic neuron."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, backprop, computation-graph]
 series: "CSE 425"
 section: "Mid"

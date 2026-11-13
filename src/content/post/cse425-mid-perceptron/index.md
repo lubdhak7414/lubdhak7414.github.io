@@ -2,7 +2,6 @@
 title: "Perceptron learning rule: AND by hand, and why not XOR"
 description: "The perceptron learning rule run by hand on AND from zero weights, how many Boolean functions one line can split, and a four-line proof that XOR is not one."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, perceptron]
 series: "CSE 425"
 section: "Mid"

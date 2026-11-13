@@ -2,7 +2,6 @@
 title: "CSE 425 Mid practice: worked neural network problems"
 description: "Revision for the CSE 425 Mid: how to read a question, then thirteen worked problems on perceptrons, backprop, RNNs, LSTMs, GRUs and batch norm, answers checked."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, exam-prep, perceptron, backprop, rnn, lstm, gru]
 series: "CSE 425"
 section: "Mid"

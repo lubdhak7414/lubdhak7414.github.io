@@ -2,7 +2,6 @@
 title: "Kohonen SOM worked example: winner and neighbour update"
 description: "A Kohonen self-organising map worked by hand on a 3 × 3 grid: find the best matching unit, move it and its neighbours towards the input, then shrink the radius."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, som, kohonen, unsupervised]
 series: "CSE 425"
 section: "Final"

@@ -2,7 +2,6 @@
 title: "Backpropagation worked example: hidden layer deltas"
 description: "One full forward pass, backward pass and weight update on a 2-2-1 sigmoid network, where each hidden delta comes from, and a finite-difference check."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, backprop]
 series: "CSE 425"
 section: "Mid"

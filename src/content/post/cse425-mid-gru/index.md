@@ -2,7 +2,6 @@
 title: "GRU by hand: update and reset gates, LSTM vs GRU"
 description: "One GRU step by hand with the update and reset gates, the general equations, why the gradient survives, and a gate-by-gate LSTM vs GRU comparison."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, rnn, gru, lstm]
 series: "CSE 425"
 section: "Mid"

@@ -2,7 +2,6 @@
 title: "Backpropagation through time: a worked RNN example"
 description: "BPTT worked by hand on a three-step RNN, why the weight gradient is a sum over time steps, why it vanishes or explodes, and what clipping and truncation do."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, rnn, bptt]
 series: "CSE 425"
 section: "Mid"

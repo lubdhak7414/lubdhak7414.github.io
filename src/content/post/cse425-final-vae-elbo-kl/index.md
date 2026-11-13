@@ -2,7 +2,6 @@
 title: "VAE loss by hand: ELBO and the Gaussian KL derivation"
 description: "One image's VAE loss computed by hand, where the closed-form Gaussian KL comes from, what the ELBO bounds, and what the weight on the KL term changes."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, vae, kl-divergence, elbo]
 series: "CSE 425"
 section: "Final"

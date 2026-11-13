@@ -2,7 +2,6 @@
 title: "MLP forward pass by hand: XOR and activation functions"
 description: "How two hidden neurons solve XOR, a sigmoid forward pass in matrix form with its parameter count, and why ReLU keeps a slope of 1 where sigmoid and tanh fade."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, mlp, activations]
 series: "CSE 425"
 section: "Mid"

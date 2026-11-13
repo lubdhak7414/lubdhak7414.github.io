@@ -2,7 +2,6 @@
 title: "LSTM gates worked example: one step by hand"
 description: "The forget, input and output gate equations, one LSTM step traced with numbers, peephole LSTMs, parameter counts, and why the cell state keeps gradients alive."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, rnn, lstm]
 series: "CSE 425"
 section: "Mid"

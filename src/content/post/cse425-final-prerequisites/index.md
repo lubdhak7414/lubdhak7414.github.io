@@ -2,7 +2,6 @@
 title: "Neural network maths: entropy, KL divergence and softmax"
 description: "Entropy, cross-entropy and KL divergence from surprise, softmax by hand, the Gaussian KL formula, convolution sizes and matrix shapes for the Final notes."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, probability, kl-divergence, softmax, convolution]
 series: "CSE 425"
 section: "Final"

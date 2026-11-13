@@ -2,7 +2,6 @@
 title: "Neural network maths: chain rule and sigmoid derivative"
 description: "One sigmoid neuron worked by hand: dot products, matrix shapes, the chain rule, the sigmoid derivative and one gradient descent step, plus the notation."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, prerequisites, notation]
 series: "CSE 425"
 section: "Mid"

@@ -2,7 +2,6 @@
 title: "VAE reparameterisation trick, with one sample by hand"
 description: "A VAE encoder outputs a mean and a log-variance per latent dimension, and the reparameterisation trick turns them into a sample that gradients can pass through."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, vae, generative-models]
 series: "CSE 425"
 section: "Final"

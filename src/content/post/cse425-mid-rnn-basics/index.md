@@ -2,7 +2,6 @@
 title: "RNN forward pass by hand: unrolling and parameter count"
 description: "A recurrent network run by hand step by step: hidden state, shapes, a parameter count that ignores sequence length, input-output patterns and teacher forcing."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, rnn]
 series: "CSE 425"
 section: "Mid"

@@ -2,7 +2,6 @@
 title: "Transformer encoder and decoder blocks, step by step"
 description: "How data moves through an encoder and a decoder block, the Add and Norm update, a parameter count, one decoder step by hand, and how BERT and GPT differ."
 publishDate: '2026-11-02'
-draft: true
 tags: [neural-networks, cse425, transformer, bert, gpt]
 series: "CSE 425"
 section: "Final"
