@@ -6,7 +6,6 @@ tags: ['compilers', 'cpp', 'flex', 'bison', 'university']
 coverImage:
   src: ./cover.webp
   alt: 'A line of C, x = a + b * c, beside the three-address code my compiler printed for it, t3 = a down to x = t7, with the multiply t6 = t4 * t5 highlighted'
-draft: true
 ---
 
 In Spring 2026 I took CSE420, Compiler Design, at BRAC University. The labs build one compiler front end for a subset of C, a phase at a time, in Flex, Bison and C++. Lab 1 is the lexer and parser. This post is about the three labs after it: a symbol table, semantic checks, and a syntax tree that turns into three-address code.

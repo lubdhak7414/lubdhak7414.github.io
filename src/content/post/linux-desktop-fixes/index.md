@@ -6,7 +6,6 @@ tags: ['linux', 'arch-linux', 'troubleshooting']
 coverImage:
   src: ./cover.webp
   alt: 'Four cards, each a problem and its fix: quiet laptop speakers, an Easy Effects preset with a limiter at the end; Brave keyring prompt, --password-store=basic; Ctrl+Backspace in kitty, send_text all \x17; 52G AUR cache, paccache -r and paru -Sc'
-draft: true
 ---
 
 I keep a folder of short Linux notes: fixes I wrote down so I wouldn't have to search for them twice. Four of them are here, from an Arch ThinkPad and the CachyOS desktop I use now.

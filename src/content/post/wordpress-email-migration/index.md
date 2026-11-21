@@ -6,7 +6,6 @@ tags: ['email', 'dns', 'wordpress', 'cloudflare', 'migration']
 coverImage:
   src: ./cover.webp
   alt: 'Four steps in order: copy every mailbox with imapsync before any DNS change, switch the nameservers while the old host keeps getting mail for a while, copy again to pick up what arrived since, then tighten SPF and DMARC from p=none to quarantine to reject'
-draft: true
 ---
 
 _The client isn't named. Every domain, address and IP below is a documentation example, not theirs._

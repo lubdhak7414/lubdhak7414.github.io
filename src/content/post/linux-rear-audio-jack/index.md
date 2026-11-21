@@ -6,7 +6,6 @@ tags: ['linux', 'audio', 'alsa', 'troubleshooting']
 coverImage:
   src: ./cover.webp
   alt: 'Two parts of the fix for pin 0x14 on a Realtek ALC887: part 1, hdajackretask with Jack detection: Not present changes the pin config from 0x01014010 to 0x01014110 and it''s still silent; part 2, Auto-Mute Mode disabled turns Pin-ctls from 0x00 to 0x40: OUT and the rear port plays'
-draft: true
 ---
 
 Headphones in the front panel of my desktop worked. Plugged into the green Line Out port at the back, they played nothing. The sound settings listed the rear port as "Line Out (unplugged)" with a cable sitting in it.

@@ -6,7 +6,6 @@ tags: ['linux', 'systemd', 'power-management', 'troubleshooting']
 coverImage:
   src: ./cover.webp
   alt: 'Four steps in order: sleep.target starts, systemd-suspend.service keeps the machine asleep until you wake it, sleep.target stops on wake, then ExecStop= runs tuned-adm profile powersave'
-draft: true
 ---
 
 In April 2025 my laptop ran tuned on the `powersave` profile, and after it woke from suspend it wasn't on that profile any more. I fixed it with a small systemd unit that sets the profile again after resume, then wrote a second one to log how much battery the laptop lost while it slept.

@@ -6,7 +6,6 @@ tags: ['machine-learning', 'python', 'data-science', 'football']
 coverImage:
   src: ./cover.webp
   alt: 'Log loss on 3,800 La Liga matches, lower is better: bookmaker odds 0.967, random forest with odds 0.980, random forest without odds 0.990, LightGBM without odds 0.998, base rate 1.067'
-draft: true
 ---
 
 For CSE437 at BRAC University I built a pipeline that predicts La Liga matches as a home win, a draw or an away win. The course wanted that three-way classification, so that's the target throughout.

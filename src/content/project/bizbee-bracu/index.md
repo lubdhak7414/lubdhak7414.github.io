@@ -20,7 +20,6 @@ shot:
 glance:
   does: 'The website of BIZ BEE, the business club at BRAC University in Dhaka.'
   did: 'Designed and built the site.'
-draft: true
 ---
 
 BIZ BEE is the business club at BRAC University in Dhaka. It was set up in 2003. I designed and built its website, [bizbeebracu.org](https://bizbeebracu.org/), on WordPress with the Elementor page builder.
