@@ -47,7 +47,7 @@ const spec: SpecRow[] = [
 	{ key: 'Status', text: facts.status },
 	{ key: 'Timeline', text: facts.timeline },
 	{ key: 'License', text: facts.license },
-	{ key: 'Links', links }
+	{ key: 'Links', ...(links.length > 0 ? { links } : { text: 'No public link' }) }
 ]
 // No break at a hyphen inside a word ("8-bit", "hand-written") and no stranded "a" in the
 // headline; the stored title keeps the plain text for the head and the feeds.

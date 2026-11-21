@@ -16,6 +16,7 @@ links:
     }
 facts:
   status: 'Open source on GitHub'
+  license: 'No license file yet'
   stack: ['Python', 'PyTorch']
 shot:
   src: './screenshot.png'

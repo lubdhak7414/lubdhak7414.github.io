@@ -11,6 +11,7 @@ coverImage:
 tags: ['web-development', 'wordpress', 'page-speed-optimization']
 facts:
   status: 'Delivered to the client'
+  license: 'Not open source (client work)'
   client: 'Green Bangla Foundation'
   stack: ['WordPress', 'Gutenberg FSE']
 shot:

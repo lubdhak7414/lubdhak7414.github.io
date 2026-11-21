@@ -13,6 +13,7 @@ links:
 tags: ['wordpress', 'seo']
 facts:
   status: 'Live'
+  license: 'Not open source (client work)'
   client: 'Test Routes NI'
   stack: ['WordPress', 'Elementor']
 shot:

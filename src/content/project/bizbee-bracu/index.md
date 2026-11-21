@@ -12,6 +12,7 @@ links:
 tags: ['web-development', 'wordpress', 'elementor']
 facts:
   status: 'Live'
+  license: 'Not open source (client work)'
   client: 'BIZ BEE'
   stack: ['WordPress', 'Elementor']
 shot:
