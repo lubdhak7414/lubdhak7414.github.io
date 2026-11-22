@@ -92,9 +92,9 @@ The decoder block has three sublayers: masked self-attention over the target so 
 
 $$Y'=\mathrm{LN}\big(Y+\mathrm{MHA}_{mask}(Y,Y,Y)\big)$$
 
-$$Y^{\prime\prime}=\mathrm{LN}\big(Y'+\mathrm{MHA}_{cross}(Y',X_{enc},X_{enc})\big)$$
+$$Y^{″}=\mathrm{LN}\big(Y'+\mathrm{MHA}_{cross}(Y',X_{enc},X_{enc})\big)$$
 
-$$Y_{out}=\mathrm{LN}\big(Y^{\prime\prime}+\mathrm{FFN}(Y^{\prime\prime})\big)$$
+$$Y_{out}=\mathrm{LN}\big(Y^{″}+\mathrm{FFN}(Y^{″})\big)$$
 
 The encoder output feeds the keys and values of the cross-attention in every one of the 6 decoder blocks.
 

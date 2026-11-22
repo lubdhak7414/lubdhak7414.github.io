@@ -36,7 +36,7 @@ This is the same as using two separate matrices: the first two weights times $h_
 
 ## One step by hand
 
-The example uses a single memory slot ($H=D=1$), so every vector is one number. The input is $x=1$, the previous hidden state is $h_{t-1}=0.5$ and the previous cell state is $c_{t-1}=0.4$. Each gate is $\sigma(w\,x+u\,h_{t-1}+b)$, where $\sigma$ is the sigmoid, which squeezes any number into 0 to 1. The weights $(w,u,b)$ are $(0.5,0.4,1.0)$ for forget, $(0.6,0.2,0)$ for input, $(0.8,0.6,-0.1)$ for the candidate (a tanh) and $(0.3,0.5,0)$ for output. The start values are picked for easy arithmetic, not taken from a real previous step: a real cell gives $|h_{t-1}|\le\tanh|c_{t-1}|=0.38$, so $h_{t-1}=0.5$ with $c_{t-1}=0.4$ couldn't happen. The equations don't care, so the step below still works.
+The example uses a single memory slot $(H=D=1)$, so every vector is one number. The input is $x=1$, the previous hidden state is $h_{t-1}=0.5$ and the previous cell state is $c_{t-1}=0.4$. Each gate is $\sigma(w\,x+u\,h_{t-1}+b)$, where $\sigma$ is the sigmoid, which squeezes any number into 0 to 1. The weights $(w,u,b)$ are $(0.5,0.4,1.0)$ for forget, $(0.6,0.2,0)$ for input, $(0.8,0.6,-0.1)$ for the candidate (a tanh) and $(0.3,0.5,0)$ for output. The start values are picked for easy arithmetic, not taken from a real previous step: a real cell gives $|h_{t-1}|\le\tanh|c_{t-1}|=0.38$, so $h_{t-1}=0.5$ with $c_{t-1}=0.4$ couldn't happen. The equations don't care, so the step below still works.
 
 The forget and input gates and the candidate:
 
